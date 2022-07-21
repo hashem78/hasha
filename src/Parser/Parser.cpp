@@ -150,11 +150,6 @@ namespace hasha {
 
         auto token_list = create_token_list();
 
-        auto is_var_decl = [this]() -> bool {
-            return peek().get_type() == LexemeType::Identifier && peek(1).get_type() == LexemeType::Identifier;
-        };
-
-
         while (peek() != Lexeme::RCURLY) {
             auto var_decl = parse_variable_declaration();
             if (var_decl != nullptr) {
