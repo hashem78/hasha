@@ -43,6 +43,10 @@ namespace hasha {
                 m_lexemes.push_back(Lexeme::RBRACE);
             } else if (token == ",") {
                 m_lexemes.push_back(Lexeme::COMMA);
+            } else if (token == "=") {
+                m_lexemes.push_back(Lexeme::EQUALS);
+            } else if (is_literal(token)) {
+                m_lexemes.emplace_back(token, LexemeType::Literal);
             } else {
                 m_lexemes.emplace_back(token, LexemeType::Identifier);
             }
@@ -56,6 +60,15 @@ namespace hasha {
             if (ch == c)
                 return true;
         return false;
+    }
+
+    bool Lexer::is_literal(std::string str) {
+
+        if (str.empty())
+            return false;
+        for (auto ch: str)
+            if (!std::isdigit(ch)) return false;
+        return true;
     }
 
 

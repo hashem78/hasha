@@ -37,6 +37,7 @@ namespace hasha {
 
         json["type"] = type;
         json["name"] = name;
+        json["value"] = value;
         json["token_type"] = "VariableDeclaration";
 
         return json;
@@ -44,15 +45,28 @@ namespace hasha {
 
     std::string VariableDeclaration::to_string() const {
 
-        return fmt::format("VariableDeclaration {} {}", type, name);
+        return fmt::format("VariableDeclaration {} {} {}", type, name, value);
     }
 
-    VariableDeclaration::VariableDeclaration(std::string type, std::string name) :
+    VariableDeclaration::VariableDeclaration(std::string type, std::string name, std::string value) :
             type(std::move(type)),
-            name(std::move(name)) {}
+            name(std::move(name)),
+            value(std::move(value)) {}
 
-    VariableDeclaration::VariableDeclarationPtr VariableDeclaration::create(std::string type, std::string name) {
+    VariableDeclaration::VariableDeclarationPtr
+    VariableDeclaration::create(std::string type, std::string name, std::string value) {
 
-        return std::shared_ptr<VariableDeclaration>(new VariableDeclaration(std::move(type), std::move(name)));
+        return std::shared_ptr<VariableDeclaration>(
+                new VariableDeclaration(std::move(type), std::move(name), std::move(value)));
+    }
+
+    const std::string &VariableDeclaration::get_value() const {
+
+        return value;
+    }
+
+    void VariableDeclaration::set_value(const std::string &value) {
+
+        VariableDeclaration::value = value;
     }
 } // hasha

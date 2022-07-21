@@ -38,6 +38,8 @@ namespace hasha {
         [[nodiscard]]
         char peek_char(int= 0) const;
 
+        static bool is_literal(std::string str);
+
     };
 
 } // hasha

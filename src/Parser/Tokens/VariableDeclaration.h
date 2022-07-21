@@ -13,14 +13,15 @@ namespace hasha {
     class VariableDeclaration : public Token {
         std::string type;
         std::string name;
+        std::string value;
 
-        VariableDeclaration(std::string type, std::string name);
+        VariableDeclaration(std::string type, std::string name, std::string value = "");
 
     public:
 
         using VariableDeclarationPtr = std::shared_ptr<VariableDeclaration>;
 
-        static VariableDeclarationPtr create(std::string type, std::string name);
+        static VariableDeclarationPtr create(std::string type, std::string name, std::string value="");
 
 
         [[nodiscard]]
@@ -38,6 +39,10 @@ namespace hasha {
 
         [[nodiscard]]
         std::string to_string() const override;
+
+        const std::string &get_value() const;
+
+        void set_value(const std::string &value);
     };
 
 } // hasha

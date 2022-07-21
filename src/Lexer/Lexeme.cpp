@@ -36,6 +36,7 @@ namespace hasha {
     const Lexeme Lexeme::LBRACKET{"[", LexemeType::Symbol};
     const Lexeme Lexeme::RBRACKET{"]", LexemeType::Symbol};
     const Lexeme Lexeme::COMMA{",", LexemeType::Symbol};
+    const Lexeme Lexeme::EQUALS{"=", LexemeType::Symbol};
     const Lexeme Lexeme::ADDITION{"+", LexemeType::Operator};
 
 

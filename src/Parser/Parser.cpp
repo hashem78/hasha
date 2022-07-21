@@ -17,7 +17,10 @@ namespace hasha {
 
     void Parser::parse() {
 
-        parse_function();
+        while (!done()) {
+
+            parse_function();
+        }
 
     }
 
@@ -53,8 +56,7 @@ namespace hasha {
             return true;
         }
 
-        fmt::print("Expected {} found {}\n", peek().to_string(),
-                   magic_enum::enum_name(lexeme_type));
+        fmt::print("Expected {} found {}\n", magic_enum::enum_name(lexeme_type), peek().to_string());
 
         return false;
     }
@@ -151,10 +153,16 @@ namespace hasha {
         auto is_var_decl = [this]() -> bool {
             return peek().get_type() == LexemeType::Identifier && peek(1).get_type() == LexemeType::Identifier;
         };
-        while (is_var_decl()) {
+
+
+        while (peek() != Lexeme::RCURLY) {
             auto var_decl = parse_variable_declaration();
             if (var_decl != nullptr) {
                 token_list->push_back(var_decl);
+            }
+            auto var_assignment = parse_variable_assignment();
+            if (var_assignment != nullptr) {
+                token_list->push_back(var_assignment);
             }
         }
 
@@ -172,15 +180,39 @@ namespace hasha {
         auto name = peek().get_data();
         EXPECT_PTR(LexemeType::Identifier);
 
-        auto declaration = VariableDeclaration::create(type, name);
+        if (peek() == Lexeme::EQUALS) {
+            EXPECT_PTR(Lexeme::EQUALS)
+            auto value = peek().get_data();
+            EXPECT_PTR(LexemeType::Literal);
 
-        return declaration;
+            return VariableDeclaration::create(type, name, value);
+        }
+
+
+        return VariableDeclaration::create(type, name);
     }
 
     void Parser::next() {
 
         if (!done())
             cursor++;
+    }
+
+    VariableAssignment::VariableAssignmentPtr Parser::parse_variable_assignment() {
+
+
+        auto before = cursor;
+
+        auto name = peek().get_data();
+        EXPECT_PTR(LexemeType::Identifier)
+
+        EXPECT_PTR(Lexeme::EQUALS)
+
+        auto value = peek().get_data();
+        EXPECT_PTR(LexemeType::Literal)
+
+        return VariableAssignment::create(name, value);
+
     }
 
 

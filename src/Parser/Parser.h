@@ -10,6 +10,7 @@
 #include "Lexeme.h"
 #include "Lexer.h"
 #include "Function.h"
+#include "VariableAssignment.h"
 #include "Tokens/Token.h"
 
 namespace hasha {
@@ -60,6 +61,7 @@ namespace hasha {
         VariableDeclaration::VariableDeclarationPtr parse_variable_declaration();
 
 
+        VariableAssignment::VariableAssignmentPtr parse_variable_assignment();
     };
 
 } // hasha

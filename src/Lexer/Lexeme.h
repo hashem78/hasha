@@ -57,6 +57,7 @@ namespace hasha {
         const static Lexeme RBRACKET;
         const static Lexeme ADDITION;
         const static Lexeme COMMA;
+        const static Lexeme EQUALS;
     };
 
 
