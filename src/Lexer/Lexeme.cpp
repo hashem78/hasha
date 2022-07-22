@@ -12,14 +12,14 @@ namespace hasha {
     nlohmann::json Lexeme::to_json() const {
 
         return {{"data", m_data},
-                {"type", magic_enum::enum_name(m_type)}};
+                {"m_type", magic_enum::enum_name(m_type)}};
     }
 
     Lexeme Lexeme::from_json(const nlohmann::json &json) {
 
         return {
                 json["data"],
-                magic_enum::enum_cast<hasha::LexemeType>(std::string{json["type"]}).value()
+                magic_enum::enum_cast<hasha::LexemeType>(std::string{json["m_type"]}).value()
         };
     }
 

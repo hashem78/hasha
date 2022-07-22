@@ -6,22 +6,23 @@
 #define HASHA_VARIABLEDECLARATION_H
 
 #include "Token.h"
+#include "Expressions/Expression.h"
 #include "fmt/format.h"
 
 namespace hasha {
 
     class VariableDeclaration : public Token {
-        std::string type;
-        std::string name;
-        std::string value;
+        std::string m_type;
+        std::string m_name;
+        ExpressionPtr m_expression;
 
-        VariableDeclaration(std::string type, std::string name, std::string value = "");
+        VariableDeclaration(std::string type, std::string name, ExpressionPtr = nullptr);
 
     public:
 
         using VariableDeclarationPtr = std::shared_ptr<VariableDeclaration>;
 
-        static VariableDeclarationPtr create(std::string type, std::string name, std::string value="");
+        static VariableDeclarationPtr create(std::string type, std::string name, ExpressionPtr = nullptr);
 
 
         [[nodiscard]]
@@ -40,9 +41,9 @@ namespace hasha {
         [[nodiscard]]
         std::string to_string() const override;
 
-        const std::string &get_value() const;
+        ExpressionPtr get_expression() const;
 
-        void set_value(const std::string &value);
+        VariableDeclaration& set_expression(const ExpressionPtr &expression);
     };
 
 } // hasha

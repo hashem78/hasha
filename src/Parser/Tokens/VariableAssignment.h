@@ -12,17 +12,21 @@
 #include "Token.h"
 
 #include "fmt/format.h"
+#include "Expressions/Expression.h"
 
 
 namespace hasha {
 
     class VariableAssignment : public Token {
-        VariableAssignment(std::string variable_name, std::string value);
+        std::string m_variable_name;
+        ExpressionPtr m_expression;
+
+        VariableAssignment(std::string variable_name, ExpressionPtr expression);
 
     public:
         using VariableAssignmentPtr = std::shared_ptr<VariableAssignment>;
 
-        static VariableAssignmentPtr create(std::string variable_name, std::string value);
+        static VariableAssignmentPtr create(std::string variable_name, ExpressionPtr expression);
 
         [[nodiscard]]
         nlohmann::json to_json() const override;
@@ -36,13 +40,10 @@ namespace hasha {
         void set_variable_name(const std::string &variable_name);
 
         [[nodiscard]]
-        const std::string &get_value() const;
+        ExpressionPtr get_expression() const;
 
-        void set_value(const std::string &value);
+        void set_expression(ExpressionPtr expression);
 
-    private:
-        std::string m_variable_name;
-        std::string m_value;
 
     };
 

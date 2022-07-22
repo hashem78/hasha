@@ -12,6 +12,7 @@
 #include "Function.h"
 #include "VariableAssignment.h"
 #include "Tokens/Token.h"
+#include "Expressions/ArrayExpression.h"
 
 namespace hasha {
 
@@ -62,6 +63,10 @@ namespace hasha {
 
 
         VariableAssignment::VariableAssignmentPtr parse_variable_assignment();
+
+        VariableDeclaration::VariableDeclarationPtr parse_array_declaration_of_type(std::string type);
+
+        std::shared_ptr<ArrayExpression> parse_array();
     };
 
 } // hasha

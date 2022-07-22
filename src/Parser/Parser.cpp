@@ -2,7 +2,11 @@
 // Created by mythi on 21/07/22.
 //
 
+#include <thread>
+#include <utility>
 #include "Parser.h"
+#include "Expressions/ArrayExpression.h"
+#include "Expressions/LiteralExpression.h"
 
 #define EXPECT(lexeme) if(!expect(lexeme)){ cursor = before; return false;}
 #define EXPECT_PTR(lexeme) if(!expect(lexeme)){ cursor = before; return nullptr;}
@@ -18,7 +22,6 @@ namespace hasha {
     void Parser::parse() {
 
         while (!done()) {
-
             parse_function();
         }
 
@@ -165,22 +168,75 @@ namespace hasha {
         return Block::create(token_list);
     }
 
+    ArrayExpression::ArrayExpressionPtr Parser::parse_array() {
+
+        auto before = cursor;
+
+        EXPECT_PTR(Lexeme::LBRACKET)
+        auto expressions = create_expression_list();
+        while (peek() != Lexeme::RBRACKET) {
+
+            auto literal = peek().get_data();
+            EXPECT_L(LexemeType::Literal)
+
+            if (peek() == Lexeme::COMMA) next();
+
+            auto literal_expression = LiteralExpression::create(literal);
+            expressions->push_back(literal_expression);
+        }
+        EXPECT_PTR(Lexeme::RBRACKET)
+        return ArrayExpression::create(expressions);
+    }
+
+    VariableDeclaration::VariableDeclarationPtr Parser::parse_array_declaration_of_type(std::string type) {
+
+        auto before = cursor;
+
+        EXPECT_PTR(Lexeme::LBRACKET);
+        EXPECT_PTR(Lexeme::RBRACKET);
+
+        auto name = peek().get_data();
+        EXPECT_PTR(LexemeType::Identifier)
+        EXPECT_PTR(Lexeme::EQUALS)
+
+        if (peek() == Lexeme::LBRACKET) {
+
+            auto array_expression = parse_array();
+
+            if (!array_expression) return nullptr;
+
+            auto decl = VariableDeclaration::create(std::move(type), name, array_expression);
+
+            return decl;
+        }
+
+        return nullptr;
+    }
+
     VariableDeclaration::VariableDeclarationPtr Parser::parse_variable_declaration() {
+
 
         auto before = cursor;
 
         auto type = peek().get_data();
         EXPECT_PTR(LexemeType::Identifier);
 
+        auto is_array_decl = [this] { return peek() == Lexeme::LBRACKET && peek(1) == Lexeme::RBRACKET; };
+
+        if (is_array_decl()) {
+            return parse_array_declaration_of_type(type);
+        }
+
         auto name = peek().get_data();
         EXPECT_PTR(LexemeType::Identifier);
 
         if (peek() == Lexeme::EQUALS) {
             EXPECT_PTR(Lexeme::EQUALS)
-            auto value = peek().get_data();
-            EXPECT_PTR(LexemeType::Literal);
 
-            return VariableDeclaration::create(type, name, value);
+            auto literal = peek().get_data();
+            EXPECT_PTR(LexemeType::Literal);
+            auto expression = LiteralExpression::create(literal);
+            return VariableDeclaration::create(type, name, expression);
         }
 
 
@@ -203,10 +259,15 @@ namespace hasha {
 
         EXPECT_PTR(Lexeme::EQUALS)
 
+        if (peek() == Lexeme::LBRACKET) {
+            auto array_expression = parse_array();
+            return VariableAssignment::create(name, array_expression);
+        }
+
         auto value = peek().get_data();
         EXPECT_PTR(LexemeType::Literal)
 
-        return VariableAssignment::create(name, value);
+        return VariableAssignment::create(name, LiteralExpression::create(value));
 
     }
 

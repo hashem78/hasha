@@ -41,6 +41,10 @@ namespace hasha {
                 m_lexemes.push_back(Lexeme::LBRACE);
             } else if (token == ")") {
                 m_lexemes.push_back(Lexeme::RBRACE);
+            } else if (token == "[") {
+                m_lexemes.push_back(Lexeme::LBRACKET);
+            } else if (token == "]") {
+                m_lexemes.push_back(Lexeme::RBRACKET);
             } else if (token == ",") {
                 m_lexemes.push_back(Lexeme::COMMA);
             } else if (token == "=") {

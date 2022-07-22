@@ -10,24 +10,24 @@
 namespace hasha {
     std::string VariableDeclaration::get_type() const {
 
-        return type;
+        return m_type;
     }
 
     VariableDeclaration &VariableDeclaration::set_type(const std::string &var_type) {
 
-        VariableDeclaration::type = var_type;
+        VariableDeclaration::m_type = var_type;
 
         return *this;
     }
 
     std::string VariableDeclaration::get_name() const {
 
-        return name;
+        return m_name;
     }
 
     VariableDeclaration &VariableDeclaration::set_name(const std::string &var_name) {
 
-        VariableDeclaration::name = var_name;
+        VariableDeclaration::m_name = var_name;
         return *this;
     }
 
@@ -35,9 +35,9 @@ namespace hasha {
 
         auto json = nlohmann::json();
 
-        json["type"] = type;
-        json["name"] = name;
-        json["value"] = value;
+        json["type"] = m_type;
+        json["name"] = m_name;
+        json["expression"] = m_expression->to_json();
         json["token_type"] = "VariableDeclaration";
 
         return json;
@@ -45,28 +45,29 @@ namespace hasha {
 
     std::string VariableDeclaration::to_string() const {
 
-        return fmt::format("VariableDeclaration {} {} {}", type, name, value);
+        return fmt::format("VariableDeclaration {} {} Expression: {}", m_type, m_name, m_expression->to_string());
     }
 
-    VariableDeclaration::VariableDeclaration(std::string type, std::string name, std::string value) :
-            type(std::move(type)),
-            name(std::move(name)),
-            value(std::move(value)) {}
+    VariableDeclaration::VariableDeclaration(std::string type, std::string name, ExpressionPtr expression) :
+            m_type(std::move(type)),
+            m_name(std::move(name)),
+            m_expression(std::move(expression)) {}
 
     VariableDeclaration::VariableDeclarationPtr
-    VariableDeclaration::create(std::string type, std::string name, std::string value) {
+    VariableDeclaration::create(std::string type, std::string name, ExpressionPtr expression) {
 
         return std::shared_ptr<VariableDeclaration>(
-                new VariableDeclaration(std::move(type), std::move(name), std::move(value)));
+                new VariableDeclaration(std::move(type), std::move(name), std::move(expression)));
     }
 
-    const std::string &VariableDeclaration::get_value() const {
+    ExpressionPtr VariableDeclaration::get_expression() const {
 
-        return value;
+        return m_expression;
     }
 
-    void VariableDeclaration::set_value(const std::string &value) {
+    VariableDeclaration &VariableDeclaration::set_expression(const ExpressionPtr &expression) {
 
-        VariableDeclaration::value = value;
+        VariableDeclaration::m_expression = expression;
+        return *this;
     }
 } // hasha

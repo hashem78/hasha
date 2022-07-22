@@ -6,22 +6,22 @@
 
 
 namespace hasha {
-    VariableAssignment::VariableAssignment(std::string variable_name, std::string value)
+    VariableAssignment::VariableAssignment(std::string variable_name, ExpressionPtr expression)
             : m_variable_name(std::move(variable_name)),
-              m_value(std::move(value)) {}
+              m_expression(std::move(expression)) {}
 
     nlohmann::json VariableAssignment::to_json() const {
 
         auto json = nlohmann::json();
         json["token_type"] = "VariableAssignment";
         json["variable_name"] = m_variable_name;
-        json["value"] = m_value;
+        json["expression"] = m_expression->to_json();
         return json;
     }
 
     std::string VariableAssignment::to_string() const {
 
-        return fmt::format("VariableAssignment {} {}", m_variable_name, m_value);
+        return fmt::format("VariableAssignment {} {}", m_variable_name, m_expression->to_string());
     }
 
     const std::string &VariableAssignment::get_variable_name() const {
@@ -34,19 +34,21 @@ namespace hasha {
         VariableAssignment::m_variable_name = variable_name;
     }
 
-    const std::string &VariableAssignment::get_value() const {
+    ExpressionPtr VariableAssignment::get_expression() const {
 
-        return m_value;
+        return m_expression;
     }
 
-    void VariableAssignment::set_value(const std::string &value) {
+    void VariableAssignment::set_expression(ExpressionPtr expression) {
 
-        VariableAssignment::m_value = value;
+        VariableAssignment::m_expression = std::move(expression);
     }
 
-    VariableAssignment::VariableAssignmentPtr VariableAssignment::create(std::string variable_name, std::string value) {
+    VariableAssignment::VariableAssignmentPtr
+    VariableAssignment::create(std::string variable_name, ExpressionPtr expression) {
 
-        return std::shared_ptr<VariableAssignment>(new VariableAssignment(std::move(variable_name), std::move(value)));
+        return std::shared_ptr<VariableAssignment>(
+                new VariableAssignment(std::move(variable_name), std::move(expression)));
 
     }
 } // hasha
