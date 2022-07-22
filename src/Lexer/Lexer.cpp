@@ -49,6 +49,10 @@ namespace hasha {
                 m_lexemes.push_back(Lexeme::COMMA);
             } else if (token == "=") {
                 m_lexemes.push_back(Lexeme::EQUALS);
+            } else if (token == "+") {
+                m_lexemes.push_back(Lexeme::ADDITION);
+            } else if (token == ";") {
+                m_lexemes.push_back(Lexeme::SEMICOLON);
             } else if (is_literal(token)) {
                 m_lexemes.emplace_back(token, LexemeType::Literal);
             } else {

@@ -17,6 +17,7 @@ namespace hasha {
         [[nodiscard]]
         std::string to_string() const override = 0;
 
+
     };
 
     using ExpressionPtr = std::shared_ptr<Expression>;

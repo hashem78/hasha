@@ -38,7 +38,7 @@ namespace hasha {
         json["type"] = m_type;
         json["name"] = m_name;
         json["expression"] = m_expression->to_json();
-        json["token_type"] = "VariableDeclaration";
+        json["token_type"] = "ArrayDeclaration";
 
         return json;
     }

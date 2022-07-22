@@ -11,7 +11,7 @@ namespace hasha {
 
     nlohmann::json Lexeme::to_json() const {
 
-        return {{"data", m_data},
+        return {{"data",   m_data},
                 {"m_type", magic_enum::enum_name(m_type)}};
     }
 
@@ -36,11 +36,13 @@ namespace hasha {
     const Lexeme Lexeme::LBRACKET{"[", LexemeType::Symbol};
     const Lexeme Lexeme::RBRACKET{"]", LexemeType::Symbol};
     const Lexeme Lexeme::COMMA{",", LexemeType::Symbol};
-    const Lexeme Lexeme::EQUALS{"=", LexemeType::Symbol};
+    const Lexeme Lexeme::SEMICOLON{";", LexemeType::Symbol};
+    const Lexeme Lexeme::EQUALS{"=", LexemeType::Operator};
     const Lexeme Lexeme::ADDITION{"+", LexemeType::Operator};
 
 
     bool Lexeme::is(const Lexeme &lhs, const Lexeme &rhs) {
+
         return lhs == rhs;
     }
 

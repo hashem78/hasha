@@ -32,7 +32,7 @@ namespace hasha {
         return lexemes;
     }
 
-    Lexeme Parser::peek(int k) {
+    Lexeme Parser::peek(int k) const {
 
         if (cursor + k < lexemes.size()) return lexemes[cursor + k];
 
@@ -129,15 +129,27 @@ namespace hasha {
 
         while (peek() != Lexeme::RBRACE) {
 
+            bool is_array_declaration = false;
             auto type = peek().get_data();
             EXPECT_L(LexemeType::Identifier)
+
+            if (is_array_decl()) {
+                is_array_declaration = true;
+                EXPECT_PTR(Lexeme::LBRACKET);
+                EXPECT_PTR(Lexeme::RBRACKET);
+            }
 
             auto name = peek().get_data();
             EXPECT_L(LexemeType::Identifier)
             if (peek() == Lexeme::COMMA) next();
 
-            auto declaration = VariableDeclaration::create(type, name);
-            params->push_back(declaration);
+            if (is_array_declaration) {
+
+                params->push_back(ArrayDeclaration::create(type, name));
+            } else {
+
+                params->push_back(VariableDeclaration::create(type, name));
+            }
         }
         return params;
     }
@@ -188,7 +200,7 @@ namespace hasha {
         return ArrayExpression::create(expressions);
     }
 
-    VariableDeclaration::VariableDeclarationPtr Parser::parse_array_declaration_of_type(std::string type) {
+    ArrayDeclaration::ArrayDeclarationPtr Parser::parse_array_declaration_of_type(std::string type) {
 
         auto before = cursor;
 
@@ -205,7 +217,7 @@ namespace hasha {
 
             if (!array_expression) return nullptr;
 
-            auto decl = VariableDeclaration::create(std::move(type), name, array_expression);
+            auto decl = ArrayDeclaration::create(std::move(type), name, array_expression);
 
             return decl;
         }
@@ -221,26 +233,31 @@ namespace hasha {
         auto type = peek().get_data();
         EXPECT_PTR(LexemeType::Identifier);
 
-        auto is_array_decl = [this] { return peek() == Lexeme::LBRACKET && peek(1) == Lexeme::RBRACKET; };
+        VariableDeclaration::VariableDeclarationPtr variable_declaration;
 
         if (is_array_decl()) {
-            return parse_array_declaration_of_type(type);
+
+            variable_declaration = parse_array_declaration_of_type(type);
+        } else {
+
+            auto name = peek().get_data();
+
+            EXPECT_PTR(LexemeType::Identifier);
+
+            if (peek() == Lexeme::EQUALS) {
+                EXPECT_PTR(Lexeme::EQUALS)
+
+                auto literal = peek().get_data();
+                EXPECT_PTR(LexemeType::Literal);
+                auto expression = LiteralExpression::create(literal);
+                variable_declaration = VariableDeclaration::create(type, name, expression);
+            }
+
+            variable_declaration = VariableDeclaration::create(type, name);
         }
+        EXPECT_PTR(Lexeme::SEMICOLON);
 
-        auto name = peek().get_data();
-        EXPECT_PTR(LexemeType::Identifier);
-
-        if (peek() == Lexeme::EQUALS) {
-            EXPECT_PTR(Lexeme::EQUALS)
-
-            auto literal = peek().get_data();
-            EXPECT_PTR(LexemeType::Literal);
-            auto expression = LiteralExpression::create(literal);
-            return VariableDeclaration::create(type, name, expression);
-        }
-
-
-        return VariableDeclaration::create(type, name);
+        return variable_declaration;
     }
 
     void Parser::next() {
@@ -253,22 +270,35 @@ namespace hasha {
 
 
         auto before = cursor;
+        VariableAssignment::VariableAssignmentPtr variable_assignment;
 
         auto name = peek().get_data();
         EXPECT_PTR(LexemeType::Identifier)
 
         EXPECT_PTR(Lexeme::EQUALS)
 
+
         if (peek() == Lexeme::LBRACKET) {
             auto array_expression = parse_array();
-            return VariableAssignment::create(name, array_expression);
+            variable_assignment = VariableAssignment::create(name, array_expression);
         }
 
-        auto value = peek().get_data();
-        EXPECT_PTR(LexemeType::Literal)
+        if (peek().get_type() == LexemeType::Literal) {
+            auto value = peek().get_data();
+            EXPECT_PTR(LexemeType::Literal)
+            variable_assignment = VariableAssignment::create(name, LiteralExpression::create(value));
+        }
 
-        return VariableAssignment::create(name, LiteralExpression::create(value));
+        EXPECT_PTR(Lexeme::SEMICOLON)
 
+
+        return variable_assignment;
+
+    }
+
+    bool Parser::is_array_decl() const {
+
+        return peek() == Lexeme::LBRACKET && peek(1) == Lexeme::RBRACKET;
     }
 
 

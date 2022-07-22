@@ -12,6 +12,9 @@
 namespace hasha {
 
     class VariableDeclaration : public Token {
+
+    protected:
+
         std::string m_type;
         std::string m_name;
         ExpressionPtr m_expression;
@@ -43,7 +46,7 @@ namespace hasha {
 
         ExpressionPtr get_expression() const;
 
-        VariableDeclaration& set_expression(const ExpressionPtr &expression);
+        VariableDeclaration &set_expression(const ExpressionPtr &expression);
     };
 
 } // hasha

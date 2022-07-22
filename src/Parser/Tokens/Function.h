@@ -7,7 +7,7 @@
 
 #include "Token.h"
 #include "Block.h"
-#include "VariableDeclaration.h"
+#include "Declarations/VariableDeclaration.h"
 
 namespace hasha {
 

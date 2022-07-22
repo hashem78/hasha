@@ -21,6 +21,7 @@ namespace hasha {
         [[nodiscard]]
         virtual std::string to_string() const = 0;
 
+        virtual ~Token() = default;
     };
 
     using TokenPtr = std::shared_ptr<Token>;

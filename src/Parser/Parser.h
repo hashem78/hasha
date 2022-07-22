@@ -13,6 +13,7 @@
 #include "VariableAssignment.h"
 #include "Tokens/Token.h"
 #include "Expressions/ArrayExpression.h"
+#include "Declarations/ArrayDeclaration.h"
 
 namespace hasha {
 
@@ -25,7 +26,8 @@ namespace hasha {
 
         void add_token(TokenPtr ptr);
 
-        Lexeme peek(int k = 0);
+        [[nodiscard]]
+        Lexeme peek(int k = 0) const;
 
         [[nodiscard]]
         bool exists_from(const Lexeme &lexeme, int from) const;
@@ -64,9 +66,11 @@ namespace hasha {
 
         VariableAssignment::VariableAssignmentPtr parse_variable_assignment();
 
-        VariableDeclaration::VariableDeclarationPtr parse_array_declaration_of_type(std::string type);
+        ArrayDeclaration::ArrayDeclarationPtr parse_array_declaration_of_type(std::string type);
 
         std::shared_ptr<ArrayExpression> parse_array();
+
+        bool is_array_decl() const;
     };
 
 } // hasha
