@@ -45,7 +45,14 @@ namespace hasha {
 
     std::string VariableDeclaration::to_string() const {
 
-        return fmt::format("VariableDeclaration {} {} Expression: {}", m_type, m_name, m_expression->to_string());
+        if (m_expression != nullptr) {
+
+            return fmt::format("VariableDeclaration {} {} Expression: {}", m_type, m_name, m_expression->to_string());
+        }
+
+
+        return fmt::format("VariableDeclaration {} {}", m_type, m_name);
+
     }
 
     VariableDeclaration::VariableDeclaration(std::string type, std::string name, ExpressionPtr expression) :
