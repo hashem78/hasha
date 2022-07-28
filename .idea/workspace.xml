@@ -15,21 +15,39 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Fix segfault when declaring variables">
-      <change afterPath="$PROJECT_DIR$/src/Parser/Declarations/ArrayDeclaration.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Parser/Declarations/ArrayDeclaration.h" afterDir="false" />
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Improvements to API and add SEMICOLONS">
+      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Identifier.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Identifier.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Operator.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Operator.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/SPEC" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Lexer/Lexeme.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexeme.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Lexer/Lexeme.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexeme.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Declarations/ArrayDeclaration.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Declarations/ArrayDeclaration.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Declarations/VariableDeclaration.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/VariableDeclaration.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Declarations/VariableDeclaration.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/VariableDeclaration.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expressions/Expression.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Expressions/Expression.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Block.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Block.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Block.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Block.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expressions/ArrayExpression.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expressions/ArrayExpression.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expressions/Expression.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expressions/Expression.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expressions/LiteralExpression.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expressions/LiteralExpression.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Function.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Function.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Function.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Function.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Token.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Token.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/VariableDeclaration.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Declarations/VariableDeclaration.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/VariableDeclaration.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Declarations/VariableDeclaration.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/VariableAssignment.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/VariableAssignment.h" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,14 +92,15 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/Parser/Tokens" />
       <recent name="$PROJECT_DIR$/src/Parser/Declarations" />
       <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.hasha">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="fmt" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="hasha" TARGET_NAME="fmt" CONFIG_NAME="Debug">
@@ -112,6 +131,8 @@
       <workItem from="1658354425048" duration="6254000" />
       <workItem from="1658395527974" duration="35127000" />
       <workItem from="1658479438856" duration="10956000" />
+      <workItem from="1658768103031" duration="9972000" />
+      <workItem from="1658944670900" duration="17515000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <created>1658351946447</created>
@@ -175,16 +196,5 @@
     <MESSAGE value="Add missing libraries" />
     <MESSAGE value="Fix segfault when declaring variables" />
     <option name="LAST_COMMIT_MESSAGE" value="Fix segfault when declaring variables" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/Parser/Tokens/VariableAssignment.cpp</url>
-          <line>35</line>
-          <option name="timeStamp" value="24" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

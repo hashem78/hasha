@@ -38,9 +38,9 @@ namespace hasha {
             } else if (token == "}") {
                 m_lexemes.push_back(Lexeme::RCURLY);
             } else if (token == "(") {
-                m_lexemes.push_back(Lexeme::LBRACE);
+                m_lexemes.push_back(Lexeme::LPAREN);
             } else if (token == ")") {
-                m_lexemes.push_back(Lexeme::RBRACE);
+                m_lexemes.push_back(Lexeme::RPAREN);
             } else if (token == "[") {
                 m_lexemes.push_back(Lexeme::LBRACKET);
             } else if (token == "]") {
@@ -51,6 +51,12 @@ namespace hasha {
                 m_lexemes.push_back(Lexeme::EQUALS);
             } else if (token == "+") {
                 m_lexemes.push_back(Lexeme::ADDITION);
+            } else if (token == "-") {
+                m_lexemes.push_back(Lexeme::HYPHEN);
+            } else if (token == "*") {
+                m_lexemes.push_back(Lexeme::ASTERISK);
+            } else if (token == "/") {
+                m_lexemes.push_back(Lexeme::FSLASH);
             } else if (token == ";") {
                 m_lexemes.push_back(Lexeme::SEMICOLON);
             } else if (is_literal(token)) {

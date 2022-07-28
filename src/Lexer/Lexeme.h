@@ -23,12 +23,30 @@ namespace hasha {
         Keyword,
     };
 
+    enum Associativity {
+        Left,
+        Right,
+        None
+    };
+    enum Precedence {
+        Level6 = 6,
+        Level5 = 5,
+        Level4 = 4,
+        Level3 = 3,
+        Level2 = 2,
+        Level1 = 1,
+        Level0 = 0
+    };
+
     class Lexeme {
         std::string m_data;
         LexemeType m_type;
+        Associativity m_associativity;
+        Precedence m_precedence;
 
     public:
-        Lexeme(std::string data, LexemeType type);
+
+        Lexeme(std::string data, LexemeType type, Associativity= Associativity::None, Precedence= Precedence::Level0);
 
         auto operator<=>(const Lexeme &) const = default;
 
@@ -38,24 +56,29 @@ namespace hasha {
         [[nodiscard]]
         std::string to_string() const;
 
-        static Lexeme from_json(const nlohmann::json &);
-
-        inline static bool is(const Lexeme &lhs, const Lexeme &);
-
         [[nodiscard]]
         const std::string &get_data() const;
 
         [[nodiscard]]
         LexemeType get_type() const;
 
+        [[nodiscard]]
+        Precedence get_precedence() const;
+
+        [[nodiscard]]
+        Associativity get_associativity() const;
+
         const static Lexeme FN;
         const static Lexeme LCURLY;
         const static Lexeme RCURLY;
-        const static Lexeme LBRACE;
-        const static Lexeme RBRACE;
+        const static Lexeme LPAREN;
+        const static Lexeme RPAREN;
         const static Lexeme LBRACKET;
         const static Lexeme RBRACKET;
         const static Lexeme ADDITION;
+        const static Lexeme HYPHEN;
+        const static Lexeme ASTERISK;
+        const static Lexeme FSLASH;
         const static Lexeme COMMA;
         const static Lexeme SEMICOLON;
         const static Lexeme EQUALS;
@@ -63,6 +86,7 @@ namespace hasha {
 
 
     using LexemeList = std::deque<Lexeme>;
+    using LexemeListItr = LexemeList::const_iterator;
 
 } // hasha
 

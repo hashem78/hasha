@@ -7,44 +7,49 @@
 namespace hasha {
 
 
-    Lexeme::Lexeme(std::string data, LexemeType type) : m_data(std::move(data)), m_type(type) {}
+    Lexeme::Lexeme(std::string data, LexemeType type, Associativity associativity, Precedence precedence) : m_data(
+            std::move(data)), m_type(type), m_associativity(associativity), m_precedence(precedence) {}
 
     nlohmann::json Lexeme::to_json() const {
 
-        return {{"data",   m_data},
-                {"m_type", magic_enum::enum_name(m_type)}};
-    }
+        if (m_type == LexemeType::Operator) {
+            return {
+                    {"data",          m_data},
+                    {"type",          magic_enum::enum_name(m_type)},
+                    {"associativity", magic_enum::enum_name(m_associativity)},
+                    {"precedence",    magic_enum::enum_name(m_precedence)},
+            };
+        }
 
-    Lexeme Lexeme::from_json(const nlohmann::json &json) {
-
-        return {
-                json["data"],
-                magic_enum::enum_cast<hasha::LexemeType>(std::string{json["m_type"]}).value()
-        };
+        return {{"data", m_data},
+                {"type", magic_enum::enum_name(m_type)}};
     }
 
     std::string Lexeme::to_string() const {
 
+        if (m_type == LexemeType::Operator) {
+            fmt::format("{} {} {} {}", magic_enum::enum_name(m_type),
+                        m_data, magic_enum::enum_name(m_associativity),
+                        magic_enum::enum_name(m_precedence));
+        }
         return fmt::format("{} {}", magic_enum::enum_name(m_type), m_data);
     }
 
     const Lexeme Lexeme::FN{"fn", LexemeType::Keyword};
     const Lexeme Lexeme::LCURLY{"{", LexemeType::Symbol};
     const Lexeme Lexeme::RCURLY{"}", LexemeType::Symbol};
-    const Lexeme Lexeme::LBRACE{"(", LexemeType::Symbol};
-    const Lexeme Lexeme::RBRACE{")", LexemeType::Symbol};
+    const Lexeme Lexeme::LPAREN{"(", LexemeType::Symbol};
+    const Lexeme Lexeme::RPAREN{")", LexemeType::Symbol};
     const Lexeme Lexeme::LBRACKET{"[", LexemeType::Symbol};
     const Lexeme Lexeme::RBRACKET{"]", LexemeType::Symbol};
     const Lexeme Lexeme::COMMA{",", LexemeType::Symbol};
     const Lexeme Lexeme::SEMICOLON{";", LexemeType::Symbol};
-    const Lexeme Lexeme::EQUALS{"=", LexemeType::Operator};
-    const Lexeme Lexeme::ADDITION{"+", LexemeType::Operator};
+    const Lexeme Lexeme::EQUALS{"=", LexemeType::Operator, Associativity::Right, Precedence::Level1};
+    const Lexeme Lexeme::HYPHEN{"-", LexemeType::Operator, Associativity::Left, Precedence::Level3};
+    const Lexeme Lexeme::ADDITION{"+", LexemeType::Operator, Associativity::Left, Precedence::Level3};
+    const Lexeme Lexeme::FSLASH{"/", LexemeType::Operator, Associativity::Left, Precedence::Level5};
+    const Lexeme Lexeme::ASTERISK{"*", LexemeType::Operator, Associativity::Left, Precedence::Level6};
 
-
-    bool Lexeme::is(const Lexeme &lhs, const Lexeme &rhs) {
-
-        return lhs == rhs;
-    }
 
     const std::string &Lexeme::get_data() const {
 
@@ -54,6 +59,16 @@ namespace hasha {
     LexemeType Lexeme::get_type() const {
 
         return m_type;
+    }
+
+    Associativity Lexeme::get_associativity() const {
+
+        return m_associativity;
+    }
+
+    Precedence Lexeme::get_precedence() const {
+
+        return m_precedence;
     }
 
 

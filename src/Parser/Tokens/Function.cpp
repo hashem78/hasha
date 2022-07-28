@@ -12,7 +12,7 @@ namespace hasha {
         auto json = nlohmann::json();
 
         json["token_type"] = "Function";
-        json["parameters"] = parameter_list_to_json(*m_parameters);
+        json["parameters"] = Parameter::list_to_json(m_parameters);
         json["block"] = m_block->to_json();
 
         return json;
@@ -20,7 +20,7 @@ namespace hasha {
 
     std::string Function::to_string() const {
 
-        std::string str = fmt::format("Function {}\n- Parameters\n", m_name);
+        std::string str = fmt::format("Function {}\n- Parameters\n", m_name->get_name());
         for (const auto &param: *m_parameters) {
             str += fmt::format("-> {}\n", param->to_string());
         }
@@ -30,7 +30,7 @@ namespace hasha {
         return str;
     }
 
-    Function &Function::add_param(VariableDeclaration::VariableDeclarationPtr param) {
+    Function &Function::add_param(Parameter::ParameterPtr param) {
 
         m_parameters->push_back(std::move(param));
         return *this;
@@ -42,12 +42,12 @@ namespace hasha {
         return *this;
     }
 
-    ParameterListPtr Function::get_parameters() const {
+    Parameter::ParameterListPtr Function::get_parameters() const {
 
         return m_parameters;
     }
 
-    void Function::set_parameters(ParameterListPtr parameters) {
+    void Function::set_parameters(Parameter::ParameterListPtr parameters) {
 
         Function::m_parameters = std::move(parameters);
     }
@@ -62,38 +62,27 @@ namespace hasha {
         Function::m_block = std::move(block);
     }
 
-    const std::string &Function::get_name() const {
+    Identifier::IdentifierPtr Function::get_name() const {
 
         return m_name;
     }
 
-    void Function::set_name(const std::string &name) {
+    void Function::set_name(Identifier::IdentifierPtr name) {
 
-        Function::m_name = name;
+        Function::m_name = std::move(name);
     }
 
-    Function::Function(ParameterListPtr parameters, Block::BlockPtr block, std::string name)
+    Function::Function(Parameter::ParameterListPtr parameters, Block::BlockPtr block, Identifier::IdentifierPtr name)
             : m_parameters(std::move(parameters)),
               m_block(std::move(block)),
               m_name(std::move(name)) {
     }
 
-    Function::FunctionPtr Function::create(ParameterListPtr parameters, Block::BlockPtr block, std::string name) {
+    Function::FunctionPtr
+    Function::create(Parameter::ParameterListPtr parameters, Block::BlockPtr block, Identifier::IdentifierPtr name) {
 
         return std::shared_ptr<Function>(new Function(std::move(parameters), std::move(block), std::move(name)));
     }
 
-    nlohmann::json parameter_list_to_json(const ParameterList &parameter_list) {
 
-        auto json = nlohmann::json::array();
-        for (const auto &param: parameter_list)
-            json.push_back(param->to_json());
-
-        return json;
-    }
-
-    ParameterListPtr create_parameter_list() {
-        return std::make_shared<ParameterList>();
-
-    }
 } // hasha

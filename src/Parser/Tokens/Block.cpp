@@ -15,7 +15,7 @@ namespace hasha {
         auto tokens_json = nlohmann::json::array();
         for (const auto &token: *m_tokens)
             tokens_json.push_back(token->to_json());
-        json["tokens"] = tokens_json;
+        json["m_tokens"] = tokens_json;
 
         return json;
     }

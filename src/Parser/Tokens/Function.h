@@ -7,30 +7,26 @@
 
 #include "Token.h"
 #include "Block.h"
-#include "Declarations/VariableDeclaration.h"
+#include "Parameter.h"
+#include "Identifier.h"
 
 namespace hasha {
 
-    using ParameterList = std::deque<VariableDeclaration::VariableDeclarationPtr>;
-    using ParameterListPtr = std::shared_ptr<ParameterList>;
-
-    ParameterListPtr create_parameter_list();
-
-    nlohmann::json parameter_list_to_json(const ParameterList &parameter_list);
 
     class Function : public Token {
-        ParameterListPtr m_parameters;
+        Parameter::ParameterListPtr m_parameters;
         Block::BlockPtr m_block;
-        std::string m_name;
+        Identifier::IdentifierPtr m_name;
 
-        Function(ParameterListPtr parameters, Block::BlockPtr block, std::string name);
+        Function(Parameter::ParameterListPtr parameters, Block::BlockPtr block, Identifier::IdentifierPtr name);
 
     public:
         using FunctionPtr = std::shared_ptr<Function>;
 
-        static FunctionPtr create(ParameterListPtr parameters, Block::BlockPtr block, std::string m_name);
+        static FunctionPtr
+        create(Parameter::ParameterListPtr parameters, Block::BlockPtr block, Identifier::IdentifierPtr name);
 
-        Function &add_param(VariableDeclaration::VariableDeclarationPtr param);
+        Function &add_param(Parameter::ParameterPtr param);
 
         Function &add_to_block(TokenPtr token);
 
@@ -41,9 +37,9 @@ namespace hasha {
         std::string to_string() const override;
 
         [[nodiscard]]
-        ParameterListPtr get_parameters() const;
+        Parameter::ParameterListPtr get_parameters() const;
 
-        void set_parameters(ParameterListPtr parameters);
+        void set_parameters(Parameter::ParameterListPtr parameters);
 
         [[nodiscard]]
         const Block &get_block() const;
@@ -51,9 +47,9 @@ namespace hasha {
         void set_block(Block::BlockPtr block);
 
         [[nodiscard]]
-        const std::string &get_name() const;
+        Identifier::IdentifierPtr get_name() const;
 
-        void set_name(const std::string &name);
+        void set_name(Identifier::IdentifierPtr name);
 
 
     };

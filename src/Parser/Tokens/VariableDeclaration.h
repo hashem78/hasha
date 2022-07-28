@@ -6,7 +6,6 @@
 #define HASHA_VARIABLEDECLARATION_H
 
 #include "Token.h"
-#include "Expressions/Expression.h"
 #include "fmt/format.h"
 
 namespace hasha {
@@ -17,26 +16,27 @@ namespace hasha {
 
         std::string m_type;
         std::string m_name;
-        ExpressionPtr m_expression;
+        bool m_isarray;
+        TokenListPtr m_tokens;
 
-        VariableDeclaration(std::string type, std::string name, ExpressionPtr = nullptr);
+        VariableDeclaration(std::string type, std::string name, TokenListPtr = nullptr, bool isarray = false);
 
     public:
 
         using VariableDeclarationPtr = std::shared_ptr<VariableDeclaration>;
 
-        static VariableDeclarationPtr create(std::string type, std::string name, ExpressionPtr = nullptr);
+        static VariableDeclarationPtr
+        create(std::string type, std::string name, TokenListPtr = nullptr, bool isarray = false);
 
 
         [[nodiscard]]
         std::string get_type() const;
 
-        VariableDeclaration &set_type(const std::string &type);
-
         [[nodiscard]]
         std::string get_name() const;
 
-        VariableDeclaration &set_name(const std::string &var_name);
+        [[nodiscard]]
+        TokenListPtr get_tokens() const;
 
         [[nodiscard]]
         nlohmann::json to_json() const override;
@@ -44,9 +44,7 @@ namespace hasha {
         [[nodiscard]]
         std::string to_string() const override;
 
-        ExpressionPtr get_expression() const;
 
-        VariableDeclaration &set_expression(const ExpressionPtr &expression);
     };
 
 } // hasha

@@ -15,7 +15,7 @@ namespace hasha {
 
     class Block : public Token {
         TokenListPtr m_tokens;
-
+        using Token::Token;
     public:
         using BlockPtr = std::shared_ptr<Block>;
 

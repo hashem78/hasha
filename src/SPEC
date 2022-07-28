@@ -1,0 +1,12 @@
+[] -> required
+{} -> optional
+() -> group
+* -> 0 or more
+| -> OR
+, -> AND
+
+FUNCTION -> "fn", IDENTIFIER, "(",{PARAM}*,")","{","}"
+IDENTIFIER ->  ("_" | "a-z" | "A-Z") , {"0-9"}
+PARAM -> IDENTIFIER , IDENTIFIER
+VAR_DECL ->    IDENTIFIER , IDENTIFIER , SEMI
+SEMI -> ";"
