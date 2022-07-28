@@ -78,6 +78,7 @@ namespace hasha {
         }
 
         template<size_t S>
+        [[nodiscard]]
         inline bool match(const Patterns::Pattern<S> &matchers) const noexcept {
 
             for (std::size_t i = 0; i < matchers.size(); ++i) {
@@ -386,13 +387,21 @@ namespace hasha {
             }
 
             EXPECT(RPAREN)
+            EXPECT(ARROW)
+
+            auto return_type = identifier();
+            VERIFY(return_type)
 
             auto parsed_block = block();
 
             VERIFY(parsed_block)
 
-            return Function::create(params, get<Block::BlockPtr>(parsed_block),
-                                    get<Identifier::IdentifierPtr>(name));
+            return Function::create(
+                    params,
+                    get<Block::BlockPtr>(parsed_block),
+                    get<Identifier::IdentifierPtr>(name),
+                    get<Identifier::IdentifierPtr>(return_type)
+            );
 
         }
 

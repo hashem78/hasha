@@ -107,6 +107,8 @@ namespace hasha {
     static constexpr Lexeme FSLASH{"/", LexemeType::Operator, Associativity::Left, Precedence::Level5};
     static constexpr Lexeme ASTERISK{"*", LexemeType::Operator, Associativity::Left, Precedence::Level6};
 
+    static constexpr Lexeme ARROW{"->", LexemeType::Symbol};
+
 
     using LexemeList = std::deque<Lexeme>;
 

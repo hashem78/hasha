@@ -61,6 +61,8 @@ namespace hasha {
                 m_lexemes.push_back(FSLASH);
             } else if (token == ";") {
                 m_lexemes.push_back(SEMICOLON);
+            } else if (token == "->") {
+                m_lexemes.push_back(ARROW);
             } else if (is_numeric_literal(token)) {
                 m_produced_literals.push_back(std::make_unique<std::string>(token));
                 m_lexemes.push_back({m_produced_literals.back()->c_str(), LexemeType::Literal});
@@ -131,6 +133,9 @@ namespace hasha {
                     token += '\"';
                     m_cursor++;
 
+                } else if (peek() == '-' && peek(1) == '>') {
+                    token = "->";
+                    m_cursor += 2;
                 } else {
                     token += peek();
                     m_cursor++;

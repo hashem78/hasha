@@ -16,15 +16,18 @@ namespace hasha {
     class Function : public Token {
         Parameter::ParameterListPtr m_parameters;
         Block::BlockPtr m_block;
+        Identifier::IdentifierPtr m_return_type;
         Identifier::IdentifierPtr m_name;
 
-        Function(Parameter::ParameterListPtr parameters, Block::BlockPtr block, Identifier::IdentifierPtr name);
+        Function(Parameter::ParameterListPtr parameters, Block::BlockPtr block, Identifier::IdentifierPtr return_type,
+                 Identifier::IdentifierPtr name);
 
     public:
         using FunctionPtr = std::shared_ptr<Function>;
 
         static FunctionPtr
-        create(Parameter::ParameterListPtr parameters, Block::BlockPtr block, Identifier::IdentifierPtr name);
+        create(Parameter::ParameterListPtr parameters, Block::BlockPtr block, Identifier::IdentifierPtr return_type,
+               Identifier::IdentifierPtr name);
 
         [[nodiscard]]
         nlohmann::json to_json() const override;
@@ -41,6 +44,8 @@ namespace hasha {
         [[nodiscard]]
         Identifier::IdentifierPtr get_name() const;
 
+        [[nodiscard]]
+        Identifier::IdentifierPtr get_return_type() const;
 
     };
 
