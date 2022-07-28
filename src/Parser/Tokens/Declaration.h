@@ -2,15 +2,15 @@
 // Created by mythi on 21/07/22.
 //
 
-#ifndef HASHA_VARIABLEDECLARATION_H
-#define HASHA_VARIABLEDECLARATION_H
+#ifndef HASHA_DECLARATION_H
+#define HASHA_DECLARATION_H
 
 #include "Token.h"
 #include "fmt/format.h"
 
 namespace hasha {
 
-    class VariableDeclaration : public Token {
+    class Declaration : public Token {
 
     protected:
 
@@ -19,13 +19,13 @@ namespace hasha {
         bool m_isarray;
         TokenListPtr m_tokens;
 
-        VariableDeclaration(std::string type, std::string name, TokenListPtr = nullptr, bool isarray = false);
+        Declaration(std::string type, std::string name, TokenListPtr = nullptr, bool isarray = false);
 
     public:
 
-        using VariableDeclarationPtr = std::shared_ptr<VariableDeclaration>;
+        using DeclarationPtr = std::shared_ptr<Declaration>;
 
-        static VariableDeclarationPtr
+        static DeclarationPtr
         create(std::string type, std::string name, TokenListPtr = nullptr, bool isarray = false);
 
 
@@ -49,4 +49,4 @@ namespace hasha {
 
 } // hasha
 
-#endif //HASHA_VARIABLEDECLARATION_H
+#endif //HASHA_DECLARATION_H

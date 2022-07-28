@@ -19,7 +19,7 @@
 #include "Parameter.h"
 #include "Function.h"
 #include "Literal.h"
-#include "Tokens/VariableDeclaration.h"
+#include "Tokens/Declaration.h"
 #include "Operator.h"
 
 #define VERIFY(var) if (holds_alternative<ParseError>(var)) {return get<ParseError>(var);}
@@ -136,7 +136,7 @@ namespace hasha {
             return Parameter::create(name, type);
         }
 
-        ErrorOr<VariableDeclaration::VariableDeclarationPtr> variable_declaration() {
+        ErrorOr<Declaration::DeclarationPtr> variable_declaration() {
 
             auto i_type = identifier();
             auto i_name = identifier();
@@ -149,7 +149,7 @@ namespace hasha {
 
             EXPECT(Lexeme::SEMICOLON)
 
-            return VariableDeclaration::create(type, name);
+            return Declaration::create(type, name);
 
         }
 
@@ -177,7 +177,7 @@ namespace hasha {
             return token_list;
         }
 
-        ErrorOr<VariableDeclaration::VariableDeclarationPtr> array_declaration_and_assignemnt() {
+        ErrorOr<Declaration::DeclarationPtr> array_declaration_and_assignemnt() {
 
             auto type = peek().get_data();
             EXPECT_TYPE(LexemeType::Identifier)
@@ -192,10 +192,10 @@ namespace hasha {
             auto token_list = array_tokens();
             VERIFY(token_list)
 
-            return VariableDeclaration::create(type, name, get<TokenListPtr>(token_list), true);
+            return Declaration::create(type, name, get<TokenListPtr>(token_list), true);
         }
 
-        ErrorOr<VariableDeclaration::VariableDeclarationPtr> array_declaration() {
+        ErrorOr<Declaration::DeclarationPtr> array_declaration() {
 
             auto type = peek().get_data();
             EXPECT_TYPE(LexemeType::Identifier)
@@ -204,10 +204,10 @@ namespace hasha {
 
             auto name = peek().get_data();
             EXPECT_TYPE(LexemeType::Identifier)
-            return VariableDeclaration::create(type, name, nullptr, true);
+            return Declaration::create(type, name, nullptr, true);
         }
 
-        ErrorOr<VariableDeclaration::VariableDeclarationPtr> variable_declaration_and_assignment() {
+        ErrorOr<Declaration::DeclarationPtr> variable_declaration_and_assignment() {
 
             auto i_type = identifier();
             auto i_name = identifier();
@@ -291,7 +291,7 @@ namespace hasha {
 
             EXPECT(Lexeme::SEMICOLON)
 
-            return VariableDeclaration::create(type, name, token_list);
+            return Declaration::create(type, name, token_list);
         }
 
 
@@ -304,24 +304,24 @@ namespace hasha {
                 if (match({LexemeType::Identifier, LexemeType::Identifier, Lexeme::SEMICOLON})) {
                     auto var_decl = variable_declaration();
                     VERIFY(var_decl)
-                    token_list->push_back(get<VariableDeclaration::VariableDeclarationPtr>(var_decl));
+                    token_list->push_back(get<Declaration::DeclarationPtr>(var_decl));
 
                 } else if (match(
                         {LexemeType::Identifier, LexemeType::Identifier, Lexeme::EQUALS})) {
                     auto var_decl = variable_declaration_and_assignment();
                     VERIFY(var_decl)
-                    token_list->push_back(get<VariableDeclaration::VariableDeclarationPtr>(var_decl));
+                    token_list->push_back(get<Declaration::DeclarationPtr>(var_decl));
                 } else if
                         (match({LexemeType::Identifier,
                                 Lexeme::LBRACKET, Lexeme::RBRACKET, LexemeType::Identifier, Lexeme::SEMICOLON})) {
                     auto arr_decl = array_declaration();
                     VERIFY(arr_decl)
-                    token_list->push_back(get<VariableDeclaration::VariableDeclarationPtr>(arr_decl));
+                    token_list->push_back(get<Declaration::DeclarationPtr>(arr_decl));
                 } else if (match({LexemeType::Identifier,
                                   Lexeme::LBRACKET, Lexeme::RBRACKET, LexemeType::Identifier, Lexeme::EQUALS})) {
                     auto arr_decl = array_declaration_and_assignemnt();
                     VERIFY(arr_decl)
-                    token_list->push_back(get<VariableDeclaration::VariableDeclarationPtr>(arr_decl));
+                    token_list->push_back(get<Declaration::DeclarationPtr>(arr_decl));
                 } else {
                     advance();
                 }

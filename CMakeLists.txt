@@ -18,8 +18,8 @@ add_executable(hasha
         src/Parser/Parser.h
         src/Parser/Tokens/Token.cpp
         src/Parser/Tokens/Token.h
-        src/Parser/Tokens/VariableDeclaration.cpp
-        src/Parser/Tokens/VariableDeclaration.h
+        src/Parser/Tokens/Declaration.cpp
+        src/Parser/Tokens/Declaration.h
         src/Parser/Tokens/Block.cpp
         src/Parser/Tokens/Block.h
         src/Parser/Tokens/Function.cpp
