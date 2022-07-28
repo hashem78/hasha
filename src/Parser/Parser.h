@@ -267,9 +267,14 @@ namespace hasha {
                     case Operator:
                         token_list->push_back(Operator::create(out_tok.get_data()));
                         break;
-                    case Literal:
-                        token_list->push_back(Literal::create(out_tok.get_data()));
+                    case Literal: {
+                        if (out_tok.is_string()) {
+                            token_list->push_back(Literal::create(out_tok.get_data(), true));
+                        } else {
+                            token_list->push_back(Literal::create(out_tok.get_data()));
+                        }
                         break;
+                    }
                     default:
                         return fmt::format("Unknown token {} in expression\n", out_tok.to_string());
                 }
@@ -312,6 +317,7 @@ namespace hasha {
                 VERIFY(array_token_list)
 
                 assignment = Assignment::create(name, get<TokenListPtr>(array_token_list), true);
+
             } else {
                 auto expression_token_list = parse_expression();
                 VERIFY(expression_token_list)

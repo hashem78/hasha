@@ -61,7 +61,10 @@ namespace hasha {
                 m_lexemes.push_back(FSLASH);
             } else if (token == ";") {
                 m_lexemes.push_back(SEMICOLON);
-            } else if (is_literal(token)) {
+            } else if (is_numeric_literal(token)) {
+                m_produced_literals.push_back(std::make_unique<std::string>(token));
+                m_lexemes.push_back({m_produced_literals.back()->c_str(), LexemeType::Literal});
+            } else if (is_string_literal(token)) {
                 m_produced_literals.push_back(std::make_unique<std::string>(token));
                 m_lexemes.push_back({m_produced_literals.back()->c_str(), LexemeType::Literal});
             } else {
@@ -74,14 +77,14 @@ namespace hasha {
 
     bool Lexer::is_legal(char c) {
 
-        auto special = std::string("{}[]()=+-*/%,<>!&^~.|;");
+        auto special = std::string("{}[]()=+-*/%,<>!&^~.|;\"");
         for (auto ch: special)
             if (ch == c)
                 return true;
         return false;
     }
 
-    bool Lexer::is_literal(std::string str) {
+    bool Lexer::is_numeric_literal(const std::string &str) {
 
         if (str.empty())
             return false;
@@ -97,7 +100,7 @@ namespace hasha {
 
         while (!done()) {
 
-            auto curr = peek_char();
+            auto curr = peek();
 
             if (std::isspace(curr)) {
                 m_cursor++;
@@ -115,9 +118,23 @@ namespace hasha {
         }
 
         if (token.empty() && !done()) {
-            if (is_legal(peek_char())) {
-                token += peek_char();
-                m_cursor++;
+            if (is_legal(peek())) {
+                if (peek() == '\"') {
+                    token += '\"';
+                    m_cursor++;
+
+                    while (peek() != '\"') {
+                        token += peek();
+                        m_cursor++;
+                    }
+
+                    token += '\"';
+                    m_cursor++;
+
+                } else {
+                    token += peek();
+                    m_cursor++;
+                }
             }
         }
 
@@ -130,7 +147,7 @@ namespace hasha {
         return m_cursor >= m_data.size();
     }
 
-    char Lexer::peek_char(int k) const {
+    char Lexer::peek(int k) const {
 
         if (m_cursor + k < m_data.size()) {
             return m_data[m_cursor + k];
@@ -141,6 +158,11 @@ namespace hasha {
     const LexemeList &Lexer::get_lexemes() const {
 
         return m_lexemes;
+    }
+
+    bool Lexer::is_string_literal(const std::string &token) {
+
+        return token.front() == '\"' && token.back() == '\"';
     }
 
 } // hasha

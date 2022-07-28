@@ -10,15 +10,20 @@
 
 namespace hasha {
 
-    class Literal: public Token {
+    class Literal : public Token {
         std::string m_literal;
+        bool m_isstring;
+    public:
+        bool is_string() const;
 
-        explicit Literal(std::string literal) noexcept;
+    private:
+
+        explicit Literal(std::string literal, bool isstring = false) noexcept;
 
     public:
         using LiteralPtr = std::shared_ptr<Literal>;
 
-        static LiteralPtr create(std::string literal);
+        static LiteralPtr create(std::string literal, bool isstring = false);
 
         [[nodiscard]]
         nlohmann::json to_json() const override;

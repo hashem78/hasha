@@ -52,5 +52,10 @@ namespace hasha {
         return m_precedence;
     }
 
+    bool Lexeme::is_string() const {
+
+        return m_isstring;
+    }
+
 
 } // hasha

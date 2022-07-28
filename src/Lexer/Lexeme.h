@@ -43,18 +43,28 @@ namespace hasha {
         LexemeType m_type;
         Associativity m_associativity;
         Precedence m_precedence;
+        bool m_isstring;
 
     public:
 
         constexpr Lexeme(
                 const char *data,
                 LexemeType type,
-                Associativity associativity = Associativity::None,
-                Precedence precedence = Precedence::Level0) :
+                Associativity associativity,
+                Precedence precedence) :
                 m_data(data),
                 m_type(type),
                 m_associativity(associativity),
-                m_precedence(precedence) {}
+                m_precedence(precedence), m_isstring(false) {}
+
+        constexpr Lexeme(
+                const char *data,
+                LexemeType type
+        ) :
+                m_data(data),
+                m_type(type),
+                m_associativity(Associativity::None),
+                m_precedence(Precedence::Level0), m_isstring(true) {}
 
         constexpr auto operator<=>(const Lexeme &) const = default;
 
@@ -75,6 +85,9 @@ namespace hasha {
 
         [[nodiscard]]
         Associativity get_associativity() const;
+
+        [[nodiscard]]
+        bool is_string() const;
 
 
     };
