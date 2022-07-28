@@ -29,12 +29,10 @@ namespace hasha {
             json["token_type"] = "Declaration";
         }
 
-        if (m_tokens != nullptr) {
+        if (m_assignment != nullptr) {
 
-            json["tokens"] = nlohmann::json::array();
-            for (const auto &token: *m_tokens) {
-                json["tokens"].push_back(token->to_json());
-            }
+            json["tokens"] = m_assignment->to_json();
+
         }
 
         return json;
@@ -42,19 +40,14 @@ namespace hasha {
 
     std::string Declaration::to_string() const {
 
-        if (m_tokens != nullptr) {
+        if (m_assignment != nullptr) {
             std::string str;
             if (m_isarray) {
-                str = fmt::format("ArrayDeclaration {}[] {}\n - Assigned to: [ ", m_type, m_name);
+                str = fmt::format("ArrayDeclaration {}[] {}\n\t", m_type, m_name);
             } else {
-                str = fmt::format("Declaration {} {}\n - Assigned to: ", m_type, m_name);
+                str = fmt::format("Declaration {} {}\n\t", m_type, m_name);
             }
-            for (const auto &token: *m_tokens) {
-                str += fmt::format("{} ", token->to_string());
-            }
-            if (m_isarray) {
-                str += "]";
-            }
+            str += m_assignment->to_string();
             return str;
         }
 
@@ -66,14 +59,14 @@ namespace hasha {
 
     }
 
-    Declaration::Declaration(std::string type, std::string name, TokenListPtr tokens, bool isarray) :
+    Declaration::Declaration(std::string type, std::string name, Assignment::AssignmentPtr assignment, bool isarray) :
             m_type(std::move(type)),
             m_name(std::move(name)),
-            m_tokens(std::move(tokens)),
+            m_assignment(std::move(assignment)),
             m_isarray(isarray) {}
 
     Declaration::DeclarationPtr
-    Declaration::create(std::string type, std::string name, TokenListPtr tokens, bool isarray) {
+    Declaration::create(std::string type, std::string name, Assignment::AssignmentPtr tokens, bool isarray) {
 
         return std::shared_ptr<Declaration>(
                 new Declaration(std::move(type), std::move(name), std::move(tokens), isarray));
@@ -81,7 +74,7 @@ namespace hasha {
 
     TokenListPtr Declaration::get_tokens() const {
 
-        return m_tokens;
+        return m_assignment->get_tokens();
     }
 
 

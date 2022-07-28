@@ -155,7 +155,7 @@ namespace hasha {
 
         ErrorOr<TokenListPtr> array_tokens() {
 
-            EXPECT(Lexeme::LBRACKET);
+            EXPECT(Lexeme::LBRACKET)
             auto token_list = create_token_list();
 
             while (peek() != Lexeme::RBRACKET) {
@@ -172,8 +172,7 @@ namespace hasha {
                     advance();
                 }
             }
-            EXPECT(Lexeme::RBRACKET);
-            fmt::print("Here\n");
+            EXPECT(Lexeme::RBRACKET)
             return token_list;
         }
 
@@ -181,46 +180,33 @@ namespace hasha {
 
             auto type = peek().get_data();
             EXPECT_TYPE(LexemeType::Identifier)
-            EXPECT(Lexeme::LBRACKET);
-            EXPECT(Lexeme::RBRACKET);
+            EXPECT(Lexeme::LBRACKET)
+            EXPECT(Lexeme::RBRACKET)
 
             auto name = peek().get_data();
 
             EXPECT_TYPE(LexemeType::Identifier)
-            EXPECT(Lexeme::EQUALS);
+            EXPECT(Lexeme::EQUALS)
 
             auto token_list = array_tokens();
             VERIFY(token_list)
-
-            return Declaration::create(type, name, get<TokenListPtr>(token_list), true);
+            auto assignment = Assignment::create(name, get<TokenListPtr>(token_list));
+            return Declaration::create(type, name, assignment, true);
         }
 
         ErrorOr<Declaration::DeclarationPtr> array_declaration() {
 
             auto type = peek().get_data();
             EXPECT_TYPE(LexemeType::Identifier)
-            EXPECT(Lexeme::LBRACKET);
-            EXPECT(Lexeme::RBRACKET);
+            EXPECT(Lexeme::LBRACKET)
+            EXPECT(Lexeme::RBRACKET)
 
             auto name = peek().get_data();
             EXPECT_TYPE(LexemeType::Identifier)
             return Declaration::create(type, name, nullptr, true);
         }
 
-        ErrorOr<Declaration::DeclarationPtr> variable_declaration_and_assignment() {
-
-            auto i_type = identifier();
-            auto i_name = identifier();
-
-            VERIFY(i_type)
-            VERIFY(i_name)
-
-            auto type = get<Identifier::IdentifierPtr>(i_type)->get_name();
-            auto name = get<Identifier::IdentifierPtr>(i_name)->get_name();
-
-            EXPECT(Lexeme::EQUALS)
-            std::deque<Lexeme> temp_lexemes;
-
+        ErrorOr<TokenListPtr> parse_expression() {
 
             std::deque<Lexeme> output; // queue
             std::deque<Lexeme> operators; // stack
@@ -284,16 +270,57 @@ namespace hasha {
                         token_list->push_back(Literal::create(out_tok.get_data()));
                         break;
                     default:
-                        break;
+                        return fmt::format("Unknown token {} in expression\n", out_tok.to_string());
                 }
             }
+            return token_list;
 
+        }
+
+        ErrorOr<Declaration::DeclarationPtr> variable_declaration_and_assignment() {
+
+            auto i_type = identifier();
+            auto i_name = identifier();
+
+            VERIFY(i_type)
+            VERIFY(i_name)
+
+            auto type = get<Identifier::IdentifierPtr>(i_type)->get_name();
+            auto name = get<Identifier::IdentifierPtr>(i_name)->get_name();
+
+            EXPECT(Lexeme::EQUALS)
+
+            auto token_list = parse_expression();
+            VERIFY(token_list)
+
+            EXPECT(Lexeme::SEMICOLON)
+            auto assignment = Assignment::create(name, get<TokenListPtr>(token_list));
+            return Declaration::create(type, name, assignment);
+        }
+
+        ErrorOr<Assignment::AssignmentPtr> variable_assignment() {
+
+            auto name = peek().get_data();
+            EXPECT_TYPE(LexemeType::Identifier)
+            EXPECT(Lexeme::EQUALS)
+
+            Assignment::AssignmentPtr assignment;
+
+            if (peek() == Lexeme::LBRACKET) {
+                auto array_token_list = array_tokens();
+                VERIFY(array_token_list)
+
+                assignment = Assignment::create(name, get<TokenListPtr>(array_token_list), true);
+            } else {
+                auto expression_token_list = parse_expression();
+                VERIFY(expression_token_list)
+                assignment = Assignment::create(name, get<TokenListPtr>(expression_token_list));
+            }
 
             EXPECT(Lexeme::SEMICOLON)
 
-            return Declaration::create(type, name, token_list);
+            return assignment;
         }
-
 
         ErrorOr<Block::BlockPtr> block() noexcept {
 
@@ -301,7 +328,11 @@ namespace hasha {
             auto token_list = create_token_list();
             while (!match(Lexeme::RCURLY)) {
 
-                if (match({LexemeType::Identifier, LexemeType::Identifier, Lexeme::SEMICOLON})) {
+                if (match({LexemeType::Identifier, Lexeme::EQUALS})) {
+                    auto var_assignment = variable_assignment();
+                    VERIFY(var_assignment)
+                    token_list->push_back(get<Assignment::AssignmentPtr>(var_assignment));
+                } else if (match({LexemeType::Identifier, LexemeType::Identifier, Lexeme::SEMICOLON})) {
                     auto var_decl = variable_declaration();
                     VERIFY(var_decl)
                     token_list->push_back(get<Declaration::DeclarationPtr>(var_decl));

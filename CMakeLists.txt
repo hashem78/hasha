@@ -31,6 +31,6 @@ add_executable(hasha
         src/Parser/Tokens/Parameter.h
         src/Parser/Tokens/Literal.cpp
         src/Parser/Tokens/Literal.h
-        src/Parser/Tokens/Operator.cpp src/Parser/Tokens/Operator.h)
+        src/Parser/Tokens/Operator.cpp src/Parser/Tokens/Operator.h src/Parser/Tokens/Assignment.cpp src/Parser/Tokens/Assignment.h)
 
 target_link_libraries(hasha fmt::fmt nlohmann_json::nlohmann_json magic_enum::magic_enum)

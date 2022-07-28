@@ -21,7 +21,7 @@ namespace hasha {
 
         std::string str = "- Block\n";
         for (const auto &token: *m_tokens) {
-            str += fmt::format("-> {}\n", token->to_string());
+            str += fmt::format(" - {}\n", token->to_string());
         }
         return str;
     }

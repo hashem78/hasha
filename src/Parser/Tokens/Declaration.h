@@ -7,6 +7,7 @@
 
 #include "Token.h"
 #include "fmt/format.h"
+#include "Assignment.h"
 
 namespace hasha {
 
@@ -17,16 +18,16 @@ namespace hasha {
         std::string m_type;
         std::string m_name;
         bool m_isarray;
-        TokenListPtr m_tokens;
+        Assignment::AssignmentPtr m_assignment;
 
-        Declaration(std::string type, std::string name, TokenListPtr = nullptr, bool isarray = false);
+        Declaration(std::string type, std::string name, Assignment::AssignmentPtr asssignment = nullptr, bool isarray = false);
 
     public:
 
         using DeclarationPtr = std::shared_ptr<Declaration>;
 
         static DeclarationPtr
-        create(std::string type, std::string name, TokenListPtr = nullptr, bool isarray = false);
+        create(std::string type, std::string name, Assignment::AssignmentPtr assignment = nullptr, bool isarray = false);
 
 
         [[nodiscard]]

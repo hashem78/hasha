@@ -18,9 +18,9 @@ namespace hasha {
 
     std::string Function::to_string() const {
 
-        std::string str = fmt::format("Function {}\n- Parameters\n", m_name->get_name());
+        std::string str = fmt::format("-> Function {}\n - Parameters\n", m_name->get_name());
         for (const auto &param: *m_parameters) {
-            str += fmt::format("-> {}\n", param->to_string());
+            str += fmt::format("  -> {}\n", param->to_string());
         }
         str += m_block->to_string();
 
