@@ -26,6 +26,8 @@ namespace hasha {
         LexemeList m_lexemes;
         std::string m_file_name;
         std::vector<char> m_data;
+        std::vector<std::unique_ptr<std::string>> m_produced_literals;
+        std::vector<std::unique_ptr<std::string>> m_produced_identifiers;
         int m_cursor;
 
         static bool is_legal(char c);
@@ -39,7 +41,6 @@ namespace hasha {
         char peek_char(int= 0) const;
 
         static bool is_literal(std::string str);
-
     };
 
 } // hasha

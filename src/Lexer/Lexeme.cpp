@@ -6,10 +6,6 @@
 
 namespace hasha {
 
-
-    Lexeme::Lexeme(std::string data, LexemeType type, Associativity associativity, Precedence precedence) : m_data(
-            std::move(data)), m_type(type), m_associativity(associativity), m_precedence(precedence) {}
-
     nlohmann::json Lexeme::to_json() const {
 
         if (m_type == LexemeType::Operator) {
@@ -35,23 +31,8 @@ namespace hasha {
         return fmt::format("{} {}", magic_enum::enum_name(m_type), m_data);
     }
 
-    const Lexeme Lexeme::FN{"fn", LexemeType::Keyword};
-    const Lexeme Lexeme::LCURLY{"{", LexemeType::Symbol};
-    const Lexeme Lexeme::RCURLY{"}", LexemeType::Symbol};
-    const Lexeme Lexeme::LPAREN{"(", LexemeType::Symbol};
-    const Lexeme Lexeme::RPAREN{")", LexemeType::Symbol};
-    const Lexeme Lexeme::LBRACKET{"[", LexemeType::Symbol};
-    const Lexeme Lexeme::RBRACKET{"]", LexemeType::Symbol};
-    const Lexeme Lexeme::COMMA{",", LexemeType::Symbol};
-    const Lexeme Lexeme::SEMICOLON{";", LexemeType::Symbol};
-    const Lexeme Lexeme::EQUALS{"=", LexemeType::Operator, Associativity::Right, Precedence::Level1};
-    const Lexeme Lexeme::HYPHEN{"-", LexemeType::Operator, Associativity::Left, Precedence::Level3};
-    const Lexeme Lexeme::ADDITION{"+", LexemeType::Operator, Associativity::Left, Precedence::Level3};
-    const Lexeme Lexeme::FSLASH{"/", LexemeType::Operator, Associativity::Left, Precedence::Level5};
-    const Lexeme Lexeme::ASTERISK{"*", LexemeType::Operator, Associativity::Left, Precedence::Level6};
 
-
-    const std::string &Lexeme::get_data() const {
+    std::string Lexeme::get_data() const {
 
         return m_data;
     }

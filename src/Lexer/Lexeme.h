@@ -39,16 +39,24 @@ namespace hasha {
     };
 
     class Lexeme {
-        std::string m_data;
+        const char *m_data;
         LexemeType m_type;
         Associativity m_associativity;
         Precedence m_precedence;
 
     public:
 
-        Lexeme(std::string data, LexemeType type, Associativity= Associativity::None, Precedence= Precedence::Level0);
+        constexpr Lexeme(
+                const char *data,
+                LexemeType type,
+                Associativity associativity = Associativity::None,
+                Precedence precedence = Precedence::Level0) :
+                m_data(data),
+                m_type(type),
+                m_associativity(associativity),
+                m_precedence(precedence) {}
 
-        auto operator<=>(const Lexeme &) const = default;
+        constexpr auto operator<=>(const Lexeme &) const = default;
 
         [[nodiscard]]
         nlohmann::json to_json() const;
@@ -57,7 +65,7 @@ namespace hasha {
         std::string to_string() const;
 
         [[nodiscard]]
-        const std::string &get_data() const;
+        std::string get_data() const;
 
         [[nodiscard]]
         LexemeType get_type() const;
@@ -68,21 +76,23 @@ namespace hasha {
         [[nodiscard]]
         Associativity get_associativity() const;
 
-        const static Lexeme FN;
-        const static Lexeme LCURLY;
-        const static Lexeme RCURLY;
-        const static Lexeme LPAREN;
-        const static Lexeme RPAREN;
-        const static Lexeme LBRACKET;
-        const static Lexeme RBRACKET;
-        const static Lexeme ADDITION;
-        const static Lexeme HYPHEN;
-        const static Lexeme ASTERISK;
-        const static Lexeme FSLASH;
-        const static Lexeme COMMA;
-        const static Lexeme SEMICOLON;
-        const static Lexeme EQUALS;
+
     };
+
+    static constexpr Lexeme FN{"fn", LexemeType::Keyword};
+    static constexpr Lexeme LCURLY{"{", LexemeType::Symbol};
+    static constexpr Lexeme RCURLY{"}", LexemeType::Symbol};
+    static constexpr Lexeme LPAREN{"(", LexemeType::Symbol};
+    static constexpr Lexeme RPAREN{")", LexemeType::Symbol};
+    static constexpr Lexeme LBRACKET{"[", LexemeType::Symbol};
+    static constexpr Lexeme RBRACKET{"]", LexemeType::Symbol};
+    static constexpr Lexeme COMMA{",", LexemeType::Symbol};
+    static constexpr Lexeme SEMICOLON{";", LexemeType::Symbol};
+    static constexpr Lexeme EQUALS{"=", LexemeType::Operator, Associativity::Right, Precedence::Level1};
+    static constexpr Lexeme HYPHEN{"-", LexemeType::Operator, Associativity::Left, Precedence::Level3};
+    static constexpr Lexeme ADDITION{"+", LexemeType::Operator, Associativity::Left, Precedence::Level3};
+    static constexpr Lexeme FSLASH{"/", LexemeType::Operator, Associativity::Left, Precedence::Level5};
+    static constexpr Lexeme ASTERISK{"*", LexemeType::Operator, Associativity::Left, Precedence::Level6};
 
 
     using LexemeList = std::deque<Lexeme>;

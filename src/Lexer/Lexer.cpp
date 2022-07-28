@@ -31,40 +31,45 @@ namespace hasha {
 
             auto token = next_token();
             if (token.empty()) continue;
+
+
             if (token == "fn") {
-                m_lexemes.push_back(Lexeme::FN);
+                m_lexemes.push_back(FN);
             } else if (token == "{") {
-                m_lexemes.push_back(Lexeme::LCURLY);
+                m_lexemes.push_back(LCURLY);
             } else if (token == "}") {
-                m_lexemes.push_back(Lexeme::RCURLY);
+                m_lexemes.push_back(RCURLY);
             } else if (token == "(") {
-                m_lexemes.push_back(Lexeme::LPAREN);
+                m_lexemes.push_back(LPAREN);
             } else if (token == ")") {
-                m_lexemes.push_back(Lexeme::RPAREN);
+                m_lexemes.push_back(RPAREN);
             } else if (token == "[") {
-                m_lexemes.push_back(Lexeme::LBRACKET);
+                m_lexemes.push_back(LBRACKET);
             } else if (token == "]") {
-                m_lexemes.push_back(Lexeme::RBRACKET);
+                m_lexemes.push_back(RBRACKET);
             } else if (token == ",") {
-                m_lexemes.push_back(Lexeme::COMMA);
+                m_lexemes.push_back(COMMA);
             } else if (token == "=") {
-                m_lexemes.push_back(Lexeme::EQUALS);
+                m_lexemes.push_back(EQUALS);
             } else if (token == "+") {
-                m_lexemes.push_back(Lexeme::ADDITION);
+                m_lexemes.push_back(ADDITION);
             } else if (token == "-") {
-                m_lexemes.push_back(Lexeme::HYPHEN);
+                m_lexemes.push_back(HYPHEN);
             } else if (token == "*") {
-                m_lexemes.push_back(Lexeme::ASTERISK);
+                m_lexemes.push_back(ASTERISK);
             } else if (token == "/") {
-                m_lexemes.push_back(Lexeme::FSLASH);
+                m_lexemes.push_back(FSLASH);
             } else if (token == ";") {
-                m_lexemes.push_back(Lexeme::SEMICOLON);
+                m_lexemes.push_back(SEMICOLON);
             } else if (is_literal(token)) {
-                m_lexemes.emplace_back(token, LexemeType::Literal);
+                m_produced_literals.push_back(std::make_unique<std::string>(token));
+                m_lexemes.push_back({m_produced_literals.back()->c_str(), LexemeType::Literal});
             } else {
-                m_lexemes.emplace_back(token, LexemeType::Identifier);
+                m_produced_identifiers.push_back(std::make_unique<std::string>(token));
+                m_lexemes.push_back({m_produced_identifiers.back()->c_str(), LexemeType::Identifier});
             }
         }
+
     }
 
     bool Lexer::is_legal(char c) {

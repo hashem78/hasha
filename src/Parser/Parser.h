@@ -131,7 +131,7 @@ namespace hasha {
             auto name = get<Identifier::IdentifierPtr>(i_type)->get_name();
             auto type = get<Identifier::IdentifierPtr>(i_name)->get_name();
 
-            if (match(Lexeme::COMMA)) advance();
+            if (match(COMMA)) advance();
 
             return Parameter::create(name, type);
         }
@@ -147,7 +147,7 @@ namespace hasha {
             auto type = get<Identifier::IdentifierPtr>(i_type)->get_name();
             auto name = get<Identifier::IdentifierPtr>(i_name)->get_name();
 
-            EXPECT(Lexeme::SEMICOLON)
+            EXPECT(SEMICOLON)
 
             return Declaration::create(type, name);
 
@@ -155,15 +155,15 @@ namespace hasha {
 
         ErrorOr<TokenListPtr> array_tokens() {
 
-            EXPECT(Lexeme::LBRACKET)
+            EXPECT(LBRACKET)
             auto token_list = create_token_list();
 
-            while (peek() != Lexeme::RBRACKET) {
+            while (peek() != RBRACKET) {
                 if (peek().get_type() == LexemeType::Literal) {
                     auto i_litreal = peek().get_data();
                     EXPECT_TYPE(LexemeType::Literal)
-                    if (peek() != Lexeme::RBRACKET) {
-                        EXPECT(Lexeme::COMMA)
+                    if (peek() != RBRACKET) {
+                        EXPECT(COMMA)
 
                     }
                     token_list->push_back(Literal::create(i_litreal));
@@ -172,7 +172,7 @@ namespace hasha {
                     advance();
                 }
             }
-            EXPECT(Lexeme::RBRACKET)
+            EXPECT(RBRACKET)
             return token_list;
         }
 
@@ -180,13 +180,13 @@ namespace hasha {
 
             auto type = peek().get_data();
             EXPECT_TYPE(LexemeType::Identifier)
-            EXPECT(Lexeme::LBRACKET)
-            EXPECT(Lexeme::RBRACKET)
+            EXPECT(LBRACKET)
+            EXPECT(RBRACKET)
 
             auto name = peek().get_data();
 
             EXPECT_TYPE(LexemeType::Identifier)
-            EXPECT(Lexeme::EQUALS)
+            EXPECT(EQUALS)
 
             auto token_list = array_tokens();
             VERIFY(token_list)
@@ -198,8 +198,8 @@ namespace hasha {
 
             auto type = peek().get_data();
             EXPECT_TYPE(LexemeType::Identifier)
-            EXPECT(Lexeme::LBRACKET)
-            EXPECT(Lexeme::RBRACKET)
+            EXPECT(LBRACKET)
+            EXPECT(RBRACKET)
 
             auto name = peek().get_data();
             EXPECT_TYPE(LexemeType::Identifier)
@@ -211,7 +211,7 @@ namespace hasha {
             std::deque<Lexeme> output; // queue
             std::deque<Lexeme> operators; // stack
 
-            while (!match(Lexeme::SEMICOLON)) {
+            while (!match(SEMICOLON)) {
                 auto x = peek();
 
                 if (x.get_type() == LexemeType::Operator) {
@@ -232,17 +232,17 @@ namespace hasha {
 
                     }
                     operators.push_front(x);
-                } else if (x == Lexeme::LPAREN) {
+                } else if (x == LPAREN) {
                     operators.push_front(x);
-                } else if (x == Lexeme::RPAREN) {
-                    while (operators.front() != Lexeme::LPAREN) {
+                } else if (x == RPAREN) {
+                    while (operators.front() != LPAREN) {
                         // TODO: If the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
                         if (operators.empty()) break;
                         output.push_back(operators.front());
                         operators.pop_front();
                     }
                     // TODO: If the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
-                    if (operators.front() != Lexeme::LPAREN)
+                    if (operators.front() != LPAREN)
                         break;
                     operators.pop_front();
                 } else {
@@ -288,12 +288,12 @@ namespace hasha {
             auto type = get<Identifier::IdentifierPtr>(i_type)->get_name();
             auto name = get<Identifier::IdentifierPtr>(i_name)->get_name();
 
-            EXPECT(Lexeme::EQUALS)
+            EXPECT(EQUALS)
 
             auto token_list = parse_expression();
             VERIFY(token_list)
 
-            EXPECT(Lexeme::SEMICOLON)
+            EXPECT(SEMICOLON)
             auto assignment = Assignment::create(name, get<TokenListPtr>(token_list));
             return Declaration::create(type, name, assignment);
         }
@@ -302,11 +302,11 @@ namespace hasha {
 
             auto name = peek().get_data();
             EXPECT_TYPE(LexemeType::Identifier)
-            EXPECT(Lexeme::EQUALS)
+            EXPECT(EQUALS)
 
             Assignment::AssignmentPtr assignment;
 
-            if (peek() == Lexeme::LBRACKET) {
+            if (peek() == LBRACKET) {
                 auto array_token_list = array_tokens();
                 VERIFY(array_token_list)
 
@@ -317,39 +317,39 @@ namespace hasha {
                 assignment = Assignment::create(name, get<TokenListPtr>(expression_token_list));
             }
 
-            EXPECT(Lexeme::SEMICOLON)
+            EXPECT(SEMICOLON)
 
             return assignment;
         }
 
         ErrorOr<Block::BlockPtr> block() noexcept {
 
-            EXPECT(Lexeme::LCURLY)
+            EXPECT(LCURLY)
             auto token_list = create_token_list();
-            while (!match(Lexeme::RCURLY)) {
+            while (!match(RCURLY)) {
 
-                if (match({LexemeType::Identifier, Lexeme::EQUALS})) {
+                if (match({LexemeType::Identifier, EQUALS})) {
                     auto var_assignment = variable_assignment();
                     VERIFY(var_assignment)
                     token_list->push_back(get<Assignment::AssignmentPtr>(var_assignment));
-                } else if (match({LexemeType::Identifier, LexemeType::Identifier, Lexeme::SEMICOLON})) {
+                } else if (match({LexemeType::Identifier, LexemeType::Identifier, SEMICOLON})) {
                     auto var_decl = variable_declaration();
                     VERIFY(var_decl)
                     token_list->push_back(get<Declaration::DeclarationPtr>(var_decl));
 
                 } else if (match(
-                        {LexemeType::Identifier, LexemeType::Identifier, Lexeme::EQUALS})) {
+                        {LexemeType::Identifier, LexemeType::Identifier, EQUALS})) {
                     auto var_decl = variable_declaration_and_assignment();
                     VERIFY(var_decl)
                     token_list->push_back(get<Declaration::DeclarationPtr>(var_decl));
                 } else if
                         (match({LexemeType::Identifier,
-                                Lexeme::LBRACKET, Lexeme::RBRACKET, LexemeType::Identifier, Lexeme::SEMICOLON})) {
+                                LBRACKET, RBRACKET, LexemeType::Identifier, SEMICOLON})) {
                     auto arr_decl = array_declaration();
                     VERIFY(arr_decl)
                     token_list->push_back(get<Declaration::DeclarationPtr>(arr_decl));
                 } else if (match({LexemeType::Identifier,
-                                  Lexeme::LBRACKET, Lexeme::RBRACKET, LexemeType::Identifier, Lexeme::EQUALS})) {
+                                  LBRACKET, RBRACKET, LexemeType::Identifier, EQUALS})) {
                     auto arr_decl = array_declaration_and_assignemnt();
                     VERIFY(arr_decl)
                     token_list->push_back(get<Declaration::DeclarationPtr>(arr_decl));
@@ -359,30 +359,30 @@ namespace hasha {
 
             }
 
-            EXPECT(Lexeme::RCURLY)
+            EXPECT(RCURLY)
 
             return Block::create(token_list);
         }
 
         ErrorOr<Function::FunctionPtr> function() {
 
-            EXPECT(Lexeme::FN)
+            EXPECT(FN)
 
             auto name = identifier();
 
             VERIFY(name)
 
-            EXPECT(Lexeme::LPAREN)
+            EXPECT(LPAREN)
 
             auto params = Parameter::createLsit();
 
-            while (!match(Lexeme::RPAREN)) {
+            while (!match(RPAREN)) {
                 auto param = parameter();
                 VERIFY(param)
                 params->push_back(get<Parameter::ParameterPtr>(param));
             }
 
-            EXPECT(Lexeme::RPAREN)
+            EXPECT(RPAREN)
 
             auto parsed_block = block();
 

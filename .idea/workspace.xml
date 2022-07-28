@@ -16,7 +16,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Support for reassignments">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexeme.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexeme.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexeme.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexeme.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexer.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexer.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
