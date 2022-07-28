@@ -24,7 +24,7 @@ namespace hasha {
     std::string Lexeme::to_string() const {
 
         if (m_type == LexemeType::Operator) {
-            fmt::format("{} {} {} {}", magic_enum::enum_name(m_type),
+            return fmt::format("{} {} {} {}", magic_enum::enum_name(m_type),
                         m_data, magic_enum::enum_name(m_associativity),
                         magic_enum::enum_name(m_precedence));
         }
