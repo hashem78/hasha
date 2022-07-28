@@ -4,8 +4,6 @@
 
 #include "Function.h"
 
-#include <utility>
-
 namespace hasha {
     nlohmann::json Function::to_json() const {
 
@@ -30,26 +28,9 @@ namespace hasha {
         return str;
     }
 
-    Function &Function::add_param(Parameter::ParameterPtr param) {
-
-        m_parameters->push_back(std::move(param));
-        return *this;
-    }
-
-    Function &Function::add_to_block(TokenPtr token) {
-
-        m_block->add(std::move(token));
-        return *this;
-    }
-
     Parameter::ParameterListPtr Function::get_parameters() const {
 
         return m_parameters;
-    }
-
-    void Function::set_parameters(Parameter::ParameterListPtr parameters) {
-
-        Function::m_parameters = std::move(parameters);
     }
 
     const Block &Function::get_block() const {
@@ -57,20 +38,12 @@ namespace hasha {
         return *m_block;
     }
 
-    void Function::set_block(Block::BlockPtr block) {
-
-        Function::m_block = std::move(block);
-    }
 
     Identifier::IdentifierPtr Function::get_name() const {
 
         return m_name;
     }
 
-    void Function::set_name(Identifier::IdentifierPtr name) {
-
-        Function::m_name = std::move(name);
-    }
 
     Function::Function(Parameter::ParameterListPtr parameters, Block::BlockPtr block, Identifier::IdentifierPtr name)
             : m_parameters(std::move(parameters)),

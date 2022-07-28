@@ -4,9 +4,6 @@
 
 #include "Block.h"
 
-#include <memory>
-#include <utility>
-
 namespace hasha {
     nlohmann::json Block::to_json() const {
 
@@ -29,20 +26,9 @@ namespace hasha {
         return str;
     }
 
-    Block& Block::add(TokenPtr token) {
-
-        m_tokens->push_back(std::move(token));
-        return *this;
-    }
-
     const TokenList &Block::get_tokens() const {
 
         return *m_tokens;
-    }
-
-    void Block::set_tokens(TokenListPtr tokens) {
-
-        Block::m_tokens = std::move(tokens);
     }
 
     Block::Block(TokenListPtr m_tokens) : m_tokens(std::move(m_tokens)) {}

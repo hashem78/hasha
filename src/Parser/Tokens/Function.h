@@ -26,10 +26,6 @@ namespace hasha {
         static FunctionPtr
         create(Parameter::ParameterListPtr parameters, Block::BlockPtr block, Identifier::IdentifierPtr name);
 
-        Function &add_param(Parameter::ParameterPtr param);
-
-        Function &add_to_block(TokenPtr token);
-
         [[nodiscard]]
         nlohmann::json to_json() const override;
 
@@ -39,17 +35,11 @@ namespace hasha {
         [[nodiscard]]
         Parameter::ParameterListPtr get_parameters() const;
 
-        void set_parameters(Parameter::ParameterListPtr parameters);
-
         [[nodiscard]]
         const Block &get_block() const;
 
-        void set_block(Block::BlockPtr block);
-
         [[nodiscard]]
         Identifier::IdentifierPtr get_name() const;
-
-        void set_name(Identifier::IdentifierPtr name);
 
 
     };

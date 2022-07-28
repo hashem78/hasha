@@ -4,9 +4,6 @@
 
 #include "VariableDeclaration.h"
 
-#include <utility>
-
-
 namespace hasha {
     std::string VariableDeclaration::get_type() const {
 

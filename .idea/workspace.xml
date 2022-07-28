@@ -15,39 +15,15 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Improvements to API and add SEMICOLONS">
-      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Identifier.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Identifier.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Operator.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Operator.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/SPEC" afterDir="false" />
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Rewrote massive parts of the parser.&#10;&#10;Also introduced operators to the lexer and parser.&#10;We can now parse assignments and declarations.&#10;We can now parse blocks.&#10;We can now parse simple mathematical expressions.&#10;Removed a lot of bloat.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexeme.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexeme.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexeme.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexeme.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Declarations/ArrayDeclaration.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Declarations/ArrayDeclaration.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Declarations/VariableDeclaration.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/VariableDeclaration.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Declarations/VariableDeclaration.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/VariableDeclaration.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Block.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Block.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Block.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Block.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expressions/ArrayExpression.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expressions/ArrayExpression.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expressions/Expression.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expressions/Expression.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expressions/LiteralExpression.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expressions/LiteralExpression.h" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Function.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Function.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Function.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Function.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/VariableAssignment.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/VariableAssignment.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/VariableDeclaration.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/VariableDeclaration.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,11 +74,6 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.hasha">
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="fmt" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="hasha" TARGET_NAME="fmt" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -132,7 +103,8 @@
       <workItem from="1658395527974" duration="35127000" />
       <workItem from="1658479438856" duration="10956000" />
       <workItem from="1658768103031" duration="9972000" />
-      <workItem from="1658944670900" duration="17515000" />
+      <workItem from="1658944670900" duration="18597000" />
+      <workItem from="1658999292652" duration="3000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <created>1658351946447</created>
@@ -169,7 +141,21 @@
       <option name="project" value="LOCAL" />
       <updated>1658480823113</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Rewrote massive parts of the parser.&#10;&#10;Also introduced operators to the lexer and parser.&#10;We can now parse assignments and declarations.&#10;We can now parse blocks.&#10;We can now parse simple mathematical expressions.">
+      <created>1658966437983</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1658966437983</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Rewrote massive parts of the parser.&#10;&#10;Also introduced operators to the lexer and parser.&#10;We can now parse assignments and declarations.&#10;We can now parse blocks.&#10;We can now parse simple mathematical expressions.&#10;Removed a lot of bloat.">
+      <created>1658966470032</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1658966470032</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -195,6 +181,8 @@
     <MESSAGE value="Variable Assignment and Declaration now support arrays" />
     <MESSAGE value="Add missing libraries" />
     <MESSAGE value="Fix segfault when declaring variables" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix segfault when declaring variables" />
+    <MESSAGE value="Rewrote massive parts of the parser.&#10;&#10;Also introduced operators to the lexer and parser.&#10;We can now parse assignments and declarations.&#10;We can now parse blocks.&#10;We can now parse simple mathematical expressions." />
+    <MESSAGE value="Rewrote massive parts of the parser.&#10;&#10;Also introduced operators to the lexer and parser.&#10;We can now parse assignments and declarations.&#10;We can now parse blocks.&#10;We can now parse simple mathematical expressions.&#10;Removed a lot of bloat." />
+    <option name="LAST_COMMIT_MESSAGE" value="Rewrote massive parts of the parser.&#10;&#10;Also introduced operators to the lexer and parser.&#10;We can now parse assignments and declarations.&#10;We can now parse blocks.&#10;We can now parse simple mathematical expressions.&#10;Removed a lot of bloat." />
   </component>
 </project>

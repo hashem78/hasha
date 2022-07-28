@@ -20,14 +20,11 @@ namespace hasha {
         using BlockPtr = std::shared_ptr<Block>;
 
         explicit Block(TokenListPtr m_tokens);
-        static BlockPtr create(TokenListPtr m_tokens);
 
-        Block& add(TokenPtr token);
+        static BlockPtr create(TokenListPtr m_tokens);
 
         [[nodiscard]]
         const TokenList &get_tokens() const;
-
-        void set_tokens(TokenListPtr tokens);
 
         [[nodiscard]]
         nlohmann::json to_json() const override;
