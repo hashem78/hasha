@@ -21,6 +21,7 @@
 #include "Literal.h"
 #include "Tokens/Declaration.h"
 #include "Operator.h"
+#include "Pattern.h"
 
 #define VERIFY(var) if (holds_alternative<ParseError>(var)) {return get<ParseError>(var);}
 #define EXPECT(lexeme) if(!match(lexeme)) {return fmt::format("Expected {} Found {}",lexeme.to_string(),peek().to_string());}else{advance();}
@@ -76,8 +77,8 @@ namespace hasha {
             return false;
         }
 
-        [[nodiscard]]
-        inline bool match(const std::vector<std::variant<LexemeType, Lexeme>> &&matchers) const noexcept {
+        template<size_t S>
+        inline bool match(const Patterns::Pattern<S> &matchers) const noexcept {
 
             for (std::size_t i = 0; i < matchers.size(); ++i) {
 
@@ -328,28 +329,24 @@ namespace hasha {
             auto token_list = create_token_list();
             while (!match(RCURLY)) {
 
-                if (match({LexemeType::Identifier, EQUALS})) {
+                if (match(Patterns::VariableAssignment)) {
                     auto var_assignment = variable_assignment();
                     VERIFY(var_assignment)
                     token_list->push_back(get<Assignment::AssignmentPtr>(var_assignment));
-                } else if (match({LexemeType::Identifier, LexemeType::Identifier, SEMICOLON})) {
+                } else if (match(Patterns::VariableDeclaration)) {
                     auto var_decl = variable_declaration();
                     VERIFY(var_decl)
                     token_list->push_back(get<Declaration::DeclarationPtr>(var_decl));
 
-                } else if (match(
-                        {LexemeType::Identifier, LexemeType::Identifier, EQUALS})) {
+                } else if (match(Patterns::VariableDeclarationAndAssignment)) {
                     auto var_decl = variable_declaration_and_assignment();
                     VERIFY(var_decl)
                     token_list->push_back(get<Declaration::DeclarationPtr>(var_decl));
-                } else if
-                        (match({LexemeType::Identifier,
-                                LBRACKET, RBRACKET, LexemeType::Identifier, SEMICOLON})) {
+                } else if (match(Patterns::ArrayDeclaration)) {
                     auto arr_decl = array_declaration();
                     VERIFY(arr_decl)
                     token_list->push_back(get<Declaration::DeclarationPtr>(arr_decl));
-                } else if (match({LexemeType::Identifier,
-                                  LBRACKET, RBRACKET, LexemeType::Identifier, EQUALS})) {
+                } else if (match(Patterns::ArrayDeclarationAndAssignment)) {
                     auto arr_decl = array_declaration_and_assignemnt();
                     VERIFY(arr_decl)
                     token_list->push_back(get<Declaration::DeclarationPtr>(arr_decl));
