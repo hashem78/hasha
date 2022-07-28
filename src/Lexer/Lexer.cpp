@@ -70,7 +70,7 @@ namespace hasha {
                 m_lexemes.push_back({m_produced_literals.back()->c_str(), LexemeType::Literal});
             } else if (is_string_literal(token)) {
                 m_produced_literals.push_back(std::make_unique<std::string>(token));
-                m_lexemes.push_back({m_produced_literals.back()->c_str(), LexemeType::Literal});
+                m_lexemes.push_back({m_produced_literals.back()->c_str(), LexemeType::Literal, true});
             } else {
                 m_produced_identifiers.push_back(std::make_unique<std::string>(token));
                 m_lexemes.push_back({m_produced_identifiers.back()->c_str(), LexemeType::Identifier});

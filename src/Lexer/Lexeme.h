@@ -59,12 +59,13 @@ namespace hasha {
 
         constexpr Lexeme(
                 const char *data,
-                LexemeType type
+                LexemeType type,
+                bool isstring = false
         ) :
                 m_data(data),
                 m_type(type),
                 m_associativity(Associativity::None),
-                m_precedence(Precedence::Level0), m_isstring(true) {}
+                m_precedence(Precedence::Level0), m_isstring(isstring) {}
 
         constexpr auto operator<=>(const Lexeme &) const = default;
 
