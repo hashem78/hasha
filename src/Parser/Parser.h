@@ -190,7 +190,7 @@ namespace hasha {
 
             auto token_list = array_tokens();
             VERIFY(token_list)
-            auto assignment = Assignment::create(name, get<TokenListPtr>(token_list));
+            auto assignment = Assignment::create(name, get<TokenListPtr>(token_list), true);
             return Declaration::create(type, name, assignment, true);
         }
 
