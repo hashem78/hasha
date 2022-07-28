@@ -14,7 +14,9 @@ namespace hasha {
         json["return_type"] = m_return_type->get_name();
         json["parameters"] = Parameter::list_to_json(m_parameters);
         json["block"] = m_block->to_json();
-
+        json["return_expression"] = nlohmann::json::array();
+        for (const auto &token: *m_return_expression)
+            json["return_expression"].push_back(token->to_json());
 
         return json;
     }
@@ -28,7 +30,11 @@ namespace hasha {
             str += fmt::format("  -> {}\n", param->to_string());
         }
         str += m_block->to_string();
-
+        std::string return_str;
+        for (const auto &token: *m_return_expression) {
+            return_str += token->to_string();
+        }
+        str += fmt::format("- Returns {}\n", return_str);
 
         return str;
     }
@@ -54,26 +60,31 @@ namespace hasha {
             Parameter::ParameterListPtr parameters,
             Block::BlockPtr block,
             Identifier::IdentifierPtr return_type,
-            Identifier::IdentifierPtr name
+            Identifier::IdentifierPtr name,
+            TokenListPtr return_expression
     )
             : m_parameters(std::move(parameters)),
               m_block(std::move(block)),
               m_return_type(std::move(return_type)),
-              m_name(std::move(name)) {
+              m_name(std::move(name)),
+              m_return_expression(std::move(return_expression)) {
     }
 
     Function::FunctionPtr Function::create(
             Parameter::ParameterListPtr parameters,
             Block::BlockPtr block,
             Identifier::IdentifierPtr return_type,
-            Identifier::IdentifierPtr name) {
+            Identifier::IdentifierPtr name,
+            TokenListPtr return_expression
+            ) {
 
         return std::shared_ptr<Function>(
                 new Function(
                         std::move(parameters),
                         std::move(block),
                         std::move(name),
-                        std::move(return_type)
+                        std::move(return_type),
+                        std::move(return_expression)
                 )
         );
     }

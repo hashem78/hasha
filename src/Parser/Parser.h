@@ -336,6 +336,12 @@ namespace hasha {
             auto token_list = create_token_list();
             while (!match(RCURLY)) {
 
+                // In a return function block there is going to be a
+                // return keyword.
+                if (match(RETURN)) {
+                    return Block::create(token_list);
+                }
+
                 if (match(Patterns::VariableAssignment)) {
                     auto var_assignment = variable_assignment();
                     VERIFY(var_assignment)
@@ -396,11 +402,19 @@ namespace hasha {
 
             VERIFY(parsed_block)
 
+            EXPECT(RETURN)
+            auto return_expression = parse_expression();
+            VERIFY(return_expression)
+
+            EXPECT(SEMICOLON)
+            EXPECT(RCURLY)
+
             return Function::create(
                     params,
                     get<Block::BlockPtr>(parsed_block),
                     get<Identifier::IdentifierPtr>(name),
-                    get<Identifier::IdentifierPtr>(return_type)
+                    get<Identifier::IdentifierPtr>(return_type),
+                    get<TokenListPtr>(return_expression)
             );
 
         }

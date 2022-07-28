@@ -93,6 +93,7 @@ namespace hasha {
     };
 
     static constexpr Lexeme FN{"fn", LexemeType::Keyword};
+    static constexpr Lexeme RETURN{"return", LexemeType::Keyword};
     static constexpr Lexeme LCURLY{"{", LexemeType::Symbol};
     static constexpr Lexeme RCURLY{"}", LexemeType::Symbol};
     static constexpr Lexeme LPAREN{"(", LexemeType::Symbol};
