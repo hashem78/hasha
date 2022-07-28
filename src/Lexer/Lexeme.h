@@ -96,7 +96,6 @@ namespace hasha {
 
 
     using LexemeList = std::deque<Lexeme>;
-    using LexemeListItr = LexemeList::const_iterator;
 
 } // hasha
 
