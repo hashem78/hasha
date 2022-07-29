@@ -59,14 +59,14 @@ namespace hasha {
 
     }
 
-    Declaration::Declaration(std::string type, std::string name, Assignment::AssignmentPtr assignment, bool isarray) :
+    Declaration::Declaration(std::string type, std::string name, Assignment::Ptr assignment, bool isarray) :
             m_type(std::move(type)),
             m_name(std::move(name)),
             m_assignment(std::move(assignment)),
             m_isarray(isarray) {}
 
-    Declaration::DeclarationPtr
-    Declaration::create(std::string type, std::string name, Assignment::AssignmentPtr tokens, bool isarray) {
+    Declaration::Ptr
+    Declaration::create(std::string type, std::string name, Assignment::Ptr tokens, bool isarray) {
 
         return std::unique_ptr<Declaration>(
                 new Declaration(std::move(type), std::move(name), std::move(tokens), isarray));

@@ -21,15 +21,15 @@ namespace hasha {
         explicit Parameter(std::string name, std::string type) noexcept;
 
     public:
-        using ParameterPtr = std::unique_ptr<Parameter>;
-        using ParameterList = std::vector<ParameterPtr>;
+        using Ptr = std::unique_ptr<Parameter>;
+        using ParameterList = std::vector<Ptr>;
         using ParameterListPtr = std::shared_ptr<ParameterList>;
 
         static ParameterListPtr createLsit();
 
         static nlohmann::json list_to_json(const ParameterListPtr &parameter_list);
 
-        static ParameterPtr create(std::string name, std::string type);
+        static Ptr create(std::string name, std::string type);
 
 
         [[nodiscard]]

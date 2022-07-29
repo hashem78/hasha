@@ -24,7 +24,7 @@ namespace hasha {
         return json;
     }
 
-    Parameter::ParameterPtr Parameter::create(std::string name, std::string type) {
+    Parameter::Ptr Parameter::create(std::string name, std::string type) {
 
         return std::unique_ptr<Parameter>(new Parameter(std::move(name), std::move(type)));
     }

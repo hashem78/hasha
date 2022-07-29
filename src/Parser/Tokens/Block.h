@@ -17,11 +17,11 @@ namespace hasha {
         TokenListPtr m_tokens;
         using Token::Token;
     public:
-        using BlockPtr = std::unique_ptr<Block>;
+        using Ptr = std::unique_ptr<Block>;
 
         explicit Block(TokenListPtr m_tokens);
 
-        static BlockPtr create(TokenListPtr m_tokens);
+        static Ptr create(TokenListPtr m_tokens);
 
         [[nodiscard]]
         const TokenList &get_tokens() const;

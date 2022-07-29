@@ -17,10 +17,10 @@ namespace hasha {
         explicit Identifier(std::string name) noexcept;
 
     public:
-        using IdentifierPtr = std::unique_ptr<Identifier>;
-        using IdentifierRawPtr = Identifier*;
+        using Ptr = std::unique_ptr<Identifier>;
+        using RawPtr = Identifier*;
 
-        static IdentifierPtr create(std::string name);
+        static Ptr create(std::string name);
 
         [[nodiscard]]
         nlohmann::json to_json() const override;

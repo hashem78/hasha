@@ -18,19 +18,25 @@ namespace hasha {
         std::string m_type;
         std::string m_name;
         bool m_isarray;
-        Assignment::AssignmentPtr m_assignment;
+        Assignment::Ptr m_assignment;
 
-        Declaration(std::string type, std::string name, Assignment::AssignmentPtr asssignment = nullptr,
-                    bool isarray = false);
+        Declaration(
+                std::string type,
+                std::string name,
+                Assignment::Ptr asssignment = nullptr,
+                bool isarray = false
+        );
 
     public:
 
-        using DeclarationPtr = std::unique_ptr<Declaration>;
+        using Ptr = std::unique_ptr<Declaration>;
 
-        static DeclarationPtr
-        create(std::string type, std::string name, Assignment::AssignmentPtr assignment = nullptr,
-               bool isarray = false);
-
+        static Ptr create(
+                std::string type,
+                std::string name,
+                Assignment::Ptr assignment = nullptr,
+                bool isarray = false
+        );
 
         [[nodiscard]]
         std::string get_type() const;

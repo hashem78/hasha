@@ -55,9 +55,9 @@ namespace hasha {
 
     Function::Function(
             Parameter::ParameterListPtr parameters,
-            Block::BlockPtr block,
-            Identifier::IdentifierPtr return_type,
-            Identifier::IdentifierPtr name,
+            Block::Ptr block,
+            Identifier::Ptr return_type,
+            Identifier::Ptr name,
             TokenListPtr return_expression
     )
             : m_parameters(std::move(parameters)),
@@ -69,9 +69,9 @@ namespace hasha {
 
     Function::FunctionPtr Function::create(
             Parameter::ParameterListPtr parameters,
-            Block::BlockPtr block,
-            Identifier::IdentifierPtr return_type,
-            Identifier::IdentifierPtr name,
+            Block::Ptr block,
+            Identifier::Ptr return_type,
+            Identifier::Ptr name,
             TokenListPtr return_expression
     ) {
 
@@ -86,12 +86,12 @@ namespace hasha {
         );
     }
 
-    Identifier::IdentifierRawPtr Function::get_name() const {
+    Identifier::RawPtr Function::get_name() const {
 
         return m_name.get();
     }
 
-    Identifier::IdentifierRawPtr  Function::get_return_type() const {
+    Identifier::RawPtr  Function::get_return_type() const {
 
         return m_return_type.get();
     }

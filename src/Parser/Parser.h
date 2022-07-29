@@ -105,7 +105,7 @@ namespace hasha {
         }
 
         [[nodiscard]]
-        ErrorOr<Identifier::IdentifierPtr> identifier() noexcept {
+        ErrorOr<Identifier::Ptr> identifier() noexcept {
 
             const auto name = peek().get_data();
 
@@ -127,7 +127,7 @@ namespace hasha {
             return Identifier::create(name);
         }
 
-        ErrorOr<Parameter::ParameterPtr> parameter() {
+        ErrorOr<Parameter::Ptr> parameter() {
 
             auto i_type = identifier();
             auto i_name = identifier();
@@ -135,15 +135,15 @@ namespace hasha {
             VERIFY(i_type)
             VERIFY(i_name)
 
-            auto name = get<Identifier::IdentifierPtr>(i_type)->get_name();
-            auto type = get<Identifier::IdentifierPtr>(i_name)->get_name();
+            auto name = get<Identifier::Ptr>(i_type)->get_name();
+            auto type = get<Identifier::Ptr>(i_name)->get_name();
 
             if (match(COMMA)) advance();
 
             return Parameter::create(name, type);
         }
 
-        ErrorOr<Declaration::DeclarationPtr> variable_declaration() {
+        ErrorOr<Declaration::Ptr> variable_declaration() {
 
             auto i_type = identifier();
             auto i_name = identifier();
@@ -151,8 +151,8 @@ namespace hasha {
             VERIFY(i_type)
             VERIFY(i_name)
 
-            auto type = get<Identifier::IdentifierPtr>(i_type)->get_name();
-            auto name = get<Identifier::IdentifierPtr>(i_name)->get_name();
+            auto type = get<Identifier::Ptr>(i_type)->get_name();
+            auto name = get<Identifier::Ptr>(i_name)->get_name();
 
             EXPECT(SEMICOLON)
 
@@ -188,7 +188,7 @@ namespace hasha {
             return token_list;
         }
 
-        ErrorOr<Declaration::DeclarationPtr> array_declaration_and_assignemnt() {
+        ErrorOr<Declaration::Ptr> array_declaration_and_assignemnt() {
 
             auto type = peek().get_data();
             EXPECT_TYPE(LexemeType::Identifier)
@@ -206,7 +206,7 @@ namespace hasha {
             return Declaration::create(type, name, std::move(assignment), true);
         }
 
-        ErrorOr<Declaration::DeclarationPtr> array_declaration() {
+        ErrorOr<Declaration::Ptr> array_declaration() {
 
             auto type = peek().get_data();
             EXPECT_TYPE(LexemeType::Identifier)
@@ -308,7 +308,7 @@ namespace hasha {
 
         }
 
-        ErrorOr<Declaration::DeclarationPtr> variable_declaration_and_assignment() {
+        ErrorOr<Declaration::Ptr> variable_declaration_and_assignment() {
 
             auto i_type = identifier();
             auto i_name = identifier();
@@ -316,8 +316,8 @@ namespace hasha {
             VERIFY(i_type)
             VERIFY(i_name)
 
-            auto type = get<Identifier::IdentifierPtr>(i_type)->get_name();
-            auto name = get<Identifier::IdentifierPtr>(i_name)->get_name();
+            auto type = get<Identifier::Ptr>(i_type)->get_name();
+            auto name = get<Identifier::Ptr>(i_name)->get_name();
 
             EXPECT(EQUALS)
 
@@ -329,13 +329,13 @@ namespace hasha {
             return Declaration::create(type, name, std::move(assignment));
         }
 
-        ErrorOr<Assignment::AssignmentPtr> variable_assignment() {
+        ErrorOr<Assignment::Ptr> variable_assignment() {
 
             auto name = peek().get_data();
             EXPECT_TYPE(LexemeType::Identifier)
             EXPECT(EQUALS)
 
-            Assignment::AssignmentPtr assignment;
+            Assignment::Ptr assignment;
 
             if (peek() == LBRACKET) {
                 auto array_token_list = array_tokens();
@@ -354,7 +354,7 @@ namespace hasha {
             return assignment;
         }
 
-        ErrorOr<Block::BlockPtr> block() noexcept {
+        ErrorOr<Block::Ptr> block() noexcept {
 
             EXPECT(LCURLY)
             auto token_list = create_token_list();
@@ -369,24 +369,24 @@ namespace hasha {
                 if (match(Patterns::VariableAssignment)) {
                     auto var_assignment = variable_assignment();
                     VERIFY(var_assignment)
-                    token_list->push_back(std::move(get<Assignment::AssignmentPtr>(var_assignment)));
+                    token_list->push_back(std::move(get<Assignment::Ptr>(var_assignment)));
                 } else if (match(Patterns::VariableDeclaration)) {
                     auto var_decl = variable_declaration();
                     VERIFY(var_decl)
-                    token_list->push_back(std::move(get<Declaration::DeclarationPtr>(var_decl)));
+                    token_list->push_back(std::move(get<Declaration::Ptr>(var_decl)));
 
                 } else if (match(Patterns::VariableDeclarationAndAssignment)) {
                     auto var_decl = variable_declaration_and_assignment();
                     VERIFY(var_decl)
-                    token_list->push_back(std::move(get<Declaration::DeclarationPtr>(var_decl)));
+                    token_list->push_back(std::move(get<Declaration::Ptr>(var_decl)));
                 } else if (match(Patterns::ArrayDeclaration)) {
                     auto arr_decl = array_declaration();
                     VERIFY(arr_decl)
-                    token_list->push_back(std::move(get<Declaration::DeclarationPtr>(arr_decl)));
+                    token_list->push_back(std::move(get<Declaration::Ptr>(arr_decl)));
                 } else if (match(Patterns::ArrayDeclarationAndAssignment)) {
                     auto arr_decl = array_declaration_and_assignemnt();
                     VERIFY(arr_decl)
-                    token_list->push_back(std::move(get<Declaration::DeclarationPtr>(arr_decl)));
+                    token_list->push_back(std::move(get<Declaration::Ptr>(arr_decl)));
                 } else {
                     advance();
                 }
@@ -413,7 +413,7 @@ namespace hasha {
             while (!match(RPAREN)) {
                 auto param = parameter();
                 VERIFY(param)
-                params->push_back(std::move(get<Parameter::ParameterPtr>(param)));
+                params->push_back(std::move(get<Parameter::Ptr>(param)));
             }
 
             EXPECT(RPAREN)
@@ -435,9 +435,9 @@ namespace hasha {
 
             return Function::create(
                     params,
-                    std::move(get<Block::BlockPtr>(parsed_block)),
-                    std::move(get<Identifier::IdentifierPtr>(name)),
-                    std::move(get<Identifier::IdentifierPtr>(return_type)),
+                    std::move(get<Block::Ptr>(parsed_block)),
+                    std::move(get<Identifier::Ptr>(name)),
+                    std::move(get<Identifier::Ptr>(return_type)),
                     std::move(get<TokenListPtr>(return_expression))
             );
 

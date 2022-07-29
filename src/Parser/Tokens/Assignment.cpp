@@ -53,7 +53,7 @@ namespace hasha {
             m_tokens(std::move(tokens)),
             m_isarray(isarray) {}
 
-    Assignment::AssignmentPtr
+    Assignment::Ptr
     Assignment::create(std::string name, TokenListPtr tokens, bool isarray) {
 
         return std::unique_ptr<Assignment>(

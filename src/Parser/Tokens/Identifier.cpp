@@ -10,7 +10,7 @@ namespace hasha {
 
     }
 
-    Identifier::IdentifierPtr Identifier::create(std::string name) {
+    Identifier::Ptr Identifier::create(std::string name) {
 
         return std::unique_ptr<Identifier>(new Identifier(std::move(name)));
     }

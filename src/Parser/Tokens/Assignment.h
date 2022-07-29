@@ -26,9 +26,9 @@ namespace hasha {
 
     public:
 
-        using AssignmentPtr = std::unique_ptr<Assignment>;
+        using Ptr = std::unique_ptr<Assignment>;
 
-        static AssignmentPtr create(std::string name, TokenListPtr, bool isarray = false);
+        static Ptr create(std::string name, TokenListPtr, bool isarray = false);
 
         [[nodiscard]]
         std::string get_name() const;

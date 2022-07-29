@@ -14,16 +14,16 @@ namespace hasha {
 
     class Function : public Token {
         Parameter::ParameterListPtr m_parameters;
-        Block::BlockPtr m_block;
-        Identifier::IdentifierPtr m_return_type;
-        Identifier::IdentifierPtr m_name;
+        Block::Ptr m_block;
+        Identifier::Ptr m_return_type;
+        Identifier::Ptr m_name;
         TokenListPtr m_return_expression;
 
         Function(
                 Parameter::ParameterListPtr parameters,
-                Block::BlockPtr block,
-                Identifier::IdentifierPtr return_type,
-                Identifier::IdentifierPtr name,
+                Block::Ptr block,
+                Identifier::Ptr return_type,
+                Identifier::Ptr name,
                 TokenListPtr return_expression
         );
 
@@ -32,9 +32,9 @@ namespace hasha {
 
         static FunctionPtr create(
                 Parameter::ParameterListPtr parameters,
-                Block::BlockPtr block,
-                Identifier::IdentifierPtr return_type,
-                Identifier::IdentifierPtr name,
+                Block::Ptr block,
+                Identifier::Ptr return_type,
+                Identifier::Ptr name,
                 TokenListPtr return_expression
         );
 
@@ -51,10 +51,10 @@ namespace hasha {
         const Block *get_block() const;
 
         [[nodiscard]]
-        Identifier::IdentifierRawPtr get_name() const;
+        Identifier::RawPtr get_name() const;
 
         [[nodiscard]]
-        Identifier::IdentifierRawPtr get_return_type() const;
+        Identifier::RawPtr get_return_type() const;
 
     };
 
