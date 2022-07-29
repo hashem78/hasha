@@ -27,6 +27,7 @@
 #include "Literal/BooleanLiteral.h"
 #include "Operator/BooleanOperator.h"
 #include "Operator/NumericOperator.h"
+#include "FunctionCall.h"
 
 #define VERIFY(var) if (holds_alternative<ParseError>(var)) {return get<ParseError>(var);}
 #define EXPECT(lexeme) if(!match(lexeme)) {return fmt::format("Expected {} Found {}",lexeme.to_string(),peek().to_string());}else{advance();}
@@ -94,11 +95,14 @@ namespace hasha {
                     auto type = get<LexemeType>(matcher);
                     if (peek(i).get_type() != type)
                         return false;
-                } else {
+                } else if (holds_alternative<Lexeme>(matcher)) {
                     auto lexeme = get<Lexeme>(matcher);
 
                     if (peek(i) != lexeme)
                         return false;
+                } else {
+                    auto functor = get<Patterns::PatternFunctor>(matcher);
+                    return functor.call(lexemes, cursor);
                 }
             }
             return true;
@@ -160,33 +164,6 @@ namespace hasha {
 
         }
 
-        ErrorOr<TokenListPtr> array_tokens() {
-
-            EXPECT(LBRACKET)
-            auto token_list = create_token_list();
-
-            while (peek() != RBRACKET) {
-                if (peek().get_type() == LexemeType::Literal) {
-                    auto i_litreal = peek();
-                    EXPECT_TYPE(LexemeType::Literal)
-                    if (peek() != RBRACKET) {
-                        EXPECT(COMMA)
-                    }
-                    if (i_litreal.is_string()) {
-                        token_list->push_back(StringLiteral::create(i_litreal.get_data()));
-                    } else if (i_litreal.is_boolean()) {
-                        token_list->push_back(BooleanLiteral::create(i_litreal.get_data()));
-                    } else {
-                        token_list->push_back(NumericLiteral::create(i_litreal.get_data()));
-                    }
-                } else {
-
-                    advance();
-                }
-            }
-            EXPECT(RBRACKET)
-            return token_list;
-        }
 
         ErrorOr<Declaration::Ptr> array_declaration_and_assignemnt() {
 
@@ -200,7 +177,7 @@ namespace hasha {
             EXPECT_TYPE(LexemeType::Identifier)
             EXPECT(EQUALS)
 
-            auto token_list = array_tokens();
+            auto token_list = parse_multiple(LBRACKET, RBRACKET);
             VERIFY(token_list)
             auto assignment = Assignment::create(name, get<TokenListPtr>(token_list), true);
             return Declaration::create(type, name, std::move(assignment), true);
@@ -337,7 +314,7 @@ namespace hasha {
             Assignment::Ptr assignment;
 
             if (peek() == LBRACKET) {
-                auto array_token_list = array_tokens();
+                auto array_token_list = parse_multiple(LBRACKET, RBRACKET);
                 VERIFY(array_token_list)
 
                 assignment = Assignment::create(name, get<TokenListPtr>(array_token_list), true);
@@ -351,6 +328,56 @@ namespace hasha {
             EXPECT(SEMICOLON)
 
             return assignment;
+        }
+
+        ErrorOr<TokenListPtr> parse_multiple(Lexeme left, Lexeme right, Lexeme separator = COMMA) {
+
+            EXPECT(left)
+
+            auto token_list = create_token_list();
+
+            while (peek() != right) {
+                if (peek().get_type() == LexemeType::Literal) {
+                    auto i_litreal = peek();
+                    EXPECT_TYPE(LexemeType::Literal)
+                    if (peek() != right) {
+                        EXPECT(separator)
+                    }
+                    if (i_litreal.is_string()) {
+                        token_list->push_back(StringLiteral::create(i_litreal.get_data()));
+                    } else if (i_litreal.is_boolean()) {
+                        token_list->push_back(BooleanLiteral::create(i_litreal.get_data()));
+                    } else {
+                        token_list->push_back(NumericLiteral::create(i_litreal.get_data()));
+                    }
+                } else {
+                    auto expression = parse_expression();
+                    VERIFY(expression);
+                    auto i_expression = get<TokenListPtr>(expression);
+                    token_list->insert(
+                            token_list->end(),
+                            std::make_move_iterator(i_expression->begin()),
+                            std::make_move_iterator(i_expression->end())
+                    );
+                }
+            }
+            EXPECT(right)
+            return token_list;
+        }
+
+        ErrorOr<FunctionCall::Ptr> function_call() {
+
+            auto callee = identifier();
+            VERIFY(callee)
+
+            auto args = parse_multiple(LPAREN, RPAREN);
+            VERIFY(args)
+
+            if (peek() == SEMICOLON) {
+                EXPECT(SEMICOLON)
+            }
+
+            return FunctionCall::create(std::move(get<Identifier::Ptr>(callee)), get<TokenListPtr>(args));
         }
 
         ErrorOr<Block::Ptr> block() noexcept {
@@ -386,6 +413,10 @@ namespace hasha {
                     auto arr_decl = array_declaration_and_assignemnt();
                     VERIFY(arr_decl)
                     token_list->push_back(std::move(get<Declaration::Ptr>(arr_decl)));
+                } else if (match(Patterns::FunctionCall)) {
+                    auto fn_call = function_call();
+                    VERIFY(fn_call)
+                    token_list->push_back(std::move(get<FunctionCall::Ptr>(fn_call)));
                 } else {
                     advance();
                 }
@@ -407,7 +438,7 @@ namespace hasha {
 
             EXPECT(LPAREN)
 
-            auto params = Parameter::createLsit();
+            auto params = create_token_list();
 
             while (!match(RPAREN)) {
                 auto param = parameter();
@@ -416,6 +447,8 @@ namespace hasha {
             }
 
             EXPECT(RPAREN)
+
+
             EXPECT(ARROW)
 
             auto return_type = identifier();
@@ -433,7 +466,7 @@ namespace hasha {
             EXPECT(RCURLY)
 
             return Function::create(
-                    params,
+                    std::move(params),
                     std::move(get<Block::Ptr>(parsed_block)),
                     std::move(get<Identifier::Ptr>(name)),
                     std::move(get<Identifier::Ptr>(return_type)),

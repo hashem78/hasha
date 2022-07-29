@@ -15,9 +15,17 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Fix identifier names with '_'">
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Remove error on empty return statements">
+      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/FunctionCall.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/FunctionCall.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Pattern.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Pattern.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Function.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Function.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Function.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Function.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,6 +78,11 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.hasha">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="fmt" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="hasha" TARGET_NAME="fmt" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -102,7 +115,8 @@
       <workItem from="1658944670900" duration="18597000" />
       <workItem from="1658999292652" duration="9070000" />
       <workItem from="1659081070898" duration="14398000" />
-      <workItem from="1659128288446" duration="912000" />
+      <workItem from="1659128288446" duration="5260000" />
+      <workItem from="1659133701914" duration="3192000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <created>1658351946447</created>
@@ -321,7 +335,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659129198444</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="Remove error on empty return statements">
+      <created>1659129448718</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1659129448718</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -342,7 +363,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Fix segfault when declaring variables" />
     <MESSAGE value="Rewrote massive parts of the parser.&#10;&#10;Also introduced operators to the lexer and parser.&#10;We can now parse assignments and declarations.&#10;We can now parse blocks.&#10;We can now parse simple mathematical expressions." />
     <MESSAGE value="Rewrote massive parts of the parser.&#10;&#10;Also introduced operators to the lexer and parser.&#10;We can now parse assignments and declarations.&#10;We can now parse blocks.&#10;We can now parse simple mathematical expressions.&#10;Removed a lot of bloat." />
     <MESSAGE value="Remove useless setters" />
@@ -367,6 +387,7 @@
     <MESSAGE value="Illegal characters are handled better now." />
     <MESSAGE value="Lexer: Return early on spaces" />
     <MESSAGE value="Fix identifier names with '_'" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix identifier names with '_'" />
+    <MESSAGE value="Remove error on empty return statements" />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove error on empty return statements" />
   </component>
 </project>

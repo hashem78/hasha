@@ -10,20 +10,6 @@ namespace hasha {
 
     }
 
-    Parameter::ParameterListPtr Parameter::createLsit() {
-
-        return std::make_shared<ParameterList>();
-    }
-
-    nlohmann::json Parameter::list_to_json(const Parameter::ParameterListPtr &parameter_list) {
-
-        auto json = nlohmann::json::array();
-        for (const auto &param: *parameter_list)
-            json.push_back(param->to_json());
-
-        return json;
-    }
-
     Parameter::Ptr Parameter::create(std::string name, std::string type) {
 
         return std::unique_ptr<Parameter>(new Parameter(std::move(name), std::move(type)));

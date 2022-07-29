@@ -13,14 +13,14 @@
 namespace hasha {
 
     class Function : public Token {
-        Parameter::ParameterListPtr m_parameters;
+        TokenListPtr m_parameters;
         Block::Ptr m_block;
         Identifier::Ptr m_return_type;
         Identifier::Ptr m_name;
         TokenListPtr m_return_expression;
 
         Function(
-                Parameter::ParameterListPtr parameters,
+                TokenListPtr parameters,
                 Block::Ptr block,
                 Identifier::Ptr return_type,
                 Identifier::Ptr name,
@@ -31,7 +31,7 @@ namespace hasha {
         using FunctionPtr = std::unique_ptr<Function>;
 
         static FunctionPtr create(
-                Parameter::ParameterListPtr parameters,
+                TokenListPtr parameters,
                 Block::Ptr block,
                 Identifier::Ptr return_type,
                 Identifier::Ptr name,
@@ -45,7 +45,7 @@ namespace hasha {
         std::string to_string() const override;
 
         [[nodiscard]]
-        Parameter::ParameterListPtr get_parameters() const;
+        TokenListPtr get_parameters() const;
 
         [[nodiscard]]
         const Block *get_block() const;

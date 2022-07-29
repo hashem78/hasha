@@ -12,7 +12,10 @@ namespace hasha {
         json["token_type"] = "Function";
         json["name"] = m_name->get_name();
         json["return_type"] = m_return_type->get_name();
-        json["parameters"] = Parameter::list_to_json(m_parameters);
+        json["parameters"] = nlohmann::json::array();
+        for (const auto &param: *m_parameters) {
+            json["parameters"].push_back(param->to_json());
+        }
         json["block"] = m_block->to_json();
         json["return_expression"] = nlohmann::json::array();
         for (const auto &token: *m_return_expression)
@@ -39,22 +42,19 @@ namespace hasha {
         return str;
     }
 
-    Parameter::ParameterListPtr Function::get_parameters() const {
+    TokenListPtr Function::get_parameters() const {
 
         return m_parameters;
     }
 
-    const Block* Function::get_block() const {
+    const Block *Function::get_block() const {
 
         return m_block.get();
     }
 
 
-
-
-
     Function::Function(
-            Parameter::ParameterListPtr parameters,
+            TokenListPtr parameters,
             Block::Ptr block,
             Identifier::Ptr return_type,
             Identifier::Ptr name,
@@ -68,7 +68,7 @@ namespace hasha {
     }
 
     Function::FunctionPtr Function::create(
-            Parameter::ParameterListPtr parameters,
+            TokenListPtr parameters,
             Block::Ptr block,
             Identifier::Ptr return_type,
             Identifier::Ptr name,
@@ -91,7 +91,7 @@ namespace hasha {
         return m_name.get();
     }
 
-    Identifier::RawPtr  Function::get_return_type() const {
+    Identifier::RawPtr Function::get_return_type() const {
 
         return m_return_type.get();
     }

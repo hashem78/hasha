@@ -22,15 +22,8 @@ namespace hasha {
 
     public:
         using Ptr = std::unique_ptr<Parameter>;
-        using ParameterList = std::vector<Ptr>;
-        using ParameterListPtr = std::shared_ptr<ParameterList>;
-
-        static ParameterListPtr createLsit();
-
-        static nlohmann::json list_to_json(const ParameterListPtr &parameter_list);
 
         static Ptr create(std::string name, std::string type);
-
 
         [[nodiscard]]
         nlohmann::json to_json() const override;
