@@ -144,9 +144,16 @@ namespace hasha {
                     m_cursor++;
 
                 } else {
-                    while (is_legal(peek())) {
+                    if (peek(1) == ';') {
                         token += peek();
                         m_cursor++;
+                    } else {
+
+                        while (is_legal(peek())) {
+
+                            token += peek();
+                            m_cursor++;
+                        }
                     }
                 }
             }

@@ -11,23 +11,21 @@
 namespace hasha {
 
     class Operator : public Token {
+    protected:
         std::string m_op;
-
-        explicit Operator(std::string op) noexcept;
 
     public:
         using OperatorPtr = std::shared_ptr<Operator>;
 
-        static OperatorPtr create(std::string operatorx);
+        explicit Operator(std::string op) noexcept: m_op(std::move(op)) {
+
+        }
 
         [[nodiscard]]
-        nlohmann::json to_json() const override;
+        const std::string &get_op() const noexcept {
 
-        [[nodiscard]]
-        std::string to_string() const override;
-
-        [[nodiscard]]
-        const std::string &get_op() const noexcept;
+            return m_op;
+        }
     };
 
 } // hasha

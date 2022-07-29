@@ -20,11 +20,13 @@
 #include "Function.h"
 #include "Tokens/Literal/Literal.h"
 #include "Tokens/Declaration.h"
-#include "Operator.h"
+#include "Tokens/Operator/Operator.h"
 #include "Pattern.h"
 #include "Literal/StringLiteral.h"
 #include "Literal/NumericLiteral.h"
 #include "Literal/BooleanLiteral.h"
+#include "Operator/BooleanOperator.h"
+#include "Operator/NumericOperator.h"
 
 #define VERIFY(var) if (holds_alternative<ParseError>(var)) {return get<ParseError>(var);}
 #define EXPECT(lexeme) if(!match(lexeme)) {return fmt::format("Expected {} Found {}",lexeme.to_string(),peek().to_string());}else{advance();}
@@ -273,9 +275,16 @@ namespace hasha {
             for (auto &out_tok: output) {
                 switch (out_tok.get_type()) {
 
-                    case Operator:
-                        token_list->push_back(Operator::create(out_tok.get_data()));
+                    case Operator: {
+                        if (out_tok.is_boolean_operator()) {
+
+                            token_list->push_back(BooleanOperator::create(out_tok.get_data()));
+                        } else {
+
+                            token_list->push_back(NumericOperator::create(out_tok.get_data()));
+                        }
                         break;
+                    }
                     case Literal: {
                         if (out_tok.is_string()) {
                             token_list->push_back(StringLiteral::create(out_tok.get_data()));

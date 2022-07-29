@@ -45,6 +45,8 @@ namespace hasha {
         Precedence m_precedence;
         bool m_isstring;
         bool m_isboolean;
+        bool m_is_numeric_operator;
+        bool m_is_boolean_operator;
 
     public:
 
@@ -52,12 +54,18 @@ namespace hasha {
                 const char *data,
                 LexemeType type,
                 Associativity associativity,
-                Precedence precedence) :
+                Precedence precedence,
+                bool is_numeric_operator = false,
+                bool is_boolean_operator = false
+        ) :
                 m_data(data),
                 m_type(type),
                 m_associativity(associativity),
-                m_precedence(precedence), m_isstring(false),
-                m_isboolean(false) {}
+                m_precedence(precedence),
+                m_isstring(false),
+                m_isboolean(false),
+                m_is_numeric_operator(is_numeric_operator),
+                m_is_boolean_operator(is_boolean_operator) {}
 
         constexpr Lexeme(
                 const char *data,
@@ -69,7 +77,9 @@ namespace hasha {
                 m_type(type),
                 m_associativity(Associativity::None),
                 m_precedence(Precedence::Level0), m_isstring(isstring),
-                m_isboolean(isboolean) {}
+                m_isboolean(isboolean),
+                m_is_numeric_operator(false),
+                m_is_boolean_operator(false) {}
 
 
         constexpr auto operator<=>(const Lexeme &) const = default;
@@ -98,6 +108,11 @@ namespace hasha {
         [[nodiscard]]
         bool is_boolean() const;
 
+        [[nodiscard]]
+        bool is_numeric_operator() const;
+
+        [[nodiscard]]
+        bool is_boolean_operator() const;
     };
 
     static constexpr Lexeme FN{"fn", LexemeType::Keyword};
@@ -113,12 +128,13 @@ namespace hasha {
     static constexpr Lexeme COMMA{",", LexemeType::Symbol};
     static constexpr Lexeme SEMICOLON{";", LexemeType::Symbol};
     static constexpr Lexeme EQUALS{"=", LexemeType::Operator, Associativity::Right, Precedence::Level1};
-    static constexpr Lexeme LAND{"&&", LexemeType::Operator, Associativity::Right, Precedence::Level2};
-    static constexpr Lexeme LOR{"||", LexemeType::Operator, Associativity::Right, Precedence::Level2};
-    static constexpr Lexeme HYPHEN{"-", LexemeType::Operator, Associativity::Left, Precedence::Level3};
-    static constexpr Lexeme ADDITION{"+", LexemeType::Operator, Associativity::Left, Precedence::Level3};
-    static constexpr Lexeme FSLASH{"/", LexemeType::Operator, Associativity::Left, Precedence::Level5};
-    static constexpr Lexeme ASTERISK{"*", LexemeType::Operator, Associativity::Left, Precedence::Level6};
+    static constexpr Lexeme LAND{"&&", LexemeType::Operator, Associativity::Right, Precedence::Level2, false, true};
+    static constexpr Lexeme LOR{"||", LexemeType::Operator, Associativity::Right, Precedence::Level2, false, true};
+
+    static constexpr Lexeme HYPHEN{"-", LexemeType::Operator, Associativity::Left, Precedence::Level3, true};
+    static constexpr Lexeme ADDITION{"+", LexemeType::Operator, Associativity::Left, Precedence::Level3, true};
+    static constexpr Lexeme FSLASH{"/", LexemeType::Operator, Associativity::Left, Precedence::Level5, true};
+    static constexpr Lexeme ASTERISK{"*", LexemeType::Operator, Associativity::Left, Precedence::Level5, true};
 
     static constexpr Lexeme ARROW{"->", LexemeType::Symbol};
 

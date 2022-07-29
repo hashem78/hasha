@@ -62,5 +62,15 @@ namespace hasha {
         return m_isboolean;
     }
 
+    bool Lexeme::is_numeric_operator() const {
+
+        return m_is_numeric_operator;
+    }
+
+    bool Lexeme::is_boolean_operator() const {
+
+        return m_is_boolean_operator;
+    }
+
 
 } // hasha
