@@ -268,7 +268,6 @@ namespace hasha {
                 operators.pop_front();
             }
 
-            if (output.empty()) return "Failed parse assignment expression";
             auto token_list = create_token_list();
 
 

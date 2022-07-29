@@ -15,8 +15,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Lexer: Return early on spaces">
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Fix identifier names with '_'">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +102,7 @@
       <workItem from="1658944670900" duration="18597000" />
       <workItem from="1658999292652" duration="9070000" />
       <workItem from="1659081070898" duration="14398000" />
-      <workItem from="1659128288446" duration="537000" />
+      <workItem from="1659128288446" duration="912000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <created>1658351946447</created>
@@ -313,7 +314,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659096395390</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Fix identifier names with '_'">
+      <created>1659129198444</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1659129198444</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -334,7 +342,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Add missing libraries" />
     <MESSAGE value="Fix segfault when declaring variables" />
     <MESSAGE value="Rewrote massive parts of the parser.&#10;&#10;Also introduced operators to the lexer and parser.&#10;We can now parse assignments and declarations.&#10;We can now parse blocks.&#10;We can now parse simple mathematical expressions." />
     <MESSAGE value="Rewrote massive parts of the parser.&#10;&#10;Also introduced operators to the lexer and parser.&#10;We can now parse assignments and declarations.&#10;We can now parse blocks.&#10;We can now parse simple mathematical expressions.&#10;Removed a lot of bloat." />
@@ -359,6 +366,7 @@
     <MESSAGE value="Fix lexer swallowing tokens." />
     <MESSAGE value="Illegal characters are handled better now." />
     <MESSAGE value="Lexer: Return early on spaces" />
-    <option name="LAST_COMMIT_MESSAGE" value="Lexer: Return early on spaces" />
+    <MESSAGE value="Fix identifier names with '_'" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix identifier names with '_'" />
   </component>
 </project>
