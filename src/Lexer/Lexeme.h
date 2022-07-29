@@ -21,6 +21,7 @@ namespace hasha {
         Literal,
         Symbol,
         Keyword,
+        Illegal,
     };
 
     enum Associativity {

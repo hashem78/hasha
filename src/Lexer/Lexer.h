@@ -43,6 +43,8 @@ namespace hasha {
         static bool is_numeric_literal(const std::string &str);
 
         static bool is_string_literal(const std::string &token);
+
+        static bool is_identifier(std::string token) ;
     };
 
 } // hasha

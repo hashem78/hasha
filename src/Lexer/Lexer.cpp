@@ -30,8 +30,8 @@ namespace hasha {
         while (!done()) {
 
             auto token = next_token();
-            if (token.empty()) continue;
 
+            if (token.empty()) continue;
 
             if (token == "fn") {
                 m_lexemes.push_back(FN);
@@ -79,12 +79,30 @@ namespace hasha {
             } else if (is_string_literal(token)) {
                 m_produced_literals.push_back(std::make_unique<std::string>(token));
                 m_lexemes.push_back({m_produced_literals.back()->c_str(), LexemeType::Literal, true});
-            } else {
+            } else if (is_identifier(token)) {
                 m_produced_identifiers.push_back(std::make_unique<std::string>(token));
                 m_lexemes.push_back({m_produced_identifiers.back()->c_str(), LexemeType::Identifier});
+            } else {
+                m_produced_identifiers.push_back(std::make_unique<std::string>(token));
+                m_lexemes.push_back({m_produced_identifiers.back()->c_str(), LexemeType::Illegal});
             }
         }
 
+    }
+
+    bool Lexer::is_identifier(std::string token) {
+
+        if (token.empty()) return false;
+        if (std::isdigit(token.front())) return false;
+        if (std::find_if(token.begin(), token.end(), [](char c) { return is_legal(c); }) != token.end())
+            return false;
+        for (const char &c: token) {
+            if (std::isalnum(c) || c == '_')
+                continue;
+            else
+                return false;
+        }
+        return true;
     }
 
     bool Lexer::is_legal(char c) {
@@ -120,6 +138,10 @@ namespace hasha {
             }
 
             if (!std::isalnum(curr)) {
+                if (!is_legal(curr)) {
+                    token += curr;
+                    m_cursor++;
+                }
                 break;
             }
 
@@ -145,23 +167,22 @@ namespace hasha {
 
                 } else {
 
-                    if(peek() == '-' && peek(1) == '>') {
+                    if (peek() == '-' && peek(1) == '>') {
                         token += "->";
-                        m_cursor+=2;
-                    }else if(peek() == '&' && peek(1) == '&') {
+                        m_cursor += 2;
+                    } else if (peek() == '&' && peek(1) == '&') {
                         token += "&&";
-                        m_cursor+=2;
-                    }else if(peek() == '|' && peek(1) == '|') {
+                        m_cursor += 2;
+                    } else if (peek() == '|' && peek(1) == '|') {
                         token += "||";
-                        m_cursor+=2;
-                    }else{
+                        m_cursor += 2;
+                    } else {
                         token += peek();
                         m_cursor++;
                     }
                 }
             }
         }
-
 
         return token;
     }
