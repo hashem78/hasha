@@ -57,5 +57,10 @@ namespace hasha {
         return m_isstring;
     }
 
+    bool Lexeme::is_boolean() const {
+
+        return m_isboolean;
+    }
+
 
 } // hasha

@@ -44,6 +44,7 @@ namespace hasha {
         Associativity m_associativity;
         Precedence m_precedence;
         bool m_isstring;
+        bool m_isboolean;
 
     public:
 
@@ -55,17 +56,21 @@ namespace hasha {
                 m_data(data),
                 m_type(type),
                 m_associativity(associativity),
-                m_precedence(precedence), m_isstring(false) {}
+                m_precedence(precedence), m_isstring(false),
+                m_isboolean(false) {}
 
         constexpr Lexeme(
                 const char *data,
                 LexemeType type,
-                bool isstring = false
+                bool isstring = false,
+                bool isboolean = false
         ) :
                 m_data(data),
                 m_type(type),
                 m_associativity(Associativity::None),
-                m_precedence(Precedence::Level0), m_isstring(isstring) {}
+                m_precedence(Precedence::Level0), m_isstring(isstring),
+                m_isboolean(isboolean) {}
+
 
         constexpr auto operator<=>(const Lexeme &) const = default;
 
@@ -90,11 +95,15 @@ namespace hasha {
         [[nodiscard]]
         bool is_string() const;
 
+        [[nodiscard]]
+        bool is_boolean() const;
 
     };
 
     static constexpr Lexeme FN{"fn", LexemeType::Keyword};
     static constexpr Lexeme RETURN{"return", LexemeType::Keyword};
+    static constexpr Lexeme TRUE{"true", LexemeType::Keyword, false, true};
+    static constexpr Lexeme FALSE{"false", LexemeType::Keyword, false, true};
     static constexpr Lexeme LCURLY{"{", LexemeType::Symbol};
     static constexpr Lexeme RCURLY{"}", LexemeType::Symbol};
     static constexpr Lexeme LPAREN{"(", LexemeType::Symbol};

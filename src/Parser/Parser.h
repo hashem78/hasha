@@ -18,10 +18,13 @@
 #include "Lexer.h"
 #include "Parameter.h"
 #include "Function.h"
-#include "Literal.h"
+#include "Tokens/Literal/Literal.h"
 #include "Tokens/Declaration.h"
 #include "Operator.h"
 #include "Pattern.h"
+#include "Literal/StringLiteral.h"
+#include "Literal/NumericLiteral.h"
+#include "Literal/BooleanLiteral.h"
 
 #define VERIFY(var) if (holds_alternative<ParseError>(var)) {return get<ParseError>(var);}
 #define EXPECT(lexeme) if(!match(lexeme)) {return fmt::format("Expected {} Found {}",lexeme.to_string(),peek().to_string());}else{advance();}
@@ -162,13 +165,18 @@ namespace hasha {
 
             while (peek() != RBRACKET) {
                 if (peek().get_type() == LexemeType::Literal) {
-                    auto i_litreal = peek().get_data();
+                    auto i_litreal = peek();
                     EXPECT_TYPE(LexemeType::Literal)
                     if (peek() != RBRACKET) {
                         EXPECT(COMMA)
-
                     }
-                    token_list->push_back(Literal::create(i_litreal));
+                    if (i_litreal.is_string()) {
+                        token_list->push_back(StringLiteral::create(i_litreal.get_data()));
+                    } else if (i_litreal.is_boolean()) {
+                        token_list->push_back(BooleanLiteral::create(i_litreal.get_data()));
+                    } else {
+                        token_list->push_back(NumericLiteral::create(i_litreal.get_data()));
+                    }
                 } else {
 
                     advance();
@@ -270,12 +278,19 @@ namespace hasha {
                         break;
                     case Literal: {
                         if (out_tok.is_string()) {
-                            token_list->push_back(Literal::create(out_tok.get_data(), true));
+                            token_list->push_back(StringLiteral::create(out_tok.get_data()));
                         } else {
-                            token_list->push_back(Literal::create(out_tok.get_data()));
+                            token_list->push_back(NumericLiteral::create(out_tok.get_data()));
                         }
                         break;
                     }
+                    case Keyword: {
+                        if (out_tok.is_boolean()) {
+                            token_list->push_back(BooleanLiteral::create(out_tok.get_data()));
+                        }
+                        break;
+                    }
+
                     default:
                         return fmt::format("Unknown token {} in expression\n", out_tok.to_string());
                 }
