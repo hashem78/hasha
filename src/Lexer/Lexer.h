@@ -40,9 +40,9 @@ namespace hasha {
         [[nodiscard]]
         char peek(int= 0) const;
 
-        static bool is_numeric_literal(const std::string& str);
+        static bool is_numeric_literal(const std::string &str);
 
-        static bool is_string_literal(const std::string& token);
+        static bool is_string_literal(const std::string &token);
     };
 
 } // hasha

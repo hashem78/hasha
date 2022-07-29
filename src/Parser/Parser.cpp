@@ -41,5 +41,4 @@ namespace hasha {
     }
 
 
-
 } // hasha

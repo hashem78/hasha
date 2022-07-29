@@ -30,7 +30,7 @@ namespace hasha {
         static nlohmann::json list_to_json(const ParameterListPtr &parameter_list);
 
         static ParameterPtr create(std::string name, std::string type);
-        
+
 
         [[nodiscard]]
         nlohmann::json to_json() const override;

@@ -51,7 +51,7 @@ namespace hasha {
             return str;
         }
 
-        if(m_isarray){
+        if (m_isarray) {
             return fmt::format("ArrayDeclaration {} {}", m_type, m_name);
         }
 

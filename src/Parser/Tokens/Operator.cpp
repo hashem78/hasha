@@ -18,7 +18,7 @@ namespace hasha {
 
         return {
                 {"token_type", "Operator"},
-                {"operator",       m_op}
+                {"operator",   m_op}
         };
     }
 

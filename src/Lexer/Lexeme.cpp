@@ -25,8 +25,8 @@ namespace hasha {
 
         if (m_type == LexemeType::Operator) {
             return fmt::format("{} {} {} {}", magic_enum::enum_name(m_type),
-                        m_data, magic_enum::enum_name(m_associativity),
-                        magic_enum::enum_name(m_precedence));
+                               m_data, magic_enum::enum_name(m_associativity),
+                               magic_enum::enum_name(m_precedence));
         }
         return fmt::format("{} {}", magic_enum::enum_name(m_type), m_data);
     }

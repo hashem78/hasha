@@ -76,7 +76,7 @@ namespace hasha {
             Identifier::IdentifierPtr return_type,
             Identifier::IdentifierPtr name,
             TokenListPtr return_expression
-            ) {
+    ) {
 
         return std::shared_ptr<Function>(
                 new Function(

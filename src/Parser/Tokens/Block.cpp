@@ -34,6 +34,7 @@ namespace hasha {
     Block::Block(TokenListPtr m_tokens) : m_tokens(std::move(m_tokens)) {}
 
     Block::BlockPtr Block::create(TokenListPtr m_tokens) {
+
         return std::make_shared<Block>(std::move(m_tokens));
     }
 

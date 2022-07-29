@@ -20,14 +20,16 @@ namespace hasha {
         bool m_isarray;
         Assignment::AssignmentPtr m_assignment;
 
-        Declaration(std::string type, std::string name, Assignment::AssignmentPtr asssignment = nullptr, bool isarray = false);
+        Declaration(std::string type, std::string name, Assignment::AssignmentPtr asssignment = nullptr,
+                    bool isarray = false);
 
     public:
 
         using DeclarationPtr = std::shared_ptr<Declaration>;
 
         static DeclarationPtr
-        create(std::string type, std::string name, Assignment::AssignmentPtr assignment = nullptr, bool isarray = false);
+        create(std::string type, std::string name, Assignment::AssignmentPtr assignment = nullptr,
+               bool isarray = false);
 
 
         [[nodiscard]]

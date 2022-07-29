@@ -6,6 +6,7 @@
 
 namespace hasha {
     TokenListPtr create_token_list() {
+
         return std::make_shared<TokenList>();
     }
 } // hasha

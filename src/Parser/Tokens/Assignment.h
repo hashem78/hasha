@@ -28,7 +28,7 @@ namespace hasha {
 
         using AssignmentPtr = std::shared_ptr<Assignment>;
 
-        static AssignmentPtr create(std::string name, TokenListPtr,bool isarray = false);
+        static AssignmentPtr create(std::string name, TokenListPtr, bool isarray = false);
 
         [[nodiscard]]
         std::string get_name() const;
