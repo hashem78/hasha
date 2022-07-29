@@ -61,6 +61,10 @@ namespace hasha {
                 m_lexemes.push_back(ASTERISK);
             } else if (token == "/") {
                 m_lexemes.push_back(FSLASH);
+            } else if (token == "&&") {
+                m_lexemes.push_back(LAND);
+            } else if (token == "||") {
+                m_lexemes.push_back(LOR);
             } else if (token == ";") {
                 m_lexemes.push_back(SEMICOLON);
             } else if (token == "->") {
@@ -139,12 +143,11 @@ namespace hasha {
                     token += '\"';
                     m_cursor++;
 
-                } else if (peek() == '-' && peek(1) == '>') {
-                    token = "->";
-                    m_cursor += 2;
                 } else {
-                    token += peek();
-                    m_cursor++;
+                    while (is_legal(peek())) {
+                        token += peek();
+                        m_cursor++;
+                    }
                 }
             }
         }

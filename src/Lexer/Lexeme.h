@@ -113,6 +113,8 @@ namespace hasha {
     static constexpr Lexeme COMMA{",", LexemeType::Symbol};
     static constexpr Lexeme SEMICOLON{";", LexemeType::Symbol};
     static constexpr Lexeme EQUALS{"=", LexemeType::Operator, Associativity::Right, Precedence::Level1};
+    static constexpr Lexeme LAND{"&&", LexemeType::Operator, Associativity::Right, Precedence::Level2};
+    static constexpr Lexeme LOR{"||", LexemeType::Operator, Associativity::Right, Precedence::Level2};
     static constexpr Lexeme HYPHEN{"-", LexemeType::Operator, Associativity::Left, Precedence::Level3};
     static constexpr Lexeme ADDITION{"+", LexemeType::Operator, Associativity::Left, Precedence::Level3};
     static constexpr Lexeme FSLASH{"/", LexemeType::Operator, Associativity::Left, Precedence::Level5};

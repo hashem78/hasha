@@ -15,18 +15,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Run code formatter">
-      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal/BooleanLiteral.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal/NumericLiteral.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal/StringLiteral.h" afterDir="false" />
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Refactor the literal handling system.&#10;&#10;Literals coming out of the parser are now classes&#10;inheriting from the Literal type.&#10;&#10;We have 3 literal types in the language now:&#10;1 - StringLiteral: a literal that starts with &lt;&quot;&gt;.&#10;2 - BooleanLiteral: either true or false.&#10;3 - NumericLiteral: numbers.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexeme.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexeme.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Lexer/Lexeme.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexeme.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal/Literal.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,7 +107,7 @@
       <workItem from="1658768103031" duration="9972000" />
       <workItem from="1658944670900" duration="18597000" />
       <workItem from="1658999292652" duration="9070000" />
-      <workItem from="1659081070898" duration="4140000" />
+      <workItem from="1659081070898" duration="4877000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <created>1658351946447</created>
@@ -264,7 +256,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659081800452</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Refactor the literal handling system.&#10;&#10;Literals coming out of the parser are now classes&#10;inheriting from the Literal type.&#10;&#10;We have 3 literal types in the language now:&#10;1 - StringLiteral: a literal that starts with &lt;&quot;&gt;.&#10;2 - BooleanLiteral: either true or false.&#10;3 - NumericLiteral: numbers.">
+      <created>1659085607092</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1659085607092</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -304,6 +303,7 @@
     <MESSAGE value="Add support for return keyword in function blocks" />
     <MESSAGE value="Fix Literal Lexemes being of the wrong designation" />
     <MESSAGE value="Run code formatter" />
-    <option name="LAST_COMMIT_MESSAGE" value="Run code formatter" />
+    <MESSAGE value="Refactor the literal handling system.&#10;&#10;Literals coming out of the parser are now classes&#10;inheriting from the Literal type.&#10;&#10;We have 3 literal types in the language now:&#10;1 - StringLiteral: a literal that starts with &lt;&quot;&gt;.&#10;2 - BooleanLiteral: either true or false.&#10;3 - NumericLiteral: numbers." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor the literal handling system.&#10;&#10;Literals coming out of the parser are now classes&#10;inheriting from the Literal type.&#10;&#10;We have 3 literal types in the language now:&#10;1 - StringLiteral: a literal that starts with &lt;&quot;&gt;.&#10;2 - BooleanLiteral: either true or false.&#10;3 - NumericLiteral: numbers." />
   </component>
 </project>
