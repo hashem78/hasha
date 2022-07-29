@@ -15,7 +15,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Fix lexer swallowing tokens.">
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Illegal characters are handled better now.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Lexer/Lexeme.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexeme.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" afterDir="false" />
@@ -108,7 +108,7 @@
       <workItem from="1658768103031" duration="9972000" />
       <workItem from="1658944670900" duration="18597000" />
       <workItem from="1658999292652" duration="9070000" />
-      <workItem from="1659081070898" duration="13603000" />
+      <workItem from="1659081070898" duration="14224000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <created>1658351946447</created>
@@ -306,7 +306,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659093936227</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="Illegal characters are handled better now.">
+      <created>1659096230461</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1659096230461</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -327,7 +334,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Work on Lexer and Parser" />
     <MESSAGE value="Variable Assignment and Declaration now support arrays" />
     <MESSAGE value="Add missing libraries" />
     <MESSAGE value="Fix segfault when declaring variables" />
@@ -352,6 +358,7 @@
     <MESSAGE value="Use std::unique_ptr instead of std::shared_ptr where unique ownership is required" />
     <MESSAGE value="Reduce pointer type names" />
     <MESSAGE value="Fix lexer swallowing tokens." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix lexer swallowing tokens." />
+    <MESSAGE value="Illegal characters are handled better now." />
+    <option name="LAST_COMMIT_MESSAGE" value="Illegal characters are handled better now." />
   </component>
 </project>

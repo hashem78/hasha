@@ -134,7 +134,7 @@ namespace hasha {
 
             if (std::isspace(curr)) {
                 m_cursor++;
-                break;
+                return token;
             }
 
             if (!std::isalnum(curr)) {
