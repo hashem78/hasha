@@ -137,7 +137,7 @@ namespace hasha {
                 return token;
             }
 
-            if (!std::isalnum(curr)) {
+            if (!std::isalnum(curr) && curr != '_') {
                 if (!is_legal(curr)) {
                     token += curr;
                     m_cursor++;
