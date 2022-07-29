@@ -13,11 +13,11 @@ namespace hasha {
         using Operator::Operator;
 
     public:
-        using BooleanOperatorPtr = std::shared_ptr<BooleanOperator>;
+        using BooleanOperatorPtr = std::unique_ptr<BooleanOperator>;
 
         static BooleanOperatorPtr create(std::string op) {
 
-            return std::make_shared<BooleanOperator>(std::move(op));
+            return std::make_unique<BooleanOperator>(std::move(op));
         }
 
         [[nodiscard]]

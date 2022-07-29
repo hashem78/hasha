@@ -26,7 +26,7 @@ namespace hasha {
 
     Parameter::ParameterPtr Parameter::create(std::string name, std::string type) {
 
-        return std::shared_ptr<Parameter>(new Parameter(std::move(name), std::move(type)));
+        return std::unique_ptr<Parameter>(new Parameter(std::move(name), std::move(type)));
     }
 
     nlohmann::json Parameter::to_json() const {

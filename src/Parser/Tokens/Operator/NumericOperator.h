@@ -13,11 +13,11 @@ namespace hasha {
         using Operator::Operator;
 
     public:
-        using NumericOperatorPtr = std::shared_ptr<NumericOperator>;
+        using NumericOperatorPtr = std::unique_ptr<NumericOperator>;
 
         static NumericOperatorPtr create(std::string op) {
 
-            return std::make_shared<NumericOperator>(std::move(op));
+            return std::make_unique<NumericOperator>(std::move(op));
         }
 
         [[nodiscard]]

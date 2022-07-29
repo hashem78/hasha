@@ -15,7 +15,7 @@ namespace hasha {
         std::string m_op;
 
     public:
-        using OperatorPtr = std::shared_ptr<Operator>;
+        using OperatorPtr = std::unique_ptr<Operator>;
 
         explicit Operator(std::string op) noexcept: m_op(std::move(op)) {
 

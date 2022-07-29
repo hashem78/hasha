@@ -13,11 +13,11 @@ namespace hasha {
         using Literal::Literal;
     public:
 
-        using StringLiteralPtr = std::shared_ptr<StringLiteral>;
+        using StringLiteralPtr = std::unique_ptr<StringLiteral>;
 
         static StringLiteralPtr create(std::string literal) {
 
-            return std::make_shared<StringLiteral>(std::move(literal));
+            return std::make_unique<StringLiteral>(std::move(literal));
         }
 
         [[nodiscard]]

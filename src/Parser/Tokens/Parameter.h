@@ -21,7 +21,7 @@ namespace hasha {
         explicit Parameter(std::string name, std::string type) noexcept;
 
     public:
-        using ParameterPtr = std::shared_ptr<Parameter>;
+        using ParameterPtr = std::unique_ptr<Parameter>;
         using ParameterList = std::vector<ParameterPtr>;
         using ParameterListPtr = std::shared_ptr<ParameterList>;
 

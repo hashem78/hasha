@@ -12,7 +12,6 @@
 
 namespace hasha {
 
-
     class Function : public Token {
         Parameter::ParameterListPtr m_parameters;
         Block::BlockPtr m_block;
@@ -29,7 +28,7 @@ namespace hasha {
         );
 
     public:
-        using FunctionPtr = std::shared_ptr<Function>;
+        using FunctionPtr = std::unique_ptr<Function>;
 
         static FunctionPtr create(
                 Parameter::ParameterListPtr parameters,
@@ -49,13 +48,13 @@ namespace hasha {
         Parameter::ParameterListPtr get_parameters() const;
 
         [[nodiscard]]
-        const Block &get_block() const;
+        const Block *get_block() const;
 
         [[nodiscard]]
-        Identifier::IdentifierPtr get_name() const;
+        Identifier::IdentifierRawPtr get_name() const;
 
         [[nodiscard]]
-        Identifier::IdentifierPtr get_return_type() const;
+        Identifier::IdentifierRawPtr get_return_type() const;
 
     };
 

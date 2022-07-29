@@ -24,7 +24,7 @@ namespace hasha {
         virtual ~Token() = default;
     };
 
-    using TokenPtr = std::shared_ptr<Token>;
+    using TokenPtr = std::unique_ptr<Token>;
     using TokenList = std::deque<TokenPtr>;
     using TokenListPtr = std::shared_ptr<TokenList>;
 

@@ -25,7 +25,7 @@ namespace hasha {
 
     public:
 
-        using DeclarationPtr = std::shared_ptr<Declaration>;
+        using DeclarationPtr = std::unique_ptr<Declaration>;
 
         static DeclarationPtr
         create(std::string type, std::string name, Assignment::AssignmentPtr assignment = nullptr,

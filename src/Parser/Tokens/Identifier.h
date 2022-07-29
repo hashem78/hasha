@@ -10,7 +10,6 @@
 
 namespace hasha {
 
-
     class Identifier : public Token {
 
         std::string m_name;
@@ -18,7 +17,8 @@ namespace hasha {
         explicit Identifier(std::string name) noexcept;
 
     public:
-        using IdentifierPtr = std::shared_ptr<Identifier>;
+        using IdentifierPtr = std::unique_ptr<Identifier>;
+        using IdentifierRawPtr = Identifier*;
 
         static IdentifierPtr create(std::string name);
 

@@ -13,10 +13,10 @@ namespace hasha {
         using Literal::Literal;
     public:
 
-        using BooleanLiteralPtr = std::shared_ptr<BooleanLiteral>;
+        using BooleanLiteralPtr = std::unique_ptr<BooleanLiteral>;
         static BooleanLiteralPtr create(std::string literal) {
 
-            return std::make_shared<BooleanLiteral>(std::move(literal));
+            return std::make_unique<BooleanLiteral>(std::move(literal));
         }
 
         [[nodiscard]]

@@ -44,16 +44,13 @@ namespace hasha {
         return m_parameters;
     }
 
-    const Block &Function::get_block() const {
+    const Block* Function::get_block() const {
 
-        return *m_block;
+        return m_block.get();
     }
 
 
-    Identifier::IdentifierPtr Function::get_name() const {
 
-        return m_name;
-    }
 
 
     Function::Function(
@@ -78,7 +75,7 @@ namespace hasha {
             TokenListPtr return_expression
     ) {
 
-        return std::shared_ptr<Function>(
+        return std::unique_ptr<Function>(
                 new Function(
                         std::move(parameters),
                         std::move(block),
@@ -89,9 +86,14 @@ namespace hasha {
         );
     }
 
-    Identifier::IdentifierPtr Function::get_return_type() const {
+    Identifier::IdentifierRawPtr Function::get_name() const {
 
-        return m_return_type;
+        return m_name.get();
+    }
+
+    Identifier::IdentifierRawPtr  Function::get_return_type() const {
+
+        return m_return_type.get();
     }
 
 

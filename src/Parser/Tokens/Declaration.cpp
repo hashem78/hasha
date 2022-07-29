@@ -68,7 +68,7 @@ namespace hasha {
     Declaration::DeclarationPtr
     Declaration::create(std::string type, std::string name, Assignment::AssignmentPtr tokens, bool isarray) {
 
-        return std::shared_ptr<Declaration>(
+        return std::unique_ptr<Declaration>(
                 new Declaration(std::move(type), std::move(name), std::move(tokens), isarray));
     }
 

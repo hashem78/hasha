@@ -12,7 +12,7 @@ namespace hasha {
 
     Identifier::IdentifierPtr Identifier::create(std::string name) {
 
-        return std::shared_ptr<Identifier>(new Identifier(std::move(name)));
+        return std::unique_ptr<Identifier>(new Identifier(std::move(name)));
     }
 
     nlohmann::json Identifier::to_json() const {
@@ -37,4 +37,5 @@ namespace hasha {
 
         Identifier::m_name = name;
     }
+
 } // hasha

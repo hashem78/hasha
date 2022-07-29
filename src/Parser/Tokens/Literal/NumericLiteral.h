@@ -15,11 +15,11 @@ namespace hasha {
     class NumericLiteral : public Literal {
         using Literal::Literal;
     public:
-        using NumericLiteralPtr = std::shared_ptr<NumericLiteral>;
+        using NumericLiteralPtr = std::unique_ptr<NumericLiteral>;
 
         static NumericLiteralPtr create(std::string literal) {
 
-            return std::make_shared<NumericLiteral>(std::move(literal));
+            return std::make_unique<NumericLiteral>(std::move(literal));
         }
 
         [[nodiscard]]

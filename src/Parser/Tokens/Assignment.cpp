@@ -56,7 +56,7 @@ namespace hasha {
     Assignment::AssignmentPtr
     Assignment::create(std::string name, TokenListPtr tokens, bool isarray) {
 
-        return std::shared_ptr<Assignment>(
+        return std::unique_ptr<Assignment>(
                 new Assignment(std::move(name), std::move(tokens), isarray));
     }
 

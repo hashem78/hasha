@@ -203,7 +203,7 @@ namespace hasha {
             auto token_list = array_tokens();
             VERIFY(token_list)
             auto assignment = Assignment::create(name, get<TokenListPtr>(token_list), true);
-            return Declaration::create(type, name, assignment, true);
+            return Declaration::create(type, name, std::move(assignment), true);
         }
 
         ErrorOr<Declaration::DeclarationPtr> array_declaration() {
@@ -326,7 +326,7 @@ namespace hasha {
 
             EXPECT(SEMICOLON)
             auto assignment = Assignment::create(name, get<TokenListPtr>(token_list));
-            return Declaration::create(type, name, assignment);
+            return Declaration::create(type, name, std::move(assignment));
         }
 
         ErrorOr<Assignment::AssignmentPtr> variable_assignment() {
@@ -369,24 +369,24 @@ namespace hasha {
                 if (match(Patterns::VariableAssignment)) {
                     auto var_assignment = variable_assignment();
                     VERIFY(var_assignment)
-                    token_list->push_back(get<Assignment::AssignmentPtr>(var_assignment));
+                    token_list->push_back(std::move(get<Assignment::AssignmentPtr>(var_assignment)));
                 } else if (match(Patterns::VariableDeclaration)) {
                     auto var_decl = variable_declaration();
                     VERIFY(var_decl)
-                    token_list->push_back(get<Declaration::DeclarationPtr>(var_decl));
+                    token_list->push_back(std::move(get<Declaration::DeclarationPtr>(var_decl)));
 
                 } else if (match(Patterns::VariableDeclarationAndAssignment)) {
                     auto var_decl = variable_declaration_and_assignment();
                     VERIFY(var_decl)
-                    token_list->push_back(get<Declaration::DeclarationPtr>(var_decl));
+                    token_list->push_back(std::move(get<Declaration::DeclarationPtr>(var_decl)));
                 } else if (match(Patterns::ArrayDeclaration)) {
                     auto arr_decl = array_declaration();
                     VERIFY(arr_decl)
-                    token_list->push_back(get<Declaration::DeclarationPtr>(arr_decl));
+                    token_list->push_back(std::move(get<Declaration::DeclarationPtr>(arr_decl)));
                 } else if (match(Patterns::ArrayDeclarationAndAssignment)) {
                     auto arr_decl = array_declaration_and_assignemnt();
                     VERIFY(arr_decl)
-                    token_list->push_back(get<Declaration::DeclarationPtr>(arr_decl));
+                    token_list->push_back(std::move(get<Declaration::DeclarationPtr>(arr_decl)));
                 } else {
                     advance();
                 }
@@ -413,7 +413,7 @@ namespace hasha {
             while (!match(RPAREN)) {
                 auto param = parameter();
                 VERIFY(param)
-                params->push_back(get<Parameter::ParameterPtr>(param));
+                params->push_back(std::move(get<Parameter::ParameterPtr>(param)));
             }
 
             EXPECT(RPAREN)
@@ -435,10 +435,10 @@ namespace hasha {
 
             return Function::create(
                     params,
-                    get<Block::BlockPtr>(parsed_block),
-                    get<Identifier::IdentifierPtr>(name),
-                    get<Identifier::IdentifierPtr>(return_type),
-                    get<TokenListPtr>(return_expression)
+                    std::move(get<Block::BlockPtr>(parsed_block)),
+                    std::move(get<Identifier::IdentifierPtr>(name)),
+                    std::move(get<Identifier::IdentifierPtr>(return_type)),
+                    std::move(get<TokenListPtr>(return_expression))
             );
 
         }
