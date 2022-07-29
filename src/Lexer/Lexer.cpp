@@ -144,16 +144,19 @@ namespace hasha {
                     m_cursor++;
 
                 } else {
-                    if (peek(1) == ';') {
+
+                    if(peek() == '-' && peek(1) == '>') {
+                        token += "->";
+                        m_cursor+=2;
+                    }else if(peek() == '&' && peek(1) == '&') {
+                        token += "&&";
+                        m_cursor+=2;
+                    }else if(peek() == '|' && peek(1) == '|') {
+                        token += "||";
+                        m_cursor+=2;
+                    }else{
                         token += peek();
                         m_cursor++;
-                    } else {
-
-                        while (is_legal(peek())) {
-
-                            token += peek();
-                            m_cursor++;
-                        }
                     }
                 }
             }

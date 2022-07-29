@@ -15,29 +15,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Use std::unique_ptr instead of std::shared_ptr where unique ownership is required">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Assignment.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Assignment.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Assignment.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Assignment.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Block.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Block.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Block.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Block.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Function.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Function.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Function.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Function.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Identifier.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Identifier.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Identifier.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Identifier.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal/BooleanLiteral.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal/BooleanLiteral.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal/NumericLiteral.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal/NumericLiteral.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal/StringLiteral.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal/StringLiteral.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Operator/BooleanOperator.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Operator/BooleanOperator.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Operator/NumericOperator.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Operator/NumericOperator.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Operator/Operator.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Operator/Operator.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Token.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Token.h" afterDir="false" />
-    </list>
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Reduce pointer type names" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -125,7 +103,7 @@
       <workItem from="1658768103031" duration="9972000" />
       <workItem from="1658944670900" duration="18597000" />
       <workItem from="1658999292652" duration="9070000" />
-      <workItem from="1659081070898" duration="10401000" />
+      <workItem from="1659081070898" duration="10745000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <created>1658351946447</created>
@@ -309,7 +287,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659091517200</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Reduce pointer type names">
+      <created>1659091740782</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1659091740782</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -354,6 +339,7 @@
     <MESSAGE value="Lexer: Add support for boolean operators&#10;&#10;Logical and (&amp;&amp;)&#10;Logical or (||)" />
     <MESSAGE value="Refactor operators to be types inheriting from Operator&#10;&#10;For now, we have two operator designations&#10;&#10;1- BooleanOperator&#10;2- NumericOperator" />
     <MESSAGE value="Use std::unique_ptr instead of std::shared_ptr where unique ownership is required" />
-    <option name="LAST_COMMIT_MESSAGE" value="Use std::unique_ptr instead of std::shared_ptr where unique ownership is required" />
+    <MESSAGE value="Reduce pointer type names" />
+    <option name="LAST_COMMIT_MESSAGE" value="Reduce pointer type names" />
   </component>
 </project>
