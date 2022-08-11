@@ -6,6 +6,7 @@
 #define HASHA_PATTERN_H
 
 #include <array>
+#include <utility>
 #include <variant>
 #include "Lexeme.h"
 #include "Constants.h"
@@ -14,7 +15,7 @@ namespace hasha::Patterns {
     class PatternFunctor {
         const Lexeme m_lexeme;
     public:
-        constexpr explicit PatternFunctor(Lexeme lexeme) : m_lexeme(lexeme) {
+        explicit PatternFunctor(Lexeme lexeme) : m_lexeme(std::move(lexeme)) {
 
         }
 
@@ -49,7 +50,7 @@ namespace hasha::Patterns {
             LexemeType::Identifier,
             EQUALS
     };
-    constexpr Pattern<2> FunctionCall{
+    inline const Pattern<2> FunctionCall{
             LexemeType::Identifier,
             LPAREN
     };

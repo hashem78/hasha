@@ -297,6 +297,7 @@ namespace hasha {
                     }
                     case Identifier: {
 //                        fmt::print("Function call {} with {} args\n", out_tok.to_string(), args[out_tok.get_id()] + 1);
+
                         token_list->push_back(FunctionCall::create(out_tok.get_data(), args[out_tok.get_id()] + 1));
                         break;
                     }
@@ -355,7 +356,7 @@ namespace hasha {
             return assignment;
         }
 
-        ErrorOr<TokenListPtr> parse_multiple(Lexeme left, Lexeme right, Lexeme separator = COMMA) {
+        ErrorOr<TokenListPtr> parse_multiple(const Lexeme &left, const Lexeme &right, const Lexeme &separator = COMMA) {
 
             EXPECT(left)
 
@@ -388,21 +389,6 @@ namespace hasha {
             }
             EXPECT(right)
             return token_list;
-        }
-
-        ErrorOr<FunctionCall::Ptr> function_call() {
-
-            auto callee = identifier();
-            VERIFY(callee)
-
-            auto args = parse_multiple(LPAREN, RPAREN);
-            VERIFY(args)
-
-            if (peek() == SEMICOLON) {
-                EXPECT(SEMICOLON)
-            }
-
-            return FunctionCall::create(std::move(get<Identifier::Ptr>(callee)), get<TokenListPtr>(args));
         }
 
         ErrorOr<Block::Ptr> block() noexcept {
@@ -439,9 +425,9 @@ namespace hasha {
                     VERIFY(arr_decl)
                     token_list->push_back(std::move(get<Declaration::Ptr>(arr_decl)));
                 } else if (match(Patterns::FunctionCall)) {
-                    auto fn_call = function_call();
-                    VERIFY(fn_call)
-                    token_list->push_back(std::move(get<FunctionCall::Ptr>(fn_call)));
+//                    auto fn_call = function_call();
+//                    VERIFY(fn_call)
+//                    token_list->push_back(std::move(get<FunctionCall::Ptr>(fn_call)));
                 } else {
                     advance();
                 }
