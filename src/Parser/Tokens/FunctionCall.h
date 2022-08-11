@@ -1,40 +1,29 @@
 //
-// Created by mythi on 30/07/22.
+// Created by mythi on 11/08/22.
 //
 
 #ifndef HASHA_FUNCTIONCALL_H
 #define HASHA_FUNCTIONCALL_H
 
-#include <utility>
-
 #include "Token.h"
-#include "Identifier.h"
 #include "fmt/format.h"
 
 namespace hasha {
 
     class FunctionCall : public Token {
-        Identifier::Ptr m_callee;
-        TokenListPtr m_args;
-
-        FunctionCall(Identifier::Ptr callee, TokenListPtr args);
-
+            std::string m_callee;
+            int m_arg_count;
+        FunctionCall(std::string callee,int arg_count);
     public:
         using Ptr = std::unique_ptr<FunctionCall>;
+        static Ptr create(std::string callee,int arg_count);
+        [[nodiscard]] const std::string &get_callee() const;
 
-        static Ptr create(Identifier::Ptr callee, TokenListPtr args);
+        [[nodiscard]] int get_arg_count() const;
 
-        [[nodiscard]]
-        const Identifier::Ptr &get_callee() const;
+        [[nodiscard]] nlohmann::json to_json() const override;
 
-        [[nodiscard]]
-        const TokenListPtr &get_args() const;
-
-        [[nodiscard]]
-        nlohmann::json to_json() const override;
-
-        [[nodiscard]]
-        std::string to_string() const override;
+        [[nodiscard]] std::string to_string() const override;
 
     };
 

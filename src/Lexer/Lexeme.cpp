@@ -72,5 +72,10 @@ namespace hasha {
         return m_is_boolean_operator;
     }
 
+    int Lexeme::get_id() const noexcept {
 
+        return m_id;
+    }
+
+    int Lexeme::id_counter = 0;
 } // hasha

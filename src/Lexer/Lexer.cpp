@@ -3,6 +3,7 @@
 //
 
 #include "Lexer.h"
+#include "Constants.h"
 
 #include <utility>
 #include <thread>
@@ -74,17 +75,13 @@ namespace hasha {
             } else if (token == "false") {
                 m_lexemes.push_back(FALSE);
             } else if (is_numeric_literal(token)) {
-                m_produced_literals.push_back(std::make_unique<std::string>(token));
-                m_lexemes.push_back({m_produced_literals.back()->c_str(), LexemeType::Literal});
+                m_lexemes.push_back({token, LexemeType::Literal});
             } else if (is_string_literal(token)) {
-                m_produced_literals.push_back(std::make_unique<std::string>(token));
-                m_lexemes.push_back({m_produced_literals.back()->c_str(), LexemeType::Literal, true});
+                m_lexemes.push_back({token, LexemeType::Literal, true});
             } else if (is_identifier(token)) {
-                m_produced_identifiers.push_back(std::make_unique<std::string>(token));
-                m_lexemes.push_back({m_produced_identifiers.back()->c_str(), LexemeType::Identifier});
+                m_lexemes.push_back({token, LexemeType::Identifier});
             } else {
-                m_produced_identifiers.push_back(std::make_unique<std::string>(token));
-                m_lexemes.push_back({m_produced_identifiers.back()->c_str(), LexemeType::Illegal});
+                m_lexemes.push_back({token, LexemeType::Illegal});
             }
         }
 

@@ -40,7 +40,9 @@ namespace hasha {
     };
 
     class Lexeme {
-        const char *m_data;
+        static int id_counter;
+        int m_id;
+        std::string m_data;
         LexemeType m_type;
         Associativity m_associativity;
         Precedence m_precedence;
@@ -51,15 +53,16 @@ namespace hasha {
 
     public:
 
-        constexpr Lexeme(
-                const char *data,
+        Lexeme(
+                std::string data,
                 LexemeType type,
                 Associativity associativity,
                 Precedence precedence,
                 bool is_numeric_operator = false,
                 bool is_boolean_operator = false
         ) :
-                m_data(data),
+                m_id(id_counter++),
+                m_data(std::move(data)),
                 m_type(type),
                 m_associativity(associativity),
                 m_precedence(precedence),
@@ -68,13 +71,14 @@ namespace hasha {
                 m_is_numeric_operator(is_numeric_operator),
                 m_is_boolean_operator(is_boolean_operator) {}
 
-        constexpr Lexeme(
-                const char *data,
+        Lexeme(
+                std::string data,
                 LexemeType type,
                 bool isstring = false,
                 bool isboolean = false
         ) :
-                m_data(data),
+                m_id(id_counter++),
+                m_data(std::move(data)),
                 m_type(type),
                 m_associativity(Associativity::None),
                 m_precedence(Precedence::Level0), m_isstring(isstring),
@@ -83,7 +87,7 @@ namespace hasha {
                 m_is_boolean_operator(false) {}
 
 
-        constexpr auto operator<=>(const Lexeme &) const = default;
+        auto operator<=>(const Lexeme &) const = default;
 
         [[nodiscard]]
         nlohmann::json to_json() const;
@@ -114,31 +118,10 @@ namespace hasha {
 
         [[nodiscard]]
         bool is_boolean_operator() const;
+
+        [[nodiscard]]
+        int get_id() const noexcept;
     };
-
-    static constexpr Lexeme FN{"fn", LexemeType::Keyword};
-    static constexpr Lexeme RETURN{"return", LexemeType::Keyword};
-    static constexpr Lexeme TRUE{"true", LexemeType::Keyword, false, true};
-    static constexpr Lexeme FALSE{"false", LexemeType::Keyword, false, true};
-    static constexpr Lexeme LCURLY{"{", LexemeType::Symbol};
-    static constexpr Lexeme RCURLY{"}", LexemeType::Symbol};
-    static constexpr Lexeme LPAREN{"(", LexemeType::Symbol};
-    static constexpr Lexeme RPAREN{")", LexemeType::Symbol};
-    static constexpr Lexeme LBRACKET{"[", LexemeType::Symbol};
-    static constexpr Lexeme RBRACKET{"]", LexemeType::Symbol};
-    static constexpr Lexeme COMMA{",", LexemeType::Symbol};
-    static constexpr Lexeme SEMICOLON{";", LexemeType::Symbol};
-    static constexpr Lexeme EQUALS{"=", LexemeType::Operator, Associativity::Right, Precedence::Level1};
-    static constexpr Lexeme LAND{"&&", LexemeType::Operator, Associativity::Right, Precedence::Level2, false, true};
-    static constexpr Lexeme LOR{"||", LexemeType::Operator, Associativity::Right, Precedence::Level2, false, true};
-
-    static constexpr Lexeme HYPHEN{"-", LexemeType::Operator, Associativity::Left, Precedence::Level3, true};
-    static constexpr Lexeme ADDITION{"+", LexemeType::Operator, Associativity::Left, Precedence::Level3, true};
-    static constexpr Lexeme FSLASH{"/", LexemeType::Operator, Associativity::Left, Precedence::Level5, true};
-    static constexpr Lexeme ASTERISK{"*", LexemeType::Operator, Associativity::Left, Precedence::Level5, true};
-
-    static constexpr Lexeme ARROW{"->", LexemeType::Symbol};
-
 
     using LexemeList = std::deque<Lexeme>;
 

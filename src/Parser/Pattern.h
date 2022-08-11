@@ -8,7 +8,7 @@
 #include <array>
 #include <variant>
 #include "Lexeme.h"
-
+#include "Constants.h"
 namespace hasha::Patterns {
 
     class PatternFunctor {
@@ -32,17 +32,17 @@ namespace hasha::Patterns {
     template<size_t S>
     using Pattern = std::array<PatternType, S>;
 
-    constexpr Pattern<2> VariableAssignment{LexemeType::Identifier, EQUALS};
-    constexpr Pattern<3> VariableDeclaration{LexemeType::Identifier, LexemeType::Identifier, SEMICOLON};
-    constexpr Pattern<3> VariableDeclarationAndAssignment{LexemeType::Identifier, LexemeType::Identifier, EQUALS};
-    constexpr Pattern<5> ArrayDeclaration{
+     inline const Pattern<2> VariableAssignment{LexemeType::Identifier, EQUALS};
+     inline const Pattern<3> VariableDeclaration{LexemeType::Identifier, LexemeType::Identifier, SEMICOLON};
+     inline const Pattern<3> VariableDeclarationAndAssignment{LexemeType::Identifier, LexemeType::Identifier, EQUALS};
+     inline const Pattern<5> ArrayDeclaration{
             LexemeType::Identifier,
             LBRACKET,
             RBRACKET,
             LexemeType::Identifier,
             SEMICOLON
     };
-    constexpr Pattern<5> ArrayDeclarationAndAssignment{
+     inline const Pattern<5> ArrayDeclarationAndAssignment{
             LexemeType::Identifier,
             LBRACKET,
             RBRACKET,

@@ -12,6 +12,7 @@
 
 #include "magic_enum.hpp"
 
+#include "Constants.h"
 #include "Tokens/Token.h"
 #include "Lexeme.h"
 #include "Identifier.h"
@@ -200,10 +201,16 @@ namespace hasha {
             std::deque<Lexeme> output; // queue
             std::deque<Lexeme> operators; // stack
 
+            std::map<int, int> args;
+
             while (!match(SEMICOLON)) {
                 auto x = peek();
+                advance();
 
-                if (x.get_type() == LexemeType::Operator) {
+                if (x.get_type() == LexemeType::Identifier) {
+                    operators.push_front(x);
+                    args[x.get_id()] = 0;
+                } else if (x.get_type() == LexemeType::Operator) {
 
                     while (!operators.empty() && operators.front().get_type() == LexemeType::Operator) {
                         auto y = operators.front();
@@ -234,10 +241,23 @@ namespace hasha {
                     if (operators.front() != LPAREN)
                         break;
                     operators.pop_front();
+                    if (operators.front().get_type() == LexemeType::Identifier) {
+                        output.push_back(operators.front());
+                        operators.pop_front();
+                    }
                 } else {
-                    output.push_back(x);
+                    if (x == COMMA) {
+//                        fmt::print("-- FOUND COMMA\n");
+//                        fmt::print("-- The top operator is: {}\n", operators.front().to_string());
+//                        fmt::print("-- Status of operator stack\n");
+//                        for (const auto &op: operators) {
+//                            fmt::print("-- {}\n", op.to_string());
+//                        }
+                        args[(operators.begin() + 1)->get_id()]++;
+                    } else {
+                        output.push_back(x);
+                    }
                 }
-                advance();
             }
 
             while (!operators.empty()) {
@@ -275,11 +295,16 @@ namespace hasha {
                         }
                         break;
                     }
-
+                    case Identifier: {
+//                        fmt::print("Function call {} with {} args\n", out_tok.to_string(), args[out_tok.get_id()] + 1);
+                        token_list->push_back(FunctionCall::create(out_tok.get_data(), args[out_tok.get_id()] + 1));
+                        break;
+                    }
                     default:
                         return fmt::format("Unknown token {} in expression\n", out_tok.to_string());
                 }
             }
+
             return token_list;
 
         }

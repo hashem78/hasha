@@ -18,8 +18,9 @@ namespace hasha {
         auto fn = function();
         if (holds_alternative<ParseError>(fn))
             fmt::print("{}\n", get<ParseError>(fn));
-        else
+        else {
             fmt::print("{}\n", get<Function::FunctionPtr>(fn)->to_string());
+        }
     }
 
     const LexemeList &Parser::get_lexemes() const noexcept {
