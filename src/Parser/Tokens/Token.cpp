@@ -9,4 +9,11 @@ namespace hasha {
 
         return std::make_shared<TokenList>();
     }
+
+    void print_token_list(const TokenListPtr &tokens) {
+
+        for (const auto &token: *tokens) {
+            fmt::print("{}\n",token->to_string());
+        }
+    }
 } // hasha

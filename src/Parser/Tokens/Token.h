@@ -9,6 +9,7 @@
 #include <deque>
 
 #include "nlohmann/json.hpp"
+#include "fmt/core.h"
 
 namespace hasha {
 
@@ -29,6 +30,7 @@ namespace hasha {
     using TokenListPtr = std::shared_ptr<TokenList>;
 
     TokenListPtr create_token_list();
+    void print_token_list(const TokenListPtr& tokens);
 } // hasha
 
 #endif //HASHA_TOKEN_H
