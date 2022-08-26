@@ -2,8 +2,6 @@
 // Created by mythi on 21/07/22.
 //
 
-#include <thread>
-#include <utility>
 #include "Parser.h"
 
 #define EXPECT(lexeme) if(!match(lexeme)) {return fmt::format("Expected {} Found {}",lexeme.to_string(),peek().to_string());}else{advance();}
@@ -132,13 +130,13 @@ namespace hasha {
         return Declaration::create(type, name, std::move(assignment), true);
     }
 
-    ErrorOr<TokenListPtr> Parser::parse_expression() {
+    ErrorOr<TokenListPtr> Parser::parse_expression(const Lexeme &delimiter) {
 
         std::deque<Lexeme> output; // queue
         std::deque<Lexeme> operators; // stack
 
 
-        while (!match(SEMICOLON)) {
+        while (!match(delimiter)) {
             auto x = peek();
             advance();
 
@@ -305,6 +303,17 @@ namespace hasha {
         return token_list;
     }
 
+    ErrorOr<IfStatement::Ptr> Parser::if_statement() {
+
+        EXPECT(IF)
+        auto condition = TRY(parse_expression(LCURLY));
+        EXPECT(LCURLY)
+        auto blk = TRY(block());
+        EXPECT(RCURLY)
+
+        return IfStatement::create(std::move(condition), std::move(blk));
+    }
+
     ErrorOr<Block::Ptr> Parser::block() noexcept {
 
         auto token_list = create_token_list();
@@ -315,8 +324,9 @@ namespace hasha {
             if (match(RETURN)) {
                 return Block::create(token_list);
             }
-            if (match(Patterns::FunctionDefinition)) {
-                fmt::print("PARSING FUNCTION\n");
+            if (match(Patterns::IfStatement)) {
+                token_list->push_back(TRY(if_statement()));
+            } else if (match(Patterns::FunctionDefinition)) {
                 token_list->push_back(TRY(function()));
             } else if (match(Patterns::VariableAssignment)) {
                 token_list->push_back(TRY(variable_assignment()));

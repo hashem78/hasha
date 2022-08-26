@@ -34,6 +34,8 @@ namespace hasha {
                 m_lexemes.push_back(FN);
             } else if (token == "return") {
                 m_lexemes.push_back(RETURN);
+            } else if(token == "if"){
+                m_lexemes.push_back(IF);
             } else if (token == "{") {
                 m_lexemes.push_back(LCURLY);
             } else if (token == "}") {

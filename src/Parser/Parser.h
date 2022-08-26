@@ -8,8 +8,9 @@
 #include <optional>
 #include <variant>
 #include <deque>
-#include <thread>
 #include <stack>
+#include <utility>
+
 
 #include "magic_enum.hpp"
 
@@ -31,6 +32,7 @@
 #include "Operator/NumericOperator.h"
 #include "FunctionCall.h"
 #include "ErrorOr.h"
+#include "IfStatement.h"
 
 namespace hasha {
 
@@ -98,7 +100,7 @@ namespace hasha {
         ErrorOr<Declaration::Ptr> array_declaration_and_assignemnt();
 
 
-        ErrorOr<TokenListPtr> parse_expression();
+        ErrorOr<TokenListPtr> parse_expression(const Lexeme &delimiter = SEMICOLON);
 
         ErrorOr<Declaration::Ptr> variable_declaration_and_assignment();
 
@@ -122,6 +124,7 @@ namespace hasha {
 
         void parse();
 
+        ErrorOr<IfStatement::Ptr> if_statement();
     };
 
 } // hasha

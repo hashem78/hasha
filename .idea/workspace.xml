@@ -15,11 +15,16 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="The Lexer now catches illegal tokens.&#10;&#10;Might want to change this later to provide syntax analysis.">
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Change json indentation to one per level because way to right biased.">
+      <change afterPath="$PROJECT_DIR$/src/Parser/IfStatement.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Parser/IfStatement.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Lexer/Constants.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Constants.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexer.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexer.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Pattern.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Pattern.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,7 +125,7 @@
       <workItem from="1660312170751" duration="12956000" />
       <workItem from="1660390263182" duration="684000" />
       <workItem from="1661445161551" duration="1069000" />
-      <workItem from="1661504628066" duration="17477000" />
+      <workItem from="1661504628066" duration="19692000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <created>1658351946447</created>
@@ -353,7 +358,28 @@
       <option name="project" value="LOCAL" />
       <updated>1661525576976</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="Add missing Attribute">
+      <created>1661525592000</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1661525592000</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Cleanup unused methods and macros">
+      <created>1661525759983</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1661525759983</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Change json indentation to one per level because way to right biased.">
+      <created>1661527317573</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1661527317573</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -374,9 +400,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Rewrote massive parts of the parser.&#10;&#10;Also introduced operators to the lexer and parser.&#10;We can now parse assignments and declarations.&#10;We can now parse blocks.&#10;We can now parse simple mathematical expressions.&#10;Removed a lot of bloat." />
-    <MESSAGE value="Remove useless setters" />
-    <MESSAGE value="Rename VariableDeclaration -&gt; Declaration" />
     <MESSAGE value="Support for reassignments" />
     <MESSAGE value="Lexeme is now constexpr&#10;&#10;Strings created at compile time are now managed by std::vectors, because otherwise the const char* produced by std::string::c_str() goes out of scope too early." />
     <MESSAGE value="Remove useless decl" />
@@ -399,6 +422,9 @@
     <MESSAGE value="Fix identifier names with '_'" />
     <MESSAGE value="Massive codebase cleanup and refactoring" />
     <MESSAGE value="The Lexer now catches illegal tokens.&#10;&#10;Might want to change this later to provide syntax analysis." />
-    <option name="LAST_COMMIT_MESSAGE" value="The Lexer now catches illegal tokens.&#10;&#10;Might want to change this later to provide syntax analysis." />
+    <MESSAGE value="Add missing Attribute" />
+    <MESSAGE value="Cleanup unused methods and macros" />
+    <MESSAGE value="Change json indentation to one per level because way to right biased." />
+    <option name="LAST_COMMIT_MESSAGE" value="Change json indentation to one per level because way to right biased." />
   </component>
 </project>

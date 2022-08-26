@@ -69,6 +69,9 @@ namespace hasha::Patterns {
             ARROW,
             IDENTIFIER
     };
+    inline const Pattern<1> IfStatement {
+        IF,
+    };
 }
 
 #endif //HASHA_PATTERN_H
