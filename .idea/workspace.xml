@@ -15,7 +15,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Massive codebase cleanup and refactoring">
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="The Lexer now catches illegal tokens.&#10;&#10;Might want to change this later to provide syntax analysis.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Lexer/Lexer.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexer.h" afterDir="false" />
@@ -120,7 +120,7 @@
       <workItem from="1660312170751" duration="12956000" />
       <workItem from="1660390263182" duration="684000" />
       <workItem from="1661445161551" duration="1069000" />
-      <workItem from="1661504628066" duration="17106000" />
+      <workItem from="1661504628066" duration="17477000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <created>1658351946447</created>
@@ -346,7 +346,14 @@
       <option name="project" value="LOCAL" />
       <updated>1661524554448</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="The Lexer now catches illegal tokens.&#10;&#10;Might want to change this later to provide syntax analysis.">
+      <created>1661525576976</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1661525576976</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -367,7 +374,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Rewrote massive parts of the parser.&#10;&#10;Also introduced operators to the lexer and parser.&#10;We can now parse assignments and declarations.&#10;We can now parse blocks.&#10;We can now parse simple mathematical expressions." />
     <MESSAGE value="Rewrote massive parts of the parser.&#10;&#10;Also introduced operators to the lexer and parser.&#10;We can now parse assignments and declarations.&#10;We can now parse blocks.&#10;We can now parse simple mathematical expressions.&#10;Removed a lot of bloat." />
     <MESSAGE value="Remove useless setters" />
     <MESSAGE value="Rename VariableDeclaration -&gt; Declaration" />
@@ -392,6 +398,7 @@
     <MESSAGE value="Lexer: Return early on spaces" />
     <MESSAGE value="Fix identifier names with '_'" />
     <MESSAGE value="Massive codebase cleanup and refactoring" />
-    <option name="LAST_COMMIT_MESSAGE" value="Massive codebase cleanup and refactoring" />
+    <MESSAGE value="The Lexer now catches illegal tokens.&#10;&#10;Might want to change this later to provide syntax analysis." />
+    <option name="LAST_COMMIT_MESSAGE" value="The Lexer now catches illegal tokens.&#10;&#10;Might want to change this later to provide syntax analysis." />
   </component>
 </project>

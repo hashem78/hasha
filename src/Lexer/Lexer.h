@@ -22,6 +22,7 @@ namespace hasha {
 
         ErrorOr<void> lex();
 
+        [[nodiscard]]
         const LexemeList &get_lexemes() const;
 
     private:
