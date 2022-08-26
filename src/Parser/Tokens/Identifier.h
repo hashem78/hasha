@@ -12,13 +12,13 @@ namespace hasha {
 
     class Identifier : public Token {
 
-        std::string m_name;
+        std::string m_identifier;
 
-        explicit Identifier(std::string name) noexcept;
 
     public:
+        explicit Identifier(std::string name) noexcept;
+
         using Ptr = std::unique_ptr<Identifier>;
-        using RawPtr = Identifier*;
 
         static Ptr create(std::string name);
 
@@ -26,12 +26,9 @@ namespace hasha {
         nlohmann::json to_json() const override;
 
         [[nodiscard]]
-        std::string to_string() const override;
+        const std::string &get() const noexcept;
 
-        [[nodiscard]]
-        const std::string &get_name() const noexcept;
-
-        void set_name(const std::string &name) noexcept;
+        void set(const std::string &name) noexcept;
 
     };
 

@@ -13,27 +13,12 @@ namespace hasha {
         using Operator::Operator;
 
     public:
-        using NumericOperatorPtr = std::unique_ptr<NumericOperator>;
+        using Ptr = std::unique_ptr<NumericOperator>;
 
-        static NumericOperatorPtr create(std::string op) {
-
-            return std::make_unique<NumericOperator>(std::move(op));
-        }
+        static Ptr create(std::string op);
 
         [[nodiscard]]
-        nlohmann::json to_json() const override {
-
-            return {
-                    {"token_type", "NumericOperator"},
-                    {"operator",   m_op}
-            };
-        }
-
-        [[nodiscard]]
-        std::string to_string() const override {
-
-            return fmt::format("NumericOperator {}", m_op);
-        }
+        nlohmann::json to_json() const override;
     };
 
 } // hasha

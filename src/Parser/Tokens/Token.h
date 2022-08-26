@@ -14,13 +14,14 @@
 namespace hasha {
 
     class Token {
-
     public:
+        Token() = default;
+
         [[nodiscard]]
         virtual nlohmann::json to_json() const = 0;
 
         [[nodiscard]]
-        virtual std::string to_string() const = 0;
+        std::string to_string() const;
 
         virtual ~Token() = default;
     };
@@ -30,7 +31,9 @@ namespace hasha {
     using TokenListPtr = std::shared_ptr<TokenList>;
 
     TokenListPtr create_token_list();
-    void print_token_list(const TokenListPtr& tokens);
+    nlohmann::json token_list_to_json(const TokenList *tokens);
+
+    void print_token_list(const TokenList* tokens);
 } // hasha
 
 #endif //HASHA_TOKEN_H

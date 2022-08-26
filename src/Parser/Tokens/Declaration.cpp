@@ -4,13 +4,15 @@
 
 #include "Declaration.h"
 
+#include <memory>
+
 namespace hasha {
-    std::string Declaration::get_type() const {
+    Identifier Declaration::get_type() const {
 
         return m_type;
     }
 
-    std::string Declaration::get_name() const {
+    Identifier Declaration::get_name() const {
 
         return m_name;
     }
@@ -20,8 +22,8 @@ namespace hasha {
 
         auto json = nlohmann::json();
 
-        json["type"] = m_type;
-        json["name"] = m_name;
+        json["name"] = m_name.to_json();
+        json["type"] = m_type.to_json();
 
         if (m_isarray) {
             json["token_type"] = "ArrayDeclaration";
@@ -38,38 +40,30 @@ namespace hasha {
         return json;
     }
 
-    std::string Declaration::to_string() const {
-
-        if (m_assignment != nullptr) {
-            std::string str;
-            if (m_isarray) {
-                str = fmt::format("ArrayDeclaration {}[] {}\n\t", m_type, m_name);
-            } else {
-                str = fmt::format("Declaration {} {}\n\t", m_type, m_name);
-            }
-            str += m_assignment->to_string();
-            return str;
-        }
-
-        if (m_isarray) {
-            return fmt::format("ArrayDeclaration {} {}", m_type, m_name);
-        }
-
-        return fmt::format("Declaration {} {}", m_type, m_name);
-
-    }
-
-    Declaration::Declaration(std::string type, std::string name, Assignment::Ptr assignment, bool isarray) :
+    Declaration::Declaration(
+            Identifier type,
+            Identifier name,
+            Assignment::Ptr assignment,
+            bool isarray) :
             m_type(std::move(type)),
             m_name(std::move(name)),
             m_assignment(std::move(assignment)),
             m_isarray(isarray) {}
 
     Declaration::Ptr
-    Declaration::create(std::string type, std::string name, Assignment::Ptr tokens, bool isarray) {
+    Declaration::create(
+            Identifier type,
+            Identifier name,
+            Assignment::Ptr tokens,
+            bool isarray) {
 
-        return std::unique_ptr<Declaration>(
-                new Declaration(std::move(type), std::move(name), std::move(tokens), isarray));
+        return std::make_unique<Declaration>(
+
+                        std::move(type),
+                        std::move(name),
+                        std::move(tokens),
+                        isarray
+        );
     }
 
     TokenListPtr Declaration::get_tokens() const {

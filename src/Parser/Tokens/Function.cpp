@@ -4,42 +4,21 @@
 
 #include "Function.h"
 
+#include <memory>
+
 namespace hasha {
     nlohmann::json Function::to_json() const {
 
         auto json = nlohmann::json();
 
         json["token_type"] = "Function";
-        json["name"] = m_name->get_name();
-        json["return_type"] = m_return_type->get_name();
-        json["parameters"] = nlohmann::json::array();
-        for (const auto &param: *m_parameters) {
-            json["parameters"].push_back(param->to_json());
-        }
+        json["name"] = m_name.get();
+        json["return_type"] = m_return_type.get();
+        json["parameters"] = token_list_to_json(m_parameters.get());
         json["block"] = m_block->to_json();
-        json["return_expression"] = nlohmann::json::array();
-        for (const auto &token: *m_return_expression)
-            json["return_expression"].push_back(token->to_json());
+        json["return_expression"] = token_list_to_json(m_return_expression.get());
 
         return json;
-    }
-
-    std::string Function::to_string() const {
-
-        std::string str = fmt::format("-> Function {} {} \n - Parameters\n", m_name->get_name(),
-                                      m_return_type->get_name());
-
-        for (const auto &param: *m_parameters) {
-            str += fmt::format("  -> {}\n", param->to_string());
-        }
-        str += m_block->to_string();
-        std::string return_str;
-        for (const auto &token: *m_return_expression) {
-            return_str += token->to_string();
-        }
-        str += fmt::format("- Returns {}\n", return_str);
-
-        return str;
     }
 
     TokenListPtr Function::get_parameters() const {
@@ -47,7 +26,7 @@ namespace hasha {
         return m_parameters;
     }
 
-    const Block *Function::get_block() const {
+    const class Block *Function::get_block() const {
 
         return m_block.get();
     }
@@ -56,8 +35,8 @@ namespace hasha {
     Function::Function(
             TokenListPtr parameters,
             Block::Ptr block,
-            Identifier::Ptr return_type,
-            Identifier::Ptr name,
+            Identifier return_type,
+            Identifier name,
             TokenListPtr return_expression
     )
             : m_parameters(std::move(parameters)),
@@ -67,33 +46,33 @@ namespace hasha {
               m_return_expression(std::move(return_expression)) {
     }
 
-    Function::FunctionPtr Function::create(
+    Function::Ptr Function::create(
             TokenListPtr parameters,
             Block::Ptr block,
-            Identifier::Ptr return_type,
-            Identifier::Ptr name,
+            Identifier return_type,
+            Identifier name,
             TokenListPtr return_expression
     ) {
 
-        return std::unique_ptr<Function>(
-                new Function(
-                        std::move(parameters),
-                        std::move(block),
-                        std::move(name),
-                        std::move(return_type),
-                        std::move(return_expression)
-                )
+        return std::make_unique<Function>(
+
+                std::move(parameters),
+                std::move(block),
+                std::move(name),
+                std::move(return_type),
+                std::move(return_expression)
+
         );
     }
 
-    Identifier::RawPtr Function::get_name() const {
+    Identifier Function::get_name() const {
 
-        return m_name.get();
+        return m_name;
     }
 
-    Identifier::RawPtr Function::get_return_type() const {
+    Identifier Function::get_return_type() const {
 
-        return m_return_type.get();
+        return m_return_type;
     }
 
 

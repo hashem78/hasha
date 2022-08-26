@@ -15,27 +15,12 @@ namespace hasha {
     class NumericLiteral : public Literal {
         using Literal::Literal;
     public:
-        using NumericLiteralPtr = std::unique_ptr<NumericLiteral>;
+        using Ptr = std::unique_ptr<NumericLiteral>;
 
-        static NumericLiteralPtr create(std::string literal) {
-
-            return std::make_unique<NumericLiteral>(std::move(literal));
-        }
+        static Ptr create(std::string literal);
 
         [[nodiscard]]
-        nlohmann::json to_json() const override {
-
-            return nlohmann::json{
-                    {"token_type", "NumericLiteral"},
-                    {"literal",    m_literal}
-            };
-        }
-
-        [[nodiscard]]
-        std::string to_string() const override {
-
-            return fmt::format("NumericLiteral {}", m_literal);
-        }
+        nlohmann::json to_json() const override;
     };
 }
 

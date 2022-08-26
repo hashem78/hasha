@@ -4,38 +4,35 @@
 
 #include "Identifier.h"
 
+#include <memory>
+
 namespace hasha {
 
-    Identifier::Identifier(std::string name) noexcept: m_name(std::move(name)) {
+    Identifier::Identifier(std::string identifier) noexcept: m_identifier(std::move(identifier)) {
 
     }
 
-    Identifier::Ptr Identifier::create(std::string name) {
+    Identifier::Ptr Identifier::create(std::string identifier) {
 
-        return std::unique_ptr<Identifier>(new Identifier(std::move(name)));
+        return std::make_unique<Identifier>(std::move(identifier));
     }
 
     nlohmann::json Identifier::to_json() const {
 
         return {
                 {"token_type", "Identifier"},
-                {"name",       m_name}
+                {"identifier", m_identifier}
         };
     }
 
-    std::string Identifier::to_string() const {
+    const std::string &Identifier::get() const noexcept {
 
-        return fmt::format("Identitifer {}", m_name);
+        return m_identifier;
     }
 
-    const std::string &Identifier::get_name() const noexcept {
+    void Identifier::set(const std::string &identifier) noexcept {
 
-        return m_name;
-    }
-
-    void Identifier::set_name(const std::string &name) noexcept {
-
-        Identifier::m_name = name;
+        Identifier::m_identifier = identifier;
     }
 
 } // hasha

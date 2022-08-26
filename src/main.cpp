@@ -1,4 +1,3 @@
-#include "Lexer.h"
 #include "fmt/format.h"
 #include "Parser/Parser.h"
 
@@ -6,9 +5,9 @@ int main() {
 
     hasha::Parser parser("sample.hasha");
 
-    for (const auto &lexeme: parser.get_lexemes()) {
-        fmt::print("{}\n", lexeme.to_string());
-    }
+//    for (const auto &lexeme: parser.get_lexemes()) {
+//        fmt::print("{}\n", lexeme.to_string());
+//    }
     fmt::print("Starting Parser\n");
 
     parser.parse();

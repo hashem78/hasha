@@ -17,9 +17,10 @@ namespace hasha {
         TokenListPtr m_tokens;
         using Token::Token;
     public:
-        using Ptr = std::unique_ptr<Block>;
 
         explicit Block(TokenListPtr m_tokens);
+
+        using Ptr = std::unique_ptr<Block>;
 
         static Ptr create(TokenListPtr m_tokens);
 
@@ -28,9 +29,6 @@ namespace hasha {
 
         [[nodiscard]]
         nlohmann::json to_json() const override;
-
-        [[nodiscard]]
-        std::string to_string() const override;
 
     };
 

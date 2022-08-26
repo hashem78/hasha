@@ -8,7 +8,7 @@ namespace hasha {
 
     nlohmann::json Lexeme::to_json() const {
 
-        if (m_type == LexemeType::Operator) {
+        if (m_type == LexemeType::OPERATOR) {
             return {
                     {"data",          m_data},
                     {"type",          magic_enum::enum_name(m_type)},
@@ -23,7 +23,7 @@ namespace hasha {
 
     std::string Lexeme::to_string() const {
 
-        if (m_type == LexemeType::Operator) {
+        if (m_type == LexemeType::OPERATOR) {
             return fmt::format("{} {} {} {}", magic_enum::enum_name(m_type),
                                m_data, magic_enum::enum_name(m_associativity),
                                magic_enum::enum_name(m_precedence));

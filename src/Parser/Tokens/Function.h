@@ -11,30 +11,32 @@
 #include "Identifier.h"
 
 namespace hasha {
+    class Block;
 
     class Function : public Token {
         TokenListPtr m_parameters;
         Block::Ptr m_block;
-        Identifier::Ptr m_return_type;
-        Identifier::Ptr m_name;
+        Identifier m_return_type;
+        Identifier m_name;
         TokenListPtr m_return_expression;
+
+    public:
 
         Function(
                 TokenListPtr parameters,
                 Block::Ptr block,
-                Identifier::Ptr return_type,
-                Identifier::Ptr name,
+                Identifier return_type,
+                Identifier name,
                 TokenListPtr return_expression
         );
 
-    public:
-        using FunctionPtr = std::unique_ptr<Function>;
+        using Ptr = std::unique_ptr<Function>;
 
-        static FunctionPtr create(
+        static Ptr create(
                 TokenListPtr parameters,
                 Block::Ptr block,
-                Identifier::Ptr return_type,
-                Identifier::Ptr name,
+                Identifier return_type,
+                Identifier name,
                 TokenListPtr return_expression
         );
 
@@ -42,19 +44,16 @@ namespace hasha {
         nlohmann::json to_json() const override;
 
         [[nodiscard]]
-        std::string to_string() const override;
-
-        [[nodiscard]]
         TokenListPtr get_parameters() const;
 
         [[nodiscard]]
-        const Block *get_block() const;
+        const class Block *get_block() const;
 
         [[nodiscard]]
-        Identifier::RawPtr get_name() const;
+        Identifier get_name() const;
 
         [[nodiscard]]
-        Identifier::RawPtr get_return_type() const;
+        Identifier get_return_type() const;
 
     };
 

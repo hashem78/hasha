@@ -7,6 +7,7 @@
 
 #include "Token.h"
 #include "fmt/format.h"
+#include "Identifier.h"
 
 
 namespace hasha {
@@ -15,32 +16,31 @@ namespace hasha {
     protected:
 
         bool m_isarray;
-    public:
+
+        [[nodiscard]]
         bool isarray() const;
 
     protected:
-        std::string m_name;
+        Identifier m_name;
         TokenListPtr m_tokens;
-
-        Assignment(std::string name, TokenListPtr, bool isarray = false);
 
     public:
 
+        Assignment(Identifier name, TokenListPtr, bool isarray = false);
+
         using Ptr = std::unique_ptr<Assignment>;
 
-        static Ptr create(std::string name, TokenListPtr, bool isarray = false);
+
+        static Ptr create(Identifier name, TokenListPtr, bool isarray = false);
 
         [[nodiscard]]
-        std::string get_name() const;
+        Identifier get_name() const;
 
         [[nodiscard]]
         TokenListPtr get_tokens() const;
 
         [[nodiscard]]
         nlohmann::json to_json() const override;
-
-        [[nodiscard]]
-        std::string to_string() const override;
 
     };
 

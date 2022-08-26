@@ -75,13 +75,13 @@ namespace hasha {
             } else if (token == "false") {
                 m_lexemes.push_back(FALSE);
             } else if (is_numeric_literal(token)) {
-                m_lexemes.push_back({token, LexemeType::Literal});
+                m_lexemes.push_back({token, LexemeType::LITERAL});
             } else if (is_string_literal(token)) {
-                m_lexemes.push_back({token, LexemeType::Literal, true});
+                m_lexemes.push_back({token, LexemeType::LITERAL, true});
             } else if (is_identifier(token)) {
-                m_lexemes.push_back({token, LexemeType::Identifier});
+                m_lexemes.push_back({token, LexemeType::IDENTIFIER});
             } else {
-                m_lexemes.push_back({token, LexemeType::Illegal});
+                m_lexemes.push_back({token, LexemeType::ILLEGAL});
             }
         }
 

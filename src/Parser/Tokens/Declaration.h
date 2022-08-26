@@ -8,6 +8,7 @@
 #include "Token.h"
 #include "fmt/format.h"
 #include "Assignment.h"
+#include "Identifier.h"
 
 namespace hasha {
 
@@ -15,45 +16,39 @@ namespace hasha {
 
     protected:
 
-        std::string m_type;
-        std::string m_name;
+        Identifier m_type;
+        Identifier m_name;
         bool m_isarray;
         Assignment::Ptr m_assignment;
 
+    public:
+
         Declaration(
-                std::string type,
-                std::string name,
+                Identifier type,
+                Identifier name,
                 Assignment::Ptr asssignment = nullptr,
                 bool isarray = false
         );
-
-    public:
-
         using Ptr = std::unique_ptr<Declaration>;
 
         static Ptr create(
-                std::string type,
-                std::string name,
+                Identifier type,
+                Identifier name,
                 Assignment::Ptr assignment = nullptr,
                 bool isarray = false
         );
 
         [[nodiscard]]
-        std::string get_type() const;
+        Identifier get_type() const;
 
         [[nodiscard]]
-        std::string get_name() const;
+        Identifier get_name() const;
 
         [[nodiscard]]
         TokenListPtr get_tokens() const;
 
         [[nodiscard]]
         nlohmann::json to_json() const override;
-
-        [[nodiscard]]
-        std::string to_string() const override;
-
-
     };
 
 } // hasha

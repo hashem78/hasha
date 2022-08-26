@@ -16,12 +16,12 @@
 namespace hasha {
 
     enum LexemeType {
-        Operator,
-        Identifier,
-        Literal,
-        Symbol,
-        Keyword,
-        Illegal,
+        OPERATOR,
+        IDENTIFIER,
+        LITERAL,
+        SYMBOL,
+        KEYWORD,
+        ILLEGAL,
     };
 
     enum Associativity {

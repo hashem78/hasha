@@ -15,28 +15,25 @@
 namespace hasha {
 
     class Parameter : public Token {
-        std::string m_name;
-        std::string m_type;
-
-        explicit Parameter(std::string name, std::string type) noexcept;
+        Identifier m_name;
+        Identifier m_type;
 
     public:
+        explicit Parameter(Identifier name, Identifier type) noexcept;
+
         using Ptr = std::unique_ptr<Parameter>;
 
-        static Ptr create(std::string name, std::string type);
+        static Ptr create(Identifier name, Identifier type);
 
         [[nodiscard]]
         nlohmann::json to_json() const override;
 
         [[nodiscard]]
-        std::string to_string() const override;
-
-        [[nodiscard]]
-        const std::string &get_name() const noexcept;
+        const Identifier &get_name() const noexcept;
 
 
         [[nodiscard]]
-        const std::string &get_type() const noexcept;
+        const Identifier &get_type() const noexcept;
 
     };
 

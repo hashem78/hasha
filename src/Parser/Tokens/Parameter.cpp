@@ -4,37 +4,35 @@
 
 #include "Parameter.h"
 
+#include <memory>
+
 namespace hasha {
-    Parameter::Parameter(std::string name, std::string type) noexcept: m_name(std::move(name)),
-                                                                       m_type(std::move(type)) {
+    Parameter::Parameter(Identifier type, Identifier name) noexcept:
+            m_type(std::move(type)),
+            m_name(std::move(name)) {
 
     }
 
-    Parameter::Ptr Parameter::create(std::string name, std::string type) {
+    Parameter::Ptr Parameter::create(Identifier type, Identifier name) {
 
-        return std::unique_ptr<Parameter>(new Parameter(std::move(name), std::move(type)));
+        return std::make_unique<Parameter>(std::move(name), std::move(type));
     }
 
     nlohmann::json Parameter::to_json() const {
 
         return {
                 {"token_type", "Parameter"},
-                {"name",       m_name},
-                {"type",       m_type}
+                {"type",       m_type.to_json()},
+                {"name",       m_name.to_json()}
         };
     }
 
-    std::string Parameter::to_string() const {
-
-        return fmt::format("Parameter {} {}", m_name, m_type);
-    }
-
-    const std::string &Parameter::get_name() const noexcept {
+    const Identifier &Parameter::get_name() const noexcept {
 
         return m_name;
     }
 
-    const std::string &Parameter::get_type() const noexcept {
+    const Identifier &Parameter::get_type() const noexcept {
 
         return m_type;
     }

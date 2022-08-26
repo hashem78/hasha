@@ -13,22 +13,17 @@
 namespace hasha {
 
     class Literal : public Token {
-
+        using Ptr = std::shared_ptr<Literal>;
     protected:
         std::string m_literal;
 
     public:
-        explicit Literal(std::string literal) : m_literal(std::move(literal)) {
 
-        }
+        explicit Literal(std::string literal);
 
         [[nodiscard]]
-        const std::string &get_literal() const noexcept {
+        const std::string &get_literal() const noexcept;
 
-            return m_literal;
-        }
-
-        using LiteralPtr = std::shared_ptr<Literal>;
     };
 
 

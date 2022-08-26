@@ -10,10 +10,27 @@ namespace hasha {
         return std::make_shared<TokenList>();
     }
 
-    void print_token_list(const TokenListPtr &tokens) {
+
+    nlohmann::json token_list_to_json(const TokenList *tokens) {
+
+        auto arr = nlohmann::json::array();
+        for (const auto &token: *tokens) {
+            arr.push_back(token->to_json());
+        }
+        return arr;
+    }
+
+    void print_token_list(const TokenList *tokens) {
 
         for (const auto &token: *tokens) {
-            fmt::print("{}\n",token->to_string());
+            fmt::print("{}\n", token->to_string());
         }
+    }
+
+    std::string Token::to_string() const {
+
+        std::stringstream str;
+        str << std::setw(4) << to_json();
+        return str.str();
     }
 } // hasha

@@ -1,43 +1,47 @@
 //
-// Created by mythi on 11/08/22.
+// Created by mythi on 12/08/22.
 //
 
 #include "FunctionCall.h"
 
+#include <memory>
 #include <utility>
 
 namespace hasha {
-    nlohmann::json FunctionCall::to_json() const {
-
-        return {
-                {"token_type", "FunctionCall"},
-                {"callee",     m_callee},
-                {"arg_count",  m_arg_count}
-        };
-    }
-
-    std::string FunctionCall::to_string() const {
-
-        return fmt::format("{} {}-{}", "FunctionCall", m_callee, m_arg_count);
-    }
-
-    const std::string &FunctionCall::get_callee() const {
+    std::string FunctionCall::get_callee() const noexcept {
 
         return m_callee;
     }
 
-    int FunctionCall::get_arg_count() const {
+    TokenListPtr FunctionCall::get_arguments() const noexcept {
 
-        return m_arg_count;
+        return m_arguments;
     }
 
-    FunctionCall::FunctionCall(std::string callee, int arg_count) : m_callee(std::move(callee)),
-                                                                    m_arg_count(arg_count) {
+    FunctionCall::FunctionCall(std::string callee, TokenListPtr tokens) :
+            m_callee(std::move(callee)),
+            m_arguments(std::move(tokens)) {
 
     }
 
-    FunctionCall::Ptr FunctionCall::create(std::string callee, int arg_count) {
+    int FunctionCall::get_number_of_args() const noexcept {
 
-        return std::unique_ptr<FunctionCall>(new FunctionCall(std::move(callee), arg_count));
+        return static_cast<int>(m_arguments->size());
     }
+
+    FunctionCall::Ptr FunctionCall::create(std::string callee, TokenListPtr tokens) {
+
+        return std::make_unique<FunctionCall>(std::move(callee), std::move(tokens));
+    }
+
+    nlohmann::json FunctionCall::to_json() const {
+
+        auto json = nlohmann::json();
+
+        json["token_type"] = "FunctionCall";
+        json["callee"] = m_callee;
+        json["arguments"] = token_list_to_json(m_arguments.get());
+        return json;
+    }
+
 } // hasha

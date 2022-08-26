@@ -4,10 +4,12 @@
 
 #include "Assignment.h"
 
+#include <memory>
+
 namespace hasha {
 
 
-    std::string Assignment::get_name() const {
+    Identifier Assignment::get_name() const {
 
         return m_name;
     }
@@ -17,7 +19,7 @@ namespace hasha {
 
         auto json = nlohmann::json();
 
-        json["name"] = m_name;
+        json["name"] = m_name.to_json();
 
         if (m_isarray) {
             json["token_type"] = "ArrayAssignment";
@@ -25,39 +27,32 @@ namespace hasha {
             json["token_type"] = "Assignment";
         }
 
-
-        json["tokens"] = nlohmann::json::array();
-        for (const auto &token: *m_tokens) {
-            json["tokens"].push_back(token->to_json());
-        }
-
+        json["tokens"] = token_list_to_json(m_tokens.get());
 
         return json;
     }
 
-    std::string Assignment::to_string() const {
-
-        std::string str;
-        for (const auto &token: *m_tokens) {
-            str += fmt::format("{} ", token->to_string());
-        }
-        if (m_isarray) {
-
-            return fmt::format("ArrayAssignment {}\n     - [ {}]", m_name, str);
-        }
-        return fmt::format("Assignment {}\n     - {}", m_name, str);
-    }
-
-    Assignment::Assignment(std::string name, TokenListPtr tokens, bool isarray) :
+    Assignment::Assignment(
+            Identifier name,
+            TokenListPtr tokens,
+            bool isarray
+    ) :
             m_name(std::move(name)),
             m_tokens(std::move(tokens)),
             m_isarray(isarray) {}
 
-    Assignment::Ptr
-    Assignment::create(std::string name, TokenListPtr tokens, bool isarray) {
+    Assignment::Ptr Assignment::create(
+            Identifier name,
+            TokenListPtr tokens,
+            bool isarray
+    ) {
 
-        return std::unique_ptr<Assignment>(
-                new Assignment(std::move(name), std::move(tokens), isarray));
+        return std::make_unique<Assignment>(
+                std::move(name),
+                std::move(tokens),
+                isarray
+
+        );
     }
 
     TokenListPtr Assignment::get_tokens() const {

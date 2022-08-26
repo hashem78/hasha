@@ -9,6 +9,7 @@
 #include <variant>
 #include <deque>
 #include <thread>
+#include <stack>
 
 #include "magic_enum.hpp"
 
@@ -29,15 +30,9 @@
 #include "Operator/BooleanOperator.h"
 #include "Operator/NumericOperator.h"
 #include "FunctionCall.h"
-
-#define VERIFY(var) if (holds_alternative<ParseError>(var)) {return get<ParseError>(var);}
-#define EXPECT(lexeme) if(!match(lexeme)) {return fmt::format("Expected {} Found {}",lexeme.to_string(),peek().to_string());}else{advance();}
-#define EXPECT_TYPE(lexemeType) if(!match(lexemeType)) {return fmt::format("Expected {} Found {}",magic_enum::enum_name(lexemeType),peek().to_string());}else{advance();}
+#include "ErrorOr.h"
 
 namespace hasha {
-    using ParseError = std::string;
-    template<typename Token= TokenPtr, typename Err = ParseError>
-    using ErrorOr = std::variant<Token, Err>;
 
     class Parser {
         Lexer lexer;
@@ -50,441 +45,71 @@ namespace hasha {
         Lexeme peek(std::size_t k = 0) const noexcept;
 
         [[nodiscard]]
-        bool done() const noexcept {
+        bool done() const noexcept;
 
-            if (cursor >= lexemes.size())
-                return true;
-
-            return false;
-        }
-
-        Lexeme advance() noexcept {
-
-            if (!done())
-                return lexemes[cursor++];
-
-            return lexemes.back();
-        }
+        Lexeme advance() noexcept;
 
         [[nodiscard]]
-        inline bool match(const Lexeme &match) const noexcept {
-
-            if (peek() == match) {
-                return true;
-            }
-            return false;
-        }
+        inline bool match(const Lexeme &match) const noexcept;
 
         [[nodiscard]]
-        inline bool match(const LexemeType &match) const noexcept {
-
-            if (peek().get_type() == match) {
-                return true;
-            }
-            return false;
-        }
+        inline bool match(const LexemeType &match) const noexcept;
 
         template<size_t S>
         [[nodiscard]]
         inline bool match(const Patterns::Pattern<S> &matchers) const noexcept {
 
+            int lookahed = 0;
             for (std::size_t i = 0; i < matchers.size(); ++i) {
 
-                auto matcher = matchers[i];
+                const auto &matcher = matchers[i];
 
                 if (holds_alternative<LexemeType>(matcher)) {
                     auto type = get<LexemeType>(matcher);
-                    if (peek(i).get_type() != type)
+                    if (peek(i + lookahed).get_type() != type)
                         return false;
                 } else if (holds_alternative<Lexeme>(matcher)) {
                     auto lexeme = get<Lexeme>(matcher);
-
-                    if (peek(i) != lexeme)
+                    if (peek(i + lookahed) != lexeme)
                         return false;
                 } else {
+
                     auto functor = get<Patterns::PatternFunctor>(matcher);
-                    return functor.call(lexemes, cursor);
+                    Patterns::FunctorResult result = functor(lexemes, cursor);
+                    if (result.state == Patterns::FunctorState::MATCH) {
+                        lookahed += result.cursor;
+                    } else {
+                        return false;
+                    }
                 }
             }
             return true;
         }
 
         [[nodiscard]]
-        ErrorOr<Identifier::Ptr> identifier() noexcept {
+        ErrorOr<Identifier> identifier() noexcept;
 
-            const auto name = peek().get_data();
+        ErrorOr<Parameter::Ptr> parameter();
 
-            if (name.empty()) return "Failed to parse identifier name";
+        ErrorOr<Declaration::Ptr> variable_declaration();
 
-            if (std::isdigit(name[0])) return "An identifier cannot start with a digit";
+        ErrorOr<Declaration::Ptr> array_declaration();
 
-            auto is_legal = [](char c) -> bool {
-                return std::isalnum(c) || c == '_';
-            };
-            for (const auto &ch: name) {
-                if (!is_legal(ch)) {
-                    return fmt::format("Illegal character {}", ch);
-                }
-            }
+        ErrorOr<Declaration::Ptr> array_declaration_and_assignemnt();
 
-            advance();
 
-            return Identifier::create(name);
-        }
+        ErrorOr<TokenListPtr> parse_expression();
 
-        ErrorOr<Parameter::Ptr> parameter() {
+        ErrorOr<Declaration::Ptr> variable_declaration_and_assignment();
 
-            auto i_type = identifier();
-            auto i_name = identifier();
+        ErrorOr<Assignment::Ptr> variable_assignment();
 
-            VERIFY(i_type)
-            VERIFY(i_name)
+        ErrorOr<TokenListPtr> parse_multiple(const Lexeme &left, const Lexeme &right, const Lexeme &separator = COMMA);
 
-            auto name = get<Identifier::Ptr>(i_type)->get_name();
-            auto type = get<Identifier::Ptr>(i_name)->get_name();
 
-            if (match(COMMA)) advance();
+        ErrorOr<Block::Ptr> block() noexcept;
 
-            return Parameter::create(name, type);
-        }
-
-        ErrorOr<Declaration::Ptr> variable_declaration() {
-
-            auto i_type = identifier();
-            auto i_name = identifier();
-
-            VERIFY(i_type)
-            VERIFY(i_name)
-
-            auto type = get<Identifier::Ptr>(i_type)->get_name();
-            auto name = get<Identifier::Ptr>(i_name)->get_name();
-
-            EXPECT(SEMICOLON)
-
-            return Declaration::create(type, name);
-
-        }
-
-
-        ErrorOr<Declaration::Ptr> array_declaration_and_assignemnt() {
-
-            auto type = peek().get_data();
-            EXPECT_TYPE(LexemeType::Identifier)
-            EXPECT(LBRACKET)
-            EXPECT(RBRACKET)
-
-            auto name = peek().get_data();
-
-            EXPECT_TYPE(LexemeType::Identifier)
-            EXPECT(EQUALS)
-
-            auto token_list = parse_multiple(LBRACKET, RBRACKET);
-            VERIFY(token_list)
-            auto assignment = Assignment::create(name, get<TokenListPtr>(token_list), true);
-            return Declaration::create(type, name, std::move(assignment), true);
-        }
-
-        ErrorOr<Declaration::Ptr> array_declaration() {
-
-            auto type = peek().get_data();
-            EXPECT_TYPE(LexemeType::Identifier)
-            EXPECT(LBRACKET)
-            EXPECT(RBRACKET)
-
-            auto name = peek().get_data();
-            EXPECT_TYPE(LexemeType::Identifier)
-            return Declaration::create(type, name, nullptr, true);
-        }
-
-        ErrorOr<TokenListPtr> parse_expression() {
-
-            std::deque<Lexeme> output; // queue
-            std::deque<Lexeme> operators; // stack
-
-            std::map<int, int> args;
-
-            while (!match(SEMICOLON)) {
-                auto x = peek();
-                advance();
-
-                if (x.get_type() == LexemeType::Identifier) {
-                    operators.push_front(x);
-                    args[x.get_id()] = 0;
-                } else if (x.get_type() == LexemeType::Operator) {
-
-                    while (!operators.empty() && operators.front().get_type() == LexemeType::Operator) {
-                        auto y = operators.front();
-
-                        if ((x.get_associativity() == Associativity::Left &&
-                             x.get_precedence() <= y.get_precedence()) ||
-                            (x.get_associativity() == Associativity::Right &&
-                             x.get_precedence() < y.get_precedence())) {
-                            output.push_back(y);
-                            operators.pop_front();
-
-                        } else {
-                            break;
-                        }
-
-                    }
-                    operators.push_front(x);
-                } else if (x == LPAREN) {
-                    operators.push_front(x);
-                } else if (x == RPAREN) {
-                    while (operators.front() != LPAREN) {
-                        // TODO: If the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
-                        if (operators.empty()) break;
-                        output.push_back(operators.front());
-                        operators.pop_front();
-                    }
-                    // TODO: If the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
-                    if (operators.front() != LPAREN)
-                        break;
-                    operators.pop_front();
-                    if (operators.front().get_type() == LexemeType::Identifier) {
-                        output.push_back(operators.front());
-                        operators.pop_front();
-                    }
-                } else {
-                    if (x == COMMA) {
-//                        fmt::print("-- FOUND COMMA\n");
-//                        fmt::print("-- The top operator is: {}\n", operators.front().to_string());
-//                        fmt::print("-- Status of operator stack\n");
-//                        for (const auto &op: operators) {
-//                            fmt::print("-- {}\n", op.to_string());
-//                        }
-                        args[(operators.begin() + 1)->get_id()]++;
-                    } else {
-                        output.push_back(x);
-                    }
-                }
-            }
-
-            while (!operators.empty()) {
-                output.push_back(operators.front());
-                operators.pop_front();
-            }
-
-            auto token_list = create_token_list();
-
-
-            for (auto &out_tok: output) {
-                switch (out_tok.get_type()) {
-
-                    case Operator: {
-                        if (out_tok.is_boolean_operator()) {
-
-                            token_list->push_back(BooleanOperator::create(out_tok.get_data()));
-                        } else {
-
-                            token_list->push_back(NumericOperator::create(out_tok.get_data()));
-                        }
-                        break;
-                    }
-                    case Literal: {
-                        if (out_tok.is_string()) {
-                            token_list->push_back(StringLiteral::create(out_tok.get_data()));
-                        } else {
-                            token_list->push_back(NumericLiteral::create(out_tok.get_data()));
-                        }
-                        break;
-                    }
-                    case Keyword: {
-                        if (out_tok.is_boolean()) {
-                            token_list->push_back(BooleanLiteral::create(out_tok.get_data()));
-                        }
-                        break;
-                    }
-                    case Identifier: {
-//                        fmt::print("Function call {} with {} args\n", out_tok.to_string(), args[out_tok.get_id()] + 1);
-
-                        token_list->push_back(FunctionCall::create(out_tok.get_data(), args[out_tok.get_id()] + 1));
-                        break;
-                    }
-                    default:
-                        return fmt::format("Unknown token {} in expression\n", out_tok.to_string());
-                }
-            }
-
-            return token_list;
-
-        }
-
-        ErrorOr<Declaration::Ptr> variable_declaration_and_assignment() {
-
-            auto i_type = identifier();
-            auto i_name = identifier();
-
-            VERIFY(i_type)
-            VERIFY(i_name)
-
-            auto type = get<Identifier::Ptr>(i_type)->get_name();
-            auto name = get<Identifier::Ptr>(i_name)->get_name();
-
-            EXPECT(EQUALS)
-
-            auto token_list = parse_expression();
-            VERIFY(token_list)
-
-            EXPECT(SEMICOLON)
-            auto assignment = Assignment::create(name, get<TokenListPtr>(token_list));
-            return Declaration::create(type, name, std::move(assignment));
-        }
-
-        ErrorOr<Assignment::Ptr> variable_assignment() {
-
-            auto name = peek().get_data();
-            EXPECT_TYPE(LexemeType::Identifier)
-            EXPECT(EQUALS)
-
-            Assignment::Ptr assignment;
-
-            if (peek() == LBRACKET) {
-                auto array_token_list = parse_multiple(LBRACKET, RBRACKET);
-                VERIFY(array_token_list)
-
-                assignment = Assignment::create(name, get<TokenListPtr>(array_token_list), true);
-
-            } else {
-                auto expression_token_list = parse_expression();
-                VERIFY(expression_token_list)
-                assignment = Assignment::create(name, get<TokenListPtr>(expression_token_list));
-            }
-
-            EXPECT(SEMICOLON)
-
-            return assignment;
-        }
-
-        ErrorOr<TokenListPtr> parse_multiple(const Lexeme &left, const Lexeme &right, const Lexeme &separator = COMMA) {
-
-            EXPECT(left)
-
-            auto token_list = create_token_list();
-
-            while (peek() != right) {
-                if (peek().get_type() == LexemeType::Literal) {
-                    auto i_litreal = peek();
-                    EXPECT_TYPE(LexemeType::Literal)
-                    if (peek() != right) {
-                        EXPECT(separator)
-                    }
-                    if (i_litreal.is_string()) {
-                        token_list->push_back(StringLiteral::create(i_litreal.get_data()));
-                    } else if (i_litreal.is_boolean()) {
-                        token_list->push_back(BooleanLiteral::create(i_litreal.get_data()));
-                    } else {
-                        token_list->push_back(NumericLiteral::create(i_litreal.get_data()));
-                    }
-                } else {
-                    auto expression = parse_expression();
-                    VERIFY(expression);
-                    auto i_expression = get<TokenListPtr>(expression);
-                    token_list->insert(
-                            token_list->end(),
-                            std::make_move_iterator(i_expression->begin()),
-                            std::make_move_iterator(i_expression->end())
-                    );
-                }
-            }
-            EXPECT(right)
-            return token_list;
-        }
-
-        ErrorOr<Block::Ptr> block() noexcept {
-
-            EXPECT(LCURLY)
-            auto token_list = create_token_list();
-            while (!match(RCURLY)) {
-
-                // In a return function block there is going to be a
-                // return keyword.
-                if (match(RETURN)) {
-                    return Block::create(token_list);
-                }
-
-                if (match(Patterns::VariableAssignment)) {
-                    auto var_assignment = variable_assignment();
-                    VERIFY(var_assignment)
-                    token_list->push_back(std::move(get<Assignment::Ptr>(var_assignment)));
-                } else if (match(Patterns::VariableDeclaration)) {
-                    auto var_decl = variable_declaration();
-                    VERIFY(var_decl)
-                    token_list->push_back(std::move(get<Declaration::Ptr>(var_decl)));
-
-                } else if (match(Patterns::VariableDeclarationAndAssignment)) {
-                    auto var_decl = variable_declaration_and_assignment();
-                    VERIFY(var_decl)
-                    token_list->push_back(std::move(get<Declaration::Ptr>(var_decl)));
-                } else if (match(Patterns::ArrayDeclaration)) {
-                    auto arr_decl = array_declaration();
-                    VERIFY(arr_decl)
-                    token_list->push_back(std::move(get<Declaration::Ptr>(arr_decl)));
-                } else if (match(Patterns::ArrayDeclarationAndAssignment)) {
-                    auto arr_decl = array_declaration_and_assignemnt();
-                    VERIFY(arr_decl)
-                    token_list->push_back(std::move(get<Declaration::Ptr>(arr_decl)));
-                } else if (match(Patterns::FunctionCall)) {
-//                    auto fn_call = function_call();
-//                    VERIFY(fn_call)
-//                    token_list->push_back(std::move(get<FunctionCall::Ptr>(fn_call)));
-                } else {
-                    advance();
-                }
-
-            }
-
-            EXPECT(RCURLY)
-
-            return Block::create(token_list);
-        }
-
-        ErrorOr<Function::FunctionPtr> function() {
-
-            EXPECT(FN)
-
-            auto name = identifier();
-
-            VERIFY(name)
-
-            EXPECT(LPAREN)
-
-            auto params = create_token_list();
-
-            while (!match(RPAREN)) {
-                auto param = parameter();
-                VERIFY(param)
-                params->push_back(std::move(get<Parameter::Ptr>(param)));
-            }
-
-            EXPECT(RPAREN)
-
-
-            EXPECT(ARROW)
-
-            auto return_type = identifier();
-            VERIFY(return_type)
-
-            auto parsed_block = block();
-
-            VERIFY(parsed_block)
-
-            EXPECT(RETURN)
-            auto return_expression = parse_expression();
-            VERIFY(return_expression)
-
-            EXPECT(SEMICOLON)
-            EXPECT(RCURLY)
-
-            return Function::create(
-                    std::move(params),
-                    std::move(get<Block::Ptr>(parsed_block)),
-                    std::move(get<Identifier::Ptr>(name)),
-                    std::move(get<Identifier::Ptr>(return_type)),
-                    std::move(get<TokenListPtr>(return_expression))
-            );
-
-        }
+        ErrorOr<Function::Ptr> function();
 
     public:
         [[nodiscard]]

@@ -9,21 +9,9 @@ namespace hasha {
 
         auto json = nlohmann::json();
         json["token_type"] = "Block";
-        auto tokens_json = nlohmann::json::array();
-        for (const auto &token: *m_tokens)
-            tokens_json.push_back(token->to_json());
-        json["m_tokens"] = tokens_json;
+        json["tokens"] = token_list_to_json(m_tokens.get());
 
         return json;
-    }
-
-    std::string Block::to_string() const {
-
-        std::string str = "- Block\n";
-        for (const auto &token: *m_tokens) {
-            str += fmt::format(" - {}\n", token->to_string());
-        }
-        return str;
     }
 
     const TokenList &Block::get_tokens() const {
