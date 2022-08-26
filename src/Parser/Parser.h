@@ -32,7 +32,9 @@
 #include "Operator/NumericOperator.h"
 #include "FunctionCall.h"
 #include "ErrorOr.h"
-#include "IfStatement.h"
+#include "Tokens/Statement/IfStatement.h"
+#include "Statement/ElifStatement.h"
+#include "Statement/ElseStatement.h"
 
 namespace hasha {
 
@@ -113,6 +115,37 @@ namespace hasha {
 
         ErrorOr<Function::Ptr> function();
 
+        ErrorOr<IfStatement::Ptr> if_statement();
+
+        ErrorOr<ElifStatement::Ptr> elif_statement();
+
+        ErrorOr<ElseStatement::Ptr> else_statement();
+
+        template<class T>
+        std::optional<const T*> last_of(const TokenList* tkns) {
+
+            for (auto it = tkns->rbegin(); it != tkns->rend(); it++) {
+
+                auto cast = dynamic_cast<T*>(it->get());
+                if(cast)
+                    return cast;
+            }
+            return {};
+        }
+        template<class T>
+        bool is_previous_of(const TokenList* tkns) {
+
+            if(tkns->empty())
+               return false;
+
+            auto cast = dynamic_cast<T*>(tkns->back().get());
+
+            if (cast)
+                return true;
+
+            return false;
+        }
+
     public:
         [[nodiscard]]
         const TokenList &get_tokens() const noexcept;
@@ -124,7 +157,6 @@ namespace hasha {
 
         void parse();
 
-        ErrorOr<IfStatement::Ptr> if_statement();
     };
 
 } // hasha

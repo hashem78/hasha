@@ -8,6 +8,8 @@
 namespace hasha {
     inline const Lexeme FN{"fn", LexemeType::KEYWORD};
     inline const Lexeme IF{"if", LexemeType::KEYWORD};
+    inline const Lexeme ELSE{"else", LexemeType::KEYWORD};
+    inline const Lexeme ELIF{"elif", LexemeType::KEYWORD};
     inline const Lexeme RETURN{"return", LexemeType::KEYWORD};
     inline const Lexeme TRUE{"true", LexemeType::KEYWORD, false, true};
     inline const Lexeme FALSE{"false", LexemeType::KEYWORD, false, true};

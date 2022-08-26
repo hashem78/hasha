@@ -11,6 +11,7 @@
 namespace hasha {
 
     class IfStatement : public Token {
+    protected:
         TokenListPtr condition;
         Block::Ptr block;
     public:

@@ -36,6 +36,10 @@ namespace hasha {
                 m_lexemes.push_back(RETURN);
             } else if(token == "if"){
                 m_lexemes.push_back(IF);
+            } else if(token == "else") {
+                m_lexemes.push_back(ELSE);
+            } else if(token == "elif") {
+                m_lexemes.push_back(ELIF);
             } else if (token == "{") {
                 m_lexemes.push_back(LCURLY);
             } else if (token == "}") {

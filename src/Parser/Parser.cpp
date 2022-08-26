@@ -6,6 +6,7 @@
 
 #define EXPECT(lexeme) if(!match(lexeme)) {return fmt::format("Expected {} Found {}",lexeme.to_string(),peek().to_string());}else{advance();}
 
+
 #define SWALLOW(lexeme) if(match(lexeme)) {advance();}
 
 namespace hasha {
@@ -29,6 +30,7 @@ namespace hasha {
         else {
             fmt::print("{}\n", blk.value()->to_string());
         }
+
     }
 
     Lexeme Parser::peek(std::size_t k) const noexcept {
@@ -314,6 +316,27 @@ namespace hasha {
         return IfStatement::create(std::move(condition), std::move(blk));
     }
 
+    ErrorOr<ElifStatement::Ptr> Parser::elif_statement() {
+
+        EXPECT(ELIF)
+        auto condition = TRY(parse_expression(LCURLY));
+        EXPECT(LCURLY)
+        auto blk = TRY(block());
+        EXPECT(RCURLY)
+
+        return ElifStatement::create(std::move(condition), std::move(blk));
+    }
+
+    ErrorOr<ElseStatement::Ptr> Parser::else_statement() {
+
+        EXPECT(ELSE)
+        EXPECT(LCURLY)
+        auto blk = TRY(block());
+        EXPECT(RCURLY)
+
+        return ElseStatement::create(std::move(blk));
+    }
+
     ErrorOr<Block::Ptr> Parser::block() noexcept {
 
         auto token_list = create_token_list();
@@ -326,6 +349,21 @@ namespace hasha {
             }
             if (match(Patterns::IfStatement)) {
                 token_list->push_back(TRY(if_statement()));
+            } else if (match(Patterns::ElifStatement)) {
+
+                if (is_previous_of<ElseStatement>(token_list.get())) {
+                    return "elif following else statement";
+                }
+                if (!is_previous_of<IfStatement>(token_list.get())) {
+                    return "Rouge elif block";
+                }
+                token_list->push_back(TRY(elif_statement()));
+            } else if (match(Patterns::ElseStatement)) {
+
+                if (!is_previous_of<IfStatement>(token_list.get())) {
+                    return "Rouge else block";
+                }
+                token_list->push_back(TRY(else_statement()));
             } else if (match(Patterns::FunctionDefinition)) {
                 token_list->push_back(TRY(function()));
             } else if (match(Patterns::VariableAssignment)) {

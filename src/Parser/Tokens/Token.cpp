@@ -33,4 +33,9 @@ namespace hasha {
         str << std::setw(1) << to_json();
         return str.str();
     }
+
+    Token::Token(): id(number_of_tokens++) {
+
+    }
+    int Token::number_of_tokens = 0;
 } // hasha

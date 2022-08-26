@@ -14,8 +14,10 @@
 namespace hasha {
 
     class Token {
+        static int number_of_tokens;
+        int id;
     public:
-        Token() = default;
+        Token();
 
         [[nodiscard]]
         virtual nlohmann::json to_json() const = 0;

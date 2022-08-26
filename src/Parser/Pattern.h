@@ -70,7 +70,13 @@ namespace hasha::Patterns {
             IDENTIFIER
     };
     inline const Pattern<1> IfStatement {
-        IF,
+            IF,
+    };
+    inline const Pattern<1> ElifStatement {
+            ELIF,
+    };
+    inline const Pattern<1> ElseStatement {
+            ELSE,
     };
 }
 
