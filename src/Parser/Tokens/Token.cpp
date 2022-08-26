@@ -30,7 +30,7 @@ namespace hasha {
     std::string Token::to_string() const {
 
         std::stringstream str;
-        str << std::setw(4) << to_json();
+        str << std::setw(1) << to_json();
         return str.str();
     }
 } // hasha
