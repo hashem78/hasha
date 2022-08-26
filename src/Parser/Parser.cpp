@@ -7,10 +7,8 @@
 #include "Parser.h"
 
 #define EXPECT(lexeme) if(!match(lexeme)) {return fmt::format("Expected {} Found {}",lexeme.to_string(),peek().to_string());}else{advance();}
-#define EXPECT_TYPE(lexemeType) if(!match(lexemeType)) {return fmt::format("Expected {} Found {}",magic_enum::enum_name(lexemeType),peek().to_string());}else{advance();}
 
 #define SWALLOW(lexeme) if(match(lexeme)) {advance();}
-#define SWALLOW_TYPE(lexemeType) if(match(lexemeType)) {advance();}
 
 namespace hasha {
     Parser::Parser(std::string file_name) : lexer(std::move(file_name)), cursor(0) {
@@ -33,11 +31,6 @@ namespace hasha {
         else {
             fmt::print("{}\n", blk.value()->to_string());
         }
-    }
-
-    const LexemeList &Parser::get_lexemes() const noexcept {
-
-        return lexemes;
     }
 
     Lexeme Parser::peek(std::size_t k) const noexcept {
