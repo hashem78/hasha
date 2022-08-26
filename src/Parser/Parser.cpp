@@ -15,8 +15,14 @@
 namespace hasha {
     Parser::Parser(std::string file_name) : lexer(std::move(file_name)), cursor(0) {
 
-        lexer.lex();
-        lexemes = lexer.get_lexemes();
+        auto res = lexer.lex();
+        if (res.is_error()) {
+            fmt::print("{}\n", res.error());
+            exit(1);
+        } else {
+
+            lexemes = lexer.get_lexemes();
+        }
     }
 
     void Parser::parse() {

@@ -5,9 +5,12 @@
 #ifndef HASHA_LEXER_H
 #define HASHA_LEXER_H
 
-#include "Lexeme.h"
-
 #include <fstream>
+#include <utility>
+
+#include "Lexeme.h"
+#include "Constants.h"
+#include "ErrorOr.h"
 
 #include "fmt/format.h"
 
@@ -17,7 +20,7 @@ namespace hasha {
     public:
         explicit Lexer(std::string file_name);
 
-        void lex();
+        ErrorOr<void> lex();
 
         const LexemeList &get_lexemes() const;
 

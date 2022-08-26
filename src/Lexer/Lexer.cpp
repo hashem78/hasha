@@ -3,10 +3,6 @@
 //
 
 #include "Lexer.h"
-#include "Constants.h"
-
-#include <utility>
-#include <thread>
 
 namespace hasha {
 
@@ -26,7 +22,7 @@ namespace hasha {
 
     }
 
-    void Lexer::lex() {
+    ErrorOr<void> Lexer::lex() {
 
         while (!done()) {
 
@@ -81,9 +77,10 @@ namespace hasha {
             } else if (is_identifier(token)) {
                 m_lexemes.push_back({token, LexemeType::IDENTIFIER});
             } else {
-                m_lexemes.push_back({token, LexemeType::ILLEGAL});
+                return fmt::format("LEXER: Illegal Token {}",token);
             }
         }
+            return {};
 
     }
 
