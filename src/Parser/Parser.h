@@ -35,6 +35,8 @@
 #include "Tokens/Statement/IfStatement.h"
 #include "Statement/ElifStatement.h"
 #include "Statement/ElseStatement.h"
+#include "Type/Type.h"
+#include "Type/ArrayType.h"
 
 namespace hasha {
 
@@ -93,11 +95,11 @@ namespace hasha {
         [[nodiscard]]
         ErrorOr<Identifier> identifier() noexcept;
 
+        ErrorOr<Type::Ptr> type() noexcept;
+
         ErrorOr<Parameter::Ptr> parameter();
 
         ErrorOr<Declaration::Ptr> variable_declaration();
-
-        ErrorOr<Declaration::Ptr> array_declaration();
 
         ErrorOr<Declaration::Ptr> array_declaration_and_assignemnt();
 

@@ -8,7 +8,7 @@
 #include "Token.h"
 #include "Block.h"
 #include "Parameter.h"
-#include "Identifier.h"
+#include "Type/Type.h"
 
 namespace hasha {
     class Block;
@@ -16,7 +16,7 @@ namespace hasha {
     class Function : public Token {
         TokenListPtr m_parameters;
         Block::Ptr m_block;
-        Identifier m_return_type;
+        Type::Ptr m_return_type;
         Identifier m_name;
         TokenListPtr m_return_expression;
 
@@ -25,8 +25,8 @@ namespace hasha {
         Function(
                 TokenListPtr parameters,
                 Block::Ptr block,
-                Identifier return_type,
                 Identifier name,
+                Type::Ptr return_type,
                 TokenListPtr return_expression
         );
 
@@ -35,8 +35,8 @@ namespace hasha {
         static Ptr create(
                 TokenListPtr parameters,
                 Block::Ptr block,
-                Identifier return_type,
                 Identifier name,
+                Type::Ptr return_type,
                 TokenListPtr return_expression
         );
 
@@ -53,7 +53,7 @@ namespace hasha {
         Identifier get_name() const;
 
         [[nodiscard]]
-        Identifier get_return_type() const;
+        const Type* get_return_type() const;
 
     };
 

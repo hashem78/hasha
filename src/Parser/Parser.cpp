@@ -84,53 +84,39 @@ namespace hasha {
         return Identifier{name};
     }
 
+    ErrorOr<Type::Ptr> Parser::type() noexcept {
+
+        auto name = TRY(identifier());
+
+        if (peek() == LBRACKET && peek(1) == RBRACKET) {
+            advance();
+            advance();
+            return ArrayType::create(name);
+        }
+
+        return Type::create(name);
+    }
+
     ErrorOr<Parameter::Ptr> Parser::parameter() {
 
-        auto type = TRY(identifier());
+        auto param_type = TRY(type());
         auto name = TRY(identifier());
 
         if (match(COMMA)) advance();
 
-        return Parameter::create(name, type);
+        return Parameter::create(std::move(param_type), name);
     }
 
     ErrorOr<Declaration::Ptr> Parser::variable_declaration() {
 
-        auto type = TRY(identifier());
+        auto var_type = TRY(type());
         auto name = TRY(identifier());
 
         EXPECT(SEMICOLON)
 
-        return Declaration::create(type, name);
+        return Declaration::create(std::move(var_type), name);
     }
 
-    ErrorOr<Declaration::Ptr> Parser::array_declaration() {
-
-        auto type = TRY(identifier());
-        EXPECT(LBRACKET)
-        EXPECT(RBRACKET)
-
-        auto name = TRY(identifier());
-
-        return Declaration::create(type, name, nullptr, true);
-    }
-
-    ErrorOr<Declaration::Ptr> Parser::array_declaration_and_assignemnt() {
-
-        auto type = TRY(identifier());
-
-        EXPECT(LBRACKET)
-        EXPECT(RBRACKET)
-
-        auto name = TRY(identifier());
-
-        EXPECT(EQUALS)
-
-        auto token_list = TRY(parse_multiple(LBRACKET, RBRACKET));
-
-        auto assignment = Assignment::create(name, token_list, true);
-        return Declaration::create(type, name, std::move(assignment), true);
-    }
 
     ErrorOr<TokenListPtr> Parser::parse_expression(const Lexeme &delimiter) {
 
@@ -238,7 +224,7 @@ namespace hasha {
 
     ErrorOr<Declaration::Ptr> Parser::variable_declaration_and_assignment() {
 
-        auto type = TRY(identifier());
+        auto var_type = TRY(type());
         auto name = TRY(identifier());
 
         EXPECT(EQUALS)
@@ -246,7 +232,29 @@ namespace hasha {
         auto token_list = TRY(parse_expression());
 
         EXPECT(SEMICOLON)
-        return Declaration::create(type, name, Assignment::create(name, token_list));
+
+        return Declaration::create(
+                std::move(var_type),
+                name,
+                Assignment::create(name, token_list)
+        );
+    }
+
+    ErrorOr<Declaration::Ptr> Parser::array_declaration_and_assignemnt() {
+
+        auto arr_type = TRY(type());
+
+        auto name = TRY(identifier());
+
+        EXPECT(EQUALS)
+
+        auto token_list = TRY(parse_multiple(LBRACKET, RBRACKET));
+
+        return Declaration::create(
+                std::move(arr_type),
+                name,
+                Assignment::create(name, token_list)
+        );
     }
 
     ErrorOr<Assignment::Ptr> Parser::variable_assignment() {
@@ -280,9 +288,10 @@ namespace hasha {
         auto token_list = create_token_list();
 
         while (!match(right)) {
+            SWALLOW(COMMA)
             if (match(LexemeType::LITERAL)) {
                 auto ltrl = peek();
-                SWALLOW(separator)
+
 
                 if (ltrl.is_string()) {
                     token_list->push_back(StringLiteral::create(ltrl.get_data()));
@@ -291,6 +300,7 @@ namespace hasha {
                 } else {
                     token_list->push_back(NumericLiteral::create(ltrl.get_data()));
                 }
+                advance();
             } else {
                 auto expression = TRY(parse_expression());
 
@@ -348,7 +358,9 @@ namespace hasha {
                 return Block::create(token_list);
             }
             if (match(Patterns::IfStatement)) {
+
                 token_list->push_back(TRY(if_statement()));
+
             } else if (match(Patterns::ElifStatement)) {
 
                 if (is_previous_of<ElseStatement>(token_list.get())) {
@@ -358,27 +370,43 @@ namespace hasha {
                     return "Rouge elif block";
                 }
                 token_list->push_back(TRY(elif_statement()));
+
             } else if (match(Patterns::ElseStatement)) {
 
                 if (!is_previous_of<IfStatement>(token_list.get())) {
                     return "Rouge else block";
                 }
                 token_list->push_back(TRY(else_statement()));
+
             } else if (match(Patterns::FunctionDefinition)) {
+
                 token_list->push_back(TRY(function()));
+
             } else if (match(Patterns::VariableAssignment)) {
+
                 token_list->push_back(TRY(variable_assignment()));
+
             } else if (match(Patterns::VariableDeclaration)) {
+
                 token_list->push_back(TRY(variable_declaration()));
-            } else if (match(Patterns::VariableDeclarationAndAssignment)) {
-                token_list->push_back(TRY(variable_declaration_and_assignment()));
+
             } else if (match(Patterns::ArrayDeclaration)) {
-                token_list->push_back(TRY(array_declaration()));
+
+                token_list->push_back(TRY(variable_declaration()));
+
+            } else if (match(Patterns::VariableDeclarationAndAssignment)) {
+
+                token_list->push_back(TRY(variable_declaration_and_assignment()));
+
             } else if (match(Patterns::ArrayDeclarationAndAssignment)) {
+
                 token_list->push_back(TRY(array_declaration_and_assignemnt()));
+
             } else if (match(Patterns::FunctionCall)) {
+
                 auto fn_call = TRY(parse_expression());
                 token_list->push_back(FunctionCall::create(fn_call->back()->to_string(), fn_call));
+
             } else {
                 advance();
             }
@@ -407,7 +435,7 @@ namespace hasha {
 
         EXPECT(ARROW)
 
-        auto return_type = TRY(identifier());
+        auto return_type = TRY(type());
         EXPECT(LCURLY)
 
         auto parsed_block = TRY(block());

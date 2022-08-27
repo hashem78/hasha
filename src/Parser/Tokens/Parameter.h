@@ -5,25 +5,21 @@
 #ifndef HASHA_PARAMETER_H
 #define HASHA_PARAMETER_H
 
-
-#include <memory>
-
 #include "Token.h"
-#include "fmt/format.h"
-#include "Identifier.h"
+#include "Type/Type.h"
 
 namespace hasha {
 
     class Parameter : public Token {
+        Type::Ptr m_type;
         Identifier m_name;
-        Identifier m_type;
 
     public:
-        explicit Parameter(Identifier name, Identifier type) noexcept;
+        explicit Parameter(Type::Ptr type, Identifier name) noexcept;
 
         using Ptr = std::unique_ptr<Parameter>;
 
-        static Ptr create(Identifier name, Identifier type);
+        static Ptr create(Type::Ptr type, Identifier name);
 
         [[nodiscard]]
         nlohmann::json to_json() const override;
@@ -31,9 +27,8 @@ namespace hasha {
         [[nodiscard]]
         const Identifier &get_name() const noexcept;
 
-
         [[nodiscard]]
-        const Identifier &get_type() const noexcept;
+        const Type* get_type() const noexcept;
 
     };
 

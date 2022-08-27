@@ -8,7 +8,7 @@
 #include "Token.h"
 #include "fmt/format.h"
 #include "Assignment.h"
-#include "Identifier.h"
+#include "Type/Type.h"
 
 namespace hasha {
 
@@ -16,30 +16,27 @@ namespace hasha {
 
     protected:
 
-        Identifier m_type;
+        Type::Ptr m_type;
         Identifier m_name;
-        bool m_isarray;
         Assignment::Ptr m_assignment;
 
     public:
 
         Declaration(
-                Identifier type,
+                Type::Ptr type,
                 Identifier name,
-                Assignment::Ptr asssignment = nullptr,
-                bool isarray = false
+                Assignment::Ptr asssignment = nullptr
         );
         using Ptr = std::unique_ptr<Declaration>;
 
         static Ptr create(
-                Identifier type,
+                Type::Ptr type,
                 Identifier name,
-                Assignment::Ptr assignment = nullptr,
-                bool isarray = false
+                Assignment::Ptr assignment = nullptr
         );
 
         [[nodiscard]]
-        Identifier get_type() const;
+        const Type* get_type() const;
 
         [[nodiscard]]
         Identifier get_name() const;

@@ -7,9 +7,9 @@
 #include <memory>
 
 namespace hasha {
-    Identifier Declaration::get_type() const {
+    const Type *Declaration::get_type() const {
 
-        return m_type;
+        return m_type.get();
     }
 
     Identifier Declaration::get_name() const {
@@ -23,13 +23,9 @@ namespace hasha {
         auto json = nlohmann::json();
 
         json["name"] = m_name.to_json();
-        json["type"] = m_type.to_json();
+        json["type"] = m_type->to_json();
 
-        if (m_isarray) {
-            json["token_type"] = "ArrayDeclaration";
-        } else {
-            json["token_type"] = "Declaration";
-        }
+        json["token_type"] = "Declaration";
 
         if (m_assignment != nullptr) {
 
@@ -41,28 +37,25 @@ namespace hasha {
     }
 
     Declaration::Declaration(
-            Identifier type,
+            Type::Ptr type,
             Identifier name,
-            Assignment::Ptr assignment,
-            bool isarray) :
+            Assignment::Ptr assignment
+    ) :
             m_type(std::move(type)),
             m_name(std::move(name)),
-            m_assignment(std::move(assignment)),
-            m_isarray(isarray) {}
+            m_assignment(std::move(assignment)) {}
 
     Declaration::Ptr
     Declaration::create(
-            Identifier type,
+            Type::Ptr type,
             Identifier name,
-            Assignment::Ptr tokens,
-            bool isarray) {
+            Assignment::Ptr tokens
+    ) {
 
         return std::make_unique<Declaration>(
-
-                        std::move(type),
-                        std::move(name),
-                        std::move(tokens),
-                        isarray
+                std::move(type),
+                std::move(name),
+                std::move(tokens)
         );
     }
 

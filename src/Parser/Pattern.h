@@ -22,22 +22,34 @@ namespace hasha::Patterns {
         int cursor;
     };
 
+    struct OptionalLexeme {
+        Lexeme lexeme;
+
+        explicit OptionalLexeme(Lexeme  lexeme) : lexeme(std::move(lexeme)) {}
+    };
 
     using PatternFunctor = std::function<FunctorResult(const LexemeList &, int)>;
-    using PatternType = std::variant<LexemeType, Lexeme, PatternFunctor>;
+    using PatternType = std::variant<LexemeType, Lexeme, OptionalLexeme, PatternFunctor>;
     template<size_t S>
     using Pattern = std::array<PatternType, S>;
 
-    inline const Pattern<2> VariableAssignment{LexemeType::IDENTIFIER, EQUALS};
-    inline const Pattern<3> VariableDeclaration{LexemeType::IDENTIFIER, LexemeType::IDENTIFIER, SEMICOLON};
-    inline const Pattern<3> VariableDeclarationAndAssignment{LexemeType::IDENTIFIER, LexemeType::IDENTIFIER, EQUALS};
-    inline const Pattern<5> ArrayDeclaration{
+    inline const Pattern<3> VariableDeclaration{
+            LexemeType::IDENTIFIER,
+            LexemeType::IDENTIFIER,
+            SEMICOLON
+    };
+
+    inline const Pattern<5> ArrayDeclaration {
             LexemeType::IDENTIFIER,
             LBRACKET,
             RBRACKET,
             LexemeType::IDENTIFIER,
             SEMICOLON
     };
+
+    inline const Pattern<2> VariableAssignment{LexemeType::IDENTIFIER, EQUALS};
+    inline const Pattern<3> VariableDeclarationAndAssignment{LexemeType::IDENTIFIER, LexemeType::IDENTIFIER, EQUALS};
+
     inline const Pattern<5> ArrayDeclarationAndAssignment{
             LexemeType::IDENTIFIER,
             LBRACKET,
@@ -69,13 +81,13 @@ namespace hasha::Patterns {
             ARROW,
             IDENTIFIER
     };
-    inline const Pattern<1> IfStatement {
+    inline const Pattern<1> IfStatement{
             IF,
     };
-    inline const Pattern<1> ElifStatement {
+    inline const Pattern<1> ElifStatement{
             ELIF,
     };
-    inline const Pattern<1> ElseStatement {
+    inline const Pattern<1> ElseStatement{
             ELSE,
     };
 }

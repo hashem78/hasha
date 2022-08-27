@@ -4,8 +4,6 @@
 
 #include "Function.h"
 
-#include <memory>
-
 namespace hasha {
     nlohmann::json Function::to_json() const {
 
@@ -13,7 +11,7 @@ namespace hasha {
 
         json["token_type"] = "Function";
         json["name"] = m_name.get();
-        json["return_type"] = m_return_type.get();
+        json["return_type"] = m_return_type->to_json();
         json["parameters"] = token_list_to_json(m_parameters.get());
         json["block"] = m_block->to_json();
         json["return_expression"] = token_list_to_json(m_return_expression.get());
@@ -35,8 +33,8 @@ namespace hasha {
     Function::Function(
             TokenListPtr parameters,
             Block::Ptr block,
-            Identifier return_type,
             Identifier name,
+            Type::Ptr return_type,
             TokenListPtr return_expression
     )
             : m_parameters(std::move(parameters)),
@@ -49,8 +47,8 @@ namespace hasha {
     Function::Ptr Function::create(
             TokenListPtr parameters,
             Block::Ptr block,
-            Identifier return_type,
             Identifier name,
+            Type::Ptr return_type,
             TokenListPtr return_expression
     ) {
 
@@ -70,9 +68,9 @@ namespace hasha {
         return m_name;
     }
 
-    Identifier Function::get_return_type() const {
+    const Type* Function::get_return_type() const {
 
-        return m_return_type;
+        return m_return_type.get();
     }
 
 
