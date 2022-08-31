@@ -30,6 +30,7 @@ namespace hasha::Patterns {
 
     using PatternFunctor = std::function<FunctorResult(const LexemeList &, int)>;
     using PatternType = std::variant<LexemeType, Lexeme, OptionalLexeme, PatternFunctor>;
+
     template<size_t S>
     using Pattern = std::array<PatternType, S>;
 
@@ -64,12 +65,12 @@ namespace hasha::Patterns {
 
     inline const Pattern<6> FunctionDefinition{
 
-            IDENTIFIER,
+            LexemeType::IDENTIFIER,
             LPAREN,
             [](const LexemeList &lexemes, int cursor) -> FunctorResult {
                 int i = cursor + 2;
                 while (lexemes[i] != RPAREN) {
-                    if (lexemes[i].get_type() != IDENTIFIER && lexemes[i] != COMMA) {
+                    if (lexemes[i].type() != LexemeType::IDENTIFIER && lexemes[i] != COMMA) {
                         fmt::print("Did not match because of {}\n", lexemes[i].to_string());
                         return {FunctorState::NO_MATCH, 0};
                     }
@@ -79,7 +80,7 @@ namespace hasha::Patterns {
             },
             RPAREN,
             ARROW,
-            IDENTIFIER
+            LexemeType::IDENTIFIER
     };
     inline const Pattern<1> IfStatement{
             IF,

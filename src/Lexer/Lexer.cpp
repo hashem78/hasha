@@ -8,17 +8,17 @@ namespace hasha {
 
     Lexer::Lexer(std::string file_name) {
 
-        this->m_cursor = 0;
-        this->m_file_name = std::move(file_name);
+        this->cursor = 0;
+        this->file_name = std::move(file_name);
 
-        std::ifstream file(this->m_file_name, std::ios::binary);
+        std::ifstream file(this->file_name, std::ios::binary);
 
         if (!file.is_open() || !file.good()) {
-            fmt::print("Failed to open {}\n", this->m_file_name);
+            fmt::print("Failed to open {}\n", this->file_name);
             exit(1);
         }
 
-        m_data = std::vector(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
+        data = std::vector(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
 
     }
 
@@ -31,13 +31,13 @@ namespace hasha {
             if (token.empty()) continue;
 
             if (lexeme_map.contains(token)) {
-                m_lexemes.push_back(lexeme_map.at(token));
+                lexemes.push_back(lexeme_map.at(token));
             } else if (is_numeric_literal(token)) {
-                m_lexemes.push_back({token, LexemeType::NUMERIC_LITERAL});
+                lexemes.push_back({token, LexemeType::NUMERIC_LITERAL});
             } else if (is_string_literal(token)) {
-                m_lexemes.push_back({token, LexemeType::STRING_LITERAL});
+                lexemes.push_back({token, LexemeType::STRING_LITERAL});
             } else if (is_identifier(token)) {
-                m_lexemes.push_back({token, LexemeType::IDENTIFIER});
+                lexemes.push_back({token, LexemeType::IDENTIFIER});
             } else {
                 return fmt::format("LEXER: Illegal Token {}", token);
             }
@@ -97,21 +97,21 @@ namespace hasha {
             auto curr = peek();
 
             if (std::isspace(curr)) {
-                m_cursor++;
+                cursor++;
                 return token;
             }
 
             if (!std::isalnum(curr) && curr != '_') {
                 if (!is_legal_character(curr)) {
                     token += curr;
-                    m_cursor++;
+                    cursor++;
                 }
                 break;
             }
 
 
             token += curr;
-            m_cursor++;
+            cursor++;
 
         }
 
@@ -119,30 +119,30 @@ namespace hasha {
             if (is_legal_character(peek())) {
                 if (peek() == '\"') {
                     token += '\"';
-                    m_cursor++;
+                    cursor++;
 
                     while (peek() != '\"') {
                         token += peek();
-                        m_cursor++;
+                        cursor++;
                     }
 
                     token += '\"';
-                    m_cursor++;
+                    cursor++;
 
                 } else {
 
                     if (peek() == '-' && peek(1) == '>') {
                         token += "->";
-                        m_cursor += 2;
+                        cursor += 2;
                     } else if (peek() == '&' && peek(1) == '&') {
                         token += "&&";
-                        m_cursor += 2;
+                        cursor += 2;
                     } else if (peek() == '|' && peek(1) == '|') {
                         token += "||";
-                        m_cursor += 2;
+                        cursor += 2;
                     } else {
                         token += peek();
-                        m_cursor++;
+                        cursor++;
                     }
                 }
             }
@@ -153,20 +153,20 @@ namespace hasha {
 
     bool Lexer::done() const noexcept {
 
-        return m_cursor >= m_data.size();
+        return cursor >= data.size();
     }
 
     char Lexer::peek(int k) const noexcept {
 
-        if (m_cursor + k < m_data.size()) {
-            return m_data[m_cursor + k];
+        if (cursor + k < data.size()) {
+            return data[cursor + k];
         }
-        return m_data[m_cursor];
+        return data[cursor];
     }
 
     const LexemeList &Lexer::get_lexemes() const {
 
-        return m_lexemes;
+        return lexemes;
     }
 
     bool Lexer::is_string_literal(std::string_view token) noexcept {

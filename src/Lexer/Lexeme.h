@@ -15,7 +15,7 @@
 
 namespace hasha {
 
-    enum LexemeType {
+    enum class LexemeType {
         OPERATOR,
         BOOLEAN_OPERATOR,
         NUMERIC_OPERATOR,
@@ -29,19 +29,19 @@ namespace hasha {
         ILLEGAL,
     };
 
-    enum Associativity {
-        Left,
-        Right,
-        None
+    enum class Associativity {
+        LEFT,
+        RIGHT,
+        NONE
     };
-    enum Precedence {
-        Level6 = 6,
-        Level5 = 5,
-        Level4 = 4,
-        Level3 = 3,
-        Level2 = 2,
-        Level1 = 1,
-        Level0 = 0
+    enum class Precedence {
+        LVL6 = 6,
+        LVL5 = 5,
+        LVL4 = 4,
+        LVL3 = 3,
+        LVL2 = 2,
+        LVL1 = 1,
+        NONE = 0
     };
 
     class Lexeme {
@@ -77,7 +77,7 @@ namespace hasha {
         std::string data() const noexcept;
 
         [[nodiscard]]
-        LexemeType get_type() const noexcept;
+        LexemeType type() const noexcept;
 
         [[nodiscard]]
         Precedence precedence() const noexcept;

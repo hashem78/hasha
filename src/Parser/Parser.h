@@ -72,7 +72,7 @@ namespace hasha {
 
                 if (holds_alternative<LexemeType>(matcher)) {
                     auto type = get<LexemeType>(matcher);
-                    if (peek(i + lookahed).get_type() != type)
+                    if (peek(i + lookahed).type() != type)
                         return false;
                 } else if (holds_alternative<Lexeme>(matcher)) {
                     auto lexeme = get<Lexeme>(matcher);

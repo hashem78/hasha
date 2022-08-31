@@ -37,7 +37,7 @@ namespace hasha {
         return m_data;
     }
 
-    LexemeType Lexeme::get_type() const noexcept {
+    LexemeType Lexeme::type() const noexcept {
 
         return m_type;
     }
@@ -62,6 +62,6 @@ namespace hasha {
     Lexeme::Lexeme(std::string data, LexemeType type) :
             m_data(std::move(data)),
             m_type(type),
-            m_associativity(Associativity::None),
-            m_precedence(Precedence::Level0) {}
+            m_associativity(Associativity::NONE),
+            m_precedence(Precedence::NONE) {}
 } // hasha

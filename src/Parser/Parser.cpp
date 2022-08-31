@@ -128,16 +128,16 @@ namespace hasha {
             auto x = peek();
             advance();
 
-            if (x.get_type() == LexemeType::IDENTIFIER) {
+            if (x.type() == LexemeType::IDENTIFIER) {
                 operators.push_front(x);
-            } else if (x.get_type() == LexemeType::OPERATOR) {
+            } else if (x.type() == LexemeType::OPERATOR) {
 
-                while (!operators.empty() && operators.front().get_type() == LexemeType::OPERATOR) {
+                while (!operators.empty() && operators.front().type() == LexemeType::OPERATOR) {
                     auto y = operators.front();
 
-                    if ((x.associativity() == Associativity::Left &&
+                    if ((x.associativity() == Associativity::LEFT &&
                             x.precedence() <= y.precedence()) ||
-                        (x.associativity() == Associativity::Right &&
+                        (x.associativity() == Associativity::RIGHT &&
                                 x.precedence() < y.precedence())) {
                         output.push_back(y);
                         operators.pop_front();
@@ -161,7 +161,7 @@ namespace hasha {
                 if (operators.front() != LPAREN)
                     break;
                 operators.pop_front();
-                if (operators.front().get_type() == LexemeType::IDENTIFIER) {
+                if (operators.front().type() == LexemeType::IDENTIFIER) {
                     output.push_back(operators.front());
                     operators.pop_front();
                 }
@@ -181,26 +181,26 @@ namespace hasha {
 
 
         for (auto &out_tok: output) {
-            switch (out_tok.get_type()) {
-                case BOOLEAN_OPERATOR:
+            switch (out_tok.type()) {
+                case LexemeType::BOOLEAN_OPERATOR:
                     token_list->push_back(BooleanOperator::create(out_tok.data()));
                     break;
-                case NUMERIC_OPERATOR:
+                case LexemeType::NUMERIC_OPERATOR:
                     token_list->push_back(NumericOperator::create(out_tok.data()));
                     break;
-                case OPERATOR:
+                case LexemeType::OPERATOR:
                     break;
-                case NUMERIC_LITERAL:
+                case LexemeType::NUMERIC_LITERAL:
                     token_list->push_back(NumericLiteral::create(out_tok.data()));
                     break;
-                case STRING_LITERAL:
+                case LexemeType::STRING_LITERAL:
                     token_list->push_back(StringLiteral::create(out_tok.data()));
                     break;
-                case BOOLEAN_LITERAL:
+                case LexemeType::BOOLEAN_LITERAL:
                     token_list->push_back(BooleanLiteral::create(out_tok.data()));
                     break;
 
-                case IDENTIFIER:
+                case LexemeType::IDENTIFIER:
                     token_list->push_back(Identifier::create(out_tok.data()));
                     break;
 
@@ -284,14 +284,14 @@ namespace hasha {
             if (match(LexemeType::LITERAL)) {
                 auto ltrl = peek();
 
-                switch (ltrl.get_type()) {
-                    case STRING_LITERAL:
+                switch (ltrl.type()) {
+                    case LexemeType::STRING_LITERAL:
                         token_list->push_back(StringLiteral::create(ltrl.data()));
                         break;
-                    case BOOLEAN_LITERAL:
+                    case LexemeType::BOOLEAN_LITERAL:
                         token_list->push_back(BooleanLiteral::create(ltrl.data()));
                         break;
-                    case NUMERIC_LITERAL:
+                    case LexemeType::NUMERIC_LITERAL:
                         token_list->push_back(NumericLiteral::create(ltrl.data()));
                         break;
                     default:
@@ -463,7 +463,7 @@ namespace hasha {
 
     bool Parser::match(const LexemeType &match) const noexcept {
 
-        if (peek().get_type() == match) {
+        if (peek().type() == match) {
             return true;
         }
         return false;

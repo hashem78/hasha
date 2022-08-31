@@ -23,13 +23,13 @@ namespace hasha {
     inline const Lexeme RBRACKET{"]", LexemeType::SYMBOL};
     inline const Lexeme COMMA{",", LexemeType::SYMBOL};
     inline const Lexeme SEMICOLON{";", LexemeType::SYMBOL};
-    inline const Lexeme EQUALS{"=", LexemeType::OPERATOR, Associativity::Right, Precedence::Level1};
-    inline const Lexeme LAND{"&&", LexemeType::OPERATOR, Associativity::Right, Precedence::Level2};
-    inline const Lexeme LOR{"||", LexemeType::OPERATOR, Associativity::Right, Precedence::Level2};
-    inline const Lexeme HYPHEN{"-", LexemeType::OPERATOR, Associativity::Left, Precedence::Level3};
-    inline const Lexeme ADDITION{"+", LexemeType::OPERATOR, Associativity::Left, Precedence::Level3};
-    inline const Lexeme FSLASH{"/", LexemeType::OPERATOR, Associativity::Left, Precedence::Level5};
-    inline const Lexeme ASTERISK{"*", LexemeType::OPERATOR, Associativity::Left, Precedence::Level5};
+    inline const Lexeme EQUALS{"=", LexemeType::OPERATOR, Associativity::RIGHT, Precedence::LVL1};
+    inline const Lexeme LAND{"&&", LexemeType::OPERATOR, Associativity::RIGHT, Precedence::LVL2};
+    inline const Lexeme LOR{"||", LexemeType::OPERATOR, Associativity::RIGHT, Precedence::LVL2};
+    inline const Lexeme HYPHEN{"-", LexemeType::OPERATOR, Associativity::LEFT, Precedence::LVL3};
+    inline const Lexeme ADDITION{"+", LexemeType::OPERATOR, Associativity::LEFT, Precedence::LVL3};
+    inline const Lexeme FSLASH{"/", LexemeType::OPERATOR, Associativity::LEFT, Precedence::LVL5};
+    inline const Lexeme ASTERISK{"*", LexemeType::OPERATOR, Associativity::LEFT, Precedence::LVL5};
     inline const Lexeme ARROW{"->", LexemeType::SYMBOL};
 
     inline const std::map<std::string, Lexeme> lexeme_map{

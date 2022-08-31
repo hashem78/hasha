@@ -27,10 +27,10 @@ namespace hasha {
 
     private:
 
-        LexemeList m_lexemes;
-        std::string m_file_name;
-        std::vector<char> m_data;
-        int m_cursor;
+        LexemeList lexemes;
+        std::string file_name;
+        std::vector<char> data;
+        int cursor;
 
 
         std::string next_token();
