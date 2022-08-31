@@ -12,24 +12,20 @@
 #include "Constants.h"
 
 namespace hasha::Patterns {
-    enum class FunctorState {
-        MATCH,
-        NO_MATCH,
-    };
+
     // The result of the matching functor and the edit to the cursor
     struct FunctorResult {
-        FunctorState state;
+        bool matched;
         int cursor;
     };
 
-    struct OptionalLexeme {
-        Lexeme lexeme;
-
-        explicit OptionalLexeme(Lexeme  lexeme) : lexeme(std::move(lexeme)) {}
-    };
-
     using PatternFunctor = std::function<FunctorResult(const LexemeList &, int)>;
-    using PatternType = std::variant<LexemeType, Lexeme, OptionalLexeme, PatternFunctor>;
+    using PatternType = std::variant<LexemeType, Lexeme, PatternFunctor>;
+
+    template<class... Ts>
+    struct PatternVisitor : Ts ... {
+        using Ts::operator()...;
+    };
 
     template<size_t S>
     using Pattern = std::array<PatternType, S>;
@@ -40,7 +36,7 @@ namespace hasha::Patterns {
             SEMICOLON
     };
 
-    inline const Pattern<5> ArrayDeclaration {
+    inline const Pattern<5> ArrayDeclaration{
             LexemeType::IDENTIFIER,
             LBRACKET,
             RBRACKET,
@@ -72,11 +68,11 @@ namespace hasha::Patterns {
                 while (lexemes[i] != RPAREN) {
                     if (lexemes[i].type() != LexemeType::IDENTIFIER && lexemes[i] != COMMA) {
                         fmt::print("Did not match because of {}\n", lexemes[i].to_string());
-                        return {FunctorState::NO_MATCH, 0};
+                        return {false, 0};
                     }
                     i++;
                 };
-                return {FunctorState::MATCH, i - cursor - 3};
+                return {true, i - cursor - 3};
             },
             RPAREN,
             ARROW,

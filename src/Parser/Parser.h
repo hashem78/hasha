@@ -68,26 +68,27 @@ namespace hasha {
             int lookahed = 0;
             for (std::size_t i = 0; i < matchers.size(); ++i) {
 
-                const auto &matcher = matchers[i];
+                auto should_return = std::visit(
+                        Patterns::PatternVisitor{
+                                [&, this](const Lexeme &lexeme) -> bool {
+                                    return peek(i + lookahed) != lexeme;
+                                },
+                                [&, this](const LexemeType &lexeme_type) -> bool {
+                                    return peek(i + lookahed).type() != lexeme_type;
+                                },
+                                [&, this](const Patterns::PatternFunctor &pattern_functor) -> bool {
+                                    auto result = pattern_functor(lexemes, cursor);
+                                    if (result.matched) {
+                                        lookahed += result.cursor;
+                                        return false;
+                                    }
+                                    return true;
+                                }
+                        }, matchers[i]
+                );
+                if (should_return)
+                    return false;
 
-                if (holds_alternative<LexemeType>(matcher)) {
-                    auto type = get<LexemeType>(matcher);
-                    if (peek(i + lookahed).type() != type)
-                        return false;
-                } else if (holds_alternative<Lexeme>(matcher)) {
-                    auto lexeme = get<Lexeme>(matcher);
-                    if (peek(i + lookahed) != lexeme)
-                        return false;
-                } else {
-
-                    auto functor = get<Patterns::PatternFunctor>(matcher);
-                    Patterns::FunctorResult result = functor(lexemes, cursor);
-                    if (result.state == Patterns::FunctorState::MATCH) {
-                        lookahed += result.cursor;
-                    } else {
-                        return false;
-                    }
-                }
             }
             return true;
         }
@@ -124,23 +125,24 @@ namespace hasha {
         ErrorOr<ElseStatement::Ptr> else_statement();
 
         template<class T>
-        std::optional<const T*> last_of(const TokenList* tkns) {
+        std::optional<const T *> last_of(const TokenList *tkns) {
 
             for (auto it = tkns->rbegin(); it != tkns->rend(); it++) {
 
-                auto cast = dynamic_cast<T*>(it->get());
-                if(cast)
+                auto cast = dynamic_cast<T *>(it->get());
+                if (cast)
                     return cast;
             }
             return {};
         }
+
         template<class T>
-        bool is_previous_of(const TokenList* tkns) {
+        bool is_previous_of(const TokenList *tkns) {
 
-            if(tkns->empty())
-               return false;
+            if (tkns->empty())
+                return false;
 
-            auto cast = dynamic_cast<T*>(tkns->back().get());
+            auto cast = dynamic_cast<T *>(tkns->back().get());
 
             if (cast)
                 return true;
