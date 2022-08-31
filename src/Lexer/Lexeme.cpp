@@ -6,7 +6,7 @@
 
 namespace hasha {
 
-    nlohmann::json Lexeme::to_json() const {
+    nlohmann::json Lexeme::to_json() const noexcept {
 
         if (m_type == LexemeType::OPERATOR) {
             return {
@@ -21,7 +21,7 @@ namespace hasha {
                 {"type", magic_enum::enum_name(m_type)}};
     }
 
-    std::string Lexeme::to_string() const {
+    std::string Lexeme::to_string() const noexcept {
 
         if (m_type == LexemeType::OPERATOR) {
             return fmt::format("{} {} {} {}", magic_enum::enum_name(m_type),
@@ -32,50 +32,36 @@ namespace hasha {
     }
 
 
-    std::string Lexeme::get_data() const {
+    std::string Lexeme::data() const noexcept {
 
         return m_data;
     }
 
-    LexemeType Lexeme::get_type() const {
+    LexemeType Lexeme::get_type() const noexcept {
 
         return m_type;
     }
 
-    Associativity Lexeme::get_associativity() const {
+    Associativity Lexeme::associativity() const noexcept {
 
         return m_associativity;
     }
 
-    Precedence Lexeme::get_precedence() const {
+    Precedence Lexeme::precedence() const noexcept {
 
         return m_precedence;
     }
 
-    bool Lexeme::is_string() const {
+    Lexeme::Lexeme(std::string data, LexemeType type, Associativity associativity, Precedence precedence) :
+            m_data(std::move(data)),
+            m_type(type),
+            m_associativity(associativity),
+            m_precedence(precedence)
+    {}
 
-        return m_isstring;
-    }
-
-    bool Lexeme::is_boolean() const {
-
-        return m_isboolean;
-    }
-
-    bool Lexeme::is_numeric_operator() const {
-
-        return m_is_numeric_operator;
-    }
-
-    bool Lexeme::is_boolean_operator() const {
-
-        return m_is_boolean_operator;
-    }
-
-    int Lexeme::get_id() const noexcept {
-
-        return m_id;
-    }
-
-    int Lexeme::id_counter = 0;
+    Lexeme::Lexeme(std::string data, LexemeType type) :
+            m_data(std::move(data)),
+            m_type(type),
+            m_associativity(Associativity::None),
+            m_precedence(Precedence::Level0) {}
 } // hasha

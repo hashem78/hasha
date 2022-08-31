@@ -64,7 +64,7 @@ namespace hasha {
 
     ErrorOr<Identifier> Parser::identifier() noexcept {
 
-        const auto name = peek().get_data();
+        const auto name = peek().data();
 
         if (name.empty()) return "Failed to parse identifier name";
 
@@ -135,10 +135,10 @@ namespace hasha {
                 while (!operators.empty() && operators.front().get_type() == LexemeType::OPERATOR) {
                     auto y = operators.front();
 
-                    if ((x.get_associativity() == Associativity::Left &&
-                         x.get_precedence() <= y.get_precedence()) ||
-                        (x.get_associativity() == Associativity::Right &&
-                         x.get_precedence() < y.get_precedence())) {
+                    if ((x.associativity() == Associativity::Left &&
+                            x.precedence() <= y.precedence()) ||
+                        (x.associativity() == Associativity::Right &&
+                                x.precedence() < y.precedence())) {
                         output.push_back(y);
                         operators.pop_front();
 
@@ -182,37 +182,28 @@ namespace hasha {
 
         for (auto &out_tok: output) {
             switch (out_tok.get_type()) {
-
-                case OPERATOR: {
-                    if (out_tok.is_boolean_operator()) {
-
-                        token_list->push_back(BooleanOperator::create(out_tok.get_data()));
-                    } else {
-
-                        token_list->push_back(NumericOperator::create(out_tok.get_data()));
-                    }
+                case BOOLEAN_OPERATOR:
+                    token_list->push_back(BooleanOperator::create(out_tok.data()));
                     break;
-                }
-                case LITERAL: {
-                    if (out_tok.is_string()) {
-                        token_list->push_back(StringLiteral::create(out_tok.get_data()));
-                    } else {
-                        token_list->push_back(NumericLiteral::create(out_tok.get_data()));
-                    }
+                case NUMERIC_OPERATOR:
+                    token_list->push_back(NumericOperator::create(out_tok.data()));
                     break;
-                }
-                case KEYWORD: {
-                    if (out_tok.is_boolean()) {
-                        token_list->push_back(BooleanLiteral::create(out_tok.get_data()));
-                    }
+                case OPERATOR:
                     break;
-                }
-                case IDENTIFIER: {
+                case NUMERIC_LITERAL:
+                    token_list->push_back(NumericLiteral::create(out_tok.data()));
+                    break;
+                case STRING_LITERAL:
+                    token_list->push_back(StringLiteral::create(out_tok.data()));
+                    break;
+                case BOOLEAN_LITERAL:
+                    token_list->push_back(BooleanLiteral::create(out_tok.data()));
+                    break;
 
-                    token_list->push_back(Identifier::create(out_tok.get_data()));
-
+                case IDENTIFIER:
+                    token_list->push_back(Identifier::create(out_tok.data()));
                     break;
-                }
+
                 default:
                     return fmt::format("Unknown token {} in expression\n", out_tok.to_string());
             }
@@ -281,7 +272,8 @@ namespace hasha {
         return assignment;
     }
 
-    ErrorOr<TokenListPtr> Parser::parse_multiple(const Lexeme &left, const Lexeme &right, const Lexeme &separator) {
+    ErrorOr<TokenListPtr>
+    Parser::parse_multiple(const Lexeme &left, const Lexeme &right, const Lexeme &separator) {
 
         EXPECT(left)
 
@@ -292,13 +284,18 @@ namespace hasha {
             if (match(LexemeType::LITERAL)) {
                 auto ltrl = peek();
 
-
-                if (ltrl.is_string()) {
-                    token_list->push_back(StringLiteral::create(ltrl.get_data()));
-                } else if (ltrl.is_boolean()) {
-                    token_list->push_back(BooleanLiteral::create(ltrl.get_data()));
-                } else {
-                    token_list->push_back(NumericLiteral::create(ltrl.get_data()));
+                switch (ltrl.get_type()) {
+                    case STRING_LITERAL:
+                        token_list->push_back(StringLiteral::create(ltrl.data()));
+                        break;
+                    case BOOLEAN_LITERAL:
+                        token_list->push_back(BooleanLiteral::create(ltrl.data()));
+                        break;
+                    case NUMERIC_LITERAL:
+                        token_list->push_back(NumericLiteral::create(ltrl.data()));
+                        break;
+                    default:
+                        break;
                 }
                 advance();
             } else {

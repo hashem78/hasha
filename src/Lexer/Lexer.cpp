@@ -30,97 +30,61 @@ namespace hasha {
 
             if (token.empty()) continue;
 
-            if (token == "fn") {
-                m_lexemes.push_back(FN);
-            } else if (token == "return") {
-                m_lexemes.push_back(RETURN);
-            } else if(token == "if"){
-                m_lexemes.push_back(IF);
-            } else if(token == "else") {
-                m_lexemes.push_back(ELSE);
-            } else if(token == "elif") {
-                m_lexemes.push_back(ELIF);
-            } else if (token == "{") {
-                m_lexemes.push_back(LCURLY);
-            } else if (token == "}") {
-                m_lexemes.push_back(RCURLY);
-            } else if (token == "(") {
-                m_lexemes.push_back(LPAREN);
-            } else if (token == ")") {
-                m_lexemes.push_back(RPAREN);
-            } else if (token == "[") {
-                m_lexemes.push_back(LBRACKET);
-            } else if (token == "]") {
-                m_lexemes.push_back(RBRACKET);
-            } else if (token == ",") {
-                m_lexemes.push_back(COMMA);
-            } else if (token == "=") {
-                m_lexemes.push_back(EQUALS);
-            } else if (token == "+") {
-                m_lexemes.push_back(ADDITION);
-            } else if (token == "-") {
-                m_lexemes.push_back(HYPHEN);
-            } else if (token == "*") {
-                m_lexemes.push_back(ASTERISK);
-            } else if (token == "/") {
-                m_lexemes.push_back(FSLASH);
-            } else if (token == "&&") {
-                m_lexemes.push_back(LAND);
-            } else if (token == "||") {
-                m_lexemes.push_back(LOR);
-            } else if (token == ";") {
-                m_lexemes.push_back(SEMICOLON);
-            } else if (token == "->") {
-                m_lexemes.push_back(ARROW);
-            } else if (token == "true") {
-                m_lexemes.push_back(TRUE);
-            } else if (token == "false") {
-                m_lexemes.push_back(FALSE);
+            if (lexeme_map.contains(token)) {
+                m_lexemes.push_back(lexeme_map.at(token));
             } else if (is_numeric_literal(token)) {
-                m_lexemes.push_back({token, LexemeType::LITERAL});
+                m_lexemes.push_back({token, LexemeType::NUMERIC_LITERAL});
             } else if (is_string_literal(token)) {
-                m_lexemes.push_back({token, LexemeType::LITERAL, true});
+                m_lexemes.push_back({token, LexemeType::STRING_LITERAL});
             } else if (is_identifier(token)) {
                 m_lexemes.push_back({token, LexemeType::IDENTIFIER});
             } else {
-                return fmt::format("LEXER: Illegal Token {}",token);
+                return fmt::format("LEXER: Illegal Token {}", token);
             }
         }
-            return {};
+        return {};
 
     }
 
-    bool Lexer::is_identifier(std::string token) {
+    bool Lexer::is_identifier(std::string_view token) noexcept {
 
         if (token.empty()) return false;
         if (std::isdigit(token.front())) return false;
-        if (std::find_if(token.begin(), token.end(), [](char c) { return is_legal(c); }) != token.end())
-            return false;
-        for (const char &c: token) {
-            if (std::isalnum(c) || c == '_')
-                continue;
-            else
-                return false;
-        }
-        return true;
+
+        return std::none_of(
+                token.begin(),
+                token.end(),
+                [](char c) { return is_legal_character(c); })
+               && std::all_of(
+                token.begin(),
+                token.end(),
+                [](char c) { return std::isalnum(c) || c == '_'; }
+        );
+
     }
 
-    bool Lexer::is_legal(char c) {
+    bool Lexer::is_legal_character(char c) noexcept {
 
-        auto special = std::string("{}[]()=+-*/%,<>!&^~.|;\"");
-        for (auto ch: special)
-            if (ch == c)
-                return true;
-        return false;
+        static const auto special = std::string("{}[]()=+-*/%,<>!&^~.|;\"");
+
+        return std::any_of(
+                special.begin(),
+                special.end(),
+                [&c](char chr) { return chr == c; }
+        );
+
     }
 
-    bool Lexer::is_numeric_literal(const std::string &str) {
+    bool Lexer::is_numeric_literal(std::string_view str) noexcept {
 
         if (str.empty())
             return false;
-        for (auto ch: str)
-            if (!std::isdigit(ch)) return false;
-        return true;
+
+        return std::all_of(
+                str.begin(),
+                str.end(),
+                [](char c) { return std::isdigit(c); }
+        );
     }
 
 
@@ -138,7 +102,7 @@ namespace hasha {
             }
 
             if (!std::isalnum(curr) && curr != '_') {
-                if (!is_legal(curr)) {
+                if (!is_legal_character(curr)) {
                     token += curr;
                     m_cursor++;
                 }
@@ -152,7 +116,7 @@ namespace hasha {
         }
 
         if (token.empty() && !done()) {
-            if (is_legal(peek())) {
+            if (is_legal_character(peek())) {
                 if (peek() == '\"') {
                     token += '\"';
                     m_cursor++;
@@ -187,12 +151,12 @@ namespace hasha {
         return token;
     }
 
-    bool Lexer::done() const {
+    bool Lexer::done() const noexcept {
 
         return m_cursor >= m_data.size();
     }
 
-    char Lexer::peek(int k) const {
+    char Lexer::peek(int k) const noexcept {
 
         if (m_cursor + k < m_data.size()) {
             return m_data[m_cursor + k];
@@ -205,7 +169,7 @@ namespace hasha {
         return m_lexemes;
     }
 
-    bool Lexer::is_string_literal(const std::string &token) {
+    bool Lexer::is_string_literal(std::string_view token) noexcept {
 
         return token.front() == '\"' && token.back() == '\"';
     }

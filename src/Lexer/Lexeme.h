@@ -17,8 +17,13 @@ namespace hasha {
 
     enum LexemeType {
         OPERATOR,
+        BOOLEAN_OPERATOR,
+        NUMERIC_OPERATOR,
         IDENTIFIER,
         LITERAL,
+        BOOLEAN_LITERAL,
+        NUMERIC_LITERAL,
+        STRING_LITERAL,
         SYMBOL,
         KEYWORD,
         ILLEGAL,
@@ -40,16 +45,10 @@ namespace hasha {
     };
 
     class Lexeme {
-        static int id_counter;
-        int m_id;
         std::string m_data;
         LexemeType m_type;
         Associativity m_associativity;
         Precedence m_precedence;
-        bool m_isstring;
-        bool m_isboolean;
-        bool m_is_numeric_operator;
-        bool m_is_boolean_operator;
 
     public:
 
@@ -57,73 +56,37 @@ namespace hasha {
                 std::string data,
                 LexemeType type,
                 Associativity associativity,
-                Precedence precedence,
-                bool is_numeric_operator = false,
-                bool is_boolean_operator = false
-        ) :
-                m_id(id_counter++),
-                m_data(std::move(data)),
-                m_type(type),
-                m_associativity(associativity),
-                m_precedence(precedence),
-                m_isstring(false),
-                m_isboolean(false),
-                m_is_numeric_operator(is_numeric_operator),
-                m_is_boolean_operator(is_boolean_operator) {}
+                Precedence precedence
+        );
 
         Lexeme(
                 std::string data,
-                LexemeType type,
-                bool isstring = false,
-                bool isboolean = false
-        ) :
-                m_id(id_counter++),
-                m_data(std::move(data)),
-                m_type(type),
-                m_associativity(Associativity::None),
-                m_precedence(Precedence::Level0), m_isstring(isstring),
-                m_isboolean(isboolean),
-                m_is_numeric_operator(false),
-                m_is_boolean_operator(false) {}
+                LexemeType type
+        );
 
 
         auto operator<=>(const Lexeme &) const = default;
 
         [[nodiscard]]
-        nlohmann::json to_json() const;
+        nlohmann::json to_json() const noexcept;
 
         [[nodiscard]]
-        std::string to_string() const;
+        std::string to_string() const noexcept;
 
         [[nodiscard]]
-        std::string get_data() const;
+        std::string data() const noexcept;
 
         [[nodiscard]]
-        LexemeType get_type() const;
+        LexemeType get_type() const noexcept;
 
         [[nodiscard]]
-        Precedence get_precedence() const;
+        Precedence precedence() const noexcept;
 
         [[nodiscard]]
-        Associativity get_associativity() const;
-
-        [[nodiscard]]
-        bool is_string() const;
-
-        [[nodiscard]]
-        bool is_boolean() const;
-
-        [[nodiscard]]
-        bool is_numeric_operator() const;
-
-        [[nodiscard]]
-        bool is_boolean_operator() const;
-
-        [[nodiscard]]
-        int get_id() const noexcept;
+        Associativity associativity() const noexcept;
     };
 
-    using LexemeList = std::deque<Lexeme>;
+    using LexemeList = std::vector<Lexeme>;
 
 } // hasha
 

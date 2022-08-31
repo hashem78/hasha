@@ -18,7 +18,7 @@ namespace hasha {
 
     class Lexer {
     public:
-        explicit Lexer(std::string file_name);
+        explicit Lexer(std::string);
 
         ErrorOr<void> lex();
 
@@ -32,21 +32,22 @@ namespace hasha {
         std::vector<char> m_data;
         int m_cursor;
 
-        static bool is_legal(char c);
 
         std::string next_token();
 
         [[nodiscard]]
-        bool done() const;
+        bool done() const noexcept;
 
         [[nodiscard]]
-        char peek(int= 0) const;
+        char peek(int= 0) const noexcept;
 
-        static bool is_numeric_literal(const std::string &str);
+        static bool is_legal_character(char) noexcept;
 
-        static bool is_string_literal(const std::string &token);
+        static bool is_numeric_literal(std::string_view) noexcept;
 
-        static bool is_identifier(std::string token) ;
+        static bool is_string_literal(std::string_view) noexcept;
+
+        static bool is_identifier(std::string_view) noexcept;
     };
 
 } // hasha
