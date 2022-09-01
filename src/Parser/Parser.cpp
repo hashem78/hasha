@@ -138,7 +138,6 @@ namespace hasha {
                          x.precedence() <= y.precedence()) ||
                         (x.associativity() == Associativity::RIGHT &&
                          x.precedence() < y.precedence())) {
-                        fmt::print("PUSHING1 {}\n", y.to_string());
                         output.push_back(y);
                         operators.pop_front();
 
@@ -154,7 +153,6 @@ namespace hasha {
                 while (operators.front() != LPAREN) {
                     // TODO: If the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
                     if (operators.empty()) break;
-                    fmt::print("PUSHING2 {}\n", operators.front().to_string());
                     output.push_back(operators.front());
                     operators.pop_front();
                 }
@@ -163,20 +161,17 @@ namespace hasha {
                     break;
                 operators.pop_front();
                 if (operators.front().type() == LexemeType::IDENTIFIER) {
-                    fmt::print("PUSHING3 {}\n", operators.front().to_string());
                     output.push_back(operators.front());
                     operators.pop_front();
                 }
             } else {
                 if (x != COMMA) {
-                    fmt::print("PUSHING4 {}\n", x.to_string());
                     output.push_back(x);
                 }
             }
         }
 
         while (!operators.empty()) {
-            fmt::print("PUSHING5 {}\n", operators.front().to_string());
             output.push_back(operators.front());
             operators.pop_front();
         }

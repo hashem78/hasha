@@ -15,10 +15,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Remove useless print">
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Remove separation of operator types.&#10;&#10;Operators are context dependant so lumping them in groups is a bad idea that caused the expression parser to miss parses.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Lexer/Constants.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Constants.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexeme.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexeme.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Operator/BooleanOperator.cpp" beforeDir="false" />
@@ -131,7 +131,7 @@
       <workItem from="1661589357775" duration="6125000" />
       <workItem from="1661933506421" duration="2552000" />
       <workItem from="1662024710514" duration="30000" />
-      <workItem from="1662024755788" duration="2473000" />
+      <workItem from="1662024755788" duration="2986000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <created>1658351946447</created>
@@ -427,7 +427,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662026423673</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="Remove separation of operator types.&#10;&#10;Operators are context dependant so lumping them in groups is a bad idea that caused the expression parser to miss parses.">
+      <created>1662027741754</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1662027741754</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -448,7 +455,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Add trailing return types to function declarations" />
     <MESSAGE value="Add support for return keyword in function blocks" />
     <MESSAGE value="Fix Literal Lexemes being of the wrong designation" />
     <MESSAGE value="Run code formatter" />
@@ -473,6 +479,7 @@
     <MESSAGE value="Naming improvements" />
     <MESSAGE value="LEXER: simplified next_token method" />
     <MESSAGE value="Remove useless print" />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove useless print" />
+    <MESSAGE value="Remove separation of operator types.&#10;&#10;Operators are context dependant so lumping them in groups is a bad idea that caused the expression parser to miss parses." />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove separation of operator types.&#10;&#10;Operators are context dependant so lumping them in groups is a bad idea that caused the expression parser to miss parses." />
   </component>
 </project>
