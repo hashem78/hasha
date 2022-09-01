@@ -35,6 +35,8 @@ namespace hasha {
 
         std::string next_token();
 
+        void skip_spaces() noexcept;
+
         [[nodiscard]]
         bool done() const noexcept;
 

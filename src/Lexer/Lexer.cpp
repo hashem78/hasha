@@ -27,8 +27,7 @@ namespace hasha {
         while (!done()) {
 
             auto token = next_token();
-
-            if (token.empty()) continue;
+            fmt::print("TOKEN: {}\n", token);
 
             if (lexeme_map.contains(token)) {
                 lexemes.push_back(lexeme_map.at(token));
@@ -87,68 +86,45 @@ namespace hasha {
         );
     }
 
-
     std::string Lexer::next_token() {
 
-        auto token = std::string();
+        if (done()) return {};
 
-        while (!done()) {
-
-            auto curr = peek();
-
-            if (std::isspace(curr)) {
+        skip_spaces();
+        if (peek() == '&' && peek(1) == '&') {
+            cursor += 2;
+            return "&&";
+        }
+        if (peek() == '|' && peek(1) == '|') {
+            cursor += 2;
+            return "||";
+        }
+        if (peek() == '-' && peek(1) == '>') {
+            cursor += 2;
+            return "->";
+        }
+        if (peek() == '"') {
+            auto string_ltrl = std::string{};
+            do {
+                string_ltrl += peek();
                 cursor++;
-                return token;
-            }
-
-            if (!std::isalnum(curr) && curr != '_') {
-                if (!is_legal_character(curr)) {
-                    token += curr;
-                    cursor++;
-                }
-                break;
-            }
-
-
-            token += curr;
+            } while (peek() != '"');
+            string_ltrl += '"';
             cursor++;
-
+            return string_ltrl;
+        }
+        if (is_legal_character(peek())) {
+            cursor++;
+            return std::string{peek(-1)};
         }
 
-        if (token.empty() && !done()) {
-            if (is_legal_character(peek())) {
-                if (peek() == '\"') {
-                    token += '\"';
-                    cursor++;
-
-                    while (peek() != '\"') {
-                        token += peek();
-                        cursor++;
-                    }
-
-                    token += '\"';
-                    cursor++;
-
-                } else {
-
-                    if (peek() == '-' && peek(1) == '>') {
-                        token += "->";
-                        cursor += 2;
-                    } else if (peek() == '&' && peek(1) == '&') {
-                        token += "&&";
-                        cursor += 2;
-                    } else if (peek() == '|' && peek(1) == '|') {
-                        token += "||";
-                        cursor += 2;
-                    } else {
-                        token += peek();
-                        cursor++;
-                    }
-                }
-            }
+        auto token = std::string{};
+        while (std::isalnum(peek()) || peek() == '_') {
+            token += peek();
+            cursor++;
         }
-
         return token;
+
     }
 
     bool Lexer::done() const noexcept {
@@ -172,6 +148,14 @@ namespace hasha {
     bool Lexer::is_string_literal(std::string_view token) noexcept {
 
         return token.front() == '\"' && token.back() == '\"';
+    }
+
+    void Lexer::skip_spaces() noexcept {
+
+        while (std::isspace(peek()) && !done()) {
+            cursor++;
+        }
+
     }
 
 } // hasha
