@@ -15,12 +15,17 @@ namespace hasha {
         std::string m_op;
 
     public:
+        explicit Operator(std::string op) noexcept;
+
         using Ptr = std::unique_ptr<Operator>;
 
-        explicit Operator(std::string op) noexcept;
+        static Ptr create(std::string op);
 
         [[nodiscard]]
         const std::string &get_op() const noexcept;
+
+        [[nodiscard]]
+        nlohmann::json to_json() const override;
     };
 
 } // hasha

@@ -17,8 +17,6 @@ namespace hasha {
 
     enum class LexemeType {
         OPERATOR,
-        BOOLEAN_OPERATOR,
-        NUMERIC_OPERATOR,
         IDENTIFIER,
         LITERAL,
         BOOLEAN_LITERAL,

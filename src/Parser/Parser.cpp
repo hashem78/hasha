@@ -131,14 +131,14 @@ namespace hasha {
             if (x.type() == LexemeType::IDENTIFIER) {
                 operators.push_front(x);
             } else if (x.type() == LexemeType::OPERATOR) {
-
                 while (!operators.empty() && operators.front().type() == LexemeType::OPERATOR) {
                     auto y = operators.front();
 
                     if ((x.associativity() == Associativity::LEFT &&
-                            x.precedence() <= y.precedence()) ||
+                         x.precedence() <= y.precedence()) ||
                         (x.associativity() == Associativity::RIGHT &&
-                                x.precedence() < y.precedence())) {
+                         x.precedence() < y.precedence())) {
+                        fmt::print("PUSHING1 {}\n", y.to_string());
                         output.push_back(y);
                         operators.pop_front();
 
@@ -154,6 +154,7 @@ namespace hasha {
                 while (operators.front() != LPAREN) {
                     // TODO: If the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
                     if (operators.empty()) break;
+                    fmt::print("PUSHING2 {}\n", operators.front().to_string());
                     output.push_back(operators.front());
                     operators.pop_front();
                 }
@@ -162,17 +163,20 @@ namespace hasha {
                     break;
                 operators.pop_front();
                 if (operators.front().type() == LexemeType::IDENTIFIER) {
+                    fmt::print("PUSHING3 {}\n", operators.front().to_string());
                     output.push_back(operators.front());
                     operators.pop_front();
                 }
             } else {
                 if (x != COMMA) {
+                    fmt::print("PUSHING4 {}\n", x.to_string());
                     output.push_back(x);
                 }
             }
         }
 
         while (!operators.empty()) {
+            fmt::print("PUSHING5 {}\n", operators.front().to_string());
             output.push_back(operators.front());
             operators.pop_front();
         }
@@ -181,14 +185,10 @@ namespace hasha {
 
 
         for (auto &out_tok: output) {
+            fmt::print("{} ", out_tok.data());
             switch (out_tok.type()) {
-                case LexemeType::BOOLEAN_OPERATOR:
-                    token_list->push_back(BooleanOperator::create(out_tok.data()));
-                    break;
-                case LexemeType::NUMERIC_OPERATOR:
-                    token_list->push_back(NumericOperator::create(out_tok.data()));
-                    break;
                 case LexemeType::OPERATOR:
+                    token_list->push_back(Operator::create(out_tok.data()));
                     break;
                 case LexemeType::NUMERIC_LITERAL:
                     token_list->push_back(NumericLiteral::create(out_tok.data()));
@@ -208,7 +208,7 @@ namespace hasha {
                     return fmt::format("Unknown token {} in expression\n", out_tok.to_string());
             }
         }
-
+        fmt::print("\n");
         return token_list;
 
     }
