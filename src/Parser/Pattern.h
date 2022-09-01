@@ -26,6 +26,7 @@ namespace hasha::Patterns {
     struct PatternVisitor : Ts ... {
         using Ts::operator()...;
     };
+    template<class... Ts> PatternVisitor(Ts...) -> PatternVisitor<Ts...>;
 
     template<size_t S>
     using Pattern = std::array<PatternType, S>;

@@ -15,19 +15,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Remove separation of operator types.&#10;&#10;Operators are context dependant so lumping them in groups is a bad idea that caused the expression parser to miss parses.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexeme.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexeme.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Operator/BooleanOperator.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Operator/BooleanOperator.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Operator/NumericOperator.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Operator/NumericOperator.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Operator/Operator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Operator.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Operator/Operator.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Operator.h" afterDir="false" />
-    </list>
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Remove missed debug prints in previous commit" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -131,7 +119,7 @@
       <workItem from="1661589357775" duration="6125000" />
       <workItem from="1661933506421" duration="2552000" />
       <workItem from="1662024710514" duration="30000" />
-      <workItem from="1662024755788" duration="2986000" />
+      <workItem from="1662024755788" duration="3289000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <created>1658351946447</created>
@@ -434,7 +422,21 @@
       <option name="project" value="LOCAL" />
       <updated>1662027741754</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="Remove missed debug prints in previous commit">
+      <created>1662027801280</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1662027801280</updated>
+    </task>
+    <task id="LOCAL-00045" summary="Remove missed debug prints in previous commit">
+      <created>1662027929552</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1662027929552</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -455,7 +457,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Add support for return keyword in function blocks" />
     <MESSAGE value="Fix Literal Lexemes being of the wrong designation" />
     <MESSAGE value="Run code formatter" />
     <MESSAGE value="Refactor the literal handling system.&#10;&#10;Literals coming out of the parser are now classes&#10;inheriting from the Literal type.&#10;&#10;We have 3 literal types in the language now:&#10;1 - StringLiteral: a literal that starts with &lt;&quot;&gt;.&#10;2 - BooleanLiteral: either true or false.&#10;3 - NumericLiteral: numbers." />
@@ -480,6 +481,7 @@
     <MESSAGE value="LEXER: simplified next_token method" />
     <MESSAGE value="Remove useless print" />
     <MESSAGE value="Remove separation of operator types.&#10;&#10;Operators are context dependant so lumping them in groups is a bad idea that caused the expression parser to miss parses." />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove separation of operator types.&#10;&#10;Operators are context dependant so lumping them in groups is a bad idea that caused the expression parser to miss parses." />
+    <MESSAGE value="Remove missed debug prints in previous commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove missed debug prints in previous commit" />
   </component>
 </project>
