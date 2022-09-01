@@ -5,7 +5,7 @@
 #include "ElifStatement.h"
 
 namespace hasha {
-    ElifStatement::Ptr ElifStatement::create(TokenListPtr condition, Block::Ptr block) {
+    ElifStatement::Ptr ElifStatement::create(Expression::Ptr condition, Block::Ptr block) {
 
         return std::make_unique<ElifStatement>(std::move(condition), std::move(block));
     }

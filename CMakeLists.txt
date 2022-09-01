@@ -30,8 +30,8 @@ add_executable(hasha
         src/Parser/Tokens/Parameter.h
         src/Parser/Tokens/Literal/Literal.h
         src/Parser/Tokens/Operator.h
-        src/Parser/Tokens/Assignment.cpp
-        src/Parser/Tokens/Assignment.h
-        src/Parser/Pattern.h src/Parser/Tokens/Literal/StringLiteral.h src/Parser/Tokens/Literal/NumericLiteral.h src/Parser/Tokens/Literal/BooleanLiteral.h src/Lexer/Constants.h src/Parser/Tokens/FunctionCall.cpp src/Parser/Tokens/FunctionCall.h src/Utils/ErrorOr.h src/Parser/Tokens/Operator.cpp src/Parser/Tokens/Literal/BooleanLiteral.cpp src/Parser/Tokens/Literal/Literal.cpp src/Parser/Tokens/Literal/NumericLiteral.cpp src/Parser/Tokens/Literal/StringLiteral.cpp src/Parser/Tokens/Statement/IfStatement.cpp src/Parser/Tokens/Statement/IfStatement.h src/Parser/Tokens/Statement/ElifStatement.cpp src/Parser/Tokens/Statement/ElifStatement.h src/Parser/Tokens/Statement/ElseStatement.cpp src/Parser/Tokens/Statement/ElseStatement.h src/Parser/Tokens/Type/Type.cpp src/Parser/Tokens/Type/Type.h src/Parser/Tokens/Type/ArrayType.cpp src/Parser/Tokens/Type/ArrayType.h)
+        src/Parser/Tokens/Assignment/ArrayAssignment.cpp
+        src/Parser/Tokens/Assignment/ArrayAssignment.h
+        src/Parser/Pattern.h src/Parser/Tokens/Literal/StringLiteral.h src/Parser/Tokens/Literal/NumericLiteral.h src/Parser/Tokens/Literal/BooleanLiteral.h src/Lexer/Constants.h src/Parser/Tokens/FunctionCall.cpp src/Parser/Tokens/FunctionCall.h src/Utils/ErrorOr.h src/Parser/Tokens/Operator.cpp src/Parser/Tokens/Literal/BooleanLiteral.cpp src/Parser/Tokens/Literal/Literal.cpp src/Parser/Tokens/Literal/NumericLiteral.cpp src/Parser/Tokens/Literal/StringLiteral.cpp src/Parser/Tokens/Statement/IfStatement.cpp src/Parser/Tokens/Statement/IfStatement.h src/Parser/Tokens/Statement/ElifStatement.cpp src/Parser/Tokens/Statement/ElifStatement.h src/Parser/Tokens/Statement/ElseStatement.cpp src/Parser/Tokens/Statement/ElseStatement.h src/Parser/Tokens/Type/Type.cpp src/Parser/Tokens/Type/Type.h src/Parser/Tokens/Type/ArrayType.cpp src/Parser/Tokens/Type/ArrayType.h src/Parser/Context.h src/Parser/Tokens/Expression.cpp src/Parser/Tokens/Expression.h src/Parser/Tokens/Assignment/Assignment.cpp src/Parser/Tokens/Assignment/Assignment.h src/Parser/Context.cpp)
 
 target_link_libraries(hasha fmt::fmt nlohmann_json::nlohmann_json magic_enum::magic_enum)

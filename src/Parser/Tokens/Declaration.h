@@ -7,7 +7,7 @@
 
 #include "Token.h"
 #include "fmt/format.h"
-#include "Assignment.h"
+#include "Tokens/Assignment/Assignment.h"
 #include "Type/Type.h"
 
 namespace hasha {
@@ -40,9 +40,6 @@ namespace hasha {
 
         [[nodiscard]]
         Identifier get_name() const;
-
-        [[nodiscard]]
-        TokenListPtr get_tokens() const;
 
         [[nodiscard]]
         nlohmann::json to_json() const override;

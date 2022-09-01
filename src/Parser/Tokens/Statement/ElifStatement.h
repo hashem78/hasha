@@ -14,7 +14,7 @@ namespace hasha {
 
     public:
         using Ptr = std::unique_ptr<ElifStatement>;
-        static ElifStatement::Ptr create(TokenListPtr condition, Block::Ptr block);
+        static ElifStatement::Ptr create(Expression::Ptr condition, Block::Ptr block);
 
         [[nodiscard]]
         nlohmann::json to_json() const override;

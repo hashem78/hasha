@@ -7,11 +7,11 @@
 #include <utility>
 
 namespace hasha {
-    IfStatement::IfStatement(TokenListPtr condition, Block::Ptr block) :
+    IfStatement::IfStatement(Expression::Ptr condition, Block::Ptr block) :
             condition(std::move(condition)),
             block(std::move(block)) {}
 
-    const TokenList *IfStatement::get_condition() const {
+    const Expression *IfStatement::get_condition() const {
 
         return condition.get();
     }
@@ -25,12 +25,12 @@ namespace hasha {
 
         auto json = nlohmann::json();
         json["token_type"] = "IfStatement";
-        json["condition"] = token_list_to_json(condition.get());
+        json["condition"] = condition->to_json();
         json["block"] = block->to_json();
         return json;
     }
 
-    IfStatement::Ptr IfStatement::create(TokenListPtr condition, Block::Ptr block) {
+    IfStatement::Ptr IfStatement::create(Expression::Ptr condition, Block::Ptr block) {
 
         return std::make_unique<IfStatement>(std::move(condition), std::move(block));
     }

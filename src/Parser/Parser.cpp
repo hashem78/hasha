@@ -5,6 +5,7 @@
 #include "Parser.h"
 
 #define EXPECT(lexeme) if(!match(lexeme)) {return fmt::format("Expected {} Found {}",lexeme.to_string(),peek().to_string());}else{advance();}
+#define EXPECT_NOT(l1) if(match(l1)) {return fmt::format("Unexpected {}",l1.to_string());}
 
 #define SWALLOW(lexeme) if(match(lexeme)) {advance();}
 
@@ -19,6 +20,7 @@ namespace hasha {
 
             lexemes = lexer.get_lexemes();
         }
+        set_context(Context{});
     }
 
     void Parser::parse() {
@@ -45,18 +47,20 @@ namespace hasha {
         return tokens;
     }
 
-    bool Parser::done() const noexcept {
+    bool Parser::done(int k) const noexcept {
 
-        if (cursor >= lexemes.size())
+        if (cursor + k >= lexemes.size() || cursor + k < 0)
             return true;
 
         return false;
     }
 
-    Lexeme Parser::advance() noexcept {
+    Lexeme Parser::advance(int k) noexcept {
 
-        if (!done())
-            return lexemes[cursor++];
+        if (!done(k)) {
+            cursor += k;
+            return lexemes[cursor];
+        }
 
         return lexemes.back();
     }
@@ -90,9 +94,18 @@ namespace hasha {
         if (peek() == LBRACKET && peek(1) == RBRACKET) {
             advance();
             advance();
+            set_context(
+                    current_context()
+                            .set_parsing_array_type(true)
+                            .set_parsing_value_type(false)
+            );
             return ArrayType::create(*name);
         }
-
+        set_context(
+                current_context()
+                        .set_parsing_array_type(false)
+                        .set_parsing_value_type(true)
+        );
         return Type::create(*name);
     }
 
@@ -107,19 +120,30 @@ namespace hasha {
     }
 
 
-    ErrorOr<TokenListPtr> Parser::parse_expression(const Lexeme &delimiter) {
+    ErrorOr<Expression::Ptr> Parser::parse_expression(const Lexeme &delimiter) {
 
         std::deque<Lexeme> output; // queue
         std::deque<Lexeme> operators; // stack
+        auto token_list = create_token_list();
 
+        set_context(current_context().set_parsing_expression(true));
 
         while (!match(delimiter)) {
             auto x = peek();
+            if (current_context().parsing_array && x == RBRACKET)
+                break;
+            if (current_context().parsing_array && x == COMMA)
+                break;
+            if (current_context().parsing_args && x == RPAREN)
+                break;
+            if (current_context().parsing_args && x == COMMA)
+                break;
 
             advance();
 
             if (x.type() == LexemeType::IDENTIFIER) {
-                operators.push_front(x);
+                advance(-1);
+                token_list->push_back(TRY(function_call()));
             } else if (x.type() == LexemeType::OPERATOR) {
                 while (!operators.empty() && operators.front().type() == LexemeType::OPERATOR) {
                     auto y = operators.front();
@@ -128,7 +152,8 @@ namespace hasha {
                          x.precedence() <= y.precedence()) ||
                         (x.associativity() == Associativity::RIGHT &&
                          x.precedence() < y.precedence())) {
-                        output.push_back(y);
+
+                        token_list->push_back(Operator::create(y.data()));
                         operators.pop_front();
 
                     } else {
@@ -143,57 +168,40 @@ namespace hasha {
                 while (operators.front() != LPAREN) {
                     // TODO: If the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
                     if (operators.empty()) break;
-                    output.push_back(operators.front());
+                    token_list->push_back(Operator::create(operators.front().data()));
                     operators.pop_front();
                 }
                 // TODO: If the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
                 if (operators.front() != LPAREN)
                     break;
                 operators.pop_front();
-                if (operators.front().type() == LexemeType::IDENTIFIER) {
-                    output.push_back(operators.front());
-                    operators.pop_front();
-                }
             } else {
                 if (x != COMMA) {
-
+                    switch (x.type()) {
+                        case LexemeType::NUMERIC_LITERAL:
+                            token_list->push_back(NumericLiteral::create(x.data()));
+                            break;
+                        case LexemeType::STRING_LITERAL:
+                            token_list->push_back(StringLiteral::create(x.data()));
+                            break;
+                        case LexemeType::BOOLEAN_LITERAL:
+                            token_list->push_back(BooleanLiteral::create(x.data()));
+                            break;
+                        default:
+                            return fmt::format("Unknown token {} in expression\n", x.to_string());
+                    }
                     output.push_back(x);
                 }
             }
         }
 
         while (!operators.empty()) {
-            output.push_back(operators.front());
+            token_list->push_back(Operator::create(operators.front().data()));
             operators.pop_front();
         }
 
-        auto token_list = create_token_list();
-
-
-        for (auto &out_tok: output) {
-            switch (out_tok.type()) {
-                case LexemeType::OPERATOR:
-                    token_list->push_back(Operator::create(out_tok.data()));
-                    break;
-                case LexemeType::NUMERIC_LITERAL:
-                    token_list->push_back(NumericLiteral::create(out_tok.data()));
-                    break;
-                case LexemeType::STRING_LITERAL:
-                    token_list->push_back(StringLiteral::create(out_tok.data()));
-                    break;
-                case LexemeType::BOOLEAN_LITERAL:
-                    token_list->push_back(BooleanLiteral::create(out_tok.data()));
-                    break;
-
-                case LexemeType::IDENTIFIER:
-                    token_list->push_back(Identifier::create(out_tok.data()));
-                    break;
-
-                default:
-                    return fmt::format("Unknown token {} in expression\n", out_tok.to_string());
-            }
-        }
-        return token_list;
+        restore_context();
+        return Expression::create(token_list);
 
     }
 
@@ -202,16 +210,16 @@ namespace hasha {
         EXPECT(EQUALS)
 
         Assignment::Ptr assignment;
+        if (current_context().parsing_value_type) {
+            EXPECT_NOT(LBRACKET)
 
-        if (match(LBRACKET)) {
+            assignment = Assignment::create(TRY(parse_expression()));
+        } else if (current_context().parsing_array_type) {
+            set_context(current_context().set_parsing_array(true));
             auto array_token_list = TRY(parse_multiple(LBRACKET, RBRACKET));
+            restore_context();
+            assignment = ArrayAssignment::create(std::move(array_token_list));
 
-            assignment = Assignment::create(array_token_list, true);
-
-        } else {
-            auto expression_token_list = TRY(parse_expression());
-
-            assignment = Assignment::create(expression_token_list);
         }
 
         EXPECT(SEMICOLON)
@@ -219,27 +227,21 @@ namespace hasha {
         return assignment;
     }
 
-    ErrorOr<TokenListPtr>
+    ErrorOr<ExpressionListPtr>
     Parser::parse_multiple(const Lexeme &left, const Lexeme &right, const Lexeme &separator) {
+
 
         EXPECT(left)
 
-        auto token_list = create_token_list();
+        auto exprs = create_expression_list();
 
         while (!match(right)) {
             SWALLOW(separator)
-            if (match(Patterns::FunctionCall))
-                return "Expressions and function calls are not currently not supported as array elements";
-
-            if (match(LexemeType::IDENTIFIER)) {
-                token_list->push_back(TRY(identifier()));
-            } else {
-
-                token_list->push_back(TRY(literal()));
-            }
+            exprs->push_back(TRY(parse_expression()));
         }
         EXPECT(right)
-        return token_list;
+
+        return exprs;
     }
 
     ErrorOr<IfStatement::Ptr> Parser::if_statement() {
@@ -280,9 +282,17 @@ namespace hasha {
         auto name = TRY(identifier());
 
         if (peek() == EQUALS) {
-            return Declaration::create(std::move(decl_type), *name, TRY(assignment()));
+
+            return Declaration::create(
+                    std::move(decl_type),
+                    *name,
+                    TRY(assignment())
+            );
         }
-        return Declaration::create(std::move(decl_type), *name);
+        return Declaration::create(
+                std::move(decl_type),
+                *name
+        );
     }
 
     ErrorOr<Block::Ptr> Parser::block() noexcept {
@@ -381,6 +391,15 @@ namespace hasha {
 
         return StringLiteral::create(peek(-1).data());
 
+    }
+
+    ErrorOr<FunctionCall::Ptr> Parser::function_call() {
+
+        auto name = TRY(identifier());
+        set_context(current_context().set_parsing_args(true));
+        auto exprs = TRY(parse_multiple(LPAREN, RPAREN));
+        restore_context();
+        return FunctionCall::create(name->get(), std::move(exprs));
     }
 
 } // hasha

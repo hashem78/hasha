@@ -36,6 +36,9 @@
 #include "Statement/ElseStatement.h"
 #include "Type/Type.h"
 #include "Type/ArrayType.h"
+#include "Context.h"
+#include "Expression.h"
+#include "Assignment/ArrayAssignment.h"
 
 namespace hasha {
 
@@ -46,13 +49,27 @@ namespace hasha {
 
         TokenList tokens;
 
+        ContextStack context_stack;
+
+        Context current_context() {
+            return context_stack.top();
+        }
+
+        void set_context(Context context) {
+            context_stack.push(context);
+        }
+
+        void restore_context(){
+            context_stack.pop();
+        }
+
         [[nodiscard]]
         Lexeme peek(std::size_t k = 0) const noexcept;
 
         [[nodiscard]]
-        bool done() const noexcept;
+        bool done(int k=0) const noexcept;
 
-        Lexeme advance() noexcept;
+        Lexeme advance(int k=1) noexcept;
 
         [[nodiscard]]
         inline bool match(const Lexeme &match, int start = 0) const noexcept;
@@ -128,12 +145,13 @@ namespace hasha {
 
         ErrorOr<Declaration::Ptr> declaration();
 
+        ErrorOr<FunctionCall::Ptr> function_call();
 
-        ErrorOr<TokenListPtr> parse_expression(const Lexeme &delimiter = SEMICOLON);
+        ErrorOr<Expression::Ptr> parse_expression(const Lexeme &delimiter = SEMICOLON);
 
         ErrorOr<Assignment::Ptr> assignment();
 
-        ErrorOr<TokenListPtr> parse_multiple(const Lexeme &left, const Lexeme &right, const Lexeme &separator = COMMA);
+        ErrorOr<ExpressionListPtr> parse_multiple(const Lexeme &left, const Lexeme &right, const Lexeme &separator = COMMA);
 
         ErrorOr<Literal::Ptr> literal();
 

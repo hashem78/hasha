@@ -29,7 +29,7 @@ namespace hasha {
 
         if (m_assignment != nullptr) {
 
-            json["tokens"] = m_assignment->to_json();
+            json["assignment"] = m_assignment->to_json();
 
         }
 
@@ -58,11 +58,5 @@ namespace hasha {
                 std::move(tokens)
         );
     }
-
-    TokenListPtr Declaration::get_tokens() const {
-
-        return m_assignment->get_tokens();
-    }
-
 
 } // hasha

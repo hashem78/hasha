@@ -7,22 +7,22 @@
 
 #include "Token.h"
 #include "Block.h"
-
+#include "Expression.h"
 namespace hasha {
 
     class IfStatement : public Token {
     protected:
-        TokenListPtr condition;
+        Expression::Ptr condition;
         Block::Ptr block;
     public:
         using Ptr = std::unique_ptr<IfStatement>;
 
-        IfStatement(TokenListPtr condition, Block::Ptr block);
+        IfStatement(Expression::Ptr condition, Block::Ptr block);
 
-        static Ptr create(TokenListPtr condition, Block::Ptr block);
+        static Ptr create(Expression::Ptr condition, Block::Ptr block);
 
         [[nodiscard]]
-        const TokenList * get_condition() const;
+        const Expression * get_condition() const;
 
         [[nodiscard]]
         const Block * get_block() const;
