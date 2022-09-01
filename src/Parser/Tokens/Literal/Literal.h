@@ -13,16 +13,19 @@
 namespace hasha {
 
     class Literal : public Token {
-        using Ptr = std::shared_ptr<Literal>;
     protected:
         std::string m_literal;
 
     public:
+        using Ptr = std::unique_ptr<Literal>;
 
         explicit Literal(std::string literal);
 
         [[nodiscard]]
         const std::string &get_literal() const noexcept;
+
+        [[nodiscard]]
+        nlohmann::json to_json() const override = 0;
 
     };
 

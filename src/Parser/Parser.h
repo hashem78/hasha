@@ -55,19 +55,46 @@ namespace hasha {
         Lexeme advance() noexcept;
 
         [[nodiscard]]
-        inline bool match(const Lexeme &match) const noexcept;
+        inline bool match(const Lexeme &match, int start = 0) const noexcept;
 
         [[nodiscard]]
-        inline bool match(const LexemeType &match) const noexcept;
+        inline bool match(const LexemeType &match, int start = 0) const noexcept;
 
         template<size_t S>
         [[nodiscard]]
-        inline bool match(const Patterns::Pattern<S> &matchers) const noexcept {
+        inline bool match_any(const Patterns::Pattern<S> &matchers) const noexcept {
 
-            int lookahed = 0;
             for (std::size_t i = 0; i < matchers.size(); ++i) {
 
-                auto should_return = std::visit(
+                auto matched = std::visit(
+                        Patterns::PatternVisitor{
+                                [&, this](const Lexeme &lexeme) -> bool {
+                                    return peek() == lexeme;
+                                },
+                                [&, this](const LexemeType &lexeme_type) -> bool {
+                                    return peek().type() == lexeme_type;
+                                },
+                                [&, this](const Patterns::PatternFunctor &pattern_functor) -> bool {
+                                    return pattern_functor(lexemes, cursor).matched;
+                                }
+                        }, matchers[i]
+                );
+                if (matched)
+                    return true;
+
+            }
+            return false;
+        }
+
+
+        template<size_t S>
+        [[nodiscard]]
+        inline bool match(const Patterns::Pattern<S> &matchers, int start = 0) const noexcept {
+
+            int lookahed = 0;
+            for (std::size_t i = start; i < matchers.size(); ++i) {
+
+                auto not_matched = std::visit(
                         Patterns::PatternVisitor{
                                 [&, this](const Lexeme &lexeme) -> bool {
                                     return peek(i + lookahed) != lexeme;
@@ -85,7 +112,7 @@ namespace hasha {
                                 }
                         }, matchers[i]
                 );
-                if (should_return)
+                if (not_matched)
                     return false;
 
             }
@@ -93,25 +120,22 @@ namespace hasha {
         }
 
         [[nodiscard]]
-        ErrorOr<Identifier> identifier() noexcept;
+        ErrorOr<Identifier::Ptr> identifier() noexcept;
 
         ErrorOr<Type::Ptr> type() noexcept;
 
         ErrorOr<Parameter::Ptr> parameter();
 
-        ErrorOr<Declaration::Ptr> variable_declaration();
-
-        ErrorOr<Declaration::Ptr> array_declaration_and_assignemnt();
+        ErrorOr<Declaration::Ptr> declaration();
 
 
         ErrorOr<TokenListPtr> parse_expression(const Lexeme &delimiter = SEMICOLON);
 
-        ErrorOr<Declaration::Ptr> variable_declaration_and_assignment();
-
-        ErrorOr<Assignment::Ptr> variable_assignment();
+        ErrorOr<Assignment::Ptr> assignment();
 
         ErrorOr<TokenListPtr> parse_multiple(const Lexeme &left, const Lexeme &right, const Lexeme &separator = COMMA);
 
+        ErrorOr<Literal::Ptr> literal();
 
         ErrorOr<Block::Ptr> block() noexcept;
 

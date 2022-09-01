@@ -21,20 +21,16 @@ namespace hasha {
         bool isarray() const;
 
     protected:
-        Identifier m_name;
         TokenListPtr m_tokens;
 
     public:
 
-        Assignment(Identifier name, TokenListPtr, bool isarray = false);
+        Assignment(TokenListPtr, bool isarray = false);
 
         using Ptr = std::unique_ptr<Assignment>;
 
 
-        static Ptr create(Identifier name, TokenListPtr, bool isarray = false);
-
-        [[nodiscard]]
-        Identifier get_name() const;
+        static Ptr create(TokenListPtr, bool isarray = false);
 
         [[nodiscard]]
         TokenListPtr get_tokens() const;
