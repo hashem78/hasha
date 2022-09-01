@@ -27,7 +27,6 @@ namespace hasha {
         while (!done()) {
 
             auto token = next_token();
-            fmt::print("TOKEN: {}\n", token);
 
             if (lexeme_map.contains(token)) {
                 lexemes.push_back(lexeme_map.at(token));
