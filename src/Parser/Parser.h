@@ -195,9 +195,6 @@ namespace hasha {
 
         explicit Parser(std::string file_name);
 
-        [[nodiscard]]
-        const LexemeList &get_lexemes() const noexcept;
-
         void parse();
 
     };

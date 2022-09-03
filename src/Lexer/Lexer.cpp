@@ -51,6 +51,10 @@ namespace hasha {
                 return fmt::format("LEXER: Illegal Token {} on line: {} col {}", token, span.line, span.col);
             }
         }
+
+        Analyzer analyzer(lexemes);
+        TRY(analyzer.analyze_bracket_pairs());
+
         return {};
 
     }

@@ -1,4 +1,3 @@
-#include "fmt/format.h"
 #include "Parser/Parser.h"
 
 int main() {

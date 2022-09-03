@@ -16,8 +16,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Remove useless output buffer">
+      <change afterPath="$PROJECT_DIR$/src/Lexer/Analyzer.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Lexer/Analyzer.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexer.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,14 +129,7 @@
       <workItem from="1661933506421" duration="2552000" />
       <workItem from="1662024710514" duration="30000" />
       <workItem from="1662024755788" duration="33680000" />
-      <workItem from="1662195318988" duration="7449000" />
-    </task>
-    <task id="LOCAL-00001" summary="Initial Commit">
-      <created>1658351946447</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1658351946447</updated>
+      <workItem from="1662195318988" duration="17604000" />
     </task>
     <task id="LOCAL-00002" summary="Work on Lexer and Parser">
       <created>1658435856202</created>
@@ -468,7 +467,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662207364864</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="Remove useless output buffer">
+      <created>1662207394498</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1662207394499</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

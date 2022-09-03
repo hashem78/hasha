@@ -11,6 +11,7 @@
 #include "Lexeme.h"
 #include "Constants.h"
 #include "ErrorOr.h"
+#include "Analyzer.h"
 
 #include "fmt/format.h"
 
