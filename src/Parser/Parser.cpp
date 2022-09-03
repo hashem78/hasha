@@ -128,7 +128,6 @@ namespace hasha {
 
     ErrorOr<Expression::Ptr> Parser::parse_expression(const Lexeme &delimiter) {
 
-        std::deque<Lexeme> output; // queue
         std::deque<Lexeme> operators; // stack
         auto token_list = create_token_list();
 
@@ -203,7 +202,6 @@ namespace hasha {
                                     x.span().col
                             );
                     }
-                    output.push_back(x);
                 }
             }
         }
