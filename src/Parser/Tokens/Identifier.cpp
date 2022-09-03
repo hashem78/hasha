@@ -8,20 +8,29 @@
 
 namespace hasha {
 
-    Identifier::Identifier(std::string identifier) noexcept: m_identifier(std::move(identifier)) {
+    Identifier::Identifier(
+            std::string identifier,
+            const Span &span
+    ) noexcept:
+            m_identifier(std::move(identifier)),
+            Token(span) {
 
     }
 
-    Identifier::Ptr Identifier::create(std::string identifier) {
+    Identifier::Ptr Identifier::create(
+            std::string identifier,
+            const Span &span
+    ) {
 
-        return std::make_unique<Identifier>(std::move(identifier));
+        return std::make_unique<Identifier>(std::move(identifier), span);
     }
 
     nlohmann::json Identifier::to_json() const {
 
         return {
                 {"token_type", "Identifier"},
-                {"identifier", m_identifier}
+                {"identifier", m_identifier},
+                {"span",       m_span.to_json()}
         };
     }
 

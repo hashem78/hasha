@@ -32,6 +32,7 @@ namespace hasha {
             json["assignment"] = m_assignment->to_json();
 
         }
+        json["span"] = m_span.to_json();
 
         return json;
     }
@@ -39,22 +40,26 @@ namespace hasha {
     Declaration::Declaration(
             Type::Ptr type,
             Identifier name,
+            const Span &span,
             Assignment::Ptr assignment
     ) :
             m_type(std::move(type)),
             m_name(std::move(name)),
-            m_assignment(std::move(assignment)) {}
+            m_assignment(std::move(assignment)),
+            Token(span) {}
 
     Declaration::Ptr
     Declaration::create(
             Type::Ptr type,
             Identifier name,
+            const Span &span,
             Assignment::Ptr tokens
     ) {
 
         return std::make_unique<Declaration>(
                 std::move(type),
                 std::move(name),
+                span,
                 std::move(tokens)
         );
     }

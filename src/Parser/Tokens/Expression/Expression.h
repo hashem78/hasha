@@ -14,23 +14,25 @@ namespace hasha {
 
     public:
 
-        explicit Expression(TokenListPtr expr);
+        explicit Expression(TokenListPtr expr, const Span &span);
 
         using Ptr = std::unique_ptr<Expression>;
 
-        static Ptr create(TokenListPtr expr);
+        static Ptr create(TokenListPtr expr, const Span &span);
 
         [[nodiscard]]
         nlohmann::json to_json() const override;
 
         [[nodiscard]]
-        const TokenList* get_expression()const;
+        const TokenList *get_expression() const;
     };
+
     using ExpressionList = std::deque<Expression::Ptr>;
     using ExpressionListPtr = std::unique_ptr<ExpressionList>;
 
     ExpressionListPtr create_expression_list();
-    nlohmann::json expression_list_to_json(const ExpressionList* expression_list);
+
+    nlohmann::json expression_list_to_json(const ExpressionList *expression_list);
 } // hasha
 
 #endif //HASHA_EXPRESSION_H

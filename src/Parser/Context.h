@@ -18,13 +18,15 @@ namespace hasha {
         bool parsing_args;
         bool parsing_array_type;
         bool parsing_value_type;
+        bool parsing_return_expression;
 
         NLOHMANN_DEFINE_TYPE_INTRUSIVE(
                 Context,
                 parsing_array,
                 parsing_expression,
                 parsing_args, parsing_array_type,
-                parsing_value_type
+                parsing_value_type,
+                parsing_return_expression
         );
 
         Context &set_parsing_array(bool val);
@@ -36,6 +38,9 @@ namespace hasha {
         Context &set_parsing_array_type(bool val);
 
         Context &set_parsing_value_type(bool val);
+
+        Context &set_parsing_return_expression(bool val);
+
 
         void print();
     };

@@ -9,7 +9,7 @@
 #include "Block.h"
 #include "Parameter.h"
 #include "Type/Type.h"
-#include "Expression.h"
+#include "Tokens/Expression/Expression.h"
 
 namespace hasha {
     class Block;
@@ -19,7 +19,6 @@ namespace hasha {
         Block::Ptr m_block;
         Type::Ptr m_return_type;
         Identifier m_name;
-        Expression::Ptr m_return_expression;
 
     public:
 
@@ -28,7 +27,8 @@ namespace hasha {
                 Block::Ptr block,
                 Identifier name,
                 Type::Ptr return_type,
-                Expression::Ptr);
+                const Span &span
+        );
 
         using Ptr = std::unique_ptr<Function>;
 
@@ -37,7 +37,8 @@ namespace hasha {
                 Block::Ptr block,
                 Identifier name,
                 Type::Ptr return_type,
-                Expression::Ptr);
+                const Span &span
+        );
 
         [[nodiscard]]
         nlohmann::json to_json() const override;

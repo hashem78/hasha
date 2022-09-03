@@ -6,10 +6,11 @@
 
 namespace hasha {
 
-    Lexer::Lexer(std::string file_name) {
-
-        this->cursor = 0;
-        this->file_name = std::move(file_name);
+    Lexer::Lexer(std::string file_name) :
+            file_name(std::move(file_name)),
+            cursor(0),
+            line(1),
+            col(1) {
 
         std::ifstream file(this->file_name, std::ios::binary);
 
@@ -26,18 +27,28 @@ namespace hasha {
 
         while (!done()) {
 
-            auto token = next_token();
+            auto [token, span] = next_token();
 
             if (lexeme_map.contains(token)) {
-                lexemes.push_back(lexeme_map.at(token));
+                auto lexeme = lexeme_map.at(token);
+                lexeme.span()
+                        .set_begin(span.begin)
+                        .set_end(span.end)
+                        .set_line(span.line)
+                        .set_col(span.col);
+
+                lexemes.push_back(lexeme);
             } else if (is_numeric_literal(token)) {
-                lexemes.push_back({token, LexemeType::NUMERIC_LITERAL});
+
+                lexemes.push_back({token, LexemeType::NUMERIC_LITERAL, span});
             } else if (is_string_literal(token)) {
-                lexemes.push_back({token, LexemeType::STRING_LITERAL});
+
+                lexemes.push_back({token, LexemeType::STRING_LITERAL, span});
             } else if (is_identifier(token)) {
-                lexemes.push_back({token, LexemeType::IDENTIFIER});
+
+                lexemes.push_back({token, LexemeType::IDENTIFIER, span});
             } else {
-                return fmt::format("LEXER: Illegal Token {}", token);
+                return fmt::format("LEXER: Illegal Token {} on line: {} col {}", token, span.line, span.col);
             }
         }
         return {};
@@ -85,44 +96,53 @@ namespace hasha {
         );
     }
 
-    std::string Lexer::next_token() {
+    std::tuple<std::string, Span> Lexer::next_token() {
 
-        if (done()) return {};
+        if (done()) return {{}, Span{}};
 
         skip_spaces();
+        int begin = cursor;
+        int start_col = col;
         if (peek() == '&' && peek(1) == '&') {
             cursor += 2;
-            return "&&";
+            col += 2;
+            return {"&&", Span{begin, cursor, line, start_col}};
         }
         if (peek() == '|' && peek(1) == '|') {
             cursor += 2;
-            return "||";
+            col += 2;
+            return {"||", Span{begin, cursor, line, start_col}};
         }
         if (peek() == '-' && peek(1) == '>') {
             cursor += 2;
-            return "->";
+            col += 2;
+            return {"->", Span{begin, cursor, line, start_col}};
         }
         if (peek() == '"') {
             auto string_ltrl = std::string{};
             do {
                 string_ltrl += peek();
+                col++;
                 cursor++;
             } while (peek() != '"');
             string_ltrl += '"';
             cursor++;
-            return string_ltrl;
+            col++;
+            return {string_ltrl, Span{begin, cursor, line, start_col}};
         }
         if (is_legal_character(peek())) {
             cursor++;
-            return std::string{peek(-1)};
+            col++;
+            return {std::string{peek(-1)}, Span{begin, cursor, line, start_col}};
         }
 
         auto token = std::string{};
         while (std::isalnum(peek()) || peek() == '_') {
             token += peek();
             cursor++;
+            col++;
         }
-        return token;
+        return {token, Span{begin, cursor, line, start_col}};
 
     }
 
@@ -152,9 +172,14 @@ namespace hasha {
     void Lexer::skip_spaces() noexcept {
 
         while (std::isspace(peek()) && !done()) {
+            if (peek() == '\n') {
+                line++;
+                col = 0;
+            }
+
+            col++;
             cursor++;
         }
-
     }
 
 } // hasha

@@ -10,20 +10,26 @@
 
 #include "nlohmann/json.hpp"
 #include "fmt/core.h"
+#include "Span.h"
 
 namespace hasha {
 
     class Token {
         static int number_of_tokens;
         int id;
+    protected:
+        Span m_span;
     public:
-        Token();
+        explicit Token(const Span &span);
 
         [[nodiscard]]
         virtual nlohmann::json to_json() const = 0;
 
         [[nodiscard]]
         std::string to_string() const;
+
+        [[nodiscard]]
+        virtual const Span &span() const;
 
         virtual ~Token() = default;
     };
@@ -33,9 +39,10 @@ namespace hasha {
     using TokenListPtr = std::shared_ptr<TokenList>;
 
     TokenListPtr create_token_list();
+
     nlohmann::json token_list_to_json(const TokenList *tokens);
 
-    void print_token_list(const TokenList* tokens);
+    void print_token_list(const TokenList *tokens);
 } // hasha
 
 #endif //HASHA_TOKEN_H

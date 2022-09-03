@@ -15,7 +15,7 @@ namespace hasha {
         json["return_type"] = m_return_type->to_json();
         json["parameters"] = token_list_to_json(m_parameters.get());
         json["block"] = m_block->to_json();
-        json["return_expression"] = m_return_expression->to_json();
+        json["span"] = m_span.to_json();
 
         return json;
     }
@@ -36,13 +36,13 @@ namespace hasha {
             Block::Ptr block,
             Identifier name,
             Type::Ptr return_type,
-            Expression::Ptr return_expression
+            const Span &span
     )
             : m_parameters(std::move(parameters)),
               m_block(std::move(block)),
               m_return_type(std::move(return_type)),
               m_name(std::move(name)),
-              m_return_expression(std::move(return_expression)) {
+              Token(span) {
     }
 
     Function::Ptr Function::create(
@@ -50,17 +50,15 @@ namespace hasha {
             Block::Ptr block,
             Identifier name,
             Type::Ptr return_type,
-            Expression::Ptr return_expression
+            const Span &span
     ) {
 
         return std::make_unique<Function>(
-
                 std::move(parameters),
                 std::move(block),
                 std::move(name),
                 std::move(return_type),
-                std::move(return_expression)
-
+                span
         );
     }
 
@@ -69,7 +67,7 @@ namespace hasha {
         return m_name;
     }
 
-    const Type* Function::get_return_type() const {
+    const Type *Function::get_return_type() const {
 
         return m_return_type.get();
     }

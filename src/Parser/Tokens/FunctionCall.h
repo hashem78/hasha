@@ -6,7 +6,7 @@
 #define HASHA_FUNCTIONCALL_H
 
 #include "Token.h"
-#include "Expression.h"
+#include "Tokens/Expression/Expression.h"
 
 namespace hasha {
 
@@ -16,11 +16,19 @@ namespace hasha {
 
     public:
 
-        FunctionCall(std::string callee,ExpressionListPtr tokens);
+        FunctionCall(
+                std::string callee,
+                ExpressionListPtr tokens,
+                const Span &span
+        );
 
         using Ptr = std::unique_ptr<FunctionCall>;
 
-        static Ptr create(std::string callee, ExpressionListPtr tokens);
+        static Ptr create(
+                std::string callee,
+                ExpressionListPtr tokens,
+                const Span& span
+        );
 
         [[nodiscard]]
         int get_number_of_args() const noexcept;
@@ -29,7 +37,7 @@ namespace hasha {
         std::string get_callee() const noexcept;
 
         [[nodiscard]]
-        const ExpressionList* get_arguments() const noexcept;
+        const ExpressionList *get_arguments() const noexcept;
 
         [[nodiscard]]
         nlohmann::json to_json() const override;

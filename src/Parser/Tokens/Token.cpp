@@ -34,8 +34,16 @@ namespace hasha {
         return str.str();
     }
 
-    Token::Token(): id(number_of_tokens++) {
+    Token::Token(const Span &span) :
+            m_span(span),
+            id(number_of_tokens++) {
 
     }
+
     int Token::number_of_tokens = 0;
+
+    const Span &Token::span() const {
+
+        return m_span;
+    }
 } // hasha

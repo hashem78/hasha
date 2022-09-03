@@ -11,14 +11,18 @@ namespace hasha {
         if (m_type == LexemeType::OPERATOR) {
             return {
                     {"data",          m_data},
+                    {"span",          m_span.to_json()},
                     {"type",          magic_enum::enum_name(m_type)},
                     {"associativity", magic_enum::enum_name(m_associativity)},
                     {"precedence",    magic_enum::enum_name(m_precedence)},
             };
         }
 
-        return {{"data", m_data},
-                {"type", magic_enum::enum_name(m_type)}};
+        return {
+                {"data", m_data},
+                {"span", m_span.to_json()},
+                {"type", magic_enum::enum_name(m_type)}
+        };
     }
 
     std::string Lexeme::to_string() const noexcept {
@@ -56,12 +60,32 @@ namespace hasha {
             m_data(std::move(data)),
             m_type(type),
             m_associativity(associativity),
-            m_precedence(precedence)
-    {}
+            m_precedence(precedence),
+            m_span(Span{}) {}
 
     Lexeme::Lexeme(std::string data, LexemeType type) :
             m_data(std::move(data)),
             m_type(type),
             m_associativity(Associativity::NONE),
-            m_precedence(Precedence::NONE) {}
+            m_precedence(Precedence::NONE),
+            m_span(Span{}) {}
+
+    Lexeme::Lexeme(std::string data, LexemeType type, Span span) :
+            m_data(std::move(data)),
+            m_type(type),
+            m_associativity(Associativity::NONE),
+            m_precedence(Precedence::NONE),
+            m_span(span) {}
+
+
+    Span &Lexeme::span() noexcept {
+
+        return m_span;
+    }
+
+    bool Lexeme::operator==(const Lexeme &other) const {
+
+        return std::tie(m_data, m_type, m_precedence, m_associativity) ==
+               std::tie(other.m_data, other.m_type, other.m_precedence, other.m_associativity);
+    }
 } // hasha

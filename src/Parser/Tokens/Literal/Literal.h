@@ -14,12 +14,13 @@ namespace hasha {
 
     class Literal : public Token {
     protected:
+
         std::string m_literal;
 
     public:
-        using Ptr = std::unique_ptr<Literal>;
+        Literal(std::string literal, const Span &span);
 
-        explicit Literal(std::string literal);
+        using Ptr = std::unique_ptr<Literal>;
 
         [[nodiscard]]
         const std::string &get_literal() const noexcept;

@@ -6,7 +6,7 @@
 #define HASHA_ASSIGNMENT_H
 
 #include "Token.h"
-#include "Expression.h"
+#include "Tokens/Expression/Expression.h"
 
 namespace hasha {
 
@@ -15,9 +15,9 @@ namespace hasha {
     public:
         using Ptr = std::unique_ptr<Assignment>;
 
-        explicit Assignment(Expression::Ptr expression);
+        explicit Assignment(Expression::Ptr expression, const Span &span);
 
-        static Ptr create(Expression::Ptr expression);
+        static Ptr create(Expression::Ptr expression, const Span &span);
 
         [[nodiscard]]
         nlohmann::json to_json() const override;

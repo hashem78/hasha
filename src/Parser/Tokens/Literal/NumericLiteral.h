@@ -13,11 +13,11 @@
 namespace hasha {
 
     class NumericLiteral : public Literal {
-        using Literal::Literal;
     public:
+        using Literal::Literal;
         using Ptr = std::unique_ptr<NumericLiteral>;
 
-        static Ptr create(std::string literal);
+        static Ptr create(std::string literal, const Span &span);
 
         [[nodiscard]]
         nlohmann::json to_json() const override;

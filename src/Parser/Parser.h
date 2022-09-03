@@ -37,8 +37,9 @@
 #include "Type/Type.h"
 #include "Type/ArrayType.h"
 #include "Context.h"
-#include "Expression.h"
+#include "Tokens/Expression/Expression.h"
 #include "Assignment/ArrayAssignment.h"
+#include "Expression/ReturnExpression.h"
 
 namespace hasha {
 
@@ -51,25 +52,19 @@ namespace hasha {
 
         ContextStack context_stack;
 
-        Context current_context() {
-            return context_stack.top();
-        }
+        Context current_context();
 
-        void set_context(Context context) {
-            context_stack.push(context);
-        }
+        void set_context(Context context);
 
-        void restore_context(){
-            context_stack.pop();
-        }
+        void restore_context();
 
         [[nodiscard]]
         Lexeme peek(std::size_t k = 0) const noexcept;
 
         [[nodiscard]]
-        bool done(int k=0) const noexcept;
+        bool done(int k = 0) const noexcept;
 
-        Lexeme advance(int k=1) noexcept;
+        Lexeme advance(int k = 1) noexcept;
 
         [[nodiscard]]
         inline bool match(const Lexeme &match, int start = 0) const noexcept;
@@ -151,7 +146,8 @@ namespace hasha {
 
         ErrorOr<Assignment::Ptr> assignment();
 
-        ErrorOr<ExpressionListPtr> parse_multiple(const Lexeme &left, const Lexeme &right, const Lexeme &separator = COMMA);
+        ErrorOr<ExpressionListPtr>
+        parse_multiple(const Lexeme &left, const Lexeme &right, const Lexeme &separator = COMMA);
 
         ErrorOr<Literal::Ptr> literal();
 
@@ -164,6 +160,8 @@ namespace hasha {
         ErrorOr<ElifStatement::Ptr> elif_statement();
 
         ErrorOr<ElseStatement::Ptr> else_statement();
+
+        ErrorOr<Expression::Ptr> return_expression();
 
         template<class T>
         std::optional<const T *> last_of(const TokenList *tkns) {

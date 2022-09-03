@@ -16,7 +16,7 @@ namespace hasha {
 
         using Ptr = std::unique_ptr<ArrayType>;
 
-        static Ptr create(Identifier identifier);
+        static Ptr create(Identifier identifier, const Span &span);
 
         [[nodiscard]]
         nlohmann::json to_json() const override;

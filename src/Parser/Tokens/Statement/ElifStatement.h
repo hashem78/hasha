@@ -9,12 +9,17 @@
 
 namespace hasha {
 
-    class ElifStatement: public IfStatement {
+    class ElifStatement : public IfStatement {
         using IfStatement::IfStatement;
 
     public:
         using Ptr = std::unique_ptr<ElifStatement>;
-        static ElifStatement::Ptr create(Expression::Ptr condition, Block::Ptr block);
+
+        static ElifStatement::Ptr create(
+                Expression::Ptr condition,
+                Block::Ptr block,
+                const Span &span
+        );
 
         [[nodiscard]]
         nlohmann::json to_json() const override;

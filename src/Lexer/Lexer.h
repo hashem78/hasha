@@ -25,15 +25,16 @@ namespace hasha {
         [[nodiscard]]
         const LexemeList &get_lexemes() const;
 
+        std::vector<char> data;
     private:
 
         LexemeList lexemes;
         std::string file_name;
-        std::vector<char> data;
         int cursor;
+        int line;
+        int col;
 
-
-        std::string next_token();
+        std::tuple<std::string, Span> next_token();
 
         void skip_spaces() noexcept;
 

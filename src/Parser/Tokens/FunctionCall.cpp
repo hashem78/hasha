@@ -13,14 +13,18 @@ namespace hasha {
         return m_callee;
     }
 
-    const ExpressionList* FunctionCall::get_arguments() const noexcept {
+    const ExpressionList *FunctionCall::get_arguments() const noexcept {
 
         return m_arguments.get();
     }
 
-    FunctionCall::FunctionCall(std::string callee, ExpressionListPtr tokens) :
+    FunctionCall::FunctionCall(
+            std::string callee,
+            ExpressionListPtr tokens,
+            const Span &span) :
             m_callee(std::move(callee)),
-            m_arguments(std::move(tokens)) {
+            m_arguments(std::move(tokens)),
+            Token(span) {
 
     }
 
@@ -29,9 +33,17 @@ namespace hasha {
         return static_cast<int>(m_arguments->size());
     }
 
-    FunctionCall::Ptr FunctionCall::create(std::string callee, ExpressionListPtr tokens) {
+    FunctionCall::Ptr FunctionCall::create(
+            std::string callee,
+            ExpressionListPtr tokens,
+            const Span &span
+    ) {
 
-        return std::make_unique<FunctionCall>(std::move(callee), std::move(tokens));
+        return std::make_unique<FunctionCall>(
+                std::move(callee),
+                std::move(tokens),
+                span
+        );
     }
 
     nlohmann::json FunctionCall::to_json() const {
@@ -41,6 +53,7 @@ namespace hasha {
         json["token_type"] = "FunctionCall";
         json["callee"] = m_callee;
         json["arguments"] = expression_list_to_json(m_arguments.get());
+        json["span"] = m_span.to_json();
         return json;
     }
 

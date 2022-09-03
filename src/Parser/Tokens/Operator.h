@@ -15,11 +15,11 @@ namespace hasha {
         std::string m_op;
 
     public:
-        explicit Operator(std::string op) noexcept;
+        Operator(std::string op, const Span &span) noexcept;
 
         using Ptr = std::unique_ptr<Operator>;
 
-        static Ptr create(std::string op);
+        static Ptr create(std::string op, const Span &span);
 
         [[nodiscard]]
         const std::string &get_op() const noexcept;

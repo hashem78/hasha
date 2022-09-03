@@ -7,15 +7,28 @@
 #include <memory>
 
 namespace hasha {
-    Parameter::Parameter(Type::Ptr type, Identifier name) noexcept:
+    Parameter::Parameter(
+            Type::Ptr type,
+            Identifier name,
+            const Span &span
+    ) noexcept:
             m_type(std::move(type)),
-            m_name(std::move(name)) {
+            m_name(std::move(name)),
+            Token(span) {
 
     }
 
-    Parameter::Ptr Parameter::create(Type::Ptr type, Identifier name) {
+    Parameter::Ptr Parameter::create(
+            Type::Ptr type,
+            Identifier name,
+            const Span &span
+    ) {
 
-        return std::make_unique<Parameter>(std::move(type), std::move(name));
+        return std::make_unique<Parameter>(
+                std::move(type),
+                std::move(name),
+                span
+        );
     }
 
     nlohmann::json Parameter::to_json() const {
@@ -23,7 +36,8 @@ namespace hasha {
         return {
                 {"token_type", "Parameter"},
                 {"type",       m_type->to_json()},
-                {"name",       m_name.to_json()}
+                {"name",       m_name.to_json()},
+                {"span",      m_span.to_json()}
         };
     }
 

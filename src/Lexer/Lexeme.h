@@ -12,6 +12,7 @@
 #include "nlohmann/json.hpp"
 #include "magic_enum.hpp"
 #include "fmt/format.h"
+#include "Span.h"
 
 namespace hasha {
 
@@ -47,8 +48,11 @@ namespace hasha {
         LexemeType m_type;
         Associativity m_associativity;
         Precedence m_precedence;
+        Span m_span;
 
     public:
+
+        bool operator==(const Lexeme &other) const;
 
         Lexeme(
                 std::string data,
@@ -62,8 +66,11 @@ namespace hasha {
                 LexemeType type
         );
 
-
-        auto operator<=>(const Lexeme &) const = default;
+        Lexeme(
+                std::string data,
+                LexemeType type,
+                Span span
+        );
 
         [[nodiscard]]
         nlohmann::json to_json() const noexcept;
@@ -82,6 +89,8 @@ namespace hasha {
 
         [[nodiscard]]
         Associativity associativity() const noexcept;
+
+        Span &span() noexcept;
     };
 
     using LexemeList = std::vector<Lexeme>;

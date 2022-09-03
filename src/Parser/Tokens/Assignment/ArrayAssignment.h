@@ -16,15 +16,21 @@ namespace hasha {
 
     public:
 
-        explicit ArrayAssignment(ExpressionListPtr expressions);
+        explicit ArrayAssignment(
+                ExpressionListPtr expressions,
+                const Span &span
+        );
 
         using Ptr = std::unique_ptr<ArrayAssignment>;
 
 
-        static Ptr create(ExpressionListPtr);
+        static Ptr create(
+                ExpressionListPtr expressions,
+                const Span &span
+        );
 
         [[nodiscard]]
-        const ExpressionList* get_expressions() const;
+        const ExpressionList *get_expressions() const;
 
         [[nodiscard]]
         nlohmann::json to_json() const override;

@@ -15,11 +15,19 @@ namespace hasha {
         Identifier m_name;
 
     public:
-        explicit Parameter(Type::Ptr type, Identifier name) noexcept;
+        explicit Parameter(
+                Type::Ptr type,
+                Identifier name,
+                const Span &span
+        ) noexcept;
 
         using Ptr = std::unique_ptr<Parameter>;
 
-        static Ptr create(Type::Ptr type, Identifier name);
+        static Ptr create(
+                Type::Ptr type,
+                Identifier name,
+                const Span &span
+        );
 
         [[nodiscard]]
         nlohmann::json to_json() const override;
@@ -28,7 +36,7 @@ namespace hasha {
         const Identifier &get_name() const noexcept;
 
         [[nodiscard]]
-        const Type* get_type() const noexcept;
+        const Type *get_type() const noexcept;
 
     };
 

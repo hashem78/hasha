@@ -25,18 +25,21 @@ namespace hasha {
         Declaration(
                 Type::Ptr type,
                 Identifier name,
+                const Span &span,
                 Assignment::Ptr asssignment = nullptr
         );
+
         using Ptr = std::unique_ptr<Declaration>;
 
         static Ptr create(
                 Type::Ptr type,
                 Identifier name,
+                const Span &span,
                 Assignment::Ptr assignment = nullptr
         );
 
         [[nodiscard]]
-        const Type* get_type() const;
+        const Type *get_type() const;
 
         [[nodiscard]]
         Identifier get_name() const;

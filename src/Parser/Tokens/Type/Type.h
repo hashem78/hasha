@@ -13,11 +13,11 @@ namespace hasha {
     class Type : public Token {
         Identifier name;
     public:
-        explicit Type(Identifier name);
+        explicit Type(Identifier name, const Span &span);
 
         using Ptr = std::unique_ptr<Type>;
 
-        static Ptr create(Identifier name);
+        static Ptr create(Identifier name, const Span &span);
 
         [[nodiscard]]
         const Identifier &get_name() const;

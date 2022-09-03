@@ -12,11 +12,11 @@ namespace hasha {
     class ElseStatement : public IfStatement {
 
     public:
-        ElseStatement(Block::Ptr block);
+        ElseStatement(Block::Ptr block, const Span &span);
 
         using Ptr = std::unique_ptr<ElseStatement>;
 
-        static ElseStatement::Ptr create(Block::Ptr block);
+        static ElseStatement::Ptr create(Block::Ptr block, const Span &span);
 
         [[nodiscard]]
         nlohmann::json to_json() const override;

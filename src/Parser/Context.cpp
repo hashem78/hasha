@@ -35,10 +35,16 @@ namespace hasha {
         return *this;
     }
 
+    Context &Context::set_parsing_return_expression(bool val) {
+        parsing_return_expression = val;
+        return *this;
+    }
+
     void Context::print() {
 
         std::stringstream str;
         str << std::setw(2) << nlohmann::json(*this);
         fmt::print("CONTEXT: {}\n", str.str());
     }
+
 }

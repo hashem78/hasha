@@ -5,16 +5,17 @@
 
 namespace hasha {
 
-    std::unique_ptr<BooleanLiteral> hasha::BooleanLiteral::create(std::string literal) {
+    BooleanLiteral::Ptr BooleanLiteral::create(std::string literal, const Span &span) {
 
-        return std::make_unique<BooleanLiteral>(std::move(literal));
+        return std::make_unique<BooleanLiteral>(std::move(literal), span);
     }
 
-    nlohmann::json hasha::BooleanLiteral::to_json() const {
+    nlohmann::json BooleanLiteral::to_json() const {
 
         return nlohmann::json{
                 {"token_type", "BooleanLiteral"},
-                {"literal",    m_literal}
+                {"literal",    m_literal},
+                {"span",      m_span.to_json()}
         };
     }
 }

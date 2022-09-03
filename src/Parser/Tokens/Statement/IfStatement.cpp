@@ -7,9 +7,14 @@
 #include <utility>
 
 namespace hasha {
-    IfStatement::IfStatement(Expression::Ptr condition, Block::Ptr block) :
+    IfStatement::IfStatement(
+            Expression::Ptr condition,
+            Block::Ptr block,
+            const Span &span
+    ) :
             condition(std::move(condition)),
-            block(std::move(block)) {}
+            block(std::move(block)),
+            Token(span) {}
 
     const Expression *IfStatement::get_condition() const {
 
@@ -27,11 +32,20 @@ namespace hasha {
         json["token_type"] = "IfStatement";
         json["condition"] = condition->to_json();
         json["block"] = block->to_json();
+        json["span"] =m_span.to_json();
         return json;
     }
 
-    IfStatement::Ptr IfStatement::create(Expression::Ptr condition, Block::Ptr block) {
+    IfStatement::Ptr IfStatement::create(
+            Expression::Ptr condition,
+            Block::Ptr block,
+            const Span &span
+    ) {
 
-        return std::make_unique<IfStatement>(std::move(condition), std::move(block));
+        return std::make_unique<IfStatement>(
+                std::move(condition),
+                std::move(block),
+                span
+        );
     }
 } // hasha

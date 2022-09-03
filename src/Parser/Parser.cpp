@@ -29,7 +29,11 @@ namespace hasha {
         if (blk.is_error())
             fmt::print("{}\n", blk.error());
         else {
-            fmt::print("{}\n", blk.value()->to_string());
+            std::ofstream ojson("parser_output.json");
+            if (ojson.is_open()) {
+                ojson << blk.value()->to_string();
+            }
+            //fmt::print("{}\n", blk.value()->to_string());
         }
 
     }
@@ -84,7 +88,7 @@ namespace hasha {
 
         advance();
 
-        return Identifier::create(name);
+        return Identifier::create(name, peek(-1).span());
     }
 
     ErrorOr<Type::Ptr> Parser::type() noexcept {
@@ -99,24 +103,26 @@ namespace hasha {
                             .set_parsing_array_type(true)
                             .set_parsing_value_type(false)
             );
-            return ArrayType::create(*name);
+            return ArrayType::create(*name, peek(-2).span());
         }
         set_context(
                 current_context()
                         .set_parsing_array_type(false)
                         .set_parsing_value_type(true)
         );
-        return Type::create(*name);
+        return Type::create(*name, peek().span());
     }
 
     ErrorOr<Parameter::Ptr> Parser::parameter() {
 
+        auto b_span = peek().span();
         auto param_type = TRY(type());
         auto name = TRY(identifier());
 
         if (match(COMMA)) advance();
 
-        return Parameter::create(std::move(param_type), *name);
+        b_span.set_end(peek(-1).span().end);
+        return Parameter::create(std::move(param_type), *name, b_span);
     }
 
 
@@ -127,6 +133,8 @@ namespace hasha {
         auto token_list = create_token_list();
 
         set_context(current_context().set_parsing_expression(true));
+
+        auto begin_span = peek().span();
 
         while (!match(delimiter)) {
             auto x = peek();
@@ -153,7 +161,7 @@ namespace hasha {
                         (x.associativity() == Associativity::RIGHT &&
                          x.precedence() < y.precedence())) {
 
-                        token_list->push_back(Operator::create(y.data()));
+                        token_list->push_back(Operator::create(y.data(), y.span()));
                         operators.pop_front();
 
                     } else {
@@ -168,7 +176,7 @@ namespace hasha {
                 while (operators.front() != LPAREN) {
                     // TODO: If the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
                     if (operators.empty()) break;
-                    token_list->push_back(Operator::create(operators.front().data()));
+                    token_list->push_back(Operator::create(operators.front().data(), operators.front().span()));
                     operators.pop_front();
                 }
                 // TODO: If the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
@@ -179,16 +187,21 @@ namespace hasha {
                 if (x != COMMA) {
                     switch (x.type()) {
                         case LexemeType::NUMERIC_LITERAL:
-                            token_list->push_back(NumericLiteral::create(x.data()));
+                            token_list->push_back(NumericLiteral::create(x.data(), x.span()));
                             break;
                         case LexemeType::STRING_LITERAL:
-                            token_list->push_back(StringLiteral::create(x.data()));
+                            token_list->push_back(StringLiteral::create(x.data(), x.span()));
                             break;
                         case LexemeType::BOOLEAN_LITERAL:
-                            token_list->push_back(BooleanLiteral::create(x.data()));
+                            token_list->push_back(BooleanLiteral::create(x.data(), x.span()));
                             break;
                         default:
-                            return fmt::format("Unknown token {} in expression\n", x.to_string());
+                            return fmt::format(
+                                    "Unknown token {} in expression, line: {} col: {}\n",
+                                    x.to_string(),
+                                    x.span().line,
+                                    x.span().col
+                            );
                     }
                     output.push_back(x);
                 }
@@ -196,12 +209,24 @@ namespace hasha {
         }
 
         while (!operators.empty()) {
-            token_list->push_back(Operator::create(operators.front().data()));
+            token_list->push_back(Operator::create(operators.front().data(), operators.front().span()));
             operators.pop_front();
         }
 
         restore_context();
-        return Expression::create(token_list);
+        auto end_span = peek(-1).span();
+
+        if (current_context().parsing_return_expression) {
+            return ReturnExpression::create(
+                    token_list,
+                    Span{begin_span.begin, end_span.end, begin_span.line, begin_span.col}
+            );
+        }
+
+        return Expression::create(
+                token_list,
+                Span{begin_span.begin, end_span.end, begin_span.line, begin_span.col}
+        );
 
     }
 
@@ -210,15 +235,21 @@ namespace hasha {
         EXPECT(EQUALS)
 
         Assignment::Ptr assignment;
+
         if (current_context().parsing_value_type) {
             EXPECT_NOT(LBRACKET)
-
-            assignment = Assignment::create(TRY(parse_expression()));
+            auto expr = TRY(parse_expression());
+            auto span = expr->span();
+            assignment = Assignment::create(std::move(expr), span);
         } else if (current_context().parsing_array_type) {
             set_context(current_context().set_parsing_array(true));
             auto array_token_list = TRY(parse_multiple(LBRACKET, RBRACKET));
+            auto span = Span{
+                    array_token_list->front()->span().begin,
+                    array_token_list->back()->span().end
+            };
             restore_context();
-            assignment = ArrayAssignment::create(std::move(array_token_list));
+            assignment = ArrayAssignment::create(std::move(array_token_list), span);
 
         }
 
@@ -246,65 +277,95 @@ namespace hasha {
 
     ErrorOr<IfStatement::Ptr> Parser::if_statement() {
 
+        auto span = peek().span();
         EXPECT(IF)
         auto condition = TRY(parse_expression(LCURLY));
         EXPECT(LCURLY)
         auto blk = TRY(block());
         EXPECT(RCURLY)
 
-        return IfStatement::create(std::move(condition), std::move(blk));
+        return IfStatement::create(
+                std::move(condition),
+                std::move(blk),
+                span
+        );
     }
 
     ErrorOr<ElifStatement::Ptr> Parser::elif_statement() {
 
+
+        auto span = peek().span();
         EXPECT(ELIF)
         auto condition = TRY(parse_expression(LCURLY));
         EXPECT(LCURLY)
         auto blk = TRY(block());
         EXPECT(RCURLY)
 
-        return ElifStatement::create(std::move(condition), std::move(blk));
+        return ElifStatement::create(
+                std::move(condition),
+                std::move(blk),
+                span
+        );
     }
 
     ErrorOr<ElseStatement::Ptr> Parser::else_statement() {
 
+        auto span = peek().span();
         EXPECT(ELSE)
         EXPECT(LCURLY)
         auto blk = TRY(block());
         EXPECT(RCURLY)
 
-        return ElseStatement::create(std::move(blk));
+        return ElseStatement::create(std::move(blk), span);
     }
 
     ErrorOr<Declaration::Ptr> Parser::declaration() {
 
+        auto before_span = peek().span();
         auto decl_type = TRY(type());
         auto name = TRY(identifier());
 
         if (peek() == EQUALS) {
+            auto asx = TRY(assignment());
+
+            auto after_span = peek(-1).span();
+
+            auto span = Span{
+                    before_span.begin,
+                    after_span.end,
+                    before_span.line,
+                    before_span.col
+            };
 
             return Declaration::create(
                     std::move(decl_type),
                     *name,
-                    TRY(assignment())
+                    span,
+                    std::move(asx)
             );
         }
+
+        auto after_span = peek(-1).span();
+
+        auto span = Span{
+                before_span.begin,
+                after_span.end,
+                before_span.line,
+                before_span.col
+        };
         return Declaration::create(
                 std::move(decl_type),
-                *name
+                *name,
+                span
         );
     }
 
     ErrorOr<Block::Ptr> Parser::block() noexcept {
 
         auto token_list = create_token_list();
+        auto begin_span = peek().span();
         while (!match(RCURLY)) {
 
-            // In a return function block there is going to be a
-            // return keyword.
-            if (match(RETURN)) {
-                return Block::create(token_list);
-            }
 
             // Parse the unambigous statements first
             if (match(FN)) {
@@ -317,16 +378,25 @@ namespace hasha {
                 token_list->push_back(TRY(elif_statement()));
             } else if (match(LexemeType::IDENTIFIER)) {
                 token_list->push_back(TRY(declaration()));
+            } else if (match(RETURN)) {
+                token_list->push_back(TRY(return_expression()));
             } else {
                 advance();
             }
         }
-
-        return Block::create(token_list);
+        auto end_span = peek().span();
+        auto span = Span{
+                begin_span.begin,
+                end_span.end,
+                begin_span.line,
+                begin_span.col
+        };
+        return Block::create(token_list, span);
     }
 
     ErrorOr<Function::Ptr> Parser::function() {
 
+        auto begin_span = peek().span();
         SWALLOW(FN)
 
         auto name = TRY(identifier());
@@ -349,18 +419,17 @@ namespace hasha {
 
         auto parsed_block = TRY(block());
 
-        EXPECT(RETURN)
-        auto return_expression = TRY(parse_expression());
-
-        EXPECT(SEMICOLON)
         EXPECT(RCURLY)
+        auto end_span = peek().span();
+
+        auto span = Span{begin_span.begin, end_span.end, begin_span.line, begin_span.col};
 
         return Function::create(
                 std::move(params),
                 std::move(parsed_block),
                 *name,
                 std::move(return_type),
-                std::move(return_expression)
+                span
         );
 
     }
@@ -383,13 +452,13 @@ namespace hasha {
         advance();
         if (match(LexemeType::BOOLEAN_LITERAL, -1)) {
 
-            return BooleanLiteral::create(peek(-1).data());
+            return BooleanLiteral::create(peek(-1).data(), peek(-1).span());
         }
         if (match(LexemeType::NUMERIC_LITERAL, -1)) {
-            return NumericLiteral::create(peek(-1).data());
+            return NumericLiteral::create(peek(-1).data(), peek(-1).span());
         }
 
-        return StringLiteral::create(peek(-1).data());
+        return StringLiteral::create(peek(-1).data(), peek(-1).span());
 
     }
 
@@ -399,7 +468,33 @@ namespace hasha {
         set_context(current_context().set_parsing_args(true));
         auto exprs = TRY(parse_multiple(LPAREN, RPAREN));
         restore_context();
-        return FunctionCall::create(name->get(), std::move(exprs));
+        auto span = Span{name->span().begin, peek().span().begin};
+        return FunctionCall::create(name->get(), std::move(exprs), span);
+    }
+
+    Context Parser::current_context() {
+
+        return context_stack.top();
+    }
+
+    void Parser::set_context(Context context) {
+
+        context_stack.push(context);
+    }
+
+    void Parser::restore_context() {
+
+        context_stack.pop();
+    }
+
+    ErrorOr<Expression::Ptr> Parser::return_expression() {
+
+        EXPECT(RETURN)
+        set_context(current_context().set_parsing_return_expression(true));
+        auto expr = TRY(parse_expression());
+        restore_context();
+        EXPECT(SEMICOLON)
+        return expr;
     }
 
 } // hasha

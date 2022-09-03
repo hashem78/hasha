@@ -7,7 +7,8 @@
 
 #include "Token.h"
 #include "Block.h"
-#include "Expression.h"
+#include "Tokens/Expression/Expression.h"
+
 namespace hasha {
 
     class IfStatement : public Token {
@@ -17,21 +18,28 @@ namespace hasha {
     public:
         using Ptr = std::unique_ptr<IfStatement>;
 
-        IfStatement(Expression::Ptr condition, Block::Ptr block);
+        IfStatement(
+                Expression::Ptr condition,
+                Block::Ptr block,
+                const Span &span
+        );
 
-        static Ptr create(Expression::Ptr condition, Block::Ptr block);
+        static Ptr create(
+                Expression::Ptr condition,
+                Block::Ptr block,
+                const Span &span
+        );
 
         [[nodiscard]]
-        const Expression * get_condition() const;
+        const Expression *get_condition() const;
 
         [[nodiscard]]
-        const Block * get_block() const;
+        const Block *get_block() const;
 
         [[nodiscard]]
         nlohmann::json to_json() const override;
 
     };
-
 
 
 } // hasha

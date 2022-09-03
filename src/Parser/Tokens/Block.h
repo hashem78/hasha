@@ -10,6 +10,7 @@
 
 #include "Token.h"
 #include "fmt/format.h"
+#include "Tokens/Expression/Expression.h"
 
 namespace hasha {
 
@@ -18,11 +19,11 @@ namespace hasha {
         using Token::Token;
     public:
 
-        explicit Block(TokenListPtr m_tokens);
+        explicit Block(TokenListPtr tokens, const Span &span);
 
         using Ptr = std::unique_ptr<Block>;
 
-        static Ptr create(TokenListPtr m_tokens);
+        static Ptr create(TokenListPtr tokens, const Span &span);
 
         [[nodiscard]]
         const TokenList &get_tokens() const;

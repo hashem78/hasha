@@ -10,6 +10,7 @@ namespace hasha {
         auto json = nlohmann::json();
         json["token_type"] = "Block";
         json["tokens"] = token_list_to_json(m_tokens.get());
+        json["span"] = m_span.to_json();
 
         return json;
     }
@@ -19,11 +20,13 @@ namespace hasha {
         return *m_tokens;
     }
 
-    Block::Block(TokenListPtr m_tokens) : m_tokens(std::move(m_tokens)) {}
+    Block::Block(TokenListPtr tokens, const Span &span) :
+            m_tokens(std::move(tokens)),
+            Token(span) {}
 
-    Block::Ptr Block::create(TokenListPtr m_tokens) {
+    Block::Ptr Block::create(TokenListPtr tokens, const Span &span) {
 
-        return std::make_unique<Block>(std::move(m_tokens));
+        return std::make_unique<Block>(std::move(tokens), span);
     }
 
 } // hasha

@@ -16,20 +16,26 @@ namespace hasha {
 
         json["token_type"] = "ArrayAssignment";
         json["expressions"] = expression_list_to_json(m_expressions.get());
+        json["span"] = m_span.to_json();
 
         return json;
     }
 
-    ArrayAssignment::ArrayAssignment(ExpressionListPtr expressions) :
-            Assignment(nullptr),
+    ArrayAssignment::ArrayAssignment(
+            ExpressionListPtr expressions,
+            const Span &span
+    ) :
+            Assignment(nullptr, span),
             m_expressions(std::move(expressions)) {}
 
     ArrayAssignment::Ptr ArrayAssignment::create(
-            ExpressionListPtr expressions
+            ExpressionListPtr expressions,
+            const Span &span
     ) {
 
         return std::make_unique<ArrayAssignment>(
-                std::move(expressions)
+                std::move(expressions),
+                span
         );
     }
 
