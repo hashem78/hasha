@@ -15,7 +15,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Much better parsing of expressions.">
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Add spans to Lexeme and Tokens">
       <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Expression/ReturnExpression.cpp" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Expression/ReturnExpression.h" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/Utils/Span.h" afterDir="false" />
@@ -174,7 +174,7 @@
       <workItem from="1661933506421" duration="2552000" />
       <workItem from="1662024710514" duration="30000" />
       <workItem from="1662024755788" duration="33680000" />
-      <workItem from="1662195318988" duration="6397000" />
+      <workItem from="1662195318988" duration="6696000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <created>1658351946447</created>
@@ -505,7 +505,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662049935908</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="Add spans to Lexeme and Tokens">
+      <created>1662206572132</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1662206572132</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -526,7 +533,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Refactor the literal handling system.&#10;&#10;Literals coming out of the parser are now classes&#10;inheriting from the Literal type.&#10;&#10;We have 3 literal types in the language now:&#10;1 - StringLiteral: a literal that starts with &lt;&quot;&gt;.&#10;2 - BooleanLiteral: either true or false.&#10;3 - NumericLiteral: numbers." />
     <MESSAGE value="Lexer: Fix broken lexeme push" />
     <MESSAGE value="Lexer: Add support for boolean operators&#10;&#10;Logical and (&amp;&amp;)&#10;Logical or (||)" />
     <MESSAGE value="Refactor operators to be types inheriting from Operator&#10;&#10;For now, we have two operator designations&#10;&#10;1- BooleanOperator&#10;2- NumericOperator" />
@@ -551,6 +557,7 @@
     <MESSAGE value="Remove missed debug prints in previous commit" />
     <MESSAGE value="Add missing template deduction type for PatternVisitor" />
     <MESSAGE value="Simplify parsing blocks.&#10;&#10;The following features have been removed:&#10;&#10;- Array elements cannot be function calls or expressions.&#10;- Rouge expressions have been removed." />
-    <option name="LAST_COMMIT_MESSAGE" value="Simplify parsing blocks.&#10;&#10;The following features have been removed:&#10;&#10;- Array elements cannot be function calls or expressions.&#10;- Rouge expressions have been removed." />
+    <MESSAGE value="Add spans to Lexeme and Tokens" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add spans to Lexeme and Tokens" />
   </component>
 </project>
