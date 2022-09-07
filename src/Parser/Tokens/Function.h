@@ -16,6 +16,10 @@ namespace hasha {
 
     class Function : public Token {
         TokenListPtr m_parameters;
+    public:
+        void interpret(Scope::Ptr scope) override;
+
+    private:
         Block::Ptr m_block;
         Type::Ptr m_return_type;
         Identifier m_name;

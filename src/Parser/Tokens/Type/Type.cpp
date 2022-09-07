@@ -8,26 +8,26 @@
 
 namespace hasha {
 
-    Type::Type(Identifier name, const Span &span) : name(std::move(name)), Token(span) {
+    Type::Type(std::string type, const Span &span) : type(std::move(type)), Token(span) {
 
     }
 
-    Type::Ptr Type::create(Identifier name, const Span &span) {
+    Type::Ptr Type::create(std::string type, const Span &span) {
 
-        return std::make_unique<Type>(std::move(name), span);
+        return std::make_unique<Type>(std::move(type), span);
     }
 
-    const Identifier &Type::get_name() const {
+    const std::string &Type::get_type() const {
 
-        return name;
+        return type;
     }
 
     nlohmann::json Type::to_json() const {
 
         auto json = nlohmann::json();
-        json["name"] = name.to_json();
+        json["type"] = type;
         json["token_type"] = "Type";
-        json["span"] =m_span.to_json();
+        json["span"] = m_span.to_json();
         return json;
     }
 

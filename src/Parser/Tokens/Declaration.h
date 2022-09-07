@@ -9,6 +9,7 @@
 #include "fmt/format.h"
 #include "Tokens/Assignment/Assignment.h"
 #include "Type/Type.h"
+#include "Identifier.h"
 
 namespace hasha {
 
@@ -40,6 +41,8 @@ namespace hasha {
 
         [[nodiscard]]
         const Type *get_type() const;
+
+        void interpret(Scope::Ptr scope) override;
 
         [[nodiscard]]
         Identifier get_name() const;

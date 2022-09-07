@@ -72,5 +72,13 @@ namespace hasha {
         return m_return_type.get();
     }
 
+    void Function::interpret(Scope::Ptr higher_scope) {
+        higher_scope->functions.push_back(m_name.get());
+
+        for(auto& token: *m_block->get_tokens()) {
+            token->interpret(m_block->scope());
+        }
+    }
+
 
 } // hasha

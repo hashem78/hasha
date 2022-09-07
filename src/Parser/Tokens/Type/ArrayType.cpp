@@ -12,8 +12,8 @@ namespace hasha {
         return json;
     }
 
-    ArrayType::Ptr ArrayType::create(Identifier identifier, const Span &span) {
+    ArrayType::Ptr ArrayType::create(std::string type, const Span &span) {
 
-        return std::make_unique<ArrayType>(std::move(identifier), span);
+        return std::make_unique<ArrayType>(std::move(type), span);
     }
 } // hasha

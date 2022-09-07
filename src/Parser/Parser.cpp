@@ -23,18 +23,16 @@ namespace hasha {
         set_context(Context{});
     }
 
-    void Parser::parse() {
+    ErrorOr<Block::Ptr> Parser::parse() {
 
-        auto blk = block();
-        if (blk.is_error())
-            fmt::print("{}\n", blk.error());
-        else {
-            std::ofstream ojson("parser_output.json");
-            if (ojson.is_open()) {
-                ojson << blk.value()->to_string();
-            }
-            //fmt::print("{}\n", blk.value()->to_string());
+        auto blk = TRY(block());
+
+        std::ofstream ojson("parser_output.json");
+        if (ojson.is_open()) {
+            ojson << blk->to_string();
         }
+
+        return blk;
 
     }
 
@@ -93,24 +91,38 @@ namespace hasha {
 
     ErrorOr<Type::Ptr> Parser::type() noexcept {
 
-        auto name = TRY(identifier());
+        auto type = peek().data();
+
+        if (type.empty()) return "Failed to parse identifier name";
+
+        if (std::isdigit(type[0])) return "An identifier cannot start with a digit";
+
+        auto is_legal = [](char c) -> bool {
+            return std::isalnum(c) || c == '_';
+        };
+        for (const auto &ch: type) {
+            if (!is_legal(ch)) {
+                return fmt::format("Illegal character {}", ch);
+            }
+        }
+
+        advance();
 
         if (peek() == LBRACKET && peek(1) == RBRACKET) {
-            advance();
-            advance();
+            advance(2);
             set_context(
                     current_context()
                             .set_parsing_array_type(true)
                             .set_parsing_value_type(false)
             );
-            return ArrayType::create(*name, peek(-2).span());
+            return ArrayType::create(type, peek(-2).span());
         }
         set_context(
                 current_context()
                         .set_parsing_array_type(false)
                         .set_parsing_value_type(true)
         );
-        return Type::create(*name, peek().span());
+        return Type::create(type, peek(-1).span());
     }
 
     ErrorOr<Parameter::Ptr> Parser::parameter() {

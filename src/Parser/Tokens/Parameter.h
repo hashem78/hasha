@@ -7,6 +7,7 @@
 
 #include "Token.h"
 #include "Type/Type.h"
+#include "Identifier.h"
 
 namespace hasha {
 

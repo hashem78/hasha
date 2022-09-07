@@ -6,21 +6,20 @@
 #define HASHA_TYPE_H
 
 #include "Token.h"
-#include "Identifier.h"
 
 namespace hasha {
 
     class Type : public Token {
-        Identifier name;
+        std::string type;
     public:
-        explicit Type(Identifier name, const Span &span);
+        explicit Type(std::string type, const Span &span);
 
         using Ptr = std::unique_ptr<Type>;
 
-        static Ptr create(Identifier name, const Span &span);
+        static Ptr create(std::string type, const Span &span);
 
         [[nodiscard]]
-        const Identifier &get_name() const;
+        const std::string &get_type() const;
 
         [[nodiscard]]
         nlohmann::json to_json() const override;

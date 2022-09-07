@@ -11,14 +11,16 @@
 #include "nlohmann/json.hpp"
 #include "fmt/core.h"
 #include "Span.h"
+#include "Scope.h"
 
 namespace hasha {
 
     class Token {
         static int number_of_tokens;
-        int id;
     protected:
         Span m_span;
+        int id;
+
     public:
         explicit Token(const Span &span);
 
@@ -29,7 +31,9 @@ namespace hasha {
         std::string to_string() const;
 
         [[nodiscard]]
-        virtual const Span &span() const;
+        const Span &span() const;
+
+        virtual void interpret(Scope::Ptr scope);
 
         virtual ~Token() = default;
     };

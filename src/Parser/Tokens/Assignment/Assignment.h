@@ -20,6 +20,9 @@ namespace hasha {
         static Ptr create(Expression::Ptr expression, const Span &span);
 
         [[nodiscard]]
+        std::string calculate() const;
+
+        [[nodiscard]]
         nlohmann::json to_json() const override;
     };
 

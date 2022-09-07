@@ -3,6 +3,7 @@
 //
 
 #include "Declaration.h"
+#include "Type/ArrayType.h"
 
 #include <memory>
 
@@ -62,6 +63,25 @@ namespace hasha {
                 span,
                 std::move(tokens)
         );
+    }
+
+    void Declaration::interpret(Scope::Ptr scope) {
+
+        fmt::print("Declared Variable: {} {}\n", m_type->get_type(), m_name.get());
+        if (m_assignment == nullptr) {
+
+            scope->variables.emplace_back(m_type->get_type(), m_name.get(), "", scope->owner_id);
+        } else {
+
+            scope->variables.emplace_back(
+                    m_type->get_type(),
+                    m_name.get(),
+                    m_assignment->calculate(),
+                    scope->owner_id
+            );
+            fmt::print("Assigned {} with {}\n", m_name.get(), m_assignment->calculate());
+        }
+
     }
 
 } // hasha

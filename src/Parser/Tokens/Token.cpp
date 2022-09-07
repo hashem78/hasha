@@ -40,10 +40,17 @@ namespace hasha {
 
     }
 
+
     int Token::number_of_tokens = 0;
 
     const Span &Token::span() const {
 
         return m_span;
     }
+
+    void Token::interpret(Scope::Ptr scope) {
+
+    }
+
+
 } // hasha

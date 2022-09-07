@@ -195,7 +195,7 @@ namespace hasha {
 
         explicit Parser(std::string file_name);
 
-        void parse();
+        ErrorOr<Block::Ptr> parse();
 
     };
 

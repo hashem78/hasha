@@ -15,14 +15,34 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Remove useless output buffer">
-      <change afterPath="$PROJECT_DIR$/src/Lexer/Analyzer.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Lexer/Analyzer.h" afterDir="false" />
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Added bracket pair analyzer.">
+      <change afterPath="$PROJECT_DIR$/src/Interpreter/Interpreter.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interpreter/Interpreter.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interpreter/Variable.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interpreter/Variable.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Parser/Scope/GlobalScope.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Parser/Scope/GlobalScope.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Parser/Scope/Scope.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Parser/Scope/Scope.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexer.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/Assignment.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/Assignment.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/Assignment.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/Assignment.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Block.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Block.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Block.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Block.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Function.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Function.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Function.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Function.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Token.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Token.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Token.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Token.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type/ArrayType.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/ArrayType.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type/ArrayType.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/ArrayType.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type/Type.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/Type.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type/Type.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/Type.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -74,19 +94,14 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/Parser/Tokens/Expression" />
+      <recent name="$PROJECT_DIR$/src/Parser/Scope" />
       <recent name="$PROJECT_DIR$/src/Parser" />
+      <recent name="$PROJECT_DIR$/src/Parser/Tokens/Expression" />
       <recent name="$PROJECT_DIR$/src/Parser/Tokens" />
       <recent name="$PROJECT_DIR$/src/Parser/Tokens/Declaration" />
-      <recent name="$PROJECT_DIR$/src/Parser/Tokens/Assignment" />
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.hasha">
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="fmt" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="hasha" TARGET_NAME="fmt" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -129,14 +144,10 @@
       <workItem from="1661933506421" duration="2552000" />
       <workItem from="1662024710514" duration="30000" />
       <workItem from="1662024755788" duration="33680000" />
-      <workItem from="1662195318988" duration="17604000" />
-    </task>
-    <task id="LOCAL-00002" summary="Work on Lexer and Parser">
-      <created>1658435856202</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1658435856202</updated>
+      <workItem from="1662195318988" duration="19685000" />
+      <workItem from="1662456883382" duration="6880000" />
+      <workItem from="1662496252643" duration="2990000" />
+      <workItem from="1662537949371" duration="1185000" />
     </task>
     <task id="LOCAL-00003" summary="Variable Assignment and Declaration now support arrays">
       <created>1658449419541</created>
@@ -474,7 +485,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662207394499</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="Added bracket pair analyzer.">
+      <created>1662226189293</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1662226189293</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -495,7 +513,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Lexer: Add support for boolean operators&#10;&#10;Logical and (&amp;&amp;)&#10;Logical or (||)" />
     <MESSAGE value="Refactor operators to be types inheriting from Operator&#10;&#10;For now, we have two operator designations&#10;&#10;1- BooleanOperator&#10;2- NumericOperator" />
     <MESSAGE value="Use std::unique_ptr instead of std::shared_ptr where unique ownership is required" />
     <MESSAGE value="Reduce pointer type names" />
@@ -520,6 +537,7 @@
     <MESSAGE value="Simplify parsing blocks.&#10;&#10;The following features have been removed:&#10;&#10;- Array elements cannot be function calls or expressions.&#10;- Rouge expressions have been removed." />
     <MESSAGE value="Add spans to Lexeme and Tokens" />
     <MESSAGE value="Remove useless output buffer" />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove useless output buffer" />
+    <MESSAGE value="Added bracket pair analyzer." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added bracket pair analyzer." />
   </component>
 </project>

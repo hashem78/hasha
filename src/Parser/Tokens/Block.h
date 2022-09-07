@@ -16,21 +16,26 @@ namespace hasha {
 
     class Block : public Token {
         TokenListPtr m_tokens;
-        using Token::Token;
-    public:
+        Scope::Ptr m_scope;
 
+    public:
         explicit Block(TokenListPtr tokens, const Span &span);
+
+        explicit Block(TokenListPtr tokens, const Span &span, Scope::Ptr scope);
 
         using Ptr = std::unique_ptr<Block>;
 
         static Ptr create(TokenListPtr tokens, const Span &span);
 
         [[nodiscard]]
-        const TokenList &get_tokens() const;
+        TokenListPtr get_tokens() const;
 
         [[nodiscard]]
         nlohmann::json to_json() const override;
 
+        void interpret(Scope::Ptr scope) override;
+
+        Scope::Ptr scope();
     };
 
 } // hasha
