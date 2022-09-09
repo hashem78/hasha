@@ -478,11 +478,13 @@ namespace hasha {
 
     ErrorOr<FunctionCall::Ptr> Parser::function_call() {
 
+        auto before_span = peek().span();
         auto name = TRY(identifier());
         set_context(current_context().set_parsing_args(true));
         auto exprs = TRY(parse_multiple(LPAREN, RPAREN));
         restore_context();
-        auto span = Span{name->span().begin, peek().span().begin};
+        auto after_span = peek(-1).span();
+        auto span = Span{before_span.begin, after_span.end, before_span.line, before_span.col};
         return FunctionCall::create(name->get(), std::move(exprs), span);
     }
 
