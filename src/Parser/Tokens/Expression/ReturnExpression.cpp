@@ -13,14 +13,14 @@ namespace hasha {
     }
 
     ReturnExpression::ReturnExpression(
-            TokenListPtr expr,
+            TokenList expr,
             const Span &span
     ) : Expression(std::move(expr), span) {
 
     }
 
     ReturnExpression::Ptr ReturnExpression::create(
-            TokenListPtr expr,
+            TokenList expr,
             const Span &span
     ) {
 

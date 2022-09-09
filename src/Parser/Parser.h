@@ -5,12 +5,6 @@
 #ifndef HASHA_PARSER_H
 #define HASHA_PARSER_H
 
-#include <optional>
-#include <variant>
-#include <deque>
-#include <stack>
-#include <utility>
-
 
 #include "magic_enum.hpp"
 
@@ -164,9 +158,9 @@ namespace hasha {
         ErrorOr<Expression::Ptr> return_expression();
 
         template<class T>
-        std::optional<const T *> last_of(const TokenList *tkns) {
+        std::optional<const T *> last_of(const TokenList &tkns) {
 
-            for (auto it = tkns->rbegin(); it != tkns->rend(); it++) {
+            for (auto it = tkns.rbegin(); it != tkns.rend(); it++) {
 
                 auto cast = dynamic_cast<T *>(it->get());
                 if (cast)
@@ -176,12 +170,12 @@ namespace hasha {
         }
 
         template<class T>
-        bool is_previous_of(const TokenList *tkns) {
+        bool is_previous_of(const TokenList &tkns) {
 
-            if (tkns->empty())
+            if (tkns.empty())
                 return false;
 
-            auto cast = dynamic_cast<T *>(tkns->back().get());
+            auto cast = dynamic_cast<T *>(tkns.back().get());
 
             if (cast)
                 return true;

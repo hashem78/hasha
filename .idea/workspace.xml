@@ -15,35 +15,23 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Added bracket pair analyzer.">
-      <change afterPath="$PROJECT_DIR$/src/Interpreter/Interpreter.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interpreter/Interpreter.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interpreter/Variable.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interpreter/Variable.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Parser/Scope/GlobalScope.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Parser/Scope/GlobalScope.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Parser/Scope/Scope.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Parser/Scope/Scope.h" afterDir="false" />
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Introduce the Interpreter">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexeme.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexeme.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/Assignment.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/Assignment.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/Assignment.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/Assignment.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Block.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Block.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Block.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Block.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expression/Expression.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Expression/Expression.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expression/Expression.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Expression/Expression.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expression/ReturnExpression.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Expression/ReturnExpression.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expression/ReturnExpression.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Expression/ReturnExpression.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Function.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Function.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Function.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Function.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Token.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Token.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Token.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Token.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type/ArrayType.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/ArrayType.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type/ArrayType.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/ArrayType.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type/Type.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/Type.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type/Type.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/Type.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,6 +136,7 @@
       <workItem from="1662456883382" duration="6880000" />
       <workItem from="1662496252643" duration="2990000" />
       <workItem from="1662537949371" duration="1185000" />
+      <workItem from="1662709052653" duration="2000" />
     </task>
     <task id="LOCAL-00003" summary="Variable Assignment and Declaration now support arrays">
       <created>1658449419541</created>

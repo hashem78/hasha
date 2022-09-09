@@ -5,7 +5,6 @@
 #ifndef HASHA_ASSIGNMENT_H
 #define HASHA_ASSIGNMENT_H
 
-#include "Token.h"
 #include "Tokens/Expression/Expression.h"
 
 namespace hasha {

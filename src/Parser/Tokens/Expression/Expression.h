@@ -10,24 +10,24 @@
 namespace hasha {
 
     class Expression : public Token {
-        TokenListPtr expression;
+        TokenList expression;
 
     public:
 
-        explicit Expression(TokenListPtr expr, const Span &span);
+        explicit Expression(TokenList expr, const Span &span);
 
         using Ptr = std::unique_ptr<Expression>;
 
-        static Ptr create(TokenListPtr expr, const Span &span);
+        static Ptr create(TokenList expr, const Span &span);
+
+        std::string evaluate();
 
         [[nodiscard]]
         nlohmann::json to_json() const override;
 
-        [[nodiscard]]
-        const TokenList *get_expression() const;
     };
 
-    using ExpressionList = std::deque<Expression::Ptr>;
+    using ExpressionList = std::vector<Expression::Ptr>;
     using ExpressionListPtr = std::unique_ptr<ExpressionList>;
 
     ExpressionListPtr create_expression_list();

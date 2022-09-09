@@ -6,7 +6,6 @@
 #define HASHA_LEXEME_H
 
 #include <string>
-#include <deque>
 #include <utility>
 
 #include "nlohmann/json.hpp"

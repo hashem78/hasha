@@ -141,7 +141,7 @@ namespace hasha {
     ErrorOr<Expression::Ptr> Parser::parse_expression(const Lexeme &delimiter) {
 
         std::deque<Lexeme> operators; // stack
-        auto token_list = create_token_list();
+        auto token_list = TokenList{};
 
         set_context(current_context().set_parsing_expression(true));
 
@@ -162,7 +162,7 @@ namespace hasha {
 
             if (x.type() == LexemeType::IDENTIFIER) {
                 advance(-1);
-                token_list->push_back(TRY(function_call()));
+                token_list.push_back(TRY(function_call()));
             } else if (x.type() == LexemeType::OPERATOR) {
                 while (!operators.empty() && operators.front().type() == LexemeType::OPERATOR) {
                     auto y = operators.front();
@@ -172,7 +172,7 @@ namespace hasha {
                         (x.associativity() == Associativity::RIGHT &&
                          x.precedence() < y.precedence())) {
 
-                        token_list->push_back(Operator::create(y.data(), y.span()));
+                        token_list.push_back(Operator::create(y.data(), y.span()));
                         operators.pop_front();
 
                     } else {
@@ -187,7 +187,7 @@ namespace hasha {
                 while (operators.front() != LPAREN) {
                     // TODO: If the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
                     if (operators.empty()) break;
-                    token_list->push_back(Operator::create(operators.front().data(), operators.front().span()));
+                    token_list.push_back(Operator::create(operators.front().data(), operators.front().span()));
                     operators.pop_front();
                 }
                 // TODO: If the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
@@ -198,13 +198,13 @@ namespace hasha {
                 if (x != COMMA) {
                     switch (x.type()) {
                         case LexemeType::NUMERIC_LITERAL:
-                            token_list->push_back(NumericLiteral::create(x.data(), x.span()));
+                            token_list.push_back(NumericLiteral::create(x.data(), x.span()));
                             break;
                         case LexemeType::STRING_LITERAL:
-                            token_list->push_back(StringLiteral::create(x.data(), x.span()));
+                            token_list.push_back(StringLiteral::create(x.data(), x.span()));
                             break;
                         case LexemeType::BOOLEAN_LITERAL:
-                            token_list->push_back(BooleanLiteral::create(x.data(), x.span()));
+                            token_list.push_back(BooleanLiteral::create(x.data(), x.span()));
                             break;
                         default:
                             return fmt::format(
@@ -219,7 +219,7 @@ namespace hasha {
         }
 
         while (!operators.empty()) {
-            token_list->push_back(Operator::create(operators.front().data(), operators.front().span()));
+            token_list.push_back(Operator::create(operators.front().data(), operators.front().span()));
             operators.pop_front();
         }
 
@@ -228,13 +228,13 @@ namespace hasha {
 
         if (current_context().parsing_return_expression) {
             return ReturnExpression::create(
-                    token_list,
+                    std::move(token_list),
                     Span{begin_span.begin, end_span.end, begin_span.line, begin_span.col}
             );
         }
 
         return Expression::create(
-                token_list,
+                std::move(token_list),
                 Span{begin_span.begin, end_span.end, begin_span.line, begin_span.col}
         );
 
@@ -253,10 +253,14 @@ namespace hasha {
             assignment = Assignment::create(std::move(expr), span);
         } else if (current_context().parsing_array_type) {
             set_context(current_context().set_parsing_array(true));
+            auto before_span = peek().span();
             auto array_token_list = TRY(parse_multiple(LBRACKET, RBRACKET));
+            auto after_span = peek(-1).span();
             auto span = Span{
-                    array_token_list->front()->span().begin,
-                    array_token_list->back()->span().end
+                    before_span.begin,
+                    after_span.end,
+                    before_span.line,
+                    before_span.col
             };
             restore_context();
             assignment = ArrayAssignment::create(std::move(array_token_list), span);
@@ -372,24 +376,24 @@ namespace hasha {
 
     ErrorOr<Block::Ptr> Parser::block() noexcept {
 
-        auto token_list = create_token_list();
+        auto token_list = TokenList{};
         auto begin_span = peek().span();
         while (!match(RCURLY)) {
 
 
             // Parse the unambigous statements first
             if (match(FN)) {
-                token_list->push_back(TRY(function()));
+                token_list.push_back(TRY(function()));
             } else if (match(IF)) {
-                token_list->push_back(TRY(if_statement()));
+                token_list.push_back(TRY(if_statement()));
             } else if (match(ELSE)) {
-                token_list->push_back(TRY(else_statement()));
+                token_list.push_back(TRY(else_statement()));
             } else if (match(ELIF)) {
-                token_list->push_back(TRY(elif_statement()));
+                token_list.push_back(TRY(elif_statement()));
             } else if (match(LexemeType::IDENTIFIER)) {
-                token_list->push_back(TRY(declaration()));
+                token_list.push_back(TRY(declaration()));
             } else if (match(RETURN)) {
-                token_list->push_back(TRY(return_expression()));
+                token_list.push_back(TRY(return_expression()));
             } else {
                 advance();
             }
@@ -401,7 +405,7 @@ namespace hasha {
                 begin_span.line,
                 begin_span.col
         };
-        return Block::create(token_list, span);
+        return Block::create(std::move(token_list), span);
     }
 
     ErrorOr<Function::Ptr> Parser::function() {
@@ -413,10 +417,10 @@ namespace hasha {
 
         EXPECT(LPAREN)
 
-        auto params = create_token_list();
+        auto params = TokenList{};
 
         while (!match(RPAREN)) {
-            params->push_back(TRY(parameter()));
+            params.push_back(TRY(parameter()));
         }
 
         EXPECT(RPAREN)

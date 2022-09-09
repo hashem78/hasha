@@ -5,26 +5,14 @@
 #include "Token.h"
 
 namespace hasha {
-    TokenListPtr create_token_list() {
 
-        return std::make_shared<TokenList>();
-    }
-
-
-    nlohmann::json token_list_to_json(const TokenList *tokens) {
+    nlohmann::json token_list_to_json(const TokenList &tokens) {
 
         auto arr = nlohmann::json::array();
-        for (const auto &token: *tokens) {
+        for (const auto &token: tokens) {
             arr.push_back(token->to_json());
         }
         return arr;
-    }
-
-    void print_token_list(const TokenList *tokens) {
-
-        for (const auto &token: *tokens) {
-            fmt::print("{}\n", token->to_string());
-        }
     }
 
     std::string Token::to_string() const {

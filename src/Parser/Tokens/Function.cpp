@@ -13,14 +13,14 @@ namespace hasha {
         json["token_type"] = "Function";
         json["name"] = m_name.get();
         json["return_type"] = m_return_type->to_json();
-        json["parameters"] = token_list_to_json(m_parameters.get());
+        json["parameters"] = token_list_to_json(m_parameters);
         json["block"] = m_block->to_json();
         json["span"] = m_span.to_json();
 
         return json;
     }
 
-    TokenListPtr Function::get_parameters() const {
+    const TokenList& Function::get_parameters() const {
 
         return m_parameters;
     }
@@ -32,7 +32,7 @@ namespace hasha {
 
 
     Function::Function(
-            TokenListPtr parameters,
+            TokenList parameters,
             Block::Ptr block,
             Identifier name,
             Type::Ptr return_type,
@@ -46,7 +46,7 @@ namespace hasha {
     }
 
     Function::Ptr Function::create(
-            TokenListPtr parameters,
+            TokenList parameters,
             Block::Ptr block,
             Identifier name,
             Type::Ptr return_type,
@@ -75,7 +75,7 @@ namespace hasha {
     void Function::interpret(Scope::Ptr higher_scope) {
         higher_scope->functions.push_back(m_name.get());
 
-        for(auto& token: *m_block->get_tokens()) {
+        for(auto& token: m_block->get_tokens()) {
             token->interpret(m_block->scope());
         }
     }

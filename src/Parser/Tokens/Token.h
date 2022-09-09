@@ -6,7 +6,7 @@
 #define HASHA_TOKEN_H
 
 #include <memory>
-#include <deque>
+#include <vector>
 
 #include "nlohmann/json.hpp"
 #include "fmt/core.h"
@@ -39,14 +39,9 @@ namespace hasha {
     };
 
     using TokenPtr = std::unique_ptr<Token>;
-    using TokenList = std::deque<TokenPtr>;
-    using TokenListPtr = std::shared_ptr<TokenList>;
+    using TokenList = std::vector<TokenPtr>;
 
-    TokenListPtr create_token_list();
-
-    nlohmann::json token_list_to_json(const TokenList *tokens);
-
-    void print_token_list(const TokenList *tokens);
+    nlohmann::json token_list_to_json(const TokenList& tokens);
 } // hasha
 
 #endif //HASHA_TOKEN_H
