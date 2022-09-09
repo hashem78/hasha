@@ -29,17 +29,17 @@ namespace hasha {
                 parsing_return_expression
         );
 
-        Context &set_parsing_array(bool val);
+        Context &set_parsing_array(bool val) noexcept;
 
-        Context &set_parsing_expression(bool val);
+        Context &set_parsing_expression(bool val) noexcept;
 
-        Context &set_parsing_args(bool val);
+        Context &set_parsing_args(bool val) noexcept;
 
-        Context &set_parsing_array_type(bool val);
+        Context &set_parsing_array_type(bool val) noexcept;
 
-        Context &set_parsing_value_type(bool val);
+        Context &set_parsing_value_type(bool val) noexcept;
 
-        Context &set_parsing_return_expression(bool val);
+        Context &set_parsing_return_expression(bool val) noexcept;
 
 
         void print();

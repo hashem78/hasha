@@ -11,31 +11,32 @@ namespace hasha {
         return *this;
     }
 
-    Context &Context::set_parsing_expression(bool val) {
+    Context &Context::set_parsing_expression(bool val) noexcept {
 
         parsing_expression = val;
         return *this;
     }
 
-    Context &Context::set_parsing_args(bool val) {
+    Context &Context::set_parsing_args(bool val) noexcept {
 
         parsing_args = val;
         return *this;
     }
 
-    Context &Context::set_parsing_array_type(bool val) {
+    Context &Context::set_parsing_array_type(bool val) noexcept {
 
         parsing_array_type = val;
         return *this;
     }
 
-    Context &Context::set_parsing_value_type(bool val) {
+    Context &Context::set_parsing_value_type(bool val) noexcept {
 
         parsing_value_type = val;
         return *this;
     }
 
-    Context &Context::set_parsing_return_expression(bool val) {
+    Context &Context::set_parsing_return_expression(bool val) noexcept {
+
         parsing_return_expression = val;
         return *this;
     }
