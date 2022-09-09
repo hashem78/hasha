@@ -18,7 +18,7 @@ int main() {
 
     if (res.is_error()) {
         fmt::print("{}", res.error());
-        return -1;
+        return 1;
     }
 
     return 0;

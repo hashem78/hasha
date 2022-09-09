@@ -15,7 +15,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Introduce the Interpreter">
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Token Lists are no longer pointers &#10;&#10;They were pointers to std::deque, but now they're simply instances of std::vector">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Lexer/Lexeme.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexeme.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.cpp" afterDir="false" />
@@ -90,6 +90,11 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.hasha">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="fmt" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="hasha" TARGET_NAME="fmt" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -136,14 +141,7 @@
       <workItem from="1662456883382" duration="6880000" />
       <workItem from="1662496252643" duration="2990000" />
       <workItem from="1662537949371" duration="1185000" />
-      <workItem from="1662709052653" duration="2000" />
-    </task>
-    <task id="LOCAL-00003" summary="Variable Assignment and Declaration now support arrays">
-      <created>1658449419541</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1658449419541</updated>
+      <workItem from="1662709052653" duration="479000" />
     </task>
     <task id="LOCAL-00004" summary="Add missing libraries">
       <created>1658449555499</created>
@@ -481,7 +479,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662226189293</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="Token Lists are no longer pointers &#10;&#10;They were pointers to std::deque, but now they're simply instances of std::vector">
+      <created>1662709529521</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1662709529521</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -502,7 +507,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Refactor operators to be types inheriting from Operator&#10;&#10;For now, we have two operator designations&#10;&#10;1- BooleanOperator&#10;2- NumericOperator" />
     <MESSAGE value="Use std::unique_ptr instead of std::shared_ptr where unique ownership is required" />
     <MESSAGE value="Reduce pointer type names" />
     <MESSAGE value="Fix lexer swallowing tokens." />
@@ -527,6 +531,7 @@
     <MESSAGE value="Add spans to Lexeme and Tokens" />
     <MESSAGE value="Remove useless output buffer" />
     <MESSAGE value="Added bracket pair analyzer." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added bracket pair analyzer." />
+    <MESSAGE value="Token Lists are no longer pointers &#10;&#10;They were pointers to std::deque, but now they're simply instances of std::vector" />
+    <option name="LAST_COMMIT_MESSAGE" value="Token Lists are no longer pointers &#10;&#10;They were pointers to std::deque, but now they're simply instances of std::vector" />
   </component>
 </project>
