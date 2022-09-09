@@ -9,11 +9,6 @@ namespace hasha {
 
     }
 
-    void Scope::print() {
-
-
-    }
-
     int Scope::id_ = 0;
 
     Scope::Ptr Scope::create(int owner_id) {

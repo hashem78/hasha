@@ -4,8 +4,7 @@
 
 #include "FunctionCall.h"
 
-#include <memory>
-#include <utility>
+
 
 namespace hasha {
     std::string FunctionCall::get_callee() const noexcept {

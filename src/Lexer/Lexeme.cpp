@@ -2,6 +2,14 @@
 // Created by mythi on 21/07/22.
 //
 
+#include <string>
+
+
+
+#include "nlohmann/json.hpp"
+#include "magic_enum.hpp"
+#include "fmt/format.h"
+
 #include "Lexeme.h"
 
 namespace hasha {

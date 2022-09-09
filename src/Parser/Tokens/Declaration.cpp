@@ -5,8 +5,6 @@
 #include "Declaration.h"
 #include "Type/ArrayType.h"
 
-#include <memory>
-
 namespace hasha {
     const Type *Declaration::get_type() const {
 

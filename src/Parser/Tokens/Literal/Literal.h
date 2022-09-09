@@ -5,8 +5,6 @@
 #ifndef HASHA_LITERAL_H
 #define HASHA_LITERAL_H
 
-#include <memory>
-
 #include "Token.h"
 #include "fmt/format.h"
 

@@ -6,7 +6,6 @@
 #define HASHA_OPERATOR_H
 
 #include "Token.h"
-#include "fmt/format.h"
 
 namespace hasha {
 

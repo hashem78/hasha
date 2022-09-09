@@ -5,10 +5,9 @@
 #ifndef HASHA_SCOPE_H
 #define HASHA_SCOPE_H
 
-#include "fmt/core.h"
 
-#include <string>
 #include <vector>
+#include <string>
 #include <memory>
 
 #include "Variable.h"
@@ -27,8 +26,6 @@ namespace hasha {
         using Ptr = std::shared_ptr<Scope>;
 
         static Ptr create(int owner_id);
-
-        void print();
 
         virtual ~Scope() = default;
 

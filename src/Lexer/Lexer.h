@@ -5,15 +5,12 @@
 #ifndef HASHA_LEXER_H
 #define HASHA_LEXER_H
 
-#include <fstream>
-#include <utility>
+#include <vector>
 
 #include "Lexeme.h"
-#include "Constants.h"
 #include "ErrorOr.h"
-#include "Analyzer.h"
 
-#include "fmt/format.h"
+
 
 namespace hasha {
 

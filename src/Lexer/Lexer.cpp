@@ -2,6 +2,13 @@
 // Created by mythi on 21/07/22.
 //
 
+#include <fstream>
+
+
+#include "fmt/format.h"
+
+#include "Analyzer.h"
+#include "Constants.h"
 #include "Lexer.h"
 
 namespace hasha {

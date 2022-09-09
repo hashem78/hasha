@@ -5,7 +5,6 @@
 #ifndef HASHA_ARRAYASSIGNMENT_H
 #define HASHA_ARRAYASSIGNMENT_H
 
-#include "fmt/format.h"
 #include "Assignment.h"
 
 namespace hasha {

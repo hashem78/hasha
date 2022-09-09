@@ -6,7 +6,6 @@
 #define HASHA_VARIABLE_H
 
 #include <string>
-#include <utility>
 
 namespace hasha {
 

@@ -6,9 +6,7 @@
 #define HASHA_PARSER_H
 
 
-#include "magic_enum.hpp"
 
-#include "Constants.h"
 #include "Tokens/Token.h"
 #include "Lexeme.h"
 #include "Identifier.h"

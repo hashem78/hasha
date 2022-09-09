@@ -3,6 +3,7 @@
 //
 
 #include <stack>
+
 #include "Expression.h"
 #include "Literal/NumericLiteral.h"
 #include "Operator.h"

@@ -5,12 +5,6 @@
 #ifndef HASHA_LEXEME_H
 #define HASHA_LEXEME_H
 
-#include <string>
-#include <utility>
-
-#include "nlohmann/json.hpp"
-#include "magic_enum.hpp"
-#include "fmt/format.h"
 #include "Span.h"
 
 namespace hasha {

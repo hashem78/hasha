@@ -2,7 +2,12 @@
 // Created by mythi on 21/07/22.
 //
 
+#include <fstream>
+
+#include "magic_enum.hpp"
+
 #include "Parser.h"
+#include "Constants.h"
 
 #define EXPECT(lexeme) if(!match(lexeme)) {return fmt::format("Expected {} Found {}",lexeme.to_string(),peek().to_string());}else{advance();}
 #define EXPECT_NOT(l1) if(match(l1)) {return fmt::format("Unexpected {}",l1.to_string());}

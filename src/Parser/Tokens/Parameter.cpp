@@ -4,8 +4,6 @@
 
 #include "Parameter.h"
 
-#include <memory>
-
 namespace hasha {
     Parameter::Parameter(
             Type::Ptr type,

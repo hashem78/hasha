@@ -7,9 +7,6 @@
 
 #include "Literal.h"
 
-#include <memory>
-
-
 namespace hasha {
 
     class NumericLiteral : public Literal {

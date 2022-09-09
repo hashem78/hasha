@@ -2,7 +2,13 @@
 // Created by mythi on 03/09/22.
 //
 
+#include <vector>
+#include <stack>
+
+#include "fmt/core.h"
+
 #include "Analyzer.h"
+#include "Constants.h"
 
 
 namespace hasha {

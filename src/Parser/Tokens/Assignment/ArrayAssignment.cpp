@@ -4,7 +4,6 @@
 
 #include "ArrayAssignment.h"
 
-#include <memory>
 
 namespace hasha {
 

@@ -4,8 +4,6 @@
 
 #include "Identifier.h"
 
-#include <memory>
-
 namespace hasha {
 
     Identifier::Identifier(

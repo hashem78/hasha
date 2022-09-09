@@ -15,17 +15,30 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Update Error code">
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Added gaurds for elif and else statements.&#10;&#10;Those should have been there, but they were not for some reason.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interpreter/Variable.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/Variable.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interpreter/Variable.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/Variable.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Lexer/Analyzer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Analyzer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Lexer/Analyzer.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Analyzer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexeme.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexeme.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexeme.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexeme.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexer.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexer.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Scope/Scope.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Scope/Scope.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Scope/Scope.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Scope/Scope.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/ArrayAssignment.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/ArrayAssignment.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/ArrayAssignment.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/ArrayAssignment.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expression/Expression.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Expression/Expression.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expression/Expression.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Expression/Expression.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/FunctionCall.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/FunctionCall.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/FunctionCall.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/FunctionCall.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Identifier.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Identifier.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal/Literal.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal/Literal.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal/NumericLiteral.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal/NumericLiteral.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Operator.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Operator.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -135,28 +148,7 @@
       <workItem from="1662456883382" duration="6880000" />
       <workItem from="1662496252643" duration="2990000" />
       <workItem from="1662537949371" duration="1185000" />
-      <workItem from="1662709052653" duration="2249000" />
-    </task>
-    <task id="LOCAL-00005" summary="Fix segfault when declaring variables">
-      <created>1658480823113</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1658480823113</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Rewrote massive parts of the parser.&#10;&#10;Also introduced operators to the lexer and parser.&#10;We can now parse assignments and declarations.&#10;We can now parse blocks.&#10;We can now parse simple mathematical expressions.">
-      <created>1658966437983</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1658966437983</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Rewrote massive parts of the parser.&#10;&#10;Also introduced operators to the lexer and parser.&#10;We can now parse assignments and declarations.&#10;We can now parse blocks.&#10;We can now parse simple mathematical expressions.&#10;Removed a lot of bloat.">
-      <created>1658966470032</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1658966470032</updated>
+      <workItem from="1662709052653" duration="3333000" />
     </task>
     <task id="LOCAL-00008" summary="Remove useless setters">
       <created>1658999694972</created>
@@ -480,7 +472,28 @@
       <option name="project" value="LOCAL" />
       <updated>1662711432108</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="ExpressionLists are no longer pointers.">
+      <created>1662711498172</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1662711498172</updated>
+    </task>
+    <task id="LOCAL-00055" summary="Fix span for function calls">
+      <created>1662711528193</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1662711528193</updated>
+    </task>
+    <task id="LOCAL-00056" summary="Added gaurds for elif and else statements.&#10;&#10;Those should have been there, but they were not for some reason.">
+      <created>1662711577778</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1662711577778</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -501,9 +514,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Reduce pointer type names" />
-    <MESSAGE value="Fix lexer swallowing tokens." />
-    <MESSAGE value="Illegal characters are handled better now." />
     <MESSAGE value="Lexer: Return early on spaces" />
     <MESSAGE value="Fix identifier names with '_'" />
     <MESSAGE value="Massive codebase cleanup and refactoring" />
@@ -526,6 +536,9 @@
     <MESSAGE value="Added bracket pair analyzer." />
     <MESSAGE value="Token Lists are no longer pointers &#10;&#10;They were pointers to std::deque, but now they're simply instances of std::vector" />
     <MESSAGE value="Update Error code" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update Error code" />
+    <MESSAGE value="ExpressionLists are no longer pointers." />
+    <MESSAGE value="Fix span for function calls" />
+    <MESSAGE value="Added gaurds for elif and else statements.&#10;&#10;Those should have been there, but they were not for some reason." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added gaurds for elif and else statements.&#10;&#10;Those should have been there, but they were not for some reason." />
   </component>
 </project>

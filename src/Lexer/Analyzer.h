@@ -5,11 +5,9 @@
 #ifndef HASHA_ANALYZER_H
 #define HASHA_ANALYZER_H
 
-#include <vector>
-#include <stack>
+
 #include "ErrorOr.h"
 #include "Lexeme.h"
-#include "Constants.h"
 
 namespace hasha {
 

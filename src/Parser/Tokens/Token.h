@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <vector>
+#include <utility>
 
 #include "nlohmann/json.hpp"
 #include "fmt/core.h"
@@ -41,7 +42,7 @@ namespace hasha {
     using TokenPtr = std::unique_ptr<Token>;
     using TokenList = std::vector<TokenPtr>;
 
-    nlohmann::json token_list_to_json(const TokenList& tokens);
+    nlohmann::json token_list_to_json(const TokenList &tokens);
 } // hasha
 
 #endif //HASHA_TOKEN_H

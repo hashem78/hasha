@@ -6,7 +6,7 @@
 #define HASHA_PATTERN_H
 
 #include <array>
-#include <utility>
+
 #include <variant>
 #include "Lexeme.h"
 #include "Constants.h"
