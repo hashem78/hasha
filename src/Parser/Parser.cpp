@@ -307,6 +307,8 @@ namespace hasha {
 
     ErrorOr<ElifStatement::Ptr> Parser::elif_statement() {
 
+        if(!is_previous_of<IfStatement>() && !is_previous_of<ElifStatement>())
+            return "Rouge elif statement";
 
         auto span = peek().span();
         EXPECT(ELIF)
@@ -323,6 +325,9 @@ namespace hasha {
     }
 
     ErrorOr<ElseStatement::Ptr> Parser::else_statement() {
+
+        if(!is_previous_of<IfStatement>() && !is_previous_of<ElifStatement>())
+            return "Rouge else statement";
 
         auto span = peek().span();
         EXPECT(ELSE)

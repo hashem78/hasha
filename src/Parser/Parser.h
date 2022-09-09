@@ -170,12 +170,12 @@ namespace hasha {
         }
 
         template<class T>
-        bool is_previous_of(const TokenList &tkns) {
+        bool is_previous_of() {
 
-            if (tkns.empty())
+            if (tokens.empty())
                 return false;
 
-            auto cast = dynamic_cast<T *>(tkns.back().get());
+            auto cast = dynamic_cast<T *>(tokens.back().get());
 
             if (cast)
                 return true;
