@@ -15,7 +15,9 @@
 #define SWALLOW(lexeme) if(match(lexeme)) {advance();}
 
 namespace hasha {
-    Parser::Parser(std::string file_name) : lexer(std::move(file_name)), cursor(0) {
+    Parser::Parser(std::string file_name) :
+            lexer(std::move(file_name)),
+            cursor(0) {
 
         auto res = lexer.lex();
         if (res.is_error()) {
@@ -46,12 +48,6 @@ namespace hasha {
         if (cursor + k < lexemes.size()) return lexemes[cursor + k];
 
         return lexemes.back();
-    }
-
-
-    const TokenList &Parser::get_tokens() const noexcept {
-
-        return tokens;
     }
 
     bool Parser::done(int k) const noexcept {
@@ -312,8 +308,6 @@ namespace hasha {
 
     ErrorOr<ElifStatement::Ptr> Parser::elif_statement() {
 
-        if(!is_previous_of<IfStatement>() && !is_previous_of<ElifStatement>())
-            return "Rouge elif statement";
 
         auto span = peek().span();
         EXPECT(ELIF)
@@ -330,9 +324,6 @@ namespace hasha {
     }
 
     ErrorOr<ElseStatement::Ptr> Parser::else_statement() {
-
-        if(!is_previous_of<IfStatement>() && !is_previous_of<ElifStatement>())
-            return "Rouge else statement";
 
         auto span = peek().span();
         EXPECT(ELSE)
@@ -397,8 +388,18 @@ namespace hasha {
             } else if (match(IF)) {
                 token_list.push_back(TRY(if_statement()));
             } else if (match(ELSE)) {
+
+                if (!is_previous_of<IfStatement>(token_list) && !is_previous_of<ElifStatement>(token_list))
+                    return "Rouge else statement";
+
                 token_list.push_back(TRY(else_statement()));
             } else if (match(ELIF)) {
+
+                if (!is_previous_of<IfStatement>(token_list) && !is_previous_of<ElifStatement>(token_list))
+                    return "Rouge elif statement";
+                if (is_previous_of<ElseStatement>(token_list))
+                    return "An else statement cannot be followed by and elif statement";
+
                 token_list.push_back(TRY(elif_statement()));
             } else if (match(LexemeType::IDENTIFIER)) {
                 token_list.push_back(TRY(declaration()));

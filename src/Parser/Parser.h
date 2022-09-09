@@ -40,8 +40,6 @@ namespace hasha {
         LexemeList lexemes;
         int cursor;
 
-        TokenList tokens;
-
         ContextStack context_stack;
 
         Context current_context();
@@ -168,12 +166,12 @@ namespace hasha {
         }
 
         template<class T>
-        bool is_previous_of() {
+        bool is_previous_of(const TokenList &tkns) {
 
-            if (tokens.empty())
+            if (tkns.empty())
                 return false;
 
-            auto cast = dynamic_cast<T *>(tokens.back().get());
+            auto cast = dynamic_cast<T *>(tkns.back().get());
 
             if (cast)
                 return true;
