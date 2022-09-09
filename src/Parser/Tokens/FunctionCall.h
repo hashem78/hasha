@@ -12,13 +12,13 @@ namespace hasha {
 
     class FunctionCall : public Token {
         std::string m_callee;
-        ExpressionListPtr m_arguments;
+        ExpressionList m_arguments;
 
     public:
 
         FunctionCall(
                 std::string callee,
-                ExpressionListPtr tokens,
+                ExpressionList tokens,
                 const Span &span
         );
 
@@ -26,7 +26,7 @@ namespace hasha {
 
         static Ptr create(
                 std::string callee,
-                ExpressionListPtr tokens,
+                ExpressionList tokens,
                 const Span& span
         );
 
@@ -37,7 +37,7 @@ namespace hasha {
         std::string get_callee() const noexcept;
 
         [[nodiscard]]
-        const ExpressionList *get_arguments() const noexcept;
+        const ExpressionList& get_arguments() const noexcept;
 
         [[nodiscard]]
         nlohmann::json to_json() const override;

@@ -13,14 +13,14 @@ namespace hasha {
         return m_callee;
     }
 
-    const ExpressionList *FunctionCall::get_arguments() const noexcept {
+    const ExpressionList& FunctionCall::get_arguments() const noexcept {
 
-        return m_arguments.get();
+        return m_arguments;
     }
 
     FunctionCall::FunctionCall(
             std::string callee,
-            ExpressionListPtr tokens,
+            ExpressionList tokens,
             const Span &span) :
             m_callee(std::move(callee)),
             m_arguments(std::move(tokens)),
@@ -30,12 +30,12 @@ namespace hasha {
 
     int FunctionCall::get_number_of_args() const noexcept {
 
-        return static_cast<int>(m_arguments->size());
+        return static_cast<int>(m_arguments.size());
     }
 
     FunctionCall::Ptr FunctionCall::create(
             std::string callee,
-            ExpressionListPtr tokens,
+            ExpressionList tokens,
             const Span &span
     ) {
 
@@ -52,7 +52,7 @@ namespace hasha {
 
         json["token_type"] = "FunctionCall";
         json["callee"] = m_callee;
-        json["arguments"] = expression_list_to_json(m_arguments.get());
+        json["arguments"] = expression_list_to_json(m_arguments);
         json["span"] = m_span.to_json();
         return json;
     }

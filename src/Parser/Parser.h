@@ -140,7 +140,7 @@ namespace hasha {
 
         ErrorOr<Assignment::Ptr> assignment();
 
-        ErrorOr<ExpressionListPtr>
+        ErrorOr<ExpressionList>
         parse_multiple(const Lexeme &left, const Lexeme &right, const Lexeme &separator = COMMA);
 
         ErrorOr<Literal::Ptr> literal();

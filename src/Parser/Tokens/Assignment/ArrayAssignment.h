@@ -12,12 +12,12 @@ namespace hasha {
 
     class ArrayAssignment : public Assignment {
 
-        ExpressionListPtr m_expressions;
+        ExpressionList m_expressions;
 
     public:
 
         explicit ArrayAssignment(
-                ExpressionListPtr expressions,
+                ExpressionList expressions,
                 const Span &span
         );
 
@@ -25,12 +25,12 @@ namespace hasha {
 
 
         static Ptr create(
-                ExpressionListPtr expressions,
+                ExpressionList expressions,
                 const Span &span
         );
 
         [[nodiscard]]
-        const ExpressionList *get_expressions() const;
+        const ExpressionList& get_expressions() const;
 
         [[nodiscard]]
         nlohmann::json to_json() const override;

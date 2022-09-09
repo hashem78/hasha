@@ -28,11 +28,8 @@ namespace hasha {
     };
 
     using ExpressionList = std::vector<Expression::Ptr>;
-    using ExpressionListPtr = std::unique_ptr<ExpressionList>;
 
-    ExpressionListPtr create_expression_list();
-
-    nlohmann::json expression_list_to_json(const ExpressionList *expression_list);
+    nlohmann::json expression_list_to_json(const ExpressionList& expression_list);
 } // hasha
 
 #endif //HASHA_EXPRESSION_H

@@ -67,18 +67,17 @@ namespace hasha {
                 }
             }
         }
+        // TODO: Implement function calls in expressions
+        if(stk.empty())
+            return std::string{};
+
         return std::to_string(stk.top());
     }
 
-    ExpressionListPtr create_expression_list() {
-
-        return std::make_unique<ExpressionList>();
-    }
-
-    nlohmann::json expression_list_to_json(const ExpressionList *expression_list) {
+    nlohmann::json expression_list_to_json(const ExpressionList& expression_list) {
 
         auto arr = nlohmann::json::array();
-        for (const auto &expr: *expression_list) {
+        for (const auto &expr: expression_list) {
             arr.push_back(expr->to_json());
         }
         return arr;

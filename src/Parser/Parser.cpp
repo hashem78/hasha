@@ -272,17 +272,17 @@ namespace hasha {
         return assignment;
     }
 
-    ErrorOr<ExpressionListPtr>
+    ErrorOr<ExpressionList>
     Parser::parse_multiple(const Lexeme &left, const Lexeme &right, const Lexeme &separator) {
 
 
         EXPECT(left)
 
-        auto exprs = create_expression_list();
+        auto exprs = ExpressionList{};
 
         while (!match(right)) {
             SWALLOW(separator)
-            exprs->push_back(TRY(parse_expression()));
+            exprs.push_back(TRY(parse_expression()));
         }
         EXPECT(right)
 
