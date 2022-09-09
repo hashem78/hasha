@@ -5,6 +5,8 @@
 #ifndef HASHA_CONTEXT_H
 #define HASHA_CONTEXT_H
 
+#include <stack>
+
 #include "nlohmann/json.hpp"
 
 namespace hasha {
