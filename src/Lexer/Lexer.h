@@ -32,7 +32,7 @@ namespace hasha {
         int line;
         int col;
 
-        std::tuple<std::string, Span> next_token();
+        std::pair<std::string, Span> next_token() noexcept;
 
         void skip_spaces() noexcept;
 

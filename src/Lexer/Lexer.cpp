@@ -107,7 +107,7 @@ namespace hasha {
         );
     }
 
-    std::tuple<std::string, Span> Lexer::next_token() {
+    std::pair<std::string, Span> Lexer::next_token() noexcept {
 
         if (done()) return {{}, Span{}};
 
