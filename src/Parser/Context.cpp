@@ -1,6 +1,9 @@
 //
 // Created by mythi on 01/09/22.
 //
+
+#include <stack>
+
 #include "Context.h"
 
 namespace hasha {
@@ -40,12 +43,4 @@ namespace hasha {
         parsing_return_expression = val;
         return *this;
     }
-
-    void Context::print() {
-
-        std::stringstream str;
-        str << std::setw(2) << nlohmann::json(*this);
-        fmt::print("CONTEXT: {}\n", str.str());
-    }
-
 }

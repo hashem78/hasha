@@ -5,9 +5,6 @@
 #ifndef HASHA_CONTEXT_H
 #define HASHA_CONTEXT_H
 
-#include <stack>
-
-#include "fmt/format.h"
 #include "nlohmann/json.hpp"
 
 namespace hasha {
@@ -41,8 +38,6 @@ namespace hasha {
 
         Context &set_parsing_return_expression(bool val) noexcept;
 
-
-        void print();
     };
 
     using ContextStack = std::stack<Context>;
