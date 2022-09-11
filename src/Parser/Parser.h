@@ -180,8 +180,6 @@ namespace hasha {
         }
 
     public:
-        [[nodiscard]]
-        const TokenList &get_tokens() const noexcept;
 
         explicit Parser(std::string file_name);
 
