@@ -30,7 +30,7 @@ namespace hasha {
         [[nodiscard]]
         nlohmann::json to_json() const override;
 
-        void interpret(Scope::Ptr scope) override;
+        ErrorOr<void> interpret(Scope::Ptr scope) override;
 
         Scope::Ptr scope();
     };

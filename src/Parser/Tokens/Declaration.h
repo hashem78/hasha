@@ -10,6 +10,7 @@
 #include "Tokens/Assignment/Assignment.h"
 #include "Type/Type.h"
 #include "Identifier.h"
+#include "ErrorOr.h"
 
 namespace hasha {
 
@@ -42,7 +43,7 @@ namespace hasha {
         [[nodiscard]]
         const Type *get_type() const;
 
-        void interpret(Scope::Ptr scope) override;
+        ErrorOr<void> interpret(Scope::Ptr scope) override;
 
         [[nodiscard]]
         Identifier get_name() const;

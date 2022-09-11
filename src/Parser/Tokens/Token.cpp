@@ -36,8 +36,8 @@ namespace hasha {
         return m_span;
     }
 
-    void Token::interpret(Scope::Ptr scope) {
-
+    ErrorOr<void> Token::interpret(Scope::Ptr scope) {
+        return {};
     }
 
 

@@ -13,6 +13,7 @@
 #include "fmt/core.h"
 #include "Span.h"
 #include "Scope.h"
+#include "ErrorOr.h"
 
 namespace hasha {
 
@@ -34,7 +35,7 @@ namespace hasha {
         [[nodiscard]]
         const Span &span() const;
 
-        virtual void interpret(Scope::Ptr scope);
+        virtual ErrorOr<void> interpret(Scope::Ptr scope);
 
         virtual ~Token() = default;
     };

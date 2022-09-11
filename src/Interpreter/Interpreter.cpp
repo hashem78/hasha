@@ -9,8 +9,10 @@ namespace hasha {
 
     }
 
-    void Interpreter::interpret() {
+    ErrorOr<void> Interpreter::interpret() {
 
-        global_block->interpret(global_scope);
+        TRY(global_block->interpret(global_scope));
+
+        return {};
     }
 } // hasha

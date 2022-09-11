@@ -44,18 +44,19 @@ namespace hasha {
         return std::make_unique<Block>(std::move(tokens), span);
     }
 
-    void Block::interpret(Scope::Ptr scope) {
+    ErrorOr<void> Block::interpret(Scope::Ptr scope) {
 
         if (auto global_scope = std::dynamic_pointer_cast<GlobalScope>(scope)) {
             for (auto &token: m_tokens) {
-                token->interpret(global_scope);
+                TRY(token->interpret(global_scope));
             }
         } else {
 
             for (auto &token: m_tokens) {
-                token->interpret(m_scope);
+                TRY(token->interpret(m_scope));
             }
         }
+        return {};
     }
 
     Scope::Ptr Block::scope() {

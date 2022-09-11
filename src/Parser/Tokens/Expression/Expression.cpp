@@ -36,10 +36,10 @@ namespace hasha {
 
         for (const auto &token: expression) {
             if (auto number = dynamic_cast<NumericLiteral *>(token.get())) {
-                fmt::print("{}\n",number->to_string());
+                // fmt::print("{}\n",number->to_string());
                 stk.push(std::stoi(number->get_literal()));
             } else if (auto operation = dynamic_cast<Operator *>(token.get())) {
-                fmt::print("{}\n",operation->to_string());
+                 // fmt::print("{}\n",operation->to_string());
                 const auto &op = operation->get_op();
                 if (op == "+") {
                     auto b = stk.top();

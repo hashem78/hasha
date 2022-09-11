@@ -30,7 +30,7 @@ namespace hasha {
         return std::make_unique<Assignment>(std::move(expression), span);
     }
 
-    std::string Assignment::calculate() const {
+    std::string Assignment::evaluate() const {
 
         return expression->evaluate();
     }

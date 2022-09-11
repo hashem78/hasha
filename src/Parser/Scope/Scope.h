@@ -21,6 +21,8 @@ namespace hasha {
         std::vector<Variable> variables;
         std::vector<std::string> functions;
 
+        bool variable_already_defined(std::string_view var_name) const;
+
         explicit Scope(int owner_id);
 
         using Ptr = std::shared_ptr<Scope>;

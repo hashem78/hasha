@@ -16,7 +16,7 @@ namespace hasha {
 
     public:
         explicit Interpreter(Block::Ptr block);
-        void interpret();
+        ErrorOr<void> interpret();
     };
 
 } // hasha

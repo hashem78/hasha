@@ -7,7 +7,7 @@ hasha::ErrorOr<void> hasha_main() {
     auto parser = hasha::Parser{"sample.hasha"};
 
     auto interpreter = hasha::Interpreter{TRY(parser.parse())};
-    interpreter.interpret();
+    TRY(interpreter.interpret());
 
     return {};
 }
