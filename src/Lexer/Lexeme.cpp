@@ -5,7 +5,6 @@
 #include <string>
 
 
-
 #include "nlohmann/json.hpp"
 #include "magic_enum.hpp"
 #include "fmt/format.h"
@@ -89,6 +88,11 @@ namespace hasha {
     Span &Lexeme::span() noexcept {
 
         return m_span;
+    }
+
+    void Lexeme::set_span(const Span &span) noexcept {
+
+        m_span = span;
     }
 
     bool Lexeme::operator==(const Lexeme &other) const {

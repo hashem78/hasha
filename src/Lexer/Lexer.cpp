@@ -38,11 +38,7 @@ namespace hasha {
 
             if (lexeme_map.contains(token)) {
                 auto lexeme = lexeme_map.at(token);
-                lexeme.span()
-                        .set_begin(span.begin)
-                        .set_end(span.end)
-                        .set_line(span.line)
-                        .set_col(span.col);
+                lexeme.set_span(span);
 
                 lexemes.push_back(lexeme);
             } else if (is_numeric_literal(token)) {
