@@ -13,12 +13,9 @@ namespace hasha {
 
     class Block : public Token {
         TokenList m_tokens;
-        Scope::Ptr m_scope;
 
     public:
         explicit Block(TokenList tokens, const Span &span);
-
-        explicit Block(TokenList tokens, const Span &span, Scope::Ptr scope);
 
         using Ptr = std::unique_ptr<Block>;
 
@@ -30,9 +27,7 @@ namespace hasha {
         [[nodiscard]]
         nlohmann::json to_json() const override;
 
-        ErrorOr<void> interpret(Scope::Ptr scope) override;
-
-        Scope::Ptr scope();
+        ErrorOr<void> interpret() override;
     };
 
 } // hasha

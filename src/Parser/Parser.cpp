@@ -15,7 +15,8 @@
 #define SWALLOW(lexeme) if(match(lexeme)) {advance();}
 
 namespace hasha {
-    Parser::Parser(std::string file_name) :
+    Parser::Parser(std::string file_name, ScopeTree::Ptr scope_tree) :
+            scope_tree(std::move(scope_tree)),
             lexer(std::move(file_name)),
             cursor(0) {
 
@@ -32,7 +33,7 @@ namespace hasha {
 
     ErrorOr<Block::Ptr> Parser::parse() {
 
-        auto blk = TRY(block());
+        auto blk = TRY(block(scope_tree->create_scope()));
 
         std::ofstream ojson("parser_output.json");
         if (ojson.is_open()) {
@@ -68,9 +69,20 @@ namespace hasha {
         return lexemes.back();
     }
 
-    ErrorOr<Identifier::Ptr> Parser::identifier() noexcept {
+    ErrorOr<Identifier::Ptr> Parser::identifier(Scope &scope, bool check_scope) noexcept {
 
         const auto name = peek().data();
+
+        if (check_scope) {
+            if (scope.identifiers.contains(name)) {
+                return fmt::format(
+                        "Identifier {} has already been defined in this scope, line: {},col: {} \n",
+                        name,
+                        peek().span().line,
+                        peek().span().col
+                );
+            }
+        }
 
         if (name.empty()) return "Failed to parse identifier name";
 
@@ -87,7 +99,10 @@ namespace hasha {
 
         advance();
 
-        return Identifier::create(name, peek(-1).span());
+        auto x = Identifier::create(name, peek(-1).span());
+        scope.identifiers[name] = x.get();
+
+        return x;
     }
 
     ErrorOr<Type::Ptr> Parser::type() noexcept {
@@ -126,11 +141,11 @@ namespace hasha {
         return Type::create(type, peek(-1).span());
     }
 
-    ErrorOr<Parameter::Ptr> Parser::parameter() {
+    ErrorOr<Parameter::Ptr> Parser::parameter(Scope &scope) {
 
         auto b_span = peek().span();
         auto param_type = TRY(type());
-        auto name = TRY(identifier());
+        auto name = TRY(identifier(scope));
 
         if (match(COMMA)) advance();
 
@@ -139,7 +154,7 @@ namespace hasha {
     }
 
 
-    ErrorOr<Expression::Ptr> Parser::parse_expression(const Lexeme &delimiter) {
+    ErrorOr<Expression::Ptr> Parser::parse_expression(Scope &scope, const Lexeme &delimiter) {
 
         std::deque<Lexeme> operators; // stack
         auto token_list = TokenList{};
@@ -163,7 +178,7 @@ namespace hasha {
 
             if (x.type() == LexemeType::IDENTIFIER) {
                 advance(-1);
-                token_list.push_back(TRY(function_call()));
+                token_list.push_back(TRY(function_call(scope, true)));
             } else if (x.type() == LexemeType::OPERATOR) {
                 while (!operators.empty() && operators.front().type() == LexemeType::OPERATOR) {
                     auto y = operators.front();
@@ -241,7 +256,7 @@ namespace hasha {
 
     }
 
-    ErrorOr<Assignment::Ptr> Parser::assignment() {
+    ErrorOr<Assignment::Ptr> Parser::assignment(Scope &scope) {
 
         EXPECT(EQUALS)
 
@@ -249,13 +264,13 @@ namespace hasha {
 
         if (current_context().parsing_value_type) {
             EXPECT_NOT(LBRACKET)
-            auto expr = TRY(parse_expression());
+            auto expr = TRY(parse_expression(scope));
             auto span = expr->span();
             assignment = Assignment::create(std::move(expr), span);
         } else if (current_context().parsing_array_type) {
             set_context(current_context().set_parsing_array(true));
             auto before_span = peek().span();
-            auto array_token_list = TRY(parse_multiple(LBRACKET, RBRACKET));
+            auto array_token_list = TRY(parse_multiple(scope, LBRACKET, RBRACKET));
             auto after_span = peek(-1).span();
             auto span = Span{
                     before_span.begin,
@@ -274,7 +289,7 @@ namespace hasha {
     }
 
     ErrorOr<ExpressionList>
-    Parser::parse_multiple(const Lexeme &left, const Lexeme &right, const Lexeme &separator) {
+    Parser::parse_multiple(Scope &scope, const Lexeme &left, const Lexeme &right, const Lexeme &separator) {
 
 
         EXPECT(left)
@@ -283,20 +298,20 @@ namespace hasha {
 
         while (!match(right)) {
             SWALLOW(separator)
-            exprs.push_back(TRY(parse_expression()));
+            exprs.push_back(TRY(parse_expression(scope)));
         }
         EXPECT(right)
 
         return exprs;
     }
 
-    ErrorOr<IfStatement::Ptr> Parser::if_statement() {
+    ErrorOr<IfStatement::Ptr> Parser::if_statement(Scope &scope) {
 
         auto span = peek().span();
         EXPECT(IF)
-        auto condition = TRY(parse_expression(LCURLY));
+        auto condition = TRY(parse_expression(scope, LCURLY));
         EXPECT(LCURLY)
-        auto blk = TRY(block());
+        auto blk = TRY(block(scope_tree->create_scope(scope.id)));
         EXPECT(RCURLY)
 
         return IfStatement::create(
@@ -306,14 +321,14 @@ namespace hasha {
         );
     }
 
-    ErrorOr<ElifStatement::Ptr> Parser::elif_statement() {
+    ErrorOr<ElifStatement::Ptr> Parser::elif_statement(Scope &scope) {
 
 
         auto span = peek().span();
         EXPECT(ELIF)
-        auto condition = TRY(parse_expression(LCURLY));
+        auto condition = TRY(parse_expression(scope, LCURLY));
         EXPECT(LCURLY)
-        auto blk = TRY(block());
+        auto blk = TRY(block(scope_tree->create_scope(scope.id)));
         EXPECT(RCURLY)
 
         return ElifStatement::create(
@@ -323,25 +338,25 @@ namespace hasha {
         );
     }
 
-    ErrorOr<ElseStatement::Ptr> Parser::else_statement() {
+    ErrorOr<ElseStatement::Ptr> Parser::else_statement(Scope &scope) {
 
         auto span = peek().span();
         EXPECT(ELSE)
         EXPECT(LCURLY)
-        auto blk = TRY(block());
+        auto blk = TRY(block(scope_tree->create_scope(scope.id)));
         EXPECT(RCURLY)
 
         return ElseStatement::create(std::move(blk), span);
     }
 
-    ErrorOr<Declaration::Ptr> Parser::declaration() {
+    ErrorOr<Declaration::Ptr> Parser::declaration(Scope &scope) {
 
         auto before_span = peek().span();
         auto decl_type = TRY(type());
-        auto name = TRY(identifier());
+        auto name = TRY(identifier(scope, true));
 
         if (peek() == EQUALS) {
-            auto asx = TRY(assignment());
+            auto asx = TRY(assignment(scope));
 
             auto after_span = peek(-1).span();
 
@@ -375,24 +390,24 @@ namespace hasha {
         );
     }
 
-    ErrorOr<Block::Ptr> Parser::block() noexcept {
+    ErrorOr<Block::Ptr> Parser::block(Scope &scope) noexcept {
 
         auto token_list = TokenList{};
         auto begin_span = peek().span();
-        while (!match(RCURLY)) {
 
+        while (!match(RCURLY)) {
 
             // Parse the unambigous statements first
             if (match(FN)) {
-                token_list.push_back(TRY(function()));
+                token_list.push_back(TRY(function(scope)));
             } else if (match(IF)) {
-                token_list.push_back(TRY(if_statement()));
+                token_list.push_back(TRY(if_statement(scope)));
             } else if (match(ELSE)) {
 
                 if (!is_previous_of<IfStatement>(token_list) && !is_previous_of<ElifStatement>(token_list))
                     return "Rouge else statement";
 
-                token_list.push_back(TRY(else_statement()));
+                token_list.push_back(TRY(else_statement(scope)));
             } else if (match(ELIF)) {
 
                 if (!is_previous_of<IfStatement>(token_list) && !is_previous_of<ElifStatement>(token_list))
@@ -400,11 +415,11 @@ namespace hasha {
                 if (is_previous_of<ElseStatement>(token_list))
                     return "An else statement cannot be followed by and elif statement";
 
-                token_list.push_back(TRY(elif_statement()));
+                token_list.push_back(TRY(elif_statement(scope)));
             } else if (match(LexemeType::IDENTIFIER)) {
-                token_list.push_back(TRY(declaration()));
+                token_list.push_back(TRY(declaration(scope)));
             } else if (match(RETURN)) {
-                token_list.push_back(TRY(return_expression()));
+                token_list.push_back(TRY(return_expression(scope)));
             } else {
                 advance();
             }
@@ -419,19 +434,21 @@ namespace hasha {
         return Block::create(std::move(token_list), span);
     }
 
-    ErrorOr<Function::Ptr> Parser::function() {
+    ErrorOr<Function::Ptr> Parser::function(Scope &scope) {
 
         auto begin_span = peek().span();
         SWALLOW(FN)
+        auto function_scope = scope_tree->create_scope(scope.id);
 
-        auto name = TRY(identifier());
+        auto name = TRY(identifier(scope));
+
 
         EXPECT(LPAREN)
 
         auto params = TokenList{};
 
         while (!match(RPAREN)) {
-            params.push_back(TRY(parameter()));
+            params.push_back(TRY(parameter(function_scope)));
         }
 
         EXPECT(RPAREN)
@@ -442,14 +459,14 @@ namespace hasha {
         auto return_type = TRY(type());
         EXPECT(LCURLY)
 
-        auto parsed_block = TRY(block());
+        auto parsed_block = TRY(block(function_scope));
 
         EXPECT(RCURLY)
         auto end_span = peek().span();
 
         auto span = Span{begin_span.begin, end_span.end, begin_span.line, begin_span.col};
 
-        return Function::create(
+        auto fn = Function::create(
                 std::move(params),
                 std::move(parsed_block),
                 *name,
@@ -457,6 +474,8 @@ namespace hasha {
                 span
         );
 
+        scope.functions[name->get()] = fn.get();
+        return fn;
     }
 
     bool Parser::match(const Lexeme &match, int start) const noexcept {
@@ -487,12 +506,24 @@ namespace hasha {
 
     }
 
-    ErrorOr<FunctionCall::Ptr> Parser::function_call() {
+    ErrorOr<FunctionCall::Ptr> Parser::function_call(Scope &scope, bool check_scope) {
 
         auto before_span = peek().span();
-        auto name = TRY(identifier());
+        auto name = TRY(identifier(scope));
+        if (check_scope) {
+
+            if (!scope.is_function_in_scope(name->get())) {
+
+                return fmt::format(
+                        "Function {} is not defined line {}, col {}",
+                        name->get(),
+                        name->span().line,
+                        name->span().col
+                );
+            }
+        }
         set_context(current_context().set_parsing_args(true));
-        auto exprs = TRY(parse_multiple(LPAREN, RPAREN));
+        auto exprs = TRY(parse_multiple(scope, LPAREN, RPAREN));
         restore_context();
         auto after_span = peek(-1).span();
         auto span = Span{before_span.begin, after_span.end, before_span.line, before_span.col};
@@ -514,11 +545,11 @@ namespace hasha {
         context_stack.pop();
     }
 
-    ErrorOr<Expression::Ptr> Parser::return_expression() {
+    ErrorOr<Expression::Ptr> Parser::return_expression(Scope &scope) {
 
         EXPECT(RETURN)
         set_context(current_context().set_parsing_return_expression(true));
-        auto expr = TRY(parse_expression());
+        auto expr = TRY(parse_expression(scope));
         restore_context();
         EXPECT(SEMICOLON)
         return expr;

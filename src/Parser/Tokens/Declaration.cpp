@@ -63,25 +63,9 @@ namespace hasha {
         );
     }
 
-    ErrorOr<void> Declaration::interpret(Scope::Ptr scope) {
+    ErrorOr<void> Declaration::interpret() {
 
-        if (scope->variable_already_defined(m_name.get())) {
-            return fmt::format("Redefinition of variable {} on line {} col {}", m_name.get(), m_span.line, m_span.col);
-        }
-        fmt::print("Declared Variable: {} {}\n", m_type->get_type(), m_name.get());
-        if (m_assignment == nullptr) {
 
-            scope->variables.emplace_back(m_type->get_type(), m_name.get(), "", scope->owner_id);
-        } else {
-
-            scope->variables.emplace_back(
-                    m_type->get_type(),
-                    m_name.get(),
-                    m_assignment->evaluate(),
-                    scope->owner_id
-            );
-            fmt::print("Assigned {} with {}\n", m_name.get(), m_assignment->evaluate());
-        }
         return {};
     }
 

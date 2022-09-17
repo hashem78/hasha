@@ -11,7 +11,7 @@ namespace hasha {
 
     ErrorOr<void> Interpreter::interpret() {
 
-        TRY(global_block->interpret(global_scope));
+        TRY(global_block->interpret());
 
         return {};
     }

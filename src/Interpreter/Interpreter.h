@@ -6,13 +6,11 @@
 #define HASHA_INTERPRETER_H
 
 #include "Block.h"
-#include "GlobalScope.h"
 
 namespace hasha {
 
     class Interpreter {
         Block::Ptr global_block;
-        GlobalScope::Ptr global_scope;
 
     public:
         explicit Interpreter(Block::Ptr block);

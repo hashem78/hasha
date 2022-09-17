@@ -17,7 +17,7 @@ namespace hasha {
     class Function : public Token {
         TokenList m_parameters;
     public:
-        ErrorOr<void> interpret(Scope::Ptr scope) override;
+        ErrorOr<void> interpret() override;
 
     private:
         Block::Ptr m_block;

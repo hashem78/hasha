@@ -5,8 +5,6 @@
 #include "Block.h"
 
 
-#include "GlobalScope.h"
-
 namespace hasha {
     nlohmann::json Block::to_json() const {
 
@@ -18,23 +16,16 @@ namespace hasha {
         return json;
     }
 
-    const TokenList& Block::get_tokens() const {
+    const TokenList &Block::get_tokens() const {
 
         return m_tokens;
     }
 
-    Block::Block(TokenList tokens, const Span &span) :
-            m_tokens(std::move(tokens)),
-            Token(span),
-            m_scope(Scope::create(Token::id)) {}
-
     Block::Block(
             TokenList tokens,
-            const Span &span,
-            Scope::Ptr scope
+            const Span &span
     ) : m_tokens(std::move(tokens)),
-        Token(span),
-        m_scope(std::move(scope)) {
+        Token(span) {
 
     }
 
@@ -44,25 +35,8 @@ namespace hasha {
         return std::make_unique<Block>(std::move(tokens), span);
     }
 
-    ErrorOr<void> Block::interpret(Scope::Ptr scope) {
+    ErrorOr<void> Block::interpret() {
 
-        if (auto global_scope = std::dynamic_pointer_cast<GlobalScope>(scope)) {
-            for (auto &token: m_tokens) {
-                TRY(token->interpret(global_scope));
-            }
-        } else {
-
-            for (auto &token: m_tokens) {
-                TRY(token->interpret(m_scope));
-            }
-        }
         return {};
     }
-
-    Scope::Ptr Block::scope() {
-
-        return m_scope;
-    }
-
-
 } // hasha

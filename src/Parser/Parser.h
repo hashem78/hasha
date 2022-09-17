@@ -6,7 +6,6 @@
 #define HASHA_PARSER_H
 
 
-
 #include "Tokens/Token.h"
 #include "Lexeme.h"
 #include "Identifier.h"
@@ -32,10 +31,13 @@
 #include "Tokens/Expression/Expression.h"
 #include "Assignment/ArrayAssignment.h"
 #include "Expression/ReturnExpression.h"
+#include "Scope.h"
+#include "ScopeTree.h"
 
 namespace hasha {
 
     class Parser {
+        ScopeTree::Ptr scope_tree;
         Lexer lexer;
         LexemeList lexemes;
         int cursor;
@@ -122,36 +124,36 @@ namespace hasha {
         }
 
         [[nodiscard]]
-        ErrorOr<Identifier::Ptr> identifier() noexcept;
+        ErrorOr<Identifier::Ptr> identifier(Scope &scope, bool check_scope = false) noexcept;
 
         ErrorOr<Type::Ptr> type() noexcept;
 
-        ErrorOr<Parameter::Ptr> parameter();
+        ErrorOr<Parameter::Ptr> parameter(Scope &scope);
 
-        ErrorOr<Declaration::Ptr> declaration();
+        ErrorOr<Declaration::Ptr> declaration(Scope &scope);
 
-        ErrorOr<FunctionCall::Ptr> function_call();
+        ErrorOr<FunctionCall::Ptr> function_call(Scope &scope, bool check_scope = false);
 
-        ErrorOr<Expression::Ptr> parse_expression(const Lexeme &delimiter = SEMICOLON);
+        ErrorOr<Expression::Ptr> parse_expression(Scope &scope, const Lexeme &delimiter = SEMICOLON);
 
-        ErrorOr<Assignment::Ptr> assignment();
+        ErrorOr<Assignment::Ptr> assignment(Scope &scope);
 
         ErrorOr<ExpressionList>
-        parse_multiple(const Lexeme &left, const Lexeme &right, const Lexeme &separator = COMMA);
+        parse_multiple(Scope &scope, const Lexeme &left, const Lexeme &right, const Lexeme &separator = COMMA);
 
         ErrorOr<Literal::Ptr> literal();
 
-        ErrorOr<Block::Ptr> block() noexcept;
+        ErrorOr<Block::Ptr> block(Scope &scope) noexcept;
 
-        ErrorOr<Function::Ptr> function();
+        ErrorOr<Function::Ptr> function(Scope &scope);
 
-        ErrorOr<IfStatement::Ptr> if_statement();
+        ErrorOr<IfStatement::Ptr> if_statement(Scope &scope);
 
-        ErrorOr<ElifStatement::Ptr> elif_statement();
+        ErrorOr<ElifStatement::Ptr> elif_statement(Scope &scope);
 
-        ErrorOr<ElseStatement::Ptr> else_statement();
+        ErrorOr<ElseStatement::Ptr> else_statement(Scope &scope);
 
-        ErrorOr<Expression::Ptr> return_expression();
+        ErrorOr<Expression::Ptr> return_expression(Scope &scope);
 
         template<class T>
         std::optional<const T *> last_of(const TokenList &tkns) {
@@ -181,7 +183,7 @@ namespace hasha {
 
     public:
 
-        explicit Parser(std::string file_name);
+        explicit Parser(std::string file_name, ScopeTree::Ptr scope_tree);
 
         ErrorOr<Block::Ptr> parse();
 

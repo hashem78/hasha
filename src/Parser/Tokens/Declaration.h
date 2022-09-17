@@ -43,7 +43,7 @@ namespace hasha {
         [[nodiscard]]
         const Type *get_type() const;
 
-        ErrorOr<void> interpret(Scope::Ptr scope) override;
+        ErrorOr<void> interpret() override;
 
         [[nodiscard]]
         Identifier get_name() const;

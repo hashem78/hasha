@@ -72,12 +72,8 @@ namespace hasha {
         return m_return_type.get();
     }
 
-    ErrorOr<void> Function::interpret(Scope::Ptr higher_scope) {
-        higher_scope->functions.push_back(m_name.get());
+    ErrorOr<void> Function::interpret() {
 
-        for(auto& token: m_block->get_tokens()) {
-            TRY(token->interpret(m_block->scope()));
-        }
         return {};
     }
 
