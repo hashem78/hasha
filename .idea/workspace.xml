@@ -15,32 +15,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Add set_span method to Lexeme">
-      <change afterPath="$PROJECT_DIR$/src/Scope/Scope.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Scope/Scope.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Scope/ScopeTree.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Scope/ScopeTree.h" afterDir="false" />
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Implement initial scoping capabilities.&#10;&#10;Scopes are the logical spaces where definitions are stored.&#10;&#10;Scopes are currently created per block, i.e. for &quot;if,elif,else and function definitions&quot;.&#10;&#10;Scopes will be used to check for redefinition errors, invalid assignments and use-before-declare errors.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Interpreter/Interpreter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/Interpreter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Interpreter/Interpreter.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/Interpreter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Interpreter/Variable.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Interpreter/Variable.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Scope/GlobalScope.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Scope/GlobalScope.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Scope/Scope.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Scope/Scope.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Block.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Block.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Block.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Block.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Function.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Function.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Function.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Function.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Token.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Token.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Token.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Token.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,14 +132,7 @@
       <workItem from="1663335045006" duration="694000" />
       <workItem from="1663336056240" duration="51000" />
       <workItem from="1663336120696" duration="16522000" />
-      <workItem from="1663403129522" duration="749000" />
-    </task>
-    <task id="LOCAL-00010" summary="Rename VariableDeclaration -&gt; Declaration">
-      <created>1659001505600</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1659001505600</updated>
+      <workItem from="1663403129522" duration="2033000" />
     </task>
     <task id="LOCAL-00011" summary="Support for reassignments">
       <created>1659013870566</created>
@@ -501,7 +470,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662714328636</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="Implement initial scoping capabilities.&#10;&#10;Scopes are the logical spaces where definitions are stored.&#10;&#10;Scopes are currently created per block, i.e. for &quot;if,elif,else and function definitions&quot;.&#10;&#10;Scopes will be used to check for redefinition errors, invalid assignments and use-before-declare errors.">
+      <created>1663404544982</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1663404544983</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -522,7 +498,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Massive codebase cleanup and refactoring" />
     <MESSAGE value="The Lexer now catches illegal tokens.&#10;&#10;Might want to change this later to provide syntax analysis." />
     <MESSAGE value="Add missing Attribute" />
     <MESSAGE value="Cleanup unused methods and macros" />
@@ -547,6 +522,7 @@
     <MESSAGE value="Added gaurds for elif and else statements.&#10;&#10;Those should have been there, but they were not for some reason." />
     <MESSAGE value="Move some headers around." />
     <MESSAGE value="Add noexcept to methods in Context" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add noexcept to methods in Context" />
+    <MESSAGE value="Implement initial scoping capabilities.&#10;&#10;Scopes are the logical spaces where definitions are stored.&#10;&#10;Scopes are currently created per block, i.e. for &quot;if,elif,else and function definitions&quot;.&#10;&#10;Scopes will be used to check for redefinition errors, invalid assignments and use-before-declare errors." />
+    <option name="LAST_COMMIT_MESSAGE" value="Implement initial scoping capabilities.&#10;&#10;Scopes are the logical spaces where definitions are stored.&#10;&#10;Scopes are currently created per block, i.e. for &quot;if,elif,else and function definitions&quot;.&#10;&#10;Scopes will be used to check for redefinition errors, invalid assignments and use-before-declare errors." />
   </component>
 </project>

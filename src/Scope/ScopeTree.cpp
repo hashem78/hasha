@@ -3,7 +3,6 @@
 //
 
 #include "ScopeTree.h"
-#include "fmt/core.h"
 
 namespace hasha {
 

@@ -3,7 +3,6 @@
 //
 
 #include "Scope.h"
-#include "fmt/core.h"
 
 namespace hasha {
     Scope::Scope(Scope *parent) : parent(parent), id(_id++) {}
