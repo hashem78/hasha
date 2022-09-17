@@ -68,6 +68,15 @@ add_executable(hasha
         src/Lexer/Analyzer.h
         src/Interpreter/Interpreter.cpp
         src/Interpreter/Interpreter.h
-        src/Scope/Scope.h src/Scope/ScopeTree.cpp src/Scope/ScopeTree.h src/Scope/Scope.cpp)
+        src/Scope/Scope.h
+        src/Scope/ScopeTree.cpp
+        src/Scope/ScopeTree.h
+        src/Scope/Scope.cpp
+        src/Parser/Tokens/Assignment/InlineAssignment.cpp
+        src/Parser/Tokens/Assignment/InlineAssignment.h
+        src/Parser/Tokens/Assignment/ArrayInlineAssignment.cpp
+        src/Parser/Tokens/Assignment/ArrayInlineAssignment.h
+
+        )
 
 target_link_libraries(hasha fmt::fmt nlohmann_json::nlohmann_json magic_enum::magic_enum)

@@ -15,8 +15,16 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Implement initial scoping capabilities.&#10;&#10;Scopes are the logical spaces where definitions are stored.&#10;&#10;Scopes are currently created per block, i.e. for &quot;if,elif,else and function definitions&quot;.&#10;&#10;Scopes will be used to check for redefinition errors, invalid assignments and use-before-declare errors.">
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Remove useless includes">
+      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/ArrayInlineAssignment.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/ArrayInlineAssignment.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/InlineAssignment.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/InlineAssignment.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Pattern.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Pattern.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,24 +58,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;cf.advertisement.text.has.clang-format&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/mythi/development/cpp/hasha&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.C/C++&quot;,
-    &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "cf.advertisement.text.has.clang-format": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "last_opened_file_path": "/home/mythi/development/cpp/hasha/src/Parser/Tokens/Assignment",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.sourceCode.C/C++",
+    "structure.view.defaults.are.configured": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/Parser/Tokens/Assignment" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/Scope" />
       <recent name="$PROJECT_DIR$/src/Parser/Scope" />
@@ -132,14 +143,7 @@
       <workItem from="1663335045006" duration="694000" />
       <workItem from="1663336056240" duration="51000" />
       <workItem from="1663336120696" duration="16522000" />
-      <workItem from="1663403129522" duration="2033000" />
-    </task>
-    <task id="LOCAL-00011" summary="Support for reassignments">
-      <created>1659013870566</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1659013870566</updated>
+      <workItem from="1663403129522" duration="7147000" />
     </task>
     <task id="LOCAL-00012" summary="Lexeme is now constexpr&#10;&#10;Strings created at compile time are now managed by std::vectors, because otherwise the const char* produced by std::string::c_str() goes out of scope too early.">
       <created>1659025720650</created>
@@ -477,7 +481,14 @@
       <option name="project" value="LOCAL" />
       <updated>1663404544983</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="Remove useless includes">
+      <created>1663406125127</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1663406125127</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -498,7 +509,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="The Lexer now catches illegal tokens.&#10;&#10;Might want to change this later to provide syntax analysis." />
     <MESSAGE value="Add missing Attribute" />
     <MESSAGE value="Cleanup unused methods and macros" />
     <MESSAGE value="Change json indentation to one per level because way to right biased." />
@@ -523,6 +533,7 @@
     <MESSAGE value="Move some headers around." />
     <MESSAGE value="Add noexcept to methods in Context" />
     <MESSAGE value="Implement initial scoping capabilities.&#10;&#10;Scopes are the logical spaces where definitions are stored.&#10;&#10;Scopes are currently created per block, i.e. for &quot;if,elif,else and function definitions&quot;.&#10;&#10;Scopes will be used to check for redefinition errors, invalid assignments and use-before-declare errors." />
-    <option name="LAST_COMMIT_MESSAGE" value="Implement initial scoping capabilities.&#10;&#10;Scopes are the logical spaces where definitions are stored.&#10;&#10;Scopes are currently created per block, i.e. for &quot;if,elif,else and function definitions&quot;.&#10;&#10;Scopes will be used to check for redefinition errors, invalid assignments and use-before-declare errors." />
+    <MESSAGE value="Remove useless includes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove useless includes" />
   </component>
 </project>

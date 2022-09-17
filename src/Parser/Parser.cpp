@@ -9,6 +9,7 @@
 #include "Parser.h"
 #include "Constants.h"
 
+
 #define EXPECT(lexeme) if(!match(lexeme)) {return fmt::format("Expected {} Found {}",lexeme.to_string(),peek().to_string());}else{advance();}
 #define EXPECT_NOT(l1) if(match(l1)) {return fmt::format("Unexpected {}",l1.to_string());}
 
@@ -69,7 +70,7 @@ namespace hasha {
         return lexemes.back();
     }
 
-    ErrorOr<Identifier::Ptr> Parser::identifier(Scope &scope, bool check_scope) noexcept {
+    ErrorOr<Identifier::Ptr> Parser::identifier(Scope &scope, bool check_scope, bool register_to_scope) noexcept {
 
         const auto name = peek().data();
 
@@ -100,7 +101,10 @@ namespace hasha {
         advance();
 
         auto x = Identifier::create(name, peek(-1).span());
-        scope.identifiers[name] = x.get();
+
+        if (register_to_scope) {
+            scope.identifiers[name] = x.get();
+        }
 
         return x;
     }
@@ -355,6 +359,27 @@ namespace hasha {
         auto decl_type = TRY(type());
         auto name = TRY(identifier(scope, true));
 
+        auto after_span = peek(-1).span();
+
+        auto span = Span{
+                before_span.begin,
+                after_span.end,
+                before_span.line,
+                before_span.col
+        };
+        return Declaration::create(
+                std::move(decl_type),
+                *name,
+                span
+        );
+    }
+
+    ErrorOr<Declaration::Ptr> Parser::declaration_with_assignment(Scope &scope) {
+
+        auto before_span = peek().span();
+        auto decl_type = TRY(type());
+        auto name = TRY(identifier(scope, true));
+
         if (peek() == EQUALS) {
             auto asx = TRY(assignment(scope));
 
@@ -390,6 +415,50 @@ namespace hasha {
         );
     }
 
+    ErrorOr<Assignment::Ptr> Parser::inline_assignment(Scope &scope) {
+
+        auto assignee = TRY(identifier(scope, false, false));
+
+        if (!scope.is_identifier_in_scope(assignee->get())) {
+            return fmt::format(
+                    "Identifier {} is undefined in this scope, line: {}, col: {}",
+                    assignee->get(),
+                    assignee->span().line,
+                    assignee->span().col
+            );
+        }
+
+
+        EXPECT(EQUALS)
+
+        Assignment::Ptr assignment;
+
+        if (current_context().parsing_value_type) {
+            EXPECT_NOT(LBRACKET)
+            auto expr = TRY(parse_expression(scope));
+            auto span = expr->span();
+            assignment = InlineAssignment::create(std::move(assignee), std::move(expr), span);
+        } else if (current_context().parsing_array_type) {
+            set_context(current_context().set_parsing_array(true));
+            auto before_span = peek().span();
+            auto array_token_list = TRY(parse_multiple(scope, LBRACKET, RBRACKET));
+            auto after_span = peek(-1).span();
+            auto span = Span{
+                    before_span.begin,
+                    after_span.end,
+                    before_span.line,
+                    before_span.col
+            };
+            restore_context();
+            assignment = ArrayInlineAssignment::create(std::move(assignee), std::move(array_token_list), span);
+
+        }
+
+        EXPECT(SEMICOLON)
+
+        return assignment;
+    }
+
     ErrorOr<Block::Ptr> Parser::block(Scope &scope) noexcept {
 
         auto token_list = TokenList{};
@@ -416,8 +485,12 @@ namespace hasha {
                     return "An else statement cannot be followed by and elif statement";
 
                 token_list.push_back(TRY(elif_statement(scope)));
-            } else if (match(LexemeType::IDENTIFIER)) {
+            } else if (match(Patterns::Declaration)) {
                 token_list.push_back(TRY(declaration(scope)));
+            } else if (match(Patterns::DeclarationWithAssignment)) {
+                token_list.push_back(TRY(declaration_with_assignment(scope)));
+            } else if (match(Patterns::InlineAssignment)) {
+                token_list.push_back(TRY(inline_assignment(scope)));
             } else if (match(RETURN)) {
                 token_list.push_back(TRY(return_expression(scope)));
             } else {

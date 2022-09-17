@@ -37,9 +37,26 @@ namespace hasha::Patterns {
     };
 
     inline const Pattern<3> LiteralTypes{
-        LexemeType::NUMERIC_LITERAL,
-        LexemeType::BOOLEAN_LITERAL,
-        LexemeType::STRING_LITERAL
+            LexemeType::NUMERIC_LITERAL,
+            LexemeType::BOOLEAN_LITERAL,
+            LexemeType::STRING_LITERAL
+    };
+
+    inline const Pattern<3> Declaration {
+            LexemeType::IDENTIFIER,
+            LexemeType::IDENTIFIER,
+            SEMICOLON
+    };
+
+    inline const Pattern<3> DeclarationWithAssignment {
+            LexemeType::IDENTIFIER,
+            LexemeType::IDENTIFIER,
+            EQUALS
+    };
+
+    inline Pattern<2> InlineAssignment {
+            LexemeType::IDENTIFIER,
+            EQUALS
     };
 
 }
