@@ -15,16 +15,30 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Remove useless includes">
-      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/ArrayInlineAssignment.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/ArrayInlineAssignment.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/InlineAssignment.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/InlineAssignment.h" afterDir="false" />
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Add InlineAssignments, and breakup assignment operations in the parser.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Context.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Context.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Context.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Context.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Pattern.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Pattern.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/ArrayAssignment.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/ArrayAssignment.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/ArrayInlineAssignment.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/ArrayInlineAssignment.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/Assignment.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Assignment.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/Assignment.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Assignment.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/InlineAssignment.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Assignment/InlineAssignment.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Function.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Function.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type/ArrayType.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type/ArrayType.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type/Type.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type/Type.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,11 +94,11 @@
       <recent name="$PROJECT_DIR$/src/Parser/Tokens/Assignment" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/Parser/Tokens" />
       <recent name="$PROJECT_DIR$/src/Scope" />
       <recent name="$PROJECT_DIR$/src/Parser/Scope" />
       <recent name="$PROJECT_DIR$/src/Parser" />
       <recent name="$PROJECT_DIR$/src/Parser/Tokens/Expression" />
-      <recent name="$PROJECT_DIR$/src/Parser/Tokens" />
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.hasha">
@@ -143,14 +157,7 @@
       <workItem from="1663335045006" duration="694000" />
       <workItem from="1663336056240" duration="51000" />
       <workItem from="1663336120696" duration="16522000" />
-      <workItem from="1663403129522" duration="7147000" />
-    </task>
-    <task id="LOCAL-00012" summary="Lexeme is now constexpr&#10;&#10;Strings created at compile time are now managed by std::vectors, because otherwise the const char* produced by std::string::c_str() goes out of scope too early.">
-      <created>1659025720650</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1659025720650</updated>
+      <workItem from="1663403129522" duration="15084000" />
     </task>
     <task id="LOCAL-00013" summary="Remove useless decl">
       <created>1659025774489</created>
@@ -488,7 +495,14 @@
       <option name="project" value="LOCAL" />
       <updated>1663406125127</updated>
     </task>
-    <option name="localTasksCounter" value="61" />
+    <task id="LOCAL-00061" summary="Add InlineAssignments, and breakup assignment operations in the parser.">
+      <created>1663418726876</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1663418726876</updated>
+    </task>
+    <option name="localTasksCounter" value="62" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -509,7 +523,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Add missing Attribute" />
     <MESSAGE value="Cleanup unused methods and macros" />
     <MESSAGE value="Change json indentation to one per level because way to right biased." />
     <MESSAGE value="If statements can be parsed now.&#10;&#10;The syntax is if [condition] [block]" />
@@ -534,6 +547,7 @@
     <MESSAGE value="Add noexcept to methods in Context" />
     <MESSAGE value="Implement initial scoping capabilities.&#10;&#10;Scopes are the logical spaces where definitions are stored.&#10;&#10;Scopes are currently created per block, i.e. for &quot;if,elif,else and function definitions&quot;.&#10;&#10;Scopes will be used to check for redefinition errors, invalid assignments and use-before-declare errors." />
     <MESSAGE value="Remove useless includes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove useless includes" />
+    <MESSAGE value="Add InlineAssignments, and breakup assignment operations in the parser." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add InlineAssignments, and breakup assignment operations in the parser." />
   </component>
 </project>

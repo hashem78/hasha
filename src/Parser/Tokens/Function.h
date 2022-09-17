@@ -8,7 +8,7 @@
 #include "Token.h"
 #include "Block.h"
 #include "Parameter.h"
-#include "Type/Type.h"
+#include "Type.h"
 #include "Tokens/Expression/Expression.h"
 
 namespace hasha {

@@ -25,16 +25,12 @@
 #include "Tokens/Statement/IfStatement.h"
 #include "Statement/ElifStatement.h"
 #include "Statement/ElseStatement.h"
-#include "Type/Type.h"
-#include "Type/ArrayType.h"
+#include "Tokens/Type.h"
 #include "Context.h"
 #include "Tokens/Expression/Expression.h"
-#include "Assignment/ArrayAssignment.h"
 #include "Expression/ReturnExpression.h"
 #include "Scope.h"
 #include "ScopeTree.h"
-#include "Assignment/InlineAssignment.h"
-#include "Assignment/ArrayInlineAssignment.h"
 
 namespace hasha {
 
@@ -127,23 +123,21 @@ namespace hasha {
 
         [[nodiscard]]
         ErrorOr<Identifier::Ptr>
-        identifier(Scope &scope, bool check_scope = false, bool register_to_scope = true) noexcept;
+        identifier(
+                Scope &scope,
+                bool check_for_redefiniton = false,
+                bool register_to_scope = true
+        ) noexcept;
 
         ErrorOr<Type::Ptr> type() noexcept;
 
         ErrorOr<Parameter::Ptr> parameter(Scope &scope);
 
-        ErrorOr<Declaration::Ptr> declaration(Scope &scope);
-
-        ErrorOr<Declaration::Ptr> declaration_with_assignment(Scope &scope);
-
-        ErrorOr<Assignment::Ptr> inline_assignment(Scope &scope);
+        ErrorOr<Declaration::Ptr> declaration(Scope &scope, bool parse_assignment);
 
         ErrorOr<FunctionCall::Ptr> function_call(Scope &scope, bool check_scope = false);
 
         ErrorOr<Expression::Ptr> parse_expression(Scope &scope, const Lexeme &delimiter = SEMICOLON);
-
-        ErrorOr<Assignment::Ptr> assignment(Scope &scope);
 
         ErrorOr<ExpressionList>
         parse_multiple(Scope &scope, const Lexeme &left, const Lexeme &right, const Lexeme &separator = COMMA);

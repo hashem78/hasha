@@ -3,7 +3,6 @@
 //
 
 #include "Declaration.h"
-#include "Type/ArrayType.h"
 
 namespace hasha {
     const Type *Declaration::get_type() const {
@@ -26,9 +25,9 @@ namespace hasha {
 
         json["token_type"] = "Declaration";
 
-        if (m_assignment != nullptr) {
+        if (m_assignment_expression != nullptr) {
 
-            json["assignment"] = m_assignment->to_json();
+            json["assignment_expression"] = m_assignment_expression->to_json();
 
         }
         json["span"] = m_span.to_json();
@@ -40,11 +39,11 @@ namespace hasha {
             Type::Ptr type,
             Identifier name,
             const Span &span,
-            Assignment::Ptr assignment
+            Expression::Ptr assignment_expression
     ) :
             m_type(std::move(type)),
             m_name(std::move(name)),
-            m_assignment(std::move(assignment)),
+            m_assignment_expression(std::move(assignment_expression)),
             Token(span) {}
 
     Declaration::Ptr
@@ -52,14 +51,14 @@ namespace hasha {
             Type::Ptr type,
             Identifier name,
             const Span &span,
-            Assignment::Ptr tokens
+            Expression::Ptr assignment_expression
     ) {
 
         return std::make_unique<Declaration>(
                 std::move(type),
                 std::move(name),
                 span,
-                std::move(tokens)
+                std::move(assignment_expression)
         );
     }
 

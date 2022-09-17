@@ -10,6 +10,7 @@
 namespace hasha {
 
     class Assignment : public Token {
+
         Expression::Ptr expression;
     public:
         using Ptr = std::unique_ptr<Assignment>;

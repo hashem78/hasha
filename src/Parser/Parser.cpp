@@ -70,11 +70,12 @@ namespace hasha {
         return lexemes.back();
     }
 
-    ErrorOr<Identifier::Ptr> Parser::identifier(Scope &scope, bool check_scope, bool register_to_scope) noexcept {
+    ErrorOr<Identifier::Ptr>
+    Parser::identifier(Scope &scope, bool check_for_redefiniton, bool register_to_scope) noexcept {
 
         const auto name = peek().data();
 
-        if (check_scope) {
+        if (check_for_redefiniton) {
             if (scope.identifiers.contains(name)) {
                 return fmt::format(
                         "Identifier {} has already been defined in this scope, line: {},col: {} \n",
@@ -128,18 +129,8 @@ namespace hasha {
 
         advance();
 
-        if (peek() == LBRACKET && peek(1) == RBRACKET) {
-            advance(2);
-            set_context(
-                    current_context()
-                            .set_parsing_array_type(true)
-                            .set_parsing_value_type(false)
-            );
-            return ArrayType::create(type, peek(-2).span());
-        }
         set_context(
                 current_context()
-                        .set_parsing_array_type(false)
                         .set_parsing_value_type(true)
         );
         return Type::create(type, peek(-1).span());
@@ -180,7 +171,8 @@ namespace hasha {
 
             advance();
 
-            if (x.type() == LexemeType::IDENTIFIER) {
+
+            if (match(Patterns::FunctionCall)) {
                 advance(-1);
                 token_list.push_back(TRY(function_call(scope, true)));
             } else if (x.type() == LexemeType::OPERATOR) {
@@ -226,6 +218,20 @@ namespace hasha {
                         case LexemeType::BOOLEAN_LITERAL:
                             token_list.push_back(BooleanLiteral::create(x.data(), x.span()));
                             break;
+                        case LexemeType::IDENTIFIER: {
+                            advance(-1);
+                            auto idn = TRY(identifier(scope, false, false));
+                            if (!scope.is_identifier_in_scope(idn->get())) {
+                                return fmt::format(
+                                        "Identifier {} is undefined in this scope, line: {}, col {}",
+                                        idn->get(),
+                                        idn->span().line,
+                                        idn->span().col
+                                );
+                            }
+                            token_list.push_back(std::move(idn));
+                        }
+                            break;
                         default:
                             return fmt::format(
                                     "Unknown token {} in expression, line: {} col: {}\n",
@@ -260,37 +266,6 @@ namespace hasha {
 
     }
 
-    ErrorOr<Assignment::Ptr> Parser::assignment(Scope &scope) {
-
-        EXPECT(EQUALS)
-
-        Assignment::Ptr assignment;
-
-        if (current_context().parsing_value_type) {
-            EXPECT_NOT(LBRACKET)
-            auto expr = TRY(parse_expression(scope));
-            auto span = expr->span();
-            assignment = Assignment::create(std::move(expr), span);
-        } else if (current_context().parsing_array_type) {
-            set_context(current_context().set_parsing_array(true));
-            auto before_span = peek().span();
-            auto array_token_list = TRY(parse_multiple(scope, LBRACKET, RBRACKET));
-            auto after_span = peek(-1).span();
-            auto span = Span{
-                    before_span.begin,
-                    after_span.end,
-                    before_span.line,
-                    before_span.col
-            };
-            restore_context();
-            assignment = ArrayAssignment::create(std::move(array_token_list), span);
-
-        }
-
-        EXPECT(SEMICOLON)
-
-        return assignment;
-    }
 
     ErrorOr<ExpressionList>
     Parser::parse_multiple(Scope &scope, const Lexeme &left, const Lexeme &right, const Lexeme &separator) {
@@ -353,36 +328,14 @@ namespace hasha {
         return ElseStatement::create(std::move(blk), span);
     }
 
-    ErrorOr<Declaration::Ptr> Parser::declaration(Scope &scope) {
+    ErrorOr<Declaration::Ptr> Parser::declaration(Scope &scope, bool parse_assignment) {
 
         auto before_span = peek().span();
         auto decl_type = TRY(type());
         auto name = TRY(identifier(scope, true));
+        if (parse_assignment) {
 
-        auto after_span = peek(-1).span();
-
-        auto span = Span{
-                before_span.begin,
-                after_span.end,
-                before_span.line,
-                before_span.col
-        };
-        return Declaration::create(
-                std::move(decl_type),
-                *name,
-                span
-        );
-    }
-
-    ErrorOr<Declaration::Ptr> Parser::declaration_with_assignment(Scope &scope) {
-
-        auto before_span = peek().span();
-        auto decl_type = TRY(type());
-        auto name = TRY(identifier(scope, true));
-
-        if (peek() == EQUALS) {
-            auto asx = TRY(assignment(scope));
-
+            auto asx = TRY(parse_expression(scope));
             auto after_span = peek(-1).span();
 
             auto span = Span{
@@ -391,7 +344,7 @@ namespace hasha {
                     before_span.line,
                     before_span.col
             };
-
+            EXPECT(SEMICOLON);
             return Declaration::create(
                     std::move(decl_type),
                     *name,
@@ -399,7 +352,6 @@ namespace hasha {
                     std::move(asx)
             );
         }
-
         auto after_span = peek(-1).span();
 
         auto span = Span{
@@ -408,56 +360,15 @@ namespace hasha {
                 before_span.line,
                 before_span.col
         };
+        EXPECT(SEMICOLON);
         return Declaration::create(
                 std::move(decl_type),
                 *name,
                 span
         );
+
     }
 
-    ErrorOr<Assignment::Ptr> Parser::inline_assignment(Scope &scope) {
-
-        auto assignee = TRY(identifier(scope, false, false));
-
-        if (!scope.is_identifier_in_scope(assignee->get())) {
-            return fmt::format(
-                    "Identifier {} is undefined in this scope, line: {}, col: {}",
-                    assignee->get(),
-                    assignee->span().line,
-                    assignee->span().col
-            );
-        }
-
-
-        EXPECT(EQUALS)
-
-        Assignment::Ptr assignment;
-
-        if (current_context().parsing_value_type) {
-            EXPECT_NOT(LBRACKET)
-            auto expr = TRY(parse_expression(scope));
-            auto span = expr->span();
-            assignment = InlineAssignment::create(std::move(assignee), std::move(expr), span);
-        } else if (current_context().parsing_array_type) {
-            set_context(current_context().set_parsing_array(true));
-            auto before_span = peek().span();
-            auto array_token_list = TRY(parse_multiple(scope, LBRACKET, RBRACKET));
-            auto after_span = peek(-1).span();
-            auto span = Span{
-                    before_span.begin,
-                    after_span.end,
-                    before_span.line,
-                    before_span.col
-            };
-            restore_context();
-            assignment = ArrayInlineAssignment::create(std::move(assignee), std::move(array_token_list), span);
-
-        }
-
-        EXPECT(SEMICOLON)
-
-        return assignment;
-    }
 
     ErrorOr<Block::Ptr> Parser::block(Scope &scope) noexcept {
 
@@ -486,15 +397,14 @@ namespace hasha {
 
                 token_list.push_back(TRY(elif_statement(scope)));
             } else if (match(Patterns::Declaration)) {
-                token_list.push_back(TRY(declaration(scope)));
+                token_list.push_back(TRY(declaration(scope, false)));
             } else if (match(Patterns::DeclarationWithAssignment)) {
-                token_list.push_back(TRY(declaration_with_assignment(scope)));
-            } else if (match(Patterns::InlineAssignment)) {
-                token_list.push_back(TRY(inline_assignment(scope)));
+                token_list.push_back(TRY(declaration(scope, true)));
             } else if (match(RETURN)) {
                 token_list.push_back(TRY(return_expression(scope)));
             } else {
-                advance();
+                token_list.push_back(TRY(parse_expression(scope)));
+                EXPECT(SEMICOLON);
             }
         }
         auto end_span = peek().span();

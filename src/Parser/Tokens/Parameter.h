@@ -6,7 +6,7 @@
 #define HASHA_PARAMETER_H
 
 #include "Token.h"
-#include "Type/Type.h"
+#include "Type.h"
 #include "Identifier.h"
 
 namespace hasha {

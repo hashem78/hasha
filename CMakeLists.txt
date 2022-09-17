@@ -30,8 +30,6 @@ add_executable(hasha
         src/Parser/Tokens/Parameter.h
         src/Parser/Tokens/Literal/Literal.h
         src/Parser/Tokens/Operator.h
-        src/Parser/Tokens/Assignment/ArrayAssignment.cpp
-        src/Parser/Tokens/Assignment/ArrayAssignment.h
         src/Parser/Pattern.h
         src/Parser/Tokens/Literal/StringLiteral.h
         src/Parser/Tokens/Literal/NumericLiteral.h
@@ -51,15 +49,13 @@ add_executable(hasha
         src/Parser/Tokens/Statement/ElifStatement.h
         src/Parser/Tokens/Statement/ElseStatement.cpp
         src/Parser/Tokens/Statement/ElseStatement.h
-        src/Parser/Tokens/Type/Type.cpp
-        src/Parser/Tokens/Type/Type.h
-        src/Parser/Tokens/Type/ArrayType.cpp
-        src/Parser/Tokens/Type/ArrayType.h
+        src/Parser/Tokens/Type.cpp
+        src/Parser/Tokens/Type.h
         src/Parser/Context.h
         src/Parser/Tokens/Expression/Expression.cpp
         src/Parser/Tokens/Expression/Expression.h
-        src/Parser/Tokens/Assignment/Assignment.cpp
-        src/Parser/Tokens/Assignment/Assignment.h
+        src/Parser/Tokens/Assignment.cpp
+        src/Parser/Tokens/Assignment.h
         src/Parser/Context.cpp
         src/Utils/Span.h
         src/Parser/Tokens/Expression/ReturnExpression.h
@@ -72,11 +68,6 @@ add_executable(hasha
         src/Scope/ScopeTree.cpp
         src/Scope/ScopeTree.h
         src/Scope/Scope.cpp
-        src/Parser/Tokens/Assignment/InlineAssignment.cpp
-        src/Parser/Tokens/Assignment/InlineAssignment.h
-        src/Parser/Tokens/Assignment/ArrayInlineAssignment.cpp
-        src/Parser/Tokens/Assignment/ArrayInlineAssignment.h
-
         )
 
 target_link_libraries(hasha fmt::fmt nlohmann_json::nlohmann_json magic_enum::magic_enum)

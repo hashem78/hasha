@@ -53,7 +53,7 @@ namespace hasha::Patterns {
             LexemeType::IDENTIFIER,
             EQUALS
     };
-
+    
     inline Pattern<2> InlineAssignment {
             LexemeType::IDENTIFIER,
             EQUALS

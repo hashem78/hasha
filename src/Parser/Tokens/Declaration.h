@@ -7,8 +7,8 @@
 
 #include "Token.h"
 #include "fmt/format.h"
-#include "Tokens/Assignment/Assignment.h"
-#include "Type/Type.h"
+#include "Assignment.h"
+#include "Type.h"
 #include "Identifier.h"
 #include "ErrorOr.h"
 
@@ -20,7 +20,7 @@ namespace hasha {
 
         Type::Ptr m_type;
         Identifier m_name;
-        Assignment::Ptr m_assignment;
+        Expression::Ptr m_assignment_expression;
 
     public:
 
@@ -28,7 +28,7 @@ namespace hasha {
                 Type::Ptr type,
                 Identifier name,
                 const Span &span,
-                Assignment::Ptr asssignment = nullptr
+                Expression::Ptr assignment_expression = nullptr
         );
 
         using Ptr = std::unique_ptr<Declaration>;
@@ -37,7 +37,7 @@ namespace hasha {
                 Type::Ptr type,
                 Identifier name,
                 const Span &span,
-                Assignment::Ptr assignment = nullptr
+                Expression::Ptr assignment_expression = nullptr
         );
 
         [[nodiscard]]
