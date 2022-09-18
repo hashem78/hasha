@@ -179,6 +179,7 @@ namespace hasha {
 
 
     ErrorOr<Expression::Ptr> Parser::parse_expression(Scope &scope, const Lexeme &delimiter) {
+
         std::deque<Lexeme> operators; // stack
         auto token_list = TokenList{};
 
@@ -363,6 +364,14 @@ namespace hasha {
 
 
         auto asx = TRY(parse_expression(scope));
+        if (asx->empty()) {
+            return fmt::format(
+                    "Unintialized declaration of variable {} on line: {}, col: {}",
+                    name->get(),
+                    before_span.line,
+                    before_span.col
+            );
+        }
         auto after_span = peek(-1).span();
 
         auto span = Span{

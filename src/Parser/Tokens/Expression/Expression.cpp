@@ -75,6 +75,11 @@ namespace hasha {
         return std::to_string(stk.top());
     }
 
+    bool Expression::empty() const {
+
+        return expression.empty();
+    }
+
     nlohmann::json expression_list_to_json(const ExpressionList& expression_list) {
 
         auto arr = nlohmann::json::array();

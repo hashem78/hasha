@@ -18,11 +18,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Remove artifact of removing the functor pattern matcher.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Add inline assignments.">
       <change beforePath="$PROJECT_DIR$/src/Parser/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Pattern.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Pattern.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expression/Expression.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Expression/Expression.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,14 +145,7 @@
       <workItem from="1663336056240" duration="51000" />
       <workItem from="1663336120696" duration="16522000" />
       <workItem from="1663403129522" duration="15084000" />
-      <workItem from="1663506073110" duration="11479000" />
-    </task>
-    <task id="LOCAL-00020" summary="Fix Literal Lexemes being of the wrong designation">
-      <created>1659052352723</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1659052352723</updated>
+      <workItem from="1663506073110" duration="12327000" />
     </task>
     <task id="LOCAL-00021" summary="Run code formatter">
       <created>1659081800451</created>
@@ -492,7 +483,14 @@
       <option name="project" value="LOCAL" />
       <updated>1663536436949</updated>
     </task>
-    <option name="localTasksCounter" value="69" />
+    <task id="LOCAL-00069" summary="Add inline assignments.">
+      <created>1663537722710</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1663537722711</updated>
+    </task>
+    <option name="localTasksCounter" value="70" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -513,7 +511,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Remove useless print" />
     <MESSAGE value="Remove separation of operator types.&#10;&#10;Operators are context dependant so lumping them in groups is a bad idea that caused the expression parser to miss parses." />
     <MESSAGE value="Remove missed debug prints in previous commit" />
     <MESSAGE value="Add missing template deduction type for PatternVisitor" />
@@ -538,6 +535,7 @@
     <MESSAGE value="Remove references to parsing arrays.&#10;&#10;1. We are switching to List being the default array type.&#10;2. List literals will be introduced at a later stage." />
     <MESSAGE value="Remove parsing_value_type from context" />
     <MESSAGE value="Remove artifact of removing the functor pattern matcher." />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove artifact of removing the functor pattern matcher." />
+    <MESSAGE value="Add inline assignments." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add inline assignments." />
   </component>
 </project>
