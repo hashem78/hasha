@@ -23,6 +23,7 @@ namespace hasha {
     inline const Lexeme RBRACKET{"]", LexemeType::SYMBOL};
     inline const Lexeme COMMA{",", LexemeType::SYMBOL};
     inline const Lexeme SEMICOLON{";", LexemeType::SYMBOL};
+    inline const Lexeme COLON{":", LexemeType::SYMBOL};
     inline const Lexeme EQUALS{"=", LexemeType::OPERATOR, Associativity::RIGHT, Precedence::LVL1};
     inline const Lexeme LAND{"&&", LexemeType::OPERATOR, Associativity::RIGHT, Precedence::LVL2};
     inline const Lexeme LOR{"||", LexemeType::OPERATOR, Associativity::RIGHT, Precedence::LVL2};
@@ -48,6 +49,7 @@ namespace hasha {
             {"]",      RBRACKET},
             {",",      COMMA},
             {";",      SEMICOLON},
+            {":",      COLON},
             {"=",      EQUALS},
             {"&&",     LAND},
             {"||",     LOR},
