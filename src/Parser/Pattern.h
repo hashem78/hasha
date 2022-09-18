@@ -13,12 +13,6 @@
 
 namespace hasha::Patterns {
 
-    // The result of the matching functor and the edit to the cursor
-    struct FunctorResult {
-        bool matched;
-        int cursor;
-    };
-
     using PatternType = std::variant<LexemeType, Lexeme>;
 
     template<class... Ts>
