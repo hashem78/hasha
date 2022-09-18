@@ -167,10 +167,11 @@ namespace hasha {
     ErrorOr<Parameter::Ptr> Parser::parameter(Scope &scope) {
 
         auto b_span = peek().span();
-        auto param_type = TRY(type());
         auto name = TRY(identifier(scope));
+        EXPECT(COLON)
+        auto param_type = TRY(type());
 
-        if (match(COMMA)) advance();
+        SWALLOW(COMMA)
 
         b_span.set_end(peek(-1).span().end);
         return Parameter::create(std::move(param_type), *name, b_span);
