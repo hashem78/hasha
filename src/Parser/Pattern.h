@@ -19,8 +19,7 @@ namespace hasha::Patterns {
         int cursor;
     };
 
-    using PatternFunctor = std::function<FunctorResult(const LexemeList &, int)>;
-    using PatternType = std::variant<LexemeType, Lexeme, PatternFunctor>;
+    using PatternType = std::variant<LexemeType, Lexeme>;
 
     template<class... Ts>
     struct PatternVisitor : Ts ... {
@@ -28,35 +27,23 @@ namespace hasha::Patterns {
     };
     template<class... Ts> PatternVisitor(Ts...) -> PatternVisitor<Ts...>;
 
-    template<size_t S>
-    using Pattern = std::array<PatternType, S>;
+    using Pattern = std::vector<PatternType>;
 
-    inline const Pattern<2> FunctionCall{
+    inline const Pattern FunctionCall{
             LexemeType::IDENTIFIER,
             LPAREN
     };
 
-    inline const Pattern<3> LiteralTypes{
+    inline const Pattern LiteralTypes{
             LexemeType::NUMERIC_LITERAL,
             LexemeType::BOOLEAN_LITERAL,
             LexemeType::STRING_LITERAL
     };
 
-    inline const Pattern<3> Declaration {
+    inline const Pattern Declaration {
             LexemeType::IDENTIFIER,
-            LexemeType::IDENTIFIER,
-            SEMICOLON
-    };
-
-    inline const Pattern<3> DeclarationWithAssignment {
-            LexemeType::IDENTIFIER,
-            LexemeType::IDENTIFIER,
-            EQUALS
-    };
-    
-    inline Pattern<2> InlineAssignment {
-            LexemeType::IDENTIFIER,
-            EQUALS
+            COLON,
+            LexemeType::IDENTIFIER
     };
 
 }

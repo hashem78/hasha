@@ -11,7 +11,6 @@
 
 
 #define EXPECT(lexeme) if(!match(lexeme)) {return fmt::format("Expected {} Found {}",lexeme.to_string(),peek().to_string());}else{advance();}
-#define EXPECT_NOT(l1) if(match(l1)) {return fmt::format("Unexpected {}",l1.to_string());}
 
 #define SWALLOW(lexeme) if(match(lexeme)) {advance();}
 
@@ -112,28 +111,57 @@ namespace hasha {
 
     ErrorOr<Type::Ptr> Parser::type() noexcept {
 
-        auto type = peek().data();
+        auto type_name = peek().data();
 
-        if (type.empty()) return "Failed to parse identifier name";
+        if (type_name.empty()) return "Failed to parse type name";
 
-        if (std::isdigit(type[0])) return "An identifier cannot start with a digit";
+        if (std::isdigit(type_name[0])) return "A type cannot start with a digit";
 
         auto is_legal = [](char c) -> bool {
             return std::isalnum(c) || c == '_';
         };
-        for (const auto &ch: type) {
+        for (const auto &ch: type_name) {
             if (!is_legal(ch)) {
                 return fmt::format("Illegal character {}", ch);
             }
         }
-
+        auto before_span = peek().span();
         advance();
 
-        set_context(
-                current_context()
-                        .set_parsing_value_type(true)
-        );
-        return Type::create(type, peek(-1).span());
+        if (match(LANGEL)) {
+            SWALLOW(LANGEL)
+            auto type_list = TypeList{};
+            while (!match(RANGEL) && !match(SEMICOLON)) {
+                SWALLOW(COMMA)
+                type_list.push_back(TRY(type()));
+            }
+            if (type_list.empty())
+                return fmt::format(
+                        "Generic Type {} with no type list, line: {}, col: {}",
+                        type_name,
+                        before_span.line,
+                        before_span.col
+                );
+
+            EXPECT(RANGEL)
+            auto after_span = peek(-1).span();
+
+
+            return GenericType::create(
+                    type_name,
+                    before_span,
+                    std::move(type_list),
+                    Span{
+                            before_span.begin,
+                            after_span.end,
+                            before_span.line,
+                            before_span.col
+                    }
+            );
+
+        }
+
+        return Type::create(type_name, peek(-1).span());
     }
 
     ErrorOr<Parameter::Ptr> Parser::parameter(Scope &scope) {
@@ -328,30 +356,15 @@ namespace hasha {
         return ElseStatement::create(std::move(blk), span);
     }
 
-    ErrorOr<Declaration::Ptr> Parser::declaration(Scope &scope, bool parse_assignment) {
+    ErrorOr<Declaration::Ptr> Parser::declaration(Scope &scope) {
 
         auto before_span = peek().span();
-        auto decl_type = TRY(type());
         auto name = TRY(identifier(scope, true));
-        if (parse_assignment) {
+        EXPECT(COLON)
+        auto decl_type = TRY(type());
 
-            auto asx = TRY(parse_expression(scope));
-            auto after_span = peek(-1).span();
 
-            auto span = Span{
-                    before_span.begin,
-                    after_span.end,
-                    before_span.line,
-                    before_span.col
-            };
-            EXPECT(SEMICOLON);
-            return Declaration::create(
-                    std::move(decl_type),
-                    *name,
-                    span,
-                    std::move(asx)
-            );
-        }
+        auto asx = TRY(parse_expression(scope));
         auto after_span = peek(-1).span();
 
         auto span = Span{
@@ -360,15 +373,16 @@ namespace hasha {
                 before_span.line,
                 before_span.col
         };
-        EXPECT(SEMICOLON);
+        EXPECT(SEMICOLON)
         return Declaration::create(
                 std::move(decl_type),
                 *name,
-                span
+                span,
+                std::move(asx)
         );
 
-    }
 
+    }
 
     ErrorOr<Block::Ptr> Parser::block(Scope &scope) noexcept {
 
@@ -397,14 +411,12 @@ namespace hasha {
 
                 token_list.push_back(TRY(elif_statement(scope)));
             } else if (match(Patterns::Declaration)) {
-                token_list.push_back(TRY(declaration(scope, false)));
-            } else if (match(Patterns::DeclarationWithAssignment)) {
-                token_list.push_back(TRY(declaration(scope, true)));
+                token_list.push_back(TRY(declaration(scope)));
             } else if (match(RETURN)) {
                 token_list.push_back(TRY(return_expression(scope)));
             } else {
                 token_list.push_back(TRY(parse_expression(scope)));
-                EXPECT(SEMICOLON);
+                EXPECT(SEMICOLON)
             }
         }
         auto end_span = peek().span();
@@ -537,5 +549,49 @@ namespace hasha {
         EXPECT(SEMICOLON)
         return expr;
     }
+
+    bool Parser::match_any(const Patterns::Pattern &matchers) const noexcept {
+
+        for (const auto& matcher : matchers) {
+
+            auto matched = std::visit(
+                    Patterns::PatternVisitor{
+                            [&, this](const Lexeme &lexeme) -> bool {
+                                return peek() == lexeme;
+                            },
+                            [&, this](const LexemeType &lexeme_type) -> bool {
+                                return peek().type() == lexeme_type;
+                            }
+                    }, matcher
+            );
+            if (matched)
+                return true;
+
+        }
+        return false;
+    }
+
+    bool Parser::match(const Patterns::Pattern &matchers, int start) const noexcept {
+
+        int lookahed = 0;
+        for (std::size_t i = start; i < matchers.size(); ++i) {
+
+            auto not_matched = std::visit(
+                    Patterns::PatternVisitor{
+                            [&, this](const Lexeme &lexeme) -> bool {
+                                return peek(i + lookahed) != lexeme;
+                            },
+                            [&, this](const LexemeType &lexeme_type) -> bool {
+                                return peek(i + lookahed).type() != lexeme_type;
+                            }
+                    }, matchers[i]
+            );
+            if (not_matched)
+                return false;
+
+        }
+        return true;
+    }
+
 
 } // hasha

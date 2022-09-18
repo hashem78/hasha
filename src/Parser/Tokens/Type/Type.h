@@ -25,6 +25,9 @@ namespace hasha {
         nlohmann::json to_json() const override;
     };
 
+    using TypeList = std::vector<Type::Ptr>;
+    nlohmann::json type_list_to_json(const TypeList& type_list);
+
 } // hasha
 
 #endif //HASHA_TYPE_H

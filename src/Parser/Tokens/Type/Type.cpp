@@ -31,4 +31,12 @@ namespace hasha {
         return json;
     }
 
+    nlohmann::json type_list_to_json(const TypeList &type_list) {
+
+        auto json = nlohmann::json::array();
+        for(const auto & type : type_list){
+            json.push_back(type->to_json());
+        }
+        return json;
+    }
 } // hasha

@@ -81,7 +81,7 @@ namespace hasha {
 
     bool Lexer::is_legal_character(char c) noexcept {
 
-        static const auto special = std::string("{}[]()=+-*/%,<>!&^~.|;\"");
+        static const auto special = std::string("{}[]()=+-*/%,<>!&^~.|;:\"");
 
         return std::any_of(
                 special.begin(),

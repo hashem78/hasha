@@ -19,6 +19,8 @@ namespace hasha {
     inline const Lexeme RCURLY{"}", LexemeType::SYMBOL};
     inline const Lexeme LPAREN{"(", LexemeType::SYMBOL};
     inline const Lexeme RPAREN{")", LexemeType::SYMBOL};
+    inline const Lexeme LANGEL{"<", LexemeType::SYMBOL};
+    inline const Lexeme RANGEL{">", LexemeType::SYMBOL};
     inline const Lexeme LBRACKET{"[", LexemeType::SYMBOL};
     inline const Lexeme RBRACKET{"]", LexemeType::SYMBOL};
     inline const Lexeme COMMA{",", LexemeType::SYMBOL};
@@ -47,6 +49,8 @@ namespace hasha {
             {")",      RPAREN},
             {"[",      LBRACKET},
             {"]",      RBRACKET},
+            {"<",      LANGEL},
+            {">",      RANGEL},
             {",",      COMMA},
             {";",      SEMICOLON},
             {":",      COLON},

@@ -49,8 +49,8 @@ add_executable(hasha
         src/Parser/Tokens/Statement/ElifStatement.h
         src/Parser/Tokens/Statement/ElseStatement.cpp
         src/Parser/Tokens/Statement/ElseStatement.h
-        src/Parser/Tokens/Type.cpp
-        src/Parser/Tokens/Type.h
+        src/Parser/Tokens/Type/Type.cpp
+        src/Parser/Tokens/Type/Type.h
         src/Parser/Context.h
         src/Parser/Tokens/Expression/Expression.cpp
         src/Parser/Tokens/Expression/Expression.h
@@ -68,6 +68,6 @@ add_executable(hasha
         src/Scope/ScopeTree.cpp
         src/Scope/ScopeTree.h
         src/Scope/Scope.cpp
-        )
+        src/Parser/Tokens/Type/GenericType.cpp src/Parser/Tokens/Type/GenericType.h)
 
 target_link_libraries(hasha fmt::fmt nlohmann_json::nlohmann_json magic_enum::magic_enum)

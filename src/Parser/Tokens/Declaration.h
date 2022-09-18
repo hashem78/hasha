@@ -8,7 +8,7 @@
 #include "Token.h"
 #include "fmt/format.h"
 #include "Assignment.h"
-#include "Type.h"
+#include "Tokens/Type/Type.h"
 #include "Identifier.h"
 #include "ErrorOr.h"
 
