@@ -106,6 +106,9 @@ namespace hasha {
 
         ErrorOr<Expression::Ptr> return_expression(Scope &scope);
 
+        ErrorOr<Assignment::Ptr> assignment(Scope &scope);
+
+
         template<class T>
         std::optional<const T *> last_of(const TokenList &tkns) {
 

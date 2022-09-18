@@ -18,8 +18,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Switch function parameter parsing to the new syntax">
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Remove artifact of removing the functor pattern matcher.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Pattern.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Pattern.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,28 +147,7 @@
       <workItem from="1663336056240" duration="51000" />
       <workItem from="1663336120696" duration="16522000" />
       <workItem from="1663403129522" duration="15084000" />
-      <workItem from="1663506073110" duration="9866000" />
-    </task>
-    <task id="LOCAL-00017" summary="Support string literals.">
-      <created>1659045772142</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1659045772142</updated>
-    </task>
-    <task id="LOCAL-00018" summary="Add trailing return types to function declarations">
-      <created>1659050089633</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1659050089633</updated>
-    </task>
-    <task id="LOCAL-00019" summary="Add support for return keyword in function blocks">
-      <created>1659052241913</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1659052241913</updated>
+      <workItem from="1663506073110" duration="11479000" />
     </task>
     <task id="LOCAL-00020" summary="Fix Literal Lexemes being of the wrong designation">
       <created>1659052352723</created>
@@ -489,7 +471,28 @@
       <option name="project" value="LOCAL" />
       <updated>1663535945529</updated>
     </task>
-    <option name="localTasksCounter" value="66" />
+    <task id="LOCAL-00066" summary="Remove references to parsing arrays.&#10;&#10;1. We are switching to List being the default array type.&#10;2. List literals will be introduced at a later stage.">
+      <created>1663536158453</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1663536158453</updated>
+    </task>
+    <task id="LOCAL-00067" summary="Remove parsing_value_type from context">
+      <created>1663536210568</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1663536210568</updated>
+    </task>
+    <task id="LOCAL-00068" summary="Remove artifact of removing the functor pattern matcher.">
+      <created>1663536436948</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1663536436949</updated>
+    </task>
+    <option name="localTasksCounter" value="69" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -510,9 +513,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Improvements to Lexer" />
-    <MESSAGE value="Naming improvements" />
-    <MESSAGE value="LEXER: simplified next_token method" />
     <MESSAGE value="Remove useless print" />
     <MESSAGE value="Remove separation of operator types.&#10;&#10;Operators are context dependant so lumping them in groups is a bad idea that caused the expression parser to miss parses." />
     <MESSAGE value="Remove missed debug prints in previous commit" />
@@ -535,6 +535,9 @@
     <MESSAGE value="Change declaration syntax and introduce generic types&#10;&#10;name : [type | generic_type]" />
     <MESSAGE value="Fix parsing function calls in expressions" />
     <MESSAGE value="Switch function parameter parsing to the new syntax" />
-    <option name="LAST_COMMIT_MESSAGE" value="Switch function parameter parsing to the new syntax" />
+    <MESSAGE value="Remove references to parsing arrays.&#10;&#10;1. We are switching to List being the default array type.&#10;2. List literals will be introduced at a later stage." />
+    <MESSAGE value="Remove parsing_value_type from context" />
+    <MESSAGE value="Remove artifact of removing the functor pattern matcher." />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove artifact of removing the functor pattern matcher." />
   </component>
 </project>

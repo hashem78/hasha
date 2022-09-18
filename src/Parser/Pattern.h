@@ -23,6 +23,11 @@ namespace hasha::Patterns {
 
     using Pattern = std::vector<PatternType>;
 
+    inline const Pattern Assignment{
+            LexemeType::IDENTIFIER,
+            EQUALS
+    };
+
     inline const Pattern FunctionCall{
             LexemeType::IDENTIFIER,
             LPAREN
@@ -34,7 +39,7 @@ namespace hasha::Patterns {
             LexemeType::STRING_LITERAL
     };
 
-    inline const Pattern Declaration {
+    inline const Pattern Declaration{
             LexemeType::IDENTIFIER,
             COLON,
             LexemeType::IDENTIFIER

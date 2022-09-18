@@ -179,7 +179,6 @@ namespace hasha {
 
 
     ErrorOr<Expression::Ptr> Parser::parse_expression(Scope &scope, const Lexeme &delimiter) {
-
         std::deque<Lexeme> operators; // stack
         auto token_list = TokenList{};
 
@@ -411,6 +410,8 @@ namespace hasha {
                 token_list.push_back(TRY(elif_statement(scope)));
             } else if (match(Patterns::Declaration)) {
                 token_list.push_back(TRY(declaration(scope)));
+            } else if (match(Patterns::Assignment)) {
+                token_list.push_back(TRY(assignment(scope)));
             } else if (match(RETURN)) {
                 token_list.push_back(TRY(return_expression(scope)));
             } else {
@@ -590,6 +591,16 @@ namespace hasha {
 
         }
         return true;
+    }
+
+    ErrorOr<Assignment::Ptr> Parser::assignment(Scope &scope) {
+
+        auto begin_span = peek().span();
+        auto expr = TRY(parse_expression(scope));
+        auto end_span = peek(-1).span();
+        auto span = Span{begin_span.begin, end_span.end, begin_span.line, begin_span.col};
+        EXPECT(SEMICOLON)
+        return Assignment::create(std::move(expr), span);
     }
 
 
