@@ -18,21 +18,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Add colon to lexer">
-      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/GenericType.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/GenericType.h" afterDir="false" />
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Change declaration syntax and introduce generic types&#10;&#10;name : [type | generic_type]">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Lexer/Constants.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Constants.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Pattern.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Pattern.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Function.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Function.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/Type.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/Type.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,14 +145,7 @@
       <workItem from="1663336056240" duration="51000" />
       <workItem from="1663336120696" duration="16522000" />
       <workItem from="1663403129522" duration="15084000" />
-      <workItem from="1663506073110" duration="8444000" />
-    </task>
-    <task id="LOCAL-00014" summary="Fix missing return">
-      <created>1659026967584</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1659026967584</updated>
+      <workItem from="1663506073110" duration="9357000" />
     </task>
     <task id="LOCAL-00015" summary="Add patterns">
       <created>1659042196014</created>
@@ -502,7 +483,14 @@
       <option name="project" value="LOCAL" />
       <updated>1663505736858</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL-00063" summary="Change declaration syntax and introduce generic types&#10;&#10;name : [type | generic_type]">
+      <created>1663534757033</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1663534757033</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -523,7 +511,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Change json indentation to one per level because way to right biased." />
     <MESSAGE value="If statements can be parsed now.&#10;&#10;The syntax is if [condition] [block]" />
     <MESSAGE value="elif and else statements can now be parsed" />
     <MESSAGE value="Improvements to Lexer" />
@@ -548,6 +535,7 @@
     <MESSAGE value="Remove useless includes" />
     <MESSAGE value="Add InlineAssignments, and breakup assignment operations in the parser." />
     <MESSAGE value="Add colon to lexer" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add colon to lexer" />
+    <MESSAGE value="Change declaration syntax and introduce generic types&#10;&#10;name : [type | generic_type]" />
+    <option name="LAST_COMMIT_MESSAGE" value="Change declaration syntax and introduce generic types&#10;&#10;name : [type | generic_type]" />
   </component>
 </project>

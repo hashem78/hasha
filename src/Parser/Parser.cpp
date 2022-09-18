@@ -187,6 +187,12 @@ namespace hasha {
         auto begin_span = peek().span();
 
         while (!match(delimiter)) {
+
+            if (match(Patterns::FunctionCall)) {
+                token_list.push_back(TRY(function_call(scope, true)));
+                continue;
+            }
+
             auto x = peek();
             if (current_context().parsing_array && x == RBRACKET)
                 break;
@@ -198,12 +204,7 @@ namespace hasha {
                 break;
 
             advance();
-
-
-            if (match(Patterns::FunctionCall)) {
-                advance(-1);
-                token_list.push_back(TRY(function_call(scope, true)));
-            } else if (x.type() == LexemeType::OPERATOR) {
+            if (x.type() == LexemeType::OPERATOR) {
                 while (!operators.empty() && operators.front().type() == LexemeType::OPERATOR) {
                     auto y = operators.front();
 
@@ -552,7 +553,7 @@ namespace hasha {
 
     bool Parser::match_any(const Patterns::Pattern &matchers) const noexcept {
 
-        for (const auto& matcher : matchers) {
+        for (const auto &matcher: matchers) {
 
             auto matched = std::visit(
                     Patterns::PatternVisitor{
