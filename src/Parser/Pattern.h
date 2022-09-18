@@ -13,61 +13,52 @@
 
 namespace hasha::Patterns {
 
+    // The result of the matching functor and the edit to the cursor
+    struct FunctorResult {
+        bool matched;
+        int cursor;
+    };
+
+    using PatternFunctor = std::function<FunctorResult(const LexemeList &, int)>;
+    using PatternType = std::variant<LexemeType, Lexeme, PatternFunctor>;
+
     template<class... Ts>
     struct PatternVisitor : Ts ... {
         using Ts::operator()...;
     };
     template<class... Ts> PatternVisitor(Ts...) -> PatternVisitor<Ts...>;
 
-    using PatternType = std::variant<LexemeType, Lexeme>;
-    using Pattern = std::vector<PatternType>;
-    using MultiPattern = std::vector<Pattern>;
-    using NestedPattern = std::vector<std::variant<Pattern, MultiPattern, LexemeType, Lexeme>>;
+    template<size_t S>
+    using Pattern = std::array<PatternType, S>;
 
-    inline const
-    Pattern FunctionCall{
+    inline const Pattern<2> FunctionCall{
             LexemeType::IDENTIFIER,
             LPAREN
     };
 
-    inline const Pattern LiteralTypes{
+    inline const Pattern<3> LiteralTypes{
             LexemeType::NUMERIC_LITERAL,
             LexemeType::BOOLEAN_LITERAL,
             LexemeType::STRING_LITERAL
     };
 
+    inline const Pattern<3> Declaration {
+            LexemeType::IDENTIFIER,
+            LexemeType::IDENTIFIER,
+            SEMICOLON
+    };
 
-    inline const Pattern DeclarationWithAssignment{
+    inline const Pattern<3> DeclarationWithAssignment {
             LexemeType::IDENTIFIER,
             LexemeType::IDENTIFIER,
             EQUALS
     };
-
-    inline const Pattern ValueType{
-            LexemeType::IDENTIFIER
-    };
-
-    inline const Pattern ArrayType{
+    
+    inline Pattern<2> InlineAssignment {
             LexemeType::IDENTIFIER,
-            LBRACKET,
-            RBRACKET
+            EQUALS
     };
 
-    inline const Pattern PointerType{
-            LexemeType::IDENTIFIER,
-            ASTERISK
-    };
-
-    inline const MultiPattern Type{
-            ValueType,
-            ArrayType,
-            PointerType
-    };
-
-    inline const NestedPattern Declaration{
-            Type,
-            LexemeType::IDENTIFIER
-    };
 }
 
 #endif //HASHA_PATTERN_H

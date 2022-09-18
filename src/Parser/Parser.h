@@ -62,12 +62,64 @@ namespace hasha {
         [[nodiscard]]
         inline bool match(const LexemeType &match, int start = 0) const noexcept;
 
+        template<size_t S>
         [[nodiscard]]
-        inline bool match_any(const Patterns::Pattern &matchers) const noexcept;
+        inline bool match_any(const Patterns::Pattern<S> &matchers) const noexcept {
+
+            for (std::size_t i = 0; i < matchers.size(); ++i) {
+
+                auto matched = std::visit(
+                        Patterns::PatternVisitor{
+                                [&, this](const Lexeme &lexeme) -> bool {
+                                    return peek() == lexeme;
+                                },
+                                [&, this](const LexemeType &lexeme_type) -> bool {
+                                    return peek().type() == lexeme_type;
+                                },
+                                [&, this](const Patterns::PatternFunctor &pattern_functor) -> bool {
+                                    return pattern_functor(lexemes, cursor).matched;
+                                }
+                        }, matchers[i]
+                );
+                if (matched)
+                    return true;
+
+            }
+            return false;
+        }
 
 
+        template<size_t S>
         [[nodiscard]]
-        inline bool match(const Patterns::Pattern &matchers, int start = 0) const noexcept;
+        inline bool match(const Patterns::Pattern<S> &matchers, int start = 0) const noexcept {
+
+            int lookahed = 0;
+            for (std::size_t i = start; i < matchers.size(); ++i) {
+
+                auto not_matched = std::visit(
+                        Patterns::PatternVisitor{
+                                [&, this](const Lexeme &lexeme) -> bool {
+                                    return peek(i + lookahed) != lexeme;
+                                },
+                                [&, this](const LexemeType &lexeme_type) -> bool {
+                                    return peek(i + lookahed).type() != lexeme_type;
+                                },
+                                [&, this](const Patterns::PatternFunctor &pattern_functor) -> bool {
+                                    auto result = pattern_functor(lexemes, cursor);
+                                    if (result.matched) {
+                                        lookahed += result.cursor;
+                                        return false;
+                                    }
+                                    return true;
+                                }
+                        }, matchers[i]
+                );
+                if (not_matched)
+                    return false;
+
+            }
+            return true;
+        }
 
         [[nodiscard]]
         ErrorOr<Identifier::Ptr>
