@@ -18,8 +18,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Change declaration syntax and introduce generic types&#10;&#10;name : [type | generic_type]">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Switch function parameter parsing to the new syntax">
       <change beforePath="$PROJECT_DIR$/src/Parser/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -145,21 +144,7 @@
       <workItem from="1663336056240" duration="51000" />
       <workItem from="1663336120696" duration="16522000" />
       <workItem from="1663403129522" duration="15084000" />
-      <workItem from="1663506073110" duration="9357000" />
-    </task>
-    <task id="LOCAL-00015" summary="Add patterns">
-      <created>1659042196014</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1659042196014</updated>
-    </task>
-    <task id="LOCAL-00016" summary="Add patterns">
-      <created>1659042205902</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1659042205902</updated>
+      <workItem from="1663506073110" duration="9866000" />
     </task>
     <task id="LOCAL-00017" summary="Support string literals.">
       <created>1659045772142</created>
@@ -490,7 +475,21 @@
       <option name="project" value="LOCAL" />
       <updated>1663534757033</updated>
     </task>
-    <option name="localTasksCounter" value="64" />
+    <task id="LOCAL-00064" summary="Fix parsing function calls in expressions">
+      <created>1663535728306</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1663535728306</updated>
+    </task>
+    <task id="LOCAL-00065" summary="Switch function parameter parsing to the new syntax">
+      <created>1663535945528</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1663535945529</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -511,8 +510,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="If statements can be parsed now.&#10;&#10;The syntax is if [condition] [block]" />
-    <MESSAGE value="elif and else statements can now be parsed" />
     <MESSAGE value="Improvements to Lexer" />
     <MESSAGE value="Naming improvements" />
     <MESSAGE value="LEXER: simplified next_token method" />
@@ -536,6 +533,8 @@
     <MESSAGE value="Add InlineAssignments, and breakup assignment operations in the parser." />
     <MESSAGE value="Add colon to lexer" />
     <MESSAGE value="Change declaration syntax and introduce generic types&#10;&#10;name : [type | generic_type]" />
-    <option name="LAST_COMMIT_MESSAGE" value="Change declaration syntax and introduce generic types&#10;&#10;name : [type | generic_type]" />
+    <MESSAGE value="Fix parsing function calls in expressions" />
+    <MESSAGE value="Switch function parameter parsing to the new syntax" />
+    <option name="LAST_COMMIT_MESSAGE" value="Switch function parameter parsing to the new syntax" />
   </component>
 </project>

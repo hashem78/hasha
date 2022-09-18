@@ -8,12 +8,6 @@
 
 namespace hasha {
 
-    Context &Context::set_parsing_array(bool val) noexcept {
-
-        parsing_array = val;
-        return *this;
-    }
-
     Context &Context::set_parsing_expression(bool val) noexcept {
 
         parsing_expression = val;

@@ -12,7 +12,6 @@
 namespace hasha {
 
     struct Context {
-        bool parsing_array;
         bool parsing_expression;
         bool parsing_args;
         bool parsing_value_type;
@@ -20,14 +19,11 @@ namespace hasha {
 
         NLOHMANN_DEFINE_TYPE_INTRUSIVE(
                 Context,
-                parsing_array,
                 parsing_expression,
                 parsing_args,
                 parsing_value_type,
                 parsing_return_expression
         );
-
-        Context &set_parsing_array(bool val) noexcept;
 
         Context &set_parsing_expression(bool val) noexcept;
 

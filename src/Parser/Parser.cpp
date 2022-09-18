@@ -195,10 +195,7 @@ namespace hasha {
             }
 
             auto x = peek();
-            if (current_context().parsing_array && x == RBRACKET)
-                break;
-            if (current_context().parsing_array && x == COMMA)
-                break;
+
             if (current_context().parsing_args && x == RPAREN)
                 break;
             if (current_context().parsing_args && x == COMMA)
