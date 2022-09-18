@@ -20,12 +20,6 @@ namespace hasha {
         return *this;
     }
 
-    Context &Context::set_parsing_value_type(bool val) noexcept {
-
-        parsing_value_type = val;
-        return *this;
-    }
-
     Context &Context::set_parsing_return_expression(bool val) noexcept {
 
         parsing_return_expression = val;
