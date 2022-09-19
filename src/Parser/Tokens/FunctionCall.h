@@ -19,7 +19,8 @@ namespace hasha {
         FunctionCall(
                 std::string callee,
                 ExpressionList tokens,
-                const Span &span
+                const Span &span,
+                int scope_id
         );
 
         using Ptr = std::unique_ptr<FunctionCall>;
@@ -27,7 +28,8 @@ namespace hasha {
         static Ptr create(
                 std::string callee,
                 ExpressionList tokens,
-                const Span& span
+                const Span& span,
+                int scope_id
         );
 
         [[nodiscard]]

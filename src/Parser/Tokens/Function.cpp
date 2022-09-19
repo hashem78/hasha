@@ -20,7 +20,7 @@ namespace hasha {
         return json;
     }
 
-    const TokenList& Function::get_parameters() const {
+    const TokenList &Function::get_parameters() const {
 
         return m_parameters;
     }
@@ -36,13 +36,14 @@ namespace hasha {
             Block::Ptr block,
             Identifier name,
             Type::Ptr return_type,
-            const Span &span
+            const Span &span,
+            int scope_id
     )
             : m_parameters(std::move(parameters)),
               m_block(std::move(block)),
               m_return_type(std::move(return_type)),
               m_name(std::move(name)),
-              Token(span) {
+              Token(span, scope_id) {
     }
 
     Function::Ptr Function::create(
@@ -50,7 +51,8 @@ namespace hasha {
             Block::Ptr block,
             Identifier name,
             Type::Ptr return_type,
-            const Span &span
+            const Span &span,
+            int scope_id
     ) {
 
         return std::make_unique<Function>(
@@ -58,7 +60,8 @@ namespace hasha {
                 std::move(block),
                 std::move(name),
                 std::move(return_type),
-                span
+                span,
+                scope_id
         );
     }
 
@@ -72,7 +75,10 @@ namespace hasha {
         return m_return_type.get();
     }
 
-    ErrorOr<void> Function::interpret() {
+    ErrorOr<void> Function::interpret(const ScopeTree &scope_tree) {
+
+
+        TRY(m_block->interpret(scope_tree));
 
         return {};
     }

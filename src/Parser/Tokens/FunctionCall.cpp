@@ -20,10 +20,12 @@ namespace hasha {
     FunctionCall::FunctionCall(
             std::string callee,
             ExpressionList tokens,
-            const Span &span) :
+            const Span &span,
+            int scope_id
+            ) :
             m_callee(std::move(callee)),
             m_arguments(std::move(tokens)),
-            Token(span) {
+            Token(span,scope_id) {
 
     }
 
@@ -35,13 +37,15 @@ namespace hasha {
     FunctionCall::Ptr FunctionCall::create(
             std::string callee,
             ExpressionList tokens,
-            const Span &span
+            const Span &span,
+            int scope_id
     ) {
 
         return std::make_unique<FunctionCall>(
                 std::move(callee),
                 std::move(tokens),
-                span
+                span,
+                scope_id
         );
     }
 

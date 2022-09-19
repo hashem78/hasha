@@ -85,7 +85,7 @@ namespace hasha {
 
         Span &span() noexcept;
 
-        void set_span(const Span &span) noexcept;
+        void set_span(const Span&) noexcept;
     };
 
     using LexemeList = std::vector<Lexeme>;

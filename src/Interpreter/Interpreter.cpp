@@ -5,13 +5,17 @@
 #include "Interpreter.h"
 
 namespace hasha {
-    Interpreter::Interpreter(Block::Ptr block) : global_block(std::move(block)) {
-
+    Interpreter::Interpreter(
+            Block::Ptr block,
+            ScopeTree::Ptr scope_tree
+    ) :
+            global_block(std::move(block)),
+            scope_tree(std::move(scope_tree)) {
     }
 
     ErrorOr<void> Interpreter::interpret() {
 
-        TRY(global_block->interpret());
+        TRY(global_block->interpret(*scope_tree));
 
         return {};
     }

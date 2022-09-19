@@ -22,8 +22,9 @@ namespace hasha {
         return str.str();
     }
 
-    Token::Token(const Span &span) :
+    Token::Token(const Span &span, int scope_id) :
             m_span(span),
+            m_scope_id(scope_id),
             id(number_of_tokens++) {
 
     }
@@ -36,8 +37,14 @@ namespace hasha {
         return m_span;
     }
 
-    ErrorOr<void> Token::interpret() {
+    ErrorOr<void> Token::interpret(const ScopeTree &scope_tree) {
+
         return {};
+    }
+
+    int Token::scope_id() const {
+
+        return m_scope_id;
     }
 
 

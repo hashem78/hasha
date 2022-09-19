@@ -13,6 +13,7 @@
 #include "fmt/core.h"
 #include "Span.h"
 #include "ErrorOr.h"
+#include "ScopeTree.h"
 
 namespace hasha {
 
@@ -21,9 +22,10 @@ namespace hasha {
     protected:
         Span m_span;
         int id;
+        int m_scope_id;
 
     public:
-        explicit Token(const Span &span);
+        explicit Token(const Span &span, int scope_id);
 
         [[nodiscard]]
         virtual nlohmann::json to_json() const = 0;
@@ -34,7 +36,10 @@ namespace hasha {
         [[nodiscard]]
         const Span &span() const;
 
-        virtual ErrorOr<void> interpret();
+        virtual ErrorOr<void> interpret(const ScopeTree &scope_tree);
+
+        [[nodiscard]]
+        int scope_id() const;
 
         virtual ~Token() = default;
     };

@@ -100,7 +100,7 @@ namespace hasha {
 
         advance();
 
-        auto x = Identifier::create(name, peek(-1).span());
+        auto x = Identifier::create(name, peek(-1).span(), scope.id);
 
         if (register_to_scope) {
             scope.identifiers[name] = x.get();
@@ -109,7 +109,7 @@ namespace hasha {
         return x;
     }
 
-    ErrorOr<Type::Ptr> Parser::type() noexcept {
+    ErrorOr<Type::Ptr> Parser::type(Scope &scope) noexcept {
 
         auto type_name = peek().data();
 
@@ -133,7 +133,7 @@ namespace hasha {
             auto type_list = TypeList{};
             while (!match(RANGEL) && !match(SEMICOLON)) {
                 SWALLOW(COMMA)
-                type_list.push_back(TRY(type()));
+                type_list.push_back(TRY(type(scope)));
             }
             if (type_list.empty())
                 return fmt::format(
@@ -156,12 +156,13 @@ namespace hasha {
                             after_span.end,
                             before_span.line,
                             before_span.col
-                    }
+                    },
+                    scope.id
             );
 
         }
 
-        return Type::create(type_name, peek(-1).span());
+        return Type::create(type_name, peek(-1).span(), scope.id);
     }
 
     ErrorOr<Parameter::Ptr> Parser::parameter(Scope &scope) {
@@ -169,12 +170,12 @@ namespace hasha {
         auto b_span = peek().span();
         auto name = TRY(identifier(scope));
         EXPECT(COLON)
-        auto param_type = TRY(type());
+        auto param_type = TRY(type(scope));
 
         SWALLOW(COMMA)
 
         b_span.set_end(peek(-1).span().end);
-        return Parameter::create(std::move(param_type), *name, b_span);
+        return Parameter::create(std::move(param_type), *name, b_span, scope.id);
     }
 
 
@@ -211,7 +212,7 @@ namespace hasha {
                         (x.associativity() == Associativity::RIGHT &&
                          x.precedence() < y.precedence())) {
 
-                        token_list.push_back(Operator::create(y.data(), y.span()));
+                        token_list.push_back(Operator::create(y.data(), y.span(), scope.id));
                         operators.pop_front();
 
                     } else {
@@ -226,7 +227,8 @@ namespace hasha {
                 while (operators.front() != LPAREN) {
                     // TODO: If the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
                     if (operators.empty()) break;
-                    token_list.push_back(Operator::create(operators.front().data(), operators.front().span()));
+                    token_list.push_back(
+                            Operator::create(operators.front().data(), operators.front().span(), scope.id));
                     operators.pop_front();
                 }
                 // TODO: If the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
@@ -237,13 +239,13 @@ namespace hasha {
                 if (x != COMMA) {
                     switch (x.type()) {
                         case LexemeType::NUMERIC_LITERAL:
-                            token_list.push_back(NumericLiteral::create(x.data(), x.span()));
+                            token_list.push_back(NumericLiteral::create(x.data(), x.span(), scope.id));
                             break;
                         case LexemeType::STRING_LITERAL:
-                            token_list.push_back(StringLiteral::create(x.data(), x.span()));
+                            token_list.push_back(StringLiteral::create(x.data(), x.span(), scope.id));
                             break;
                         case LexemeType::BOOLEAN_LITERAL:
-                            token_list.push_back(BooleanLiteral::create(x.data(), x.span()));
+                            token_list.push_back(BooleanLiteral::create(x.data(), x.span(), scope.id));
                             break;
                         case LexemeType::IDENTIFIER: {
                             advance(-1);
@@ -272,7 +274,7 @@ namespace hasha {
         }
 
         while (!operators.empty()) {
-            token_list.push_back(Operator::create(operators.front().data(), operators.front().span()));
+            token_list.push_back(Operator::create(operators.front().data(), operators.front().span(), scope.id));
             operators.pop_front();
         }
 
@@ -282,13 +284,15 @@ namespace hasha {
         if (current_context().parsing_return_expression) {
             return ReturnExpression::create(
                     std::move(token_list),
-                    Span{begin_span.begin, end_span.end, begin_span.line, begin_span.col}
+                    Span{begin_span.begin, end_span.end, begin_span.line, begin_span.col},
+                    scope.id
             );
         }
 
         return Expression::create(
                 std::move(token_list),
-                Span{begin_span.begin, end_span.end, begin_span.line, begin_span.col}
+                Span{begin_span.begin, end_span.end, begin_span.line, begin_span.col},
+                scope.id
         );
 
     }
@@ -323,7 +327,8 @@ namespace hasha {
         return IfStatement::create(
                 std::move(condition),
                 std::move(blk),
-                span
+                span,
+                scope.id
         );
     }
 
@@ -340,7 +345,8 @@ namespace hasha {
         return ElifStatement::create(
                 std::move(condition),
                 std::move(blk),
-                span
+                span,
+                scope.id
         );
     }
 
@@ -352,7 +358,7 @@ namespace hasha {
         auto blk = TRY(block(scope_tree->create_scope(scope.id)));
         EXPECT(RCURLY)
 
-        return ElseStatement::create(std::move(blk), span);
+        return ElseStatement::create(std::move(blk), span, scope.id);
     }
 
     ErrorOr<Declaration::Ptr> Parser::declaration(Scope &scope) {
@@ -360,7 +366,7 @@ namespace hasha {
         auto before_span = peek().span();
         auto name = TRY(identifier(scope, true));
         EXPECT(COLON)
-        auto decl_type = TRY(type());
+        auto decl_type = TRY(type(scope));
 
 
         auto asx = TRY(parse_expression(scope));
@@ -371,6 +377,18 @@ namespace hasha {
                     before_span.line,
                     before_span.col
             );
+        }
+        for (const auto &token: asx->get_expression_tokens()) {
+            if (auto identifier = dynamic_cast<Identifier *>(token.get())) {
+                if (identifier->get() == name->get()) {
+                    return fmt::format(
+                            "Tried to access {} before its declaration is compelete, on line: {}, col: {}",
+                            name->get(),
+                            identifier->span().line,
+                            identifier->span().col
+                    );
+                }
+            }
         }
         auto after_span = peek(-1).span();
 
@@ -385,6 +403,7 @@ namespace hasha {
                 std::move(decl_type),
                 *name,
                 span,
+                scope.id,
                 std::move(asx)
         );
 
@@ -435,7 +454,7 @@ namespace hasha {
                 begin_span.line,
                 begin_span.col
         };
-        return Block::create(std::move(token_list), span);
+        return Block::create(std::move(token_list), span, scope.id);
     }
 
     ErrorOr<Function::Ptr> Parser::function(Scope &scope) {
@@ -460,7 +479,7 @@ namespace hasha {
 
         EXPECT(ARROW)
 
-        auto return_type = TRY(type());
+        auto return_type = TRY(type(scope));
         EXPECT(LCURLY)
 
         auto parsed_block = TRY(block(function_scope));
@@ -475,7 +494,8 @@ namespace hasha {
                 std::move(parsed_block),
                 *name,
                 std::move(return_type),
-                span
+                span,
+                scope.id
         );
 
         scope.functions[name->get()] = fn.get();
@@ -492,7 +512,7 @@ namespace hasha {
         return peek(start).type() == match;
     }
 
-    ErrorOr<Literal::Ptr> Parser::literal() {
+    ErrorOr<Literal::Ptr> Parser::literal(Scope &scope) {
 
         if (!match_any(Patterns::LiteralTypes))
             return fmt::format("Expected literal got {}", peek().to_string());
@@ -500,13 +520,13 @@ namespace hasha {
         advance();
         if (match(LexemeType::BOOLEAN_LITERAL, -1)) {
 
-            return BooleanLiteral::create(peek(-1).data(), peek(-1).span());
+            return BooleanLiteral::create(peek(-1).data(), peek(-1).span(), scope.id);
         }
         if (match(LexemeType::NUMERIC_LITERAL, -1)) {
-            return NumericLiteral::create(peek(-1).data(), peek(-1).span());
+            return NumericLiteral::create(peek(-1).data(), peek(-1).span(), scope.id);
         }
 
-        return StringLiteral::create(peek(-1).data(), peek(-1).span());
+        return StringLiteral::create(peek(-1).data(), peek(-1).span(), scope.id);
 
     }
 
@@ -531,7 +551,7 @@ namespace hasha {
         restore_context();
         auto after_span = peek(-1).span();
         auto span = Span{before_span.begin, after_span.end, before_span.line, before_span.col};
-        return FunctionCall::create(name->get(), std::move(exprs), span);
+        return FunctionCall::create(name->get(), std::move(exprs), span, scope.id);
     }
 
     Context Parser::current_context() {
@@ -609,7 +629,7 @@ namespace hasha {
         auto end_span = peek(-1).span();
         auto span = Span{begin_span.begin, end_span.end, begin_span.line, begin_span.col};
         EXPECT(SEMICOLON)
-        return Assignment::create(std::move(expr), span);
+        return Assignment::create(std::move(expr), span, scope.id);
     }
 
 

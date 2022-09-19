@@ -39,18 +39,20 @@ namespace hasha {
             Type::Ptr type,
             Identifier name,
             const Span &span,
+            int scope_id,
             Expression::Ptr assignment_expression
     ) :
             m_type(std::move(type)),
             m_name(std::move(name)),
             m_assignment_expression(std::move(assignment_expression)),
-            Token(span) {}
+            Token(span, scope_id) {}
 
     Declaration::Ptr
     Declaration::create(
             Type::Ptr type,
             Identifier name,
             const Span &span,
+            int scope_id,
             Expression::Ptr assignment_expression
     ) {
 
@@ -58,12 +60,17 @@ namespace hasha {
                 std::move(type),
                 std::move(name),
                 span,
+                scope_id,
                 std::move(assignment_expression)
         );
     }
 
-    ErrorOr<void> Declaration::interpret() {
+    ErrorOr<void> Declaration::interpret(const ScopeTree &scope_tree) {
 
+        auto scope = scope_tree.get_by_id(m_scope_id);
+        auto res = m_assignment_expression->evaluate(*scope);
+        scope->symbol_table.set_vaiable_value(m_name.get(), {res});
+        fmt::print("Assigned {} with {}\n", m_name.get(), res);
 
         return {};
     }

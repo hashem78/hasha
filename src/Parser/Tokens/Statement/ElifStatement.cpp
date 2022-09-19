@@ -8,13 +8,15 @@ namespace hasha {
     ElifStatement::Ptr ElifStatement::create(
             Expression::Ptr condition,
             Block::Ptr block,
-            const Span &span
+            const Span &span,
+            int scope_id
     ) {
 
         return std::make_unique<ElifStatement>(
                 std::move(condition),
                 std::move(block),
-                span
+                span,
+                scope_id
         );
     }
 

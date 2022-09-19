@@ -15,12 +15,12 @@ namespace hasha {
     public:
         using Ptr = std::unique_ptr<Assignment>;
 
-        explicit Assignment(Expression::Ptr expression, const Span &span);
+        explicit Assignment(Expression::Ptr expression, const Span &span, int scope_id);
 
-        static Ptr create(Expression::Ptr expression, const Span &span);
+        static Ptr create(Expression::Ptr expression, const Span &span, int scope_id);
 
         [[nodiscard]]
-        std::string evaluate() const;
+        std::string evaluate(const Scope& scope) const;
 
         [[nodiscard]]
         nlohmann::json to_json() const override;

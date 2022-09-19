@@ -19,13 +19,16 @@ namespace hasha {
                 const std::string &type_name,
                 const Span &type_name_span,
                 TypeList type_list,
-                const Span &span
+                const Span &span,
+                int scope_id
         );
 
-        static Ptr create(const std::string &type_name,
-                          const Span &type_name_span,
-                          TypeList type_list,
-                          const Span &span
+        static Ptr create(
+                const std::string &type_name,
+                const Span &type_name_span,
+                TypeList type_list,
+                const Span &span,
+                int scope_id
         );
 
         [[nodiscard]]

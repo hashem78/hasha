@@ -12,11 +12,11 @@ namespace hasha {
     class Type : public Token {
         std::string type;
     public:
-        explicit Type(std::string type, const Span &span);
+        explicit Type(std::string type, const Span &span, int scope_id);
 
         using Ptr = std::unique_ptr<Type>;
 
-        static Ptr create(std::string type, const Span &span);
+        static Ptr create(std::string type, const Span &span, int scope_id);
 
         [[nodiscard]]
         const std::string &get_type() const;

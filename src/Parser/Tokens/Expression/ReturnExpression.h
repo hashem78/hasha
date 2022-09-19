@@ -11,11 +11,11 @@ namespace hasha {
 
     class ReturnExpression : public Expression {
     public:
-        explicit ReturnExpression(TokenList expr, const Span &span);
+        explicit ReturnExpression(TokenList expr, const Span &span, int scope_id);
 
         using Ptr = std::unique_ptr<ReturnExpression>;
 
-        static Ptr create(TokenList expr, const Span &span);
+        static Ptr create(TokenList expr, const Span &span, int scope_id);
 
         [[nodiscard]]
         nlohmann::json to_json() const override;

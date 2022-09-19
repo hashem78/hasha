@@ -10,11 +10,12 @@ namespace hasha {
     IfStatement::IfStatement(
             Expression::Ptr condition,
             Block::Ptr block,
-            const Span &span
+            const Span &span,
+            int scope_id
     ) :
             condition(std::move(condition)),
             block(std::move(block)),
-            Token(span) {}
+            Token(span,scope_id) {}
 
     const Expression *IfStatement::get_condition() const {
 
@@ -39,13 +40,15 @@ namespace hasha {
     IfStatement::Ptr IfStatement::create(
             Expression::Ptr condition,
             Block::Ptr block,
-            const Span &span
+            const Span &span,
+            int scope_id
     ) {
 
         return std::make_unique<IfStatement>(
                 std::move(condition),
                 std::move(block),
-                span
+                span,
+                scope_id
         );
     }
 } // hasha

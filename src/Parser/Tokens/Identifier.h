@@ -16,11 +16,19 @@ namespace hasha {
 
 
     public:
-        explicit Identifier(std::string name, const Span &span) noexcept;
+        explicit Identifier(
+                std::string name,
+                const Span &span,
+                int scope_id
+        ) noexcept;
 
         using Ptr = std::unique_ptr<Identifier>;
 
-        static Ptr create(std::string name, const Span &span);
+        static Ptr create(
+                std::string name,
+                const Span &span,
+                int scope_id
+        );
 
         [[nodiscard]]
         nlohmann::json to_json() const override;

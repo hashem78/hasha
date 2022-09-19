@@ -5,16 +5,25 @@
 #include "Type.h"
 
 
-
 namespace hasha {
 
-    Type::Type(std::string type, const Span &span) : type(std::move(type)), Token(span) {
+    Type::Type(
+            std::string type,
+            const Span &span,
+            int scope_id
+    ) :
+            type(std::move(type)),
+            Token(span, scope_id) {
 
     }
 
-    Type::Ptr Type::create(std::string type, const Span &span) {
+    Type::Ptr Type::create(
+            std::string type,
+            const Span &span,
+            int scope_id
+    ) {
 
-        return std::make_unique<Type>(std::move(type), span);
+        return std::make_unique<Type>(std::move(type), span, scope_id);
     }
 
     const std::string &Type::get_type() const {
@@ -34,7 +43,7 @@ namespace hasha {
     nlohmann::json type_list_to_json(const TypeList &type_list) {
 
         auto json = nlohmann::json::array();
-        for(const auto & type : type_list){
+        for (const auto &type: type_list) {
             json.push_back(type->to_json());
         }
         return json;

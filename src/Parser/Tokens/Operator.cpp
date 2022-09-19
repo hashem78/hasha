@@ -5,9 +5,9 @@
 
 namespace hasha {
 
-    Operator::Operator(std::string op, const Span &span) noexcept:
+    Operator::Operator(std::string op, const Span &span, int scope_id) noexcept:
             m_op(std::move(op)),
-            Token(span) {
+            Token(span,scope_id) {
 
     }
 
@@ -16,9 +16,9 @@ namespace hasha {
         return m_op;
     }
 
-    Operator::Ptr Operator::create(std::string op, const Span &span) {
+    Operator::Ptr Operator::create(std::string op, const Span &span, int scope_id) {
 
-        return std::make_unique<Operator>(std::move(op), span);
+        return std::make_unique<Operator>(std::move(op), span, scope_id);
     }
 
     nlohmann::json Operator::to_json() const {

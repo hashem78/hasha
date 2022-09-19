@@ -10,18 +10,19 @@
 #include <vector>
 #include <memory>
 #include <queue>
+#include "SymbolTable.h"
 
 namespace hasha {
     class Identifier;
     class Function;
-
-
 
     struct Scope {
         using Ptr = std::shared_ptr<Scope>;
 
         std::unordered_map<std::string, Identifier *> identifiers;
         std::unordered_map<std::string, Function *> functions;
+
+        SymbolTable symbol_table;
 
         Scope *parent;
         int id;

@@ -7,6 +7,7 @@
 #include "Expression.h"
 #include "Literal/NumericLiteral.h"
 #include "Operator.h"
+#include "Identifier.h"
 
 namespace hasha {
     nlohmann::json Expression::to_json() const {
@@ -14,24 +15,25 @@ namespace hasha {
         return {
                 {"token_type", "Expression"},
                 {"expression", token_list_to_json(expression)},
-                {"span",m_span.to_json()}
+                {"span",       m_span.to_json()}
         };
     }
 
-    Expression::Ptr Expression::create(TokenList expr, const Span &span) {
+    Expression::Ptr Expression::create(TokenList expr, const Span &span, int scope_id) {
 
-        return std::make_unique<Expression>(std::move(expr), span);
+        return std::make_unique<Expression>(std::move(expr), span, scope_id);
     }
 
     Expression::Expression(
             TokenList expr,
-            const Span &span
+            const Span &span, int scope_id
     ) :
             expression(std::move(expr)),
-            Token(span) {
+            Token(span, scope_id) {
     }
 
-    std::string Expression::evaluate() {
+    std::string Expression::evaluate(const Scope &scope) const {
+
         std::stack<int> stk;
 
         for (const auto &token: expression) {
@@ -39,7 +41,7 @@ namespace hasha {
                 // fmt::print("{}\n",number->to_string());
                 stk.push(std::stoi(number->get_literal()));
             } else if (auto operation = dynamic_cast<Operator *>(token.get())) {
-                 // fmt::print("{}\n",operation->to_string());
+                // fmt::print("{}\n",operation->to_string());
                 const auto &op = operation->get_op();
                 if (op == "+") {
                     auto b = stk.top();
@@ -66,10 +68,13 @@ namespace hasha {
                     stk.pop();
                     stk.push(a / b);
                 }
+            } else if (auto identifier = dynamic_cast<Identifier *>(token.get())) {
+                auto val = TRY(scope.symbol_table.get_value_for(identifier->get()));
+                stk.push(std::stoi(val.value));
             }
         }
         // TODO: Implement function calls in expressions
-        if(stk.empty())
+        if (stk.empty())
             return std::string{};
 
         return std::to_string(stk.top());
@@ -80,7 +85,12 @@ namespace hasha {
         return expression.empty();
     }
 
-    nlohmann::json expression_list_to_json(const ExpressionList& expression_list) {
+    const TokenList &Expression::get_expression_tokens() const {
+
+        return expression;
+    }
+
+    nlohmann::json expression_list_to_json(const ExpressionList &expression_list) {
 
         auto arr = nlohmann::json::array();
         for (const auto &expr: expression_list) {

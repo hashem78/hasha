@@ -8,24 +8,27 @@ namespace hasha {
     Parameter::Parameter(
             Type::Ptr type,
             Identifier name,
-            const Span &span
+            const Span &span,
+            int scope_id
     ) noexcept:
             m_type(std::move(type)),
             m_name(std::move(name)),
-            Token(span) {
+            Token(span, scope_id) {
 
     }
 
     Parameter::Ptr Parameter::create(
             Type::Ptr type,
             Identifier name,
-            const Span &span
+            const Span &span,
+            int scope_id
     ) {
 
         return std::make_unique<Parameter>(
                 std::move(type),
                 std::move(name),
-                span
+                span,
+                scope_id
         );
     }
 
@@ -35,7 +38,7 @@ namespace hasha {
                 {"token_type", "Parameter"},
                 {"type",       m_type->to_json()},
                 {"name",       m_name.to_json()},
-                {"span",      m_span.to_json()}
+                {"span",       m_span.to_json()}
         };
     }
 

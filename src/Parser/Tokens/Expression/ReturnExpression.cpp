@@ -14,16 +14,17 @@ namespace hasha {
 
     ReturnExpression::ReturnExpression(
             TokenList expr,
-            const Span &span
-    ) : Expression(std::move(expr), span) {
+            const Span &span,
+            int scope_id
+    ) : Expression(std::move(expr), span, scope_id) {
 
     }
 
     ReturnExpression::Ptr ReturnExpression::create(
             TokenList expr,
-            const Span &span
+            const Span &span, int scope_id
     ) {
 
-        return std::make_unique<ReturnExpression>(std::move(expr), span);
+        return std::make_unique<ReturnExpression>(std::move(expr), span, scope_id);
     }
 }

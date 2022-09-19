@@ -12,7 +12,6 @@ namespace hasha {
     class ScopeTree {
         Scope::Ptr root;
 
-        Scope *get_by_id(int id);
 
     public:
         ScopeTree();
@@ -22,6 +21,9 @@ namespace hasha {
         static Ptr create();
 
         Scope &create_scope(int parent_id = 0);
+
+        [[nodiscard]]
+        Scope *get_by_id(int id) const;
 
     };
 

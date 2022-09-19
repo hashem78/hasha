@@ -15,7 +15,7 @@ namespace hasha {
 
         using Ptr = std::unique_ptr<StringLiteral>;
 
-        static Ptr create(std::string literal, const Span &span);
+        static Ptr create(std::string literal, const Span &span, int scope_id);
 
         [[nodiscard]]
         nlohmann::json to_json() const override;

@@ -18,7 +18,8 @@ namespace hasha {
         static ElifStatement::Ptr create(
                 Expression::Ptr condition,
                 Block::Ptr block,
-                const Span &span
+                const Span &span,
+                int scope_id
         );
 
         [[nodiscard]]

@@ -21,13 +21,15 @@ namespace hasha {
         IfStatement(
                 Expression::Ptr condition,
                 Block::Ptr block,
-                const Span &span
+                const Span &span,
+                int scope_id
         );
 
         static Ptr create(
                 Expression::Ptr condition,
                 Block::Ptr block,
-                const Span &span
+                const Span &span,
+                int scope_id
         );
 
         [[nodiscard]]

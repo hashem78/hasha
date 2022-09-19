@@ -14,19 +14,23 @@ namespace hasha {
 
     public:
 
-        explicit Expression(TokenList expr, const Span &span);
+        explicit Expression(TokenList expr, const Span &span, int scope_id);
 
         using Ptr = std::unique_ptr<Expression>;
 
-        static Ptr create(TokenList expr, const Span &span);
+        static Ptr create(TokenList expr, const Span &span, int scope_id);
 
-        std::string evaluate();
+        [[nodiscard]]
+        std::string evaluate(const Scope &scope) const;
 
         [[nodiscard]]
         nlohmann::json to_json() const override;
 
         [[nodiscard]]
         bool empty() const;
+
+        [[nodiscard]]
+        const TokenList &get_expression_tokens() const;
 
     };
 

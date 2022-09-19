@@ -79,7 +79,7 @@ namespace hasha {
                 bool register_to_scope = true
         ) noexcept;
 
-        ErrorOr<Type::Ptr> type() noexcept;
+        ErrorOr<Type::Ptr> type(Scope &scope) noexcept;
 
         ErrorOr<Parameter::Ptr> parameter(Scope &scope);
 
@@ -92,7 +92,7 @@ namespace hasha {
         ErrorOr<ExpressionList>
         parse_multiple(Scope &scope, const Lexeme &left, const Lexeme &right, const Lexeme &separator = COMMA);
 
-        ErrorOr<Literal::Ptr> literal();
+        ErrorOr<Literal::Ptr> literal(Scope &scope);
 
         ErrorOr<Block::Ptr> block(Scope &scope) noexcept;
 

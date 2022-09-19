@@ -16,22 +16,25 @@ namespace hasha {
 
     Assignment::Assignment(
             Expression::Ptr expression,
-            const Span &span
+            const Span &span,
+            int scope_id
+
     ) :
             expression(std::move(expression)),
-            Token(span) {
+            Token(span, scope_id) {
     }
 
     Assignment::Ptr Assignment::create(
             Expression::Ptr expression,
-            const Span &span
+            const Span &span,
+            int scope_id
     ) {
 
-        return std::make_unique<Assignment>(std::move(expression), span);
+        return std::make_unique<Assignment>(std::move(expression), span, scope_id);
     }
 
-    std::string Assignment::evaluate() const {
+    std::string Assignment::evaluate(const Scope& scope) const {
 
-        return expression->evaluate();
+        return expression->evaluate(scope);
     }
 } // hasha

@@ -5,9 +5,9 @@
 
 namespace hasha {
 
-    StringLiteral::Ptr StringLiteral::create(std::string literal, const Span &span) {
+    StringLiteral::Ptr StringLiteral::create(std::string literal, const Span &span, int scope_id) {
 
-        return std::make_unique<StringLiteral>(std::move(literal), span);
+        return std::make_unique<StringLiteral>(std::move(literal), span, scope_id);
     }
 
     nlohmann::json hasha::StringLiteral::to_json() const {

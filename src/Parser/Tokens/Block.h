@@ -15,11 +15,11 @@ namespace hasha {
         TokenList m_tokens;
 
     public:
-        explicit Block(TokenList tokens, const Span &span);
+        explicit Block(TokenList tokens, const Span &span, int scope_id);
 
         using Ptr = std::unique_ptr<Block>;
 
-        static Ptr create(TokenList tokens, const Span &span);
+        static Ptr create(TokenList tokens, const Span &span, int scope_id);
 
         [[nodiscard]]
         const TokenList& get_tokens() const;
@@ -27,7 +27,7 @@ namespace hasha {
         [[nodiscard]]
         nlohmann::json to_json() const override;
 
-        ErrorOr<void> interpret() override;
+        ErrorOr<void> interpret(const ScopeTree & scope_tree) override;
     };
 
 } // hasha

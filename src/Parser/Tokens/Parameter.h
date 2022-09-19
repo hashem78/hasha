@@ -19,7 +19,8 @@ namespace hasha {
         explicit Parameter(
                 Type::Ptr type,
                 Identifier name,
-                const Span &span
+                const Span &span,
+                int scope_id
         ) noexcept;
 
         using Ptr = std::unique_ptr<Parameter>;
@@ -27,7 +28,8 @@ namespace hasha {
         static Ptr create(
                 Type::Ptr type,
                 Identifier name,
-                const Span &span
+                const Span &span,
+                int scope_id
         );
 
         [[nodiscard]]

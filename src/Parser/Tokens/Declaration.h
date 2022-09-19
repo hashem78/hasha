@@ -28,6 +28,7 @@ namespace hasha {
                 Type::Ptr type,
                 Identifier name,
                 const Span &span,
+                int scope_id,
                 Expression::Ptr assignment_expression = nullptr
         );
 
@@ -37,13 +38,14 @@ namespace hasha {
                 Type::Ptr type,
                 Identifier name,
                 const Span &span,
+                int scope_id,
                 Expression::Ptr assignment_expression = nullptr
         );
 
         [[nodiscard]]
         const Type *get_type() const;
 
-        ErrorOr<void> interpret() override;
+        ErrorOr<void> interpret(const ScopeTree & scope_tree) override;
 
         [[nodiscard]]
         Identifier get_name() const;

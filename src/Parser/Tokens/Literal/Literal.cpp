@@ -5,9 +5,9 @@
 
 namespace hasha {
 
-    Literal::Literal(std::string literal, const Span &span) :
+    Literal::Literal(std::string literal, const Span &span, int scope_id) :
             m_literal(std::move(literal)),
-            Token(span) {
+            Token(span, scope_id) {
 
     }
 

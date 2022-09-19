@@ -16,7 +16,7 @@ namespace hasha {
         std::string m_literal;
 
     public:
-        Literal(std::string literal, const Span &span);
+        Literal(std::string literal, const Span &span, int scope_id);
 
         using Ptr = std::unique_ptr<Literal>;
 

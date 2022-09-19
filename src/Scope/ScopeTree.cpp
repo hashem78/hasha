@@ -30,7 +30,7 @@ namespace hasha {
         return *root->children.back();;
     }
 
-    Scope *ScopeTree::get_by_id(int id) {
+    Scope *ScopeTree::get_by_id(int id) const {
 
         std::queue<Scope *> scopes;
         scopes.push(root.get());

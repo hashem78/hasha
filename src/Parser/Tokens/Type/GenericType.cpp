@@ -17,11 +17,12 @@ namespace hasha {
             const std::string &type_name,
             const Span &type_name_span,
             TypeList type_list,
-            const Span &span
+            const Span &span,
+            int scope_id
     ) :
             m_type_list(std::move(type_list)),
             m_span(span),
-            Type(type_name, type_name_span) {
+            Type(type_name, type_name_span, scope_id) {
 
     }
 
@@ -29,10 +30,11 @@ namespace hasha {
             const std::string &type_name,
             const Span &type_name_span,
             TypeList type_list,
-            const Span &span
+            const Span &span,
+            int scope_id
     ) {
 
-        return std::make_unique<GenericType>(type_name, type_name_span, std::move(type_list), span);
+        return std::make_unique<GenericType>(type_name, type_name_span, std::move(type_list), span, scope_id);
     }
 
 
