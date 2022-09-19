@@ -18,7 +18,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Declarations are forced to have an assignment expression">
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Start actual work on the interpreter">
       <change afterPath="$PROJECT_DIR$/src/Scope/SymbolTable.cpp" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/Scope/SymbolTable.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -197,14 +197,7 @@
       <workItem from="1663336120696" duration="16522000" />
       <workItem from="1663403129522" duration="15084000" />
       <workItem from="1663506073110" duration="15621000" />
-      <workItem from="1663578765261" duration="4872000" />
-    </task>
-    <task id="LOCAL-00022" summary="Refactor the literal handling system.&#10;&#10;Literals coming out of the parser are now classes&#10;inheriting from the Literal type.&#10;&#10;We have 3 literal types in the language now:&#10;1 - StringLiteral: a literal that starts with &lt;&quot;&gt;.&#10;2 - BooleanLiteral: either true or false.&#10;3 - NumericLiteral: numbers.">
-      <created>1659085607092</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1659085607092</updated>
+      <workItem from="1663578765261" duration="5529000" />
     </task>
     <task id="LOCAL-00023" summary="Lexer: Fix broken lexeme push">
       <created>1659086137327</created>
@@ -542,7 +535,14 @@
       <option name="project" value="LOCAL" />
       <updated>1663542084190</updated>
     </task>
-    <option name="localTasksCounter" value="71" />
+    <task id="LOCAL-00071" summary="Start actual work on the interpreter">
+      <created>1663591401128</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1663591401129</updated>
+    </task>
+    <option name="localTasksCounter" value="72" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -563,7 +563,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Remove missed debug prints in previous commit" />
     <MESSAGE value="Add missing template deduction type for PatternVisitor" />
     <MESSAGE value="Simplify parsing blocks.&#10;&#10;The following features have been removed:&#10;&#10;- Array elements cannot be function calls or expressions.&#10;- Rouge expressions have been removed." />
     <MESSAGE value="Add spans to Lexeme and Tokens" />
@@ -588,6 +587,7 @@
     <MESSAGE value="Remove artifact of removing the functor pattern matcher." />
     <MESSAGE value="Add inline assignments." />
     <MESSAGE value="Declarations are forced to have an assignment expression" />
-    <option name="LAST_COMMIT_MESSAGE" value="Declarations are forced to have an assignment expression" />
+    <MESSAGE value="Start actual work on the interpreter" />
+    <option name="LAST_COMMIT_MESSAGE" value="Start actual work on the interpreter" />
   </component>
 </project>
