@@ -18,7 +18,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Update libfmt">
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Add README.md">
       <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
@@ -146,14 +146,7 @@
       <workItem from="1663336120696" duration="16522000" />
       <workItem from="1663403129522" duration="15084000" />
       <workItem from="1663506073110" duration="15621000" />
-      <workItem from="1663578765261" duration="12268000" />
-    </task>
-    <task id="LOCAL-00025" summary="Refactor operators to be types inheriting from Operator&#10;&#10;For now, we have two operator designations&#10;&#10;1- BooleanOperator&#10;2- NumericOperator">
-      <created>1659087821639</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1659087821639</updated>
+      <workItem from="1663578765261" duration="12595000" />
     </task>
     <task id="LOCAL-00026" summary="Use std::unique_ptr instead of std::shared_ptr where unique ownership is required">
       <created>1659091517200</created>
@@ -491,7 +484,14 @@
       <option name="project" value="LOCAL" />
       <updated>1663591816337</updated>
     </task>
-    <option name="localTasksCounter" value="74" />
+    <task id="LOCAL-00074" summary="Add README.md">
+      <created>1663682026308</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1663682026308</updated>
+    </task>
+    <option name="localTasksCounter" value="75" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -512,7 +512,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Add spans to Lexeme and Tokens" />
     <MESSAGE value="Remove useless output buffer" />
     <MESSAGE value="Added bracket pair analyzer." />
     <MESSAGE value="Token Lists are no longer pointers &#10;&#10;They were pointers to std::deque, but now they're simply instances of std::vector" />
@@ -537,6 +536,7 @@
     <MESSAGE value="Start actual work on the interpreter" />
     <MESSAGE value="Remove useless SPEC file" />
     <MESSAGE value="Update libfmt" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update libfmt" />
+    <MESSAGE value="Add README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add README.md" />
   </component>
 </project>

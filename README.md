@@ -5,13 +5,11 @@ syntax, intended as a pet project to keep me occupied in my free time.
 
 # What can it do?
 
----
 Currently? almost nothing, but I like to think that it might one be my
 goto way to write pet projects.
 
 # Features
 
----
 At the begining I would like to support a small set of core features, 
 and make sure these features are fully working then move on to more complex ones
 like lambdas, classes and other modern language features.
@@ -34,7 +32,6 @@ like lambdas, classes and other modern language features.
 
 # Sytnax
 
----
 name: `Naming rules of C`
 
 var-decl: `name` `:` `type`
@@ -79,14 +76,12 @@ fn main() -> int {
 
 # Building from source
 
----
 The project uses CMAKE as the build system, use your favorite C++ compiler with C++20 support,
 
 Place a `source.hasha` file with the code you wish to run at `output` folder.
 
 # Libraries included
 
----
 
 [nlohmann::json](https://github.com/nlohmann/json)
 
