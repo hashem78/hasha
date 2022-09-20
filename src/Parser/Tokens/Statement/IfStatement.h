@@ -12,7 +12,7 @@
 namespace hasha {
 
     class IfStatement : public Token {
-    protected:
+
         Expression::Ptr condition;
         Block::Ptr block;
     public:
@@ -33,10 +33,10 @@ namespace hasha {
         );
 
         [[nodiscard]]
-        const Expression *get_condition() const;
+        const Expression& get_condition() const;
 
         [[nodiscard]]
-        const Block *get_block() const;
+        const Block& get_block() const;
 
         [[nodiscard]]
         nlohmann::json to_json() const override;

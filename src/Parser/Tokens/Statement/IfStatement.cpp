@@ -17,14 +17,14 @@ namespace hasha {
             block(std::move(block)),
             Token(span,scope_id) {}
 
-    const Expression *IfStatement::get_condition() const {
+    const Expression& IfStatement::get_condition() const {
 
-        return condition.get();
+        return *condition;
     }
 
-    const Block *IfStatement::get_block() const {
+    const Block& IfStatement::get_block() const {
 
-        return block.get();
+        return *block;
     }
 
     nlohmann::json IfStatement::to_json() const {
