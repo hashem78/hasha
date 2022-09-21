@@ -36,8 +36,6 @@ namespace hasha {
         [[nodiscard]]
         const Span &span() const;
 
-        virtual ErrorOr<void> interpret(const ScopeTree &scope_tree);
-
         [[nodiscard]]
         int scope_id() const;
 

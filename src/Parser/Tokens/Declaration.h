@@ -43,12 +43,13 @@ namespace hasha {
         );
 
         [[nodiscard]]
-        const Type *get_type() const;
-
-        ErrorOr<void> interpret(const ScopeTree & scope_tree) override;
+        const Type &type() const;
 
         [[nodiscard]]
-        Identifier get_name() const;
+        const Identifier &name() const;
+
+        [[nodiscard]]
+        const Expression &assignment_expression() const;
 
         [[nodiscard]]
         nlohmann::json to_json() const override;

@@ -20,9 +20,6 @@ namespace hasha {
         static Ptr create(Expression::Ptr expression, const Span &span, int scope_id);
 
         [[nodiscard]]
-        std::string evaluate(const Scope& scope) const;
-
-        [[nodiscard]]
         nlohmann::json to_json() const override;
     };
 

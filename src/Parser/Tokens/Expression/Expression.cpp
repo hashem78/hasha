@@ -32,60 +32,12 @@ namespace hasha {
             Token(span, scope_id) {
     }
 
-    std::string Expression::evaluate(const Scope &scope) const {
-
-        std::stack<int> stk;
-
-        for (const auto &token: expression) {
-            if (auto number = dynamic_cast<NumericLiteral *>(token.get())) {
-                // fmt::print("{}\n",number->to_string());
-                stk.push(std::stoi(number->get_literal()));
-            } else if (auto operation = dynamic_cast<Operator *>(token.get())) {
-                // fmt::print("{}\n",operation->to_string());
-                const auto &op = operation->get_op();
-                if (op == "+") {
-                    auto b = stk.top();
-                    stk.pop();
-                    auto a = stk.top();
-                    stk.pop();
-                    stk.push(a + b);
-                } else if (op == "-") {
-                    auto b = stk.top();
-                    stk.pop();
-                    auto a = stk.top();
-                    stk.pop();
-                    stk.push(a - b);
-                } else if (op == "*") {
-                    auto b = stk.top();
-                    stk.pop();
-                    auto a = stk.top();
-                    stk.pop();
-                    stk.push(a * b);
-                } else if (op == "/") {
-                    auto b = stk.top();
-                    stk.pop();
-                    auto a = stk.top();
-                    stk.pop();
-                    stk.push(a / b);
-                }
-            } else if (auto identifier = dynamic_cast<Identifier *>(token.get())) {
-                auto val = TRY(scope.symbol_table.get_value_for(identifier->get()));
-                stk.push(std::stoi(val.value));
-            }
-        }
-        // TODO: Implement function calls in expressions
-        if (stk.empty())
-            return std::string{};
-
-        return std::to_string(stk.top());
-    }
-
     bool Expression::empty() const {
 
         return expression.empty();
     }
 
-    const TokenList &Expression::get_expression_tokens() const {
+    const TokenList &Expression::expression_tokens() const {
 
         return expression;
     }

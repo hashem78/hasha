@@ -13,26 +13,16 @@ namespace hasha {
         json["token_type"] = "Function";
         json["name"] = m_name.get();
         json["return_type"] = m_return_type->to_json();
-        json["parameters"] = token_list_to_json(m_parameters);
+        json["parameters"] = parameter_list_to_json(m_parameters);
         json["block"] = m_block->to_json();
         json["span"] = m_span.to_json();
 
         return json;
     }
 
-    const TokenList &Function::get_parameters() const {
-
-        return m_parameters;
-    }
-
-    const class Block *Function::get_block() const {
-
-        return m_block.get();
-    }
-
 
     Function::Function(
-            TokenList parameters,
+            ParameterList parameters,
             Block::Ptr block,
             Identifier name,
             Type::Ptr return_type,
@@ -47,7 +37,7 @@ namespace hasha {
     }
 
     Function::Ptr Function::create(
-            TokenList parameters,
+            ParameterList parameters,
             Block::Ptr block,
             Identifier name,
             Type::Ptr return_type,
@@ -65,23 +55,29 @@ namespace hasha {
         );
     }
 
-    Identifier Function::get_name() const {
+    const Identifier& Function::name() const {
 
         return m_name;
     }
 
-    const Type *Function::get_return_type() const {
+    const Type &Function::return_type() const {
 
-        return m_return_type.get();
+        return *m_return_type;
     }
 
-    ErrorOr<void> Function::interpret(const ScopeTree &scope_tree) {
+    const ParameterList &Function::parameters() const {
 
-
-        TRY(m_block->interpret(scope_tree));
-
-        return {};
+        return m_parameters;
     }
 
+    const class Block &Function::block() const {
+
+        return *m_block;
+    }
+
+    int Function::number_of_parameters() const {
+
+        return static_cast<int>(m_parameters.size());
+    }
 
 } // hasha

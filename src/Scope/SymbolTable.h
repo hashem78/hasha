@@ -7,6 +7,8 @@
 
 #include <unordered_map>
 #include <string>
+#include <memory>
+#include <vector>
 
 #include "ErrorOr.h"
 
@@ -16,25 +18,24 @@ namespace hasha {
         std::string value;
     };
 
-    class SymbolTable {
+    struct SymbolTable {
         std::unordered_map<std::string, VariableValue> variables;
+        using Ptr = std::shared_ptr<SymbolTable>;
 
-    public:
+        SymbolTable *parent;
+        int id;
+        std::vector<Ptr> children;
 
-        void set_vaiable_value(const std::string &key, const VariableValue &value) {
+        explicit SymbolTable(SymbolTable *parent = nullptr);
 
-            variables[key] = value;
+        static Ptr create(SymbolTable *parent = nullptr);
 
-        }
+        void set_variable_value(const std::string &key, const VariableValue &value);
 
-        ErrorOr<VariableValue> get_value_for(const std::string &key) const {
+        ErrorOr<VariableValue> get_value_for(const std::string &key) const;
 
-            if (!variables.contains(key))
-                return "Tried to access variable not in symbol table";
-
-            return variables.at(key);
-        }
-
+    private:
+        static int id_;
     };
 
 } // hasha

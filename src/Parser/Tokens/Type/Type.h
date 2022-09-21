@@ -18,6 +18,8 @@ namespace hasha {
 
         static Ptr create(std::string type, const Span &span, int scope_id);
 
+        bool operator==(const Type &other) const;
+
         [[nodiscard]]
         const std::string &get_type() const;
 
@@ -26,7 +28,8 @@ namespace hasha {
     };
 
     using TypeList = std::vector<Type::Ptr>;
-    nlohmann::json type_list_to_json(const TypeList& type_list);
+
+    nlohmann::json type_list_to_json(const TypeList &type_list);
 
 } // hasha
 

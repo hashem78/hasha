@@ -32,9 +32,4 @@ namespace hasha {
 
         return std::make_unique<Assignment>(std::move(expression), span, scope_id);
     }
-
-    std::string Assignment::evaluate(const Scope& scope) const {
-
-        return expression->evaluate(scope);
-    }
 } // hasha

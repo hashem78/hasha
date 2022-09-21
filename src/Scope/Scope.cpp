@@ -16,7 +16,7 @@ namespace hasha {
 
         auto temp = this;
         while (temp != nullptr) {
-            if (temp->identifiers.contains(name)) {
+            if (temp->identifiers.contains(name) || temp->parameters.contains(name)) {
                 return true;
             }
             temp = temp->parent;
@@ -41,5 +41,18 @@ namespace hasha {
     }
 
     int Scope::_id = 0;
+
+    const Function *Scope::get_function(const std::string &name) const {
+
+        auto temp = this;
+        while (temp != nullptr) {
+
+            if (temp->functions.contains(name)) {
+                return temp->functions.at(name);
+            }
+            temp = temp->parent;
+        }
+        return nullptr;
+    }
 
 }

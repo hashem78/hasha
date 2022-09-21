@@ -15,19 +15,16 @@ namespace hasha {
     class Block;
 
     class Function : public Token {
-        TokenList m_parameters;
-    public:
-        ErrorOr<void> interpret(const ScopeTree &scope_tree) override;
 
-    private:
         Block::Ptr m_block;
+        ParameterList m_parameters;
         Type::Ptr m_return_type;
         Identifier m_name;
 
     public:
 
         Function(
-                TokenList parameters,
+                ParameterList parameters,
                 Block::Ptr block,
                 Identifier name,
                 Type::Ptr return_type,
@@ -38,7 +35,7 @@ namespace hasha {
         using Ptr = std::unique_ptr<Function>;
 
         static Ptr create(
-                TokenList parameters,
+                ParameterList parameters,
                 Block::Ptr block,
                 Identifier name,
                 Type::Ptr return_type,
@@ -50,16 +47,19 @@ namespace hasha {
         nlohmann::json to_json() const override;
 
         [[nodiscard]]
-        const TokenList &get_parameters() const;
+        const Identifier &name() const;
 
         [[nodiscard]]
-        const class Block *get_block() const;
+        const Type &return_type() const;
 
         [[nodiscard]]
-        Identifier get_name() const;
+        const ParameterList &parameters() const;
 
         [[nodiscard]]
-        const Type *get_return_type() const;
+        int number_of_parameters() const;
+
+        [[nodiscard]]
+        const class Block &block() const;
 
     };
 

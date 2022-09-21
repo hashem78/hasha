@@ -39,9 +39,13 @@ namespace hasha {
         const Identifier &get_name() const noexcept;
 
         [[nodiscard]]
-        const Type *get_type() const noexcept;
+        const Type &type() const noexcept;
 
     };
+
+    using ParameterList = std::vector<Parameter::Ptr>;
+
+    nlohmann::json parameter_list_to_json(const ParameterList& parameter_list);
 
 } // hasha
 

@@ -25,6 +25,7 @@ namespace hasha {
         [[nodiscard]]
         Scope *get_by_id(int id) const;
 
+        void print() const;
     };
 
 } // hasha

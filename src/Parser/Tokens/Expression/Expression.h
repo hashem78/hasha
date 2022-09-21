@@ -21,17 +21,13 @@ namespace hasha {
         static Ptr create(TokenList expr, const Span &span, int scope_id);
 
         [[nodiscard]]
-        std::string evaluate(const Scope &scope) const;
-
-        [[nodiscard]]
         nlohmann::json to_json() const override;
 
         [[nodiscard]]
         bool empty() const;
 
         [[nodiscard]]
-        const TokenList &get_expression_tokens() const;
-
+        const TokenList &expression_tokens() const;
     };
 
     using ExpressionList = std::vector<Expression::Ptr>;

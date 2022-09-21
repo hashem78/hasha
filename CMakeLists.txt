@@ -7,7 +7,16 @@ add_subdirectory(libs/fmt)
 add_subdirectory(libs/json)
 add_subdirectory(libs/magic_enum)
 
-include_directories(src/Lexer src/Parser src/Parser/Tokens src/Parser/Scope src/Interpreter src/Utils src/Scope)
+include_directories(
+        src/Lexer
+        src/Parser
+        src/Parser/Tokens
+        src/Parser/Scope
+        src/Interpreter
+        src/Utils
+        src/Scope
+        src/TypeChecker
+)
 add_executable(hasha
         src/main.cpp
         src/Lexer/Lexer.cpp
@@ -68,6 +77,6 @@ add_executable(hasha
         src/Scope/ScopeTree.cpp
         src/Scope/ScopeTree.h
         src/Scope/Scope.cpp
-        src/Parser/Tokens/Type/GenericType.cpp src/Parser/Tokens/Type/GenericType.h src/Scope/SymbolTable.cpp src/Scope/SymbolTable.h)
+        src/Parser/Tokens/Type/GenericType.cpp src/Parser/Tokens/Type/GenericType.h src/Scope/SymbolTable.cpp src/Scope/SymbolTable.h src/Scope/SymbolTree.cpp src/Scope/SymbolTree.h src/Parser/Tokens/Type/DefaultTypes.h src/TypeChecker/TypeChecker.cpp src/TypeChecker/TypeChecker.h)
 
 target_link_libraries(hasha fmt::fmt nlohmann_json::nlohmann_json magic_enum::magic_enum)

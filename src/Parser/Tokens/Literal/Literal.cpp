@@ -5,7 +5,13 @@
 
 namespace hasha {
 
-    Literal::Literal(std::string literal, const Span &span, int scope_id) :
+    Literal::Literal(
+            Type  type,
+            std::string literal,
+            const Span &span,
+            int scope_id
+    ) :
+            m_type(std::move(type)),
             m_literal(std::move(literal)),
             Token(span, scope_id) {
 
@@ -14,5 +20,10 @@ namespace hasha {
     const std::string &Literal::get_literal() const noexcept {
 
         return m_literal;
+    }
+
+    const Type &Literal::type() const {
+
+        return m_type;
     }
 }

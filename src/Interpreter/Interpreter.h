@@ -5,16 +5,38 @@
 #ifndef HASHA_INTERPRETER_H
 #define HASHA_INTERPRETER_H
 
-#include "Block.h"
 #include "ScopeTree.h"
+#include "Block.h"
+#include "Function.h"
+#include "Declaration.h"
+#include "Statement/IfStatement.h"
+#include "Statement/ElifStatement.h"
+#include "Statement/ElseStatement.h"
+#include "SymbolTree.h"
+#include "Literal/Literal.h"
 
 namespace hasha {
 
     class Interpreter {
         Block::Ptr global_block;
         ScopeTree::Ptr scope_tree;
+        SymbolTree::Ptr symbol_tree;
+
     public:
         explicit Interpreter(Block::Ptr block, ScopeTree::Ptr scope_tree);
+
+        ErrorOr<void> interpret_if(const IfStatement &if_statement, SymbolTable &table);
+
+        ErrorOr<void> interpret_elif(const ElifStatement &elif_statement, SymbolTable &table);
+
+        ErrorOr<void> interpret_else(const ElseStatement &else_statement, SymbolTable &table);
+
+        ErrorOr<void> interpret_declaration(const Declaration &declaration, SymbolTable &table);
+
+        ErrorOr<void> interpret_function(const Function &function, SymbolTable &table);
+
+        ErrorOr<void> interpret_block(const Block &block, SymbolTable &table);
+
 
         ErrorOr<void> interpret();
     };

@@ -7,16 +7,18 @@
 
 #include "Token.h"
 #include "fmt/format.h"
+#include "Type/Type.h"
 
 namespace hasha {
 
     class Literal : public Token {
     protected:
 
+        Type m_type;
         std::string m_literal;
 
     public:
-        Literal(std::string literal, const Span &span, int scope_id);
+        Literal(Type type, std::string literal, const Span &span, int scope_id);
 
         using Ptr = std::unique_ptr<Literal>;
 
@@ -25,6 +27,9 @@ namespace hasha {
 
         [[nodiscard]]
         nlohmann::json to_json() const override = 0;
+
+        [[nodiscard]]
+        const Type &type() const;
 
     };
 

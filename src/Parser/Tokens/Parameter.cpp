@@ -47,8 +47,19 @@ namespace hasha {
         return m_name;
     }
 
-    const Type *Parameter::get_type() const noexcept {
+    const Type& Parameter::type() const noexcept {
 
-        return m_type.get();
+        return *m_type;
+    }
+
+    nlohmann::json parameter_list_to_json(const ParameterList &parameter_list) {
+
+        auto json = nlohmann::json::array();
+
+        for (const auto &param: parameter_list) {
+            json.push_back(param->to_json());
+        }
+
+        return json;
     }
 } // hasha

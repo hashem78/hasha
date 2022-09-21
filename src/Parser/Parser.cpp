@@ -378,7 +378,7 @@ namespace hasha {
                     before_span.col
             );
         }
-        for (const auto &token: asx->get_expression_tokens()) {
+        for (const auto &token: asx->expression_tokens()) {
             if (auto identifier = dynamic_cast<Identifier *>(token.get())) {
                 if (identifier->get() == name->get()) {
                     return fmt::format(
@@ -390,6 +390,7 @@ namespace hasha {
                 }
             }
         }
+
         auto after_span = peek(-1).span();
 
         auto span = Span{
@@ -468,10 +469,14 @@ namespace hasha {
 
         EXPECT(LPAREN)
 
-        auto params = TokenList{};
+        auto params = ParameterList {};
 
         while (!match(RPAREN)) {
             params.push_back(TRY(parameter(function_scope)));
+        }
+
+        for (const auto &parameter: params) {
+            scope.parameters[parameter->get_name().get()] = parameter.get();
         }
 
         EXPECT(RPAREN)

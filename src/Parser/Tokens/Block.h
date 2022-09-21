@@ -26,8 +26,6 @@ namespace hasha {
 
         [[nodiscard]]
         nlohmann::json to_json() const override;
-
-        ErrorOr<void> interpret(const ScopeTree & scope_tree) override;
     };
 
 } // hasha

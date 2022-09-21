@@ -5,12 +5,12 @@
 #include "Declaration.h"
 
 namespace hasha {
-    const Type *Declaration::get_type() const {
+    const Type& Declaration::type() const {
 
-        return m_type.get();
+        return *m_type;
     }
 
-    Identifier Declaration::get_name() const {
+    const Identifier& Declaration::name() const {
 
         return m_name;
     }
@@ -65,14 +65,9 @@ namespace hasha {
         );
     }
 
-    ErrorOr<void> Declaration::interpret(const ScopeTree &scope_tree) {
+    const Expression &Declaration::assignment_expression() const {
 
-        auto scope = scope_tree.get_by_id(m_scope_id);
-        auto res = m_assignment_expression->evaluate(*scope);
-        scope->symbol_table.set_vaiable_value(m_name.get(), {res});
-        fmt::print("Assigned {} with {}\n", m_name.get(), res);
-
-        return {};
+        return *m_assignment_expression;
     }
 
 } // hasha

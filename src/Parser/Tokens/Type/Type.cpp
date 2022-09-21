@@ -40,6 +40,11 @@ namespace hasha {
         return json;
     }
 
+    bool Type::operator==(const Type &other) const {
+
+        return type == other.type;
+    }
+
     nlohmann::json type_list_to_json(const TypeList &type_list) {
 
         auto json = nlohmann::json::array();

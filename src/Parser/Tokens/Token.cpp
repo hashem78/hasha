@@ -37,11 +37,6 @@ namespace hasha {
         return m_span;
     }
 
-    ErrorOr<void> Token::interpret(const ScopeTree &scope_tree) {
-
-        return {};
-    }
-
     int Token::scope_id() const {
 
         return m_scope_id;

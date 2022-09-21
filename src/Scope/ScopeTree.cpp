@@ -3,6 +3,7 @@
 //
 
 #include "ScopeTree.h"
+#include "fmt/core.h"
 
 namespace hasha {
 
@@ -47,6 +48,22 @@ namespace hasha {
                 scopes.push(child.get());
         }
         return root.get();
+    }
+
+    void ScopeTree::print() const {
+        std::queue<Scope *> scopes;
+        scopes.push(root.get());
+        while (!scopes.empty()) {
+
+            auto scope = scopes.front();
+            scopes.pop();
+
+            fmt::print("Scope: {}\n",scope->id);
+
+            for (auto &child: scope->children)
+                scopes.push(child.get());
+        }
+
     }
 
 } // hasha

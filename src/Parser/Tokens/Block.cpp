@@ -30,17 +30,8 @@ namespace hasha {
 
     }
 
-
     Block::Ptr Block::create(TokenList tokens, const Span &span, int scope_id) {
 
         return std::make_unique<Block>(std::move(tokens), span, scope_id);
-    }
-
-    ErrorOr<void> Block::interpret(const ScopeTree &scope_tree) {
-
-        for (auto &token: m_tokens) {
-            TRY(token->interpret(scope_tree));
-        }
-        return {};
     }
 } // hasha

@@ -2,6 +2,7 @@
 // Created by mythi on 26/08/22.
 //
 #include "BooleanLiteral.h"
+#include "Type/DefaultTypes.h"
 
 namespace hasha {
 
@@ -11,7 +12,7 @@ namespace hasha {
             int scope_id
     ) {
 
-        return std::make_unique<BooleanLiteral>(std::move(literal), span, scope_id);
+        return std::make_unique<BooleanLiteral>(DefBooleanType,std::move(literal), span, scope_id);
     }
 
     nlohmann::json BooleanLiteral::to_json() const {
