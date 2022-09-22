@@ -9,6 +9,9 @@
 
 #include "FunctionCall.h"
 #include "TypeChecker.h"
+#include "Literal/NumericLiteral.h"
+#include "Literal/BooleanLiteral.h"
+#include "Literal/StringLiteral.h"
 
 namespace hasha {
     Interpreter::Interpreter(
@@ -35,12 +38,88 @@ namespace hasha {
         return {};
     }
 
+    ErrorOr<ExpressionResult> Interpreter::interpret_expression(const Expression &expression, SymbolTable &table) {
+
+        // Expression can be of type ReturnExpression
+        std::stack<int> stk;
+
+        for (const auto &token: expression.expression_tokens()) {
+
+            // FunctionCall
+            if (auto function_call = dynamic_cast<FunctionCall *>(token.get())) {
+
+            }
+            // Operator
+
+            if (auto op = dynamic_cast<Operator *>(token.get())) {
+                if (op->get_op() == "*") {
+                    auto b = stk.top();
+                    stk.pop();
+                    auto a = stk.top();
+                    stk.pop();
+
+                    stk.push(a * b);
+                } else if (op->get_op() == "/") {
+                    auto b = stk.top();
+                    stk.pop();
+                    auto a = stk.top();
+                    stk.pop();
+
+                    stk.push(a / b);
+                }
+                if (op->get_op() == "+") {
+                    auto b = stk.top();
+                    stk.pop();
+                    auto a = stk.top();
+                    stk.pop();
+
+                    stk.push(a + b);
+                } else if (op->get_op() == "-") {
+                    auto b = stk.top();
+                    stk.pop();
+                    auto a = stk.top();
+                    stk.pop();
+
+                    stk.push(a - b);
+                }
+            }
+
+            // NumericLiteral
+            if (auto numeric_literal = dynamic_cast<NumericLiteral *>(token.get())) {
+                stk.push(std::stoi(numeric_literal->get_literal()));
+            }
+            // StringLiteral
+            if (auto string_literal = dynamic_cast<StringLiteral *>(token.get())) {
+
+            }
+            // BooleanLiteral
+            if (auto boolean_literal = dynamic_cast<BooleanLiteral *>(token.get())) {
+
+            }
+            // Identifier
+            if (auto identifier = dynamic_cast<Identifier *>(token.get())) {
+
+                const auto &val = TRY(table.get_value_for(identifier->get())).value;
+                stk.push(std::stoi(val));
+            }
+        }
+        if (stk.empty())
+            return "Failed to parse expression";
+
+        return ExpressionResult{std::to_string(stk.top())};
+    }
+
     ErrorOr<void> Interpreter::interpret_declaration(const Declaration &declaration, SymbolTable &table) {
 
         const auto &scope = *scope_tree->get_by_id(declaration.scope_id());
         TypeChecker type_checker(declaration.type(), scope);
-
         TRY(type_checker.check_declaration(declaration));
+        auto result = TRY(interpret_expression(declaration.assignment_expression(), table));
+        const auto &name = declaration.name().get();
+        const auto &type = declaration.type().get_type();
+        fmt::print("Declaration: Set {} to {}\n", name, result.res);
+        table.set_variable_type(name, HashaVariableType{type});
+        table.set_variable_value(name, result);
 
         return {};
     }
@@ -59,6 +138,8 @@ namespace hasha {
         for (const auto &block_token: block.get_tokens()) {
             if (auto decl = dynamic_cast<Declaration *>(block_token.get())) {
                 TRY(interpret_declaration(*decl, new_table));
+            } else if (auto assignment = dynamic_cast<Assignment *>(block_token.get())) {
+                TRY(interpret_assignment(*assignment, new_table));
             } else if (auto if_st = dynamic_cast<IfStatement *>(block_token.get())) {
                 TRY(interpret_if(*if_st, new_table));
             } else if (auto elif_st = dynamic_cast<ElifStatement *>(block_token.get())) {
@@ -81,5 +162,15 @@ namespace hasha {
 
         return {};
     }
+
+    ErrorOr<void> Interpreter::interpret_assignment(const Assignment &assignment, SymbolTable &table) {
+
+        const auto &scope = scope_tree->get_by_id(assignment.scope_id());
+        auto res = TRY(interpret_expression(assignment.expression(), table));
+        table.set_variable_value(assignment.assignee().get(), res);
+        fmt::print("Set {} to {}\n", assignment.assignee().get(), res.res);
+        return {};
+    }
+
 
 } // hasha

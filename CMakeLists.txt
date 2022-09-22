@@ -77,6 +77,6 @@ add_executable(hasha
         src/Scope/ScopeTree.cpp
         src/Scope/ScopeTree.h
         src/Scope/Scope.cpp
-        src/Parser/Tokens/Type/GenericType.cpp src/Parser/Tokens/Type/GenericType.h src/Scope/SymbolTable.cpp src/Scope/SymbolTable.h src/Scope/SymbolTree.cpp src/Scope/SymbolTree.h src/Parser/Tokens/Type/DefaultTypes.h src/TypeChecker/TypeChecker.cpp src/TypeChecker/TypeChecker.h)
+        src/Parser/Tokens/Type/GenericType.cpp src/Parser/Tokens/Type/GenericType.h src/Interpreter/SymbolTable.cpp src/Interpreter/SymbolTable.h src/Interpreter/SymbolTree.cpp src/Interpreter/SymbolTree.h src/Parser/Tokens/Type/DefaultTypes.h src/TypeChecker/TypeChecker.cpp src/TypeChecker/TypeChecker.h src/Interpreter/ExpressionResult.h src/Interpreter/HashaVariable.h src/Interpreter/HashaVariableType.h)
 
 target_link_libraries(hasha fmt::fmt nlohmann_json::nlohmann_json magic_enum::magic_enum)

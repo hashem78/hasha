@@ -14,6 +14,7 @@
 #include "Statement/ElseStatement.h"
 #include "SymbolTree.h"
 #include "Literal/Literal.h"
+#include "ExpressionResult.h"
 
 namespace hasha {
 
@@ -30,6 +31,10 @@ namespace hasha {
         ErrorOr<void> interpret_elif(const ElifStatement &elif_statement, SymbolTable &table);
 
         ErrorOr<void> interpret_else(const ElseStatement &else_statement, SymbolTable &table);
+
+        ErrorOr<void> interpret_assignment(const Assignment& assignment,SymbolTable &table);
+
+        ErrorOr<ExpressionResult> interpret_expression(const Expression &expression, SymbolTable &table);
 
         ErrorOr<void> interpret_declaration(const Declaration &declaration, SymbolTable &table);
 

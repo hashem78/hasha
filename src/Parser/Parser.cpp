@@ -469,7 +469,7 @@ namespace hasha {
 
         EXPECT(LPAREN)
 
-        auto params = ParameterList {};
+        auto params = ParameterList{};
 
         while (!match(RPAREN)) {
             params.push_back(TRY(parameter(function_scope)));
@@ -630,11 +630,27 @@ namespace hasha {
     ErrorOr<Assignment::Ptr> Parser::assignment(Scope &scope) {
 
         auto begin_span = peek().span();
+        auto name = TRY(identifier(scope, false, false));
+        
+        if (!scope.is_identifier_in_scope(name->get())) {
+            return fmt::format(
+                    "{} is not declared in this scope on line: {}, col: {}",
+                    name->get(),
+                    name->span().line,
+                    name->span().col
+            );
+        }
+        EXPECT(EQUALS)
         auto expr = TRY(parse_expression(scope));
         auto end_span = peek(-1).span();
         auto span = Span{begin_span.begin, end_span.end, begin_span.line, begin_span.col};
         EXPECT(SEMICOLON)
-        return Assignment::create(std::move(expr), span, scope.id);
+        return Assignment::create(
+                std::move(name),
+                std::move(expr),
+                span,
+                scope.id
+        );
     }
 
 

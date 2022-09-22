@@ -18,44 +18,22 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Conditionals no longer derive from IfStatement&#10;but directly from token.">
-      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/DefaultTypes.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Scope/SymbolTree.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Scope/SymbolTree.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/TypeChecker/TypeChecker.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/TypeChecker/TypeChecker.h" afterDir="false" />
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="More work on the Interpreter and introduce the TypeChecker">
+      <change afterPath="$PROJECT_DIR$/src/Interpreter/ExpressionResult.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interpreter/HashaVariable.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interpreter/HashaVariableType.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Interpreter/Interpreter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/Interpreter.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Interpreter/Interpreter.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/Interpreter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Assignment.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Assignment.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Assignment.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Assignment.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Block.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Block.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Block.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Block.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expression/Expression.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Expression/Expression.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expression/Expression.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Expression/Expression.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Function.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Function.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Function.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Function.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal/BooleanLiteral.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal/BooleanLiteral.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal/Literal.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal/Literal.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal/Literal.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal/Literal.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal/NumericLiteral.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal/NumericLiteral.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal/StringLiteral.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal/StringLiteral.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Token.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Token.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Token.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Token.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type/Type.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/Type.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type/Type.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/Type.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Scope/Scope.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Scope/Scope.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Scope/Scope.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Scope/Scope.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Scope/ScopeTree.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Scope/ScopeTree.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Scope/ScopeTree.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Scope/ScopeTree.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Scope/SymbolTable.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Scope/SymbolTable.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Scope/SymbolTable.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Scope/SymbolTable.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Scope/SymbolTable.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/SymbolTable.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Scope/SymbolTable.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/SymbolTable.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Scope/SymbolTree.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/SymbolTree.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Scope/SymbolTree.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/SymbolTree.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,17 +94,17 @@
       <recent name="$PROJECT_DIR$/src/Parser/Tokens/Assignment" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/Interpreter" />
       <recent name="$PROJECT_DIR$/src/Scope" />
       <recent name="$PROJECT_DIR$/src/Parser/Tokens/Type" />
       <recent name="$PROJECT_DIR$/src/Parser/Tokens" />
       <recent name="$PROJECT_DIR$/src/Parser/Scope" />
-      <recent name="$PROJECT_DIR$/src/Parser" />
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.hasha">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="fmt" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="hasha" TARGET_NAME="fmt" CONFIG_NAME="Debug">
@@ -184,14 +162,8 @@
       <workItem from="1663578765261" duration="13253000" />
       <workItem from="1663685928217" duration="13000" />
       <workItem from="1663692135723" duration="14604000" />
-      <workItem from="1663755141682" duration="9654000" />
-    </task>
-    <task id="LOCAL-00028" summary="Fix lexer swallowing tokens.">
-      <created>1659093936227</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1659093936227</updated>
+      <workItem from="1663755141682" duration="19992000" />
+      <workItem from="1663834680373" duration="3011000" />
     </task>
     <task id="LOCAL-00029" summary="Illegal characters are handled better now.">
       <created>1659096230461</created>
@@ -529,7 +501,14 @@
       <option name="project" value="LOCAL" />
       <updated>1663697889224</updated>
     </task>
-    <option name="localTasksCounter" value="77" />
+    <task id="LOCAL-00077" summary="More work on the Interpreter and introduce the TypeChecker">
+      <created>1663778800228</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1663778800228</updated>
+    </task>
+    <option name="localTasksCounter" value="78" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -550,7 +529,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Token Lists are no longer pointers &#10;&#10;They were pointers to std::deque, but now they're simply instances of std::vector" />
     <MESSAGE value="Update Error code" />
     <MESSAGE value="ExpressionLists are no longer pointers." />
     <MESSAGE value="Fix span for function calls" />
@@ -575,6 +553,7 @@
     <MESSAGE value="Add README.md" />
     <MESSAGE value="Remove lines from README.md" />
     <MESSAGE value="Conditionals no longer derive from IfStatement&#10;but directly from token." />
-    <option name="LAST_COMMIT_MESSAGE" value="Conditionals no longer derive from IfStatement&#10;but directly from token." />
+    <MESSAGE value="More work on the Interpreter and introduce the TypeChecker" />
+    <option name="LAST_COMMIT_MESSAGE" value="More work on the Interpreter and introduce the TypeChecker" />
   </component>
 </project>
