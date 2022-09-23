@@ -52,12 +52,43 @@ namespace hasha {
 
             // Unary O`perator
             if (auto op = dynamic_cast<UnaryOperator *>(token.get())) {
-
+                if (op->operation() == "-") {
+                    stk.top() = stk.top() * -1;
+                }
             }
 
             // Binary Operator
             if (auto op = dynamic_cast<BinaryOperator *>(token.get())) {
+                if (op->operation() == "*") {
+                    auto b = stk.top();
+                    stk.pop();
+                    auto a = stk.top();
+                    stk.pop();
 
+                    stk.push(a * b);
+                } else if (op->operation() == "/") {
+                    auto b = stk.top();
+                    stk.pop();
+                    auto a = stk.top();
+                    stk.pop();
+
+                    stk.push(a / b);
+                }
+                if (op->operation() == "+") {
+                    auto b = stk.top();
+                    stk.pop();
+                    auto a = stk.top();
+                    stk.pop();
+
+                    stk.push(a + b);
+                } else if (op->operation() == "-") {
+                    auto b = stk.top();
+                    stk.pop();
+                    auto a = stk.top();
+                    stk.pop();
+
+                    stk.push(a - b);
+                }
             }
 
             // NumericLiteral
