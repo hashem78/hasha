@@ -34,25 +34,17 @@ namespace hasha {
 
         while (!done()) {
 
-            auto [token, span] = next_token();
-
-            if (lexeme_map.contains(token)) {
-                auto lexeme = lexeme_map.at(token);
-                lexeme.set_span(span);
-
-                lexemes.push_back(lexeme);
-            } else if (is_numeric_literal(token)) {
-
-                lexemes.push_back({token, LexemeType::NUMERIC_LITERAL, span});
-            } else if (is_string_literal(token)) {
-
-                lexemes.push_back({token, LexemeType::STRING_LITERAL, span});
-            } else if (is_identifier(token)) {
-
-                lexemes.push_back({token, LexemeType::IDENTIFIER, span});
-            } else {
-                return fmt::format("LEXER: Illegal Token {} on line: {} col {}", token, span.line, span.col);
+            auto lexeme = next_token();
+            if (lexeme == ILLEGAL) {
+                return fmt::format(
+                        "Illegal token {} on line: {}, col: {}",
+                        data[lexeme.span().begin],
+                        lexeme.span().line,
+                        lexeme.span().col
+                );
             }
+            lexemes.push_back(lexeme);
+
         }
 
         Analyzer analyzer(lexemes);
@@ -91,66 +83,142 @@ namespace hasha {
 
     }
 
-    bool Lexer::is_numeric_literal(std::string_view str) noexcept {
+    Lexeme Lexer::next_token() noexcept {
 
-        if (str.empty())
-            return false;
-
-        return std::all_of(
-                str.begin(),
-                str.end(),
-                [](char c) { return std::isdigit(c); }
-        );
-    }
-
-    std::pair<std::string, Span> Lexer::next_token() noexcept {
-
-        if (done()) return {{}, Span{}};
+#define MATCH(STRING_REP, LEXEME) if (match(STRING_REP)) return LEXEME.with_span(create_span());
+        if (done()) return {{}, {}, Span{}};
 
         skip_spaces();
         int begin = cursor;
         int start_col = col;
-        if (peek() == '&' && peek(1) == '&') {
-            cursor += 2;
-            col += 2;
-            return {"&&", Span{begin, cursor, line, start_col}};
+        auto create_span = [&, this]() -> Span {
+            return Span{begin, cursor, line, start_col};
+        };
+
+        auto try_math_operator = [&create_span, this](
+                char op,
+                const Lexeme &unary_version,
+                const Lexeme &binary_version
+        ) -> std::optional<Lexeme> {
+            if (peek() == op) {
+                const auto &previous_lexeme = lexemes.back();
+                // Check the previous lexeme
+
+                // UNARY
+                // -----
+                // OPERATOR
+                if (previous_lexeme.type() == LexemeType::OPERATOR) {
+                    advance();
+                    return unary_version.with_span(create_span());
+                }
+
+                // LPAREN
+                if (previous_lexeme == LPAREN) {
+                    advance();
+                    return unary_version.with_span(create_span());
+                }
+                // EQUALS
+                if (previous_lexeme == EQUALS) {
+                    advance();
+                    return unary_version.with_span(create_span());
+                }
+
+                // BINRAY
+                // -----
+                // LITERAL
+                if (previous_lexeme.type() == LexemeType::NUMERIC_LITERAL) {
+                    advance();
+                    return binary_version.with_span(create_span());
+                }
+                // Identifier
+                if (previous_lexeme.type() == LexemeType::IDENTIFIER) {
+                    advance();
+                    return binary_version.with_span(create_span());
+                }
+                // RPAREN
+                if (previous_lexeme == RPAREN) {
+                    advance();
+                    return binary_version.with_span(create_span());
+                }
+
+
+            }
+            return {};
+
+        };
+
+        // Match Keywords
+        {
+            MATCH("fn", FN)
+            MATCH("if", IF)
+            MATCH("else", ELSE)
+            MATCH("elif", ELIF)
+            MATCH("return", RETURN)
+            MATCH("true", TRUE)
+            MATCH("false", FALSE)
         }
-        if (peek() == '|' && peek(1) == '|') {
-            cursor += 2;
-            col += 2;
-            return {"||", Span{begin, cursor, line, start_col}};
+
+        // Match Symbols
+        {
+            MATCH("{", LCURLY)
+            MATCH("}", RCURLY)
+            MATCH("(", LPAREN)
+            MATCH(")", RPAREN)
+            MATCH("<", LANGEL)
+            MATCH(">", RANGEL)
+            MATCH("[", LBRACKET)
+            MATCH("]", RBRACKET)
+            MATCH(",", COMMA)
+            MATCH(";", SEMICOLON)
+            MATCH(":", COLON)
+            MATCH("->", ARROW)
         }
-        if (peek() == '-' && peek(1) == '>') {
-            cursor += 2;
-            col += 2;
-            return {"->", Span{begin, cursor, line, start_col}};
+
+        // Match Binary Operators
+        {
+            MATCH("&&", LAND)
+            MATCH("||", LOR)
+            MATCH("->", ARROW)
+            MATCH("=", EQUALS)
+            MATCH("*", ASTERISK)
+            MATCH("/", FSLASH)
         }
+
+        // Operators with unary versions
+        if (auto op = try_math_operator('+', UNARY_PLUS, BINARY_PLUS))
+            return op.value();
+        if (auto op = try_math_operator('-', UNARY_MINUS, BINARY_MINUS))
+            return op.value();
+
+
+        // String Literals
         if (peek() == '"') {
             auto string_ltrl = std::string{};
             do {
                 string_ltrl += peek();
-                col++;
-                cursor++;
+                advance();
             } while (peek() != '"');
             string_ltrl += '"';
-            cursor++;
-            col++;
-            return {string_ltrl, Span{begin, cursor, line, start_col}};
-        }
-        if (is_legal_character(peek())) {
-            cursor++;
-            col++;
-            return {std::string{peek(-1)}, Span{begin, cursor, line, start_col}};
+            advance();
+            return {string_ltrl, LexemeType::STRING_LITERAL, create_span()};
         }
 
+
+        // Collect chars
         auto token = std::string{};
         while (std::isalnum(peek()) || peek() == '_') {
             token += peek();
-            cursor++;
-            col++;
+            advance();
         }
-        return {token, Span{begin, cursor, line, start_col}};
 
+        // If all the collected chars are digits we have a numeric literal
+        if (is_numeric_literal(token))
+            return {token, LexemeType::NUMERIC_LITERAL, create_span()};
+
+        if (is_identifier(token))
+            return {token, LexemeType::IDENTIFIER, create_span()};
+
+        return ILLEGAL.with_span(create_span());
     }
 
     bool Lexer::done() const noexcept {
@@ -171,11 +239,6 @@ namespace hasha {
         return lexemes;
     }
 
-    bool Lexer::is_string_literal(std::string_view token) noexcept {
-
-        return token.front() == '\"' && token.back() == '\"';
-    }
-
     void Lexer::skip_spaces() noexcept {
 
         while (std::isspace(peek()) && !done()) {
@@ -187,6 +250,29 @@ namespace hasha {
             col++;
             cursor++;
         }
+    }
+
+    bool Lexer::match(std::string_view str) noexcept {
+
+        int i = 0;
+        for (const auto &x: str) {
+            if (peek(i++) != x)
+                return false;
+        }
+        advance(static_cast<int>(str.size()));
+        return true;
+    }
+
+    void Lexer::advance(int k) {
+
+        cursor += k;
+        col += k;
+    }
+
+    bool Lexer::is_numeric_literal(std::string_view str) noexcept {
+        if(str.empty())
+            return false;
+        return std::all_of(str.cbegin(), str.cend(), [](char c) { return std::isdigit(c); });
     }
 
 } // hasha

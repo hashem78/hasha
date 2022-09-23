@@ -186,6 +186,13 @@ namespace hasha {
 
         set_context(current_context().set_parsing_expression(true));
 
+        auto create_operator = [&scope](const Lexeme& lexeme) -> TokenPtr {
+            if (lexeme.operator_type() == OperatorType::BINARY) {
+                return BinaryOperator::create(lexeme.data(), lexeme.span(), scope.id);
+            }
+            return UnaryOperator::create(lexeme.data(), lexeme.span(), scope.id);
+        };
+
         auto begin_span = peek().span();
 
         while (!match(delimiter)) {
@@ -212,7 +219,7 @@ namespace hasha {
                         (x.associativity() == Associativity::RIGHT &&
                          x.precedence() < y.precedence())) {
 
-                        token_list.push_back(Operator::create(y.data(), y.span(), scope.id));
+                        token_list.push_back(create_operator(y));
                         operators.pop_front();
 
                     } else {
@@ -227,8 +234,7 @@ namespace hasha {
                 while (operators.front() != LPAREN) {
                     // TODO: If the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
                     if (operators.empty()) break;
-                    token_list.push_back(
-                            Operator::create(operators.front().data(), operators.front().span(), scope.id));
+                    token_list.push_back(create_operator(operators.front()));
                     operators.pop_front();
                 }
                 // TODO: If the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
@@ -274,7 +280,7 @@ namespace hasha {
         }
 
         while (!operators.empty()) {
-            token_list.push_back(Operator::create(operators.front().data(), operators.front().span(), scope.id));
+            token_list.push_back(create_operator(operators.front()));
             operators.pop_front();
         }
 
@@ -631,7 +637,7 @@ namespace hasha {
 
         auto begin_span = peek().span();
         auto name = TRY(identifier(scope, false, false));
-        
+
         if (!scope.is_identifier_in_scope(name->get())) {
             return fmt::format(
                     "{} is not declared in this scope on line: {}, col: {}",

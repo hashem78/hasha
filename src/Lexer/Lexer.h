@@ -11,7 +11,6 @@
 #include "ErrorOr.h"
 
 
-
 namespace hasha {
 
     class Lexer {
@@ -32,21 +31,24 @@ namespace hasha {
         int line;
         int col;
 
-        std::pair<std::string, Span> next_token() noexcept;
+        Lexeme next_token() noexcept;
 
         void skip_spaces() noexcept;
 
+        void advance(int k = 1);
+
         [[nodiscard]]
         bool done() const noexcept;
+
+        [[nodiscard]]
+        bool match(std::string_view str) noexcept;
 
         [[nodiscard]]
         char peek(int= 0) const noexcept;
 
         static bool is_legal_character(char) noexcept;
 
-        static bool is_numeric_literal(std::string_view) noexcept;
-
-        static bool is_string_literal(std::string_view) noexcept;
+        static bool is_numeric_literal(std::string_view str) noexcept;
 
         static bool is_identifier(std::string_view) noexcept;
     };

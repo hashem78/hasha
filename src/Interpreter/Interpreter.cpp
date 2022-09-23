@@ -3,15 +3,15 @@
 //
 
 #include <stack>
+
 #include "Interpreter.h"
-
-#include "Operator.h"
-
 #include "FunctionCall.h"
 #include "TypeChecker.h"
 #include "Literal/NumericLiteral.h"
 #include "Literal/BooleanLiteral.h"
 #include "Literal/StringLiteral.h"
+#include "Operator/UnaryOperator.h"
+#include "Operator/BinaryOperator.h"
 
 namespace hasha {
     Interpreter::Interpreter(
@@ -49,43 +49,20 @@ namespace hasha {
             if (auto function_call = dynamic_cast<FunctionCall *>(token.get())) {
 
             }
-            // Operator
 
-            if (auto op = dynamic_cast<Operator *>(token.get())) {
-                if (op->get_op() == "*") {
-                    auto b = stk.top();
-                    stk.pop();
-                    auto a = stk.top();
-                    stk.pop();
+            // Unary O`perator
+            if (auto op = dynamic_cast<UnaryOperator *>(token.get())) {
 
-                    stk.push(a * b);
-                } else if (op->get_op() == "/") {
-                    auto b = stk.top();
-                    stk.pop();
-                    auto a = stk.top();
-                    stk.pop();
+            }
 
-                    stk.push(a / b);
-                }
-                if (op->get_op() == "+") {
-                    auto b = stk.top();
-                    stk.pop();
-                    auto a = stk.top();
-                    stk.pop();
+            // Binary Operator
+            if (auto op = dynamic_cast<BinaryOperator *>(token.get())) {
 
-                    stk.push(a + b);
-                } else if (op->get_op() == "-") {
-                    auto b = stk.top();
-                    stk.pop();
-                    auto a = stk.top();
-                    stk.pop();
-
-                    stk.push(a - b);
-                }
             }
 
             // NumericLiteral
             if (auto numeric_literal = dynamic_cast<NumericLiteral *>(token.get())) {
+
                 stk.push(std::stoi(numeric_literal->get_literal()));
             }
             // StringLiteral

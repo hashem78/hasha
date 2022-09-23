@@ -8,6 +8,7 @@
 #include "Lexeme.h"
 
 namespace hasha {
+    inline const Lexeme ILLEGAL{"", LexemeType::ILLEGAL};
     inline const Lexeme FN{"fn", LexemeType::KEYWORD};
     inline const Lexeme IF{"if", LexemeType::KEYWORD};
     inline const Lexeme ELSE{"else", LexemeType::KEYWORD};
@@ -26,42 +27,69 @@ namespace hasha {
     inline const Lexeme COMMA{",", LexemeType::SYMBOL};
     inline const Lexeme SEMICOLON{";", LexemeType::SYMBOL};
     inline const Lexeme COLON{":", LexemeType::SYMBOL};
-    inline const Lexeme EQUALS{"=", LexemeType::OPERATOR, Associativity::RIGHT, Precedence::LVL1};
-    inline const Lexeme LAND{"&&", LexemeType::OPERATOR, Associativity::RIGHT, Precedence::LVL2};
-    inline const Lexeme LOR{"||", LexemeType::OPERATOR, Associativity::RIGHT, Precedence::LVL2};
-    inline const Lexeme MINUS{"-", LexemeType::OPERATOR, Associativity::LEFT, Precedence::LVL3};
-    inline const Lexeme PLUS{"+", LexemeType::OPERATOR, Associativity::LEFT, Precedence::LVL3};
-    inline const Lexeme FSLASH{"/", LexemeType::OPERATOR, Associativity::LEFT, Precedence::LVL5};
-    inline const Lexeme ASTERISK{"*", LexemeType::OPERATOR, Associativity::LEFT, Precedence::LVL5};
     inline const Lexeme ARROW{"->", LexemeType::SYMBOL};
-
-    inline const std::map<std::string, Lexeme> lexeme_map{
-            {"fn",     FN},
-            {"if",     IF},
-            {"else",   ELSE},
-            {"elif",   ELIF},
-            {"return", RETURN},
-            {"true",   TRUE},
-            {"false",  FALSE},
-            {"{",      LCURLY},
-            {"}",      RCURLY},
-            {"(",      LPAREN},
-            {")",      RPAREN},
-            {"[",  LBRACKET},
-            {"]",  RBRACKET},
-            {"<",  LANGEL},
-            {">",  RANGEL},
-            {",",  COMMA},
-            {";",  SEMICOLON},
-            {":",  COLON},
-            {"=",  EQUALS},
-            {"&&", LAND},
-            {"||", LOR},
-            {"-",  MINUS},
-            {"+",  PLUS},
-            {"/",  FSLASH},
-            {"*",  ASTERISK},
-            {"->", ARROW},
+    inline const Lexeme EQUALS{
+            "=",
+            LexemeType::OPERATOR,
+            OperatorType::BINARY,
+            Associativity::RIGHT,
+            Precedence::LVL1
+    };
+    inline const Lexeme LAND{
+            "&&",
+            LexemeType::OPERATOR,
+            OperatorType::BINARY,
+            Associativity::RIGHT,
+            Precedence::LVL2
+    };
+    inline const Lexeme LOR{
+            "||",
+            LexemeType::OPERATOR,
+            OperatorType::BINARY,
+            Associativity::RIGHT,
+            Precedence::LVL2
+    };
+    inline const Lexeme FSLASH{
+            "/",
+            LexemeType::OPERATOR,
+            OperatorType::BINARY,
+            Associativity::LEFT,
+            Precedence::LVL5
+    };
+    inline const Lexeme ASTERISK{
+            "*",
+            LexemeType::OPERATOR,
+            OperatorType::BINARY,
+            Associativity::LEFT,
+            Precedence::LVL5
+    };
+    inline const Lexeme UNARY_MINUS{
+            "-",
+            LexemeType::OPERATOR,
+            OperatorType::UNARY,
+            Associativity::RIGHT,
+            Precedence::LVL6
+    };
+    inline const Lexeme UNARY_PLUS{
+            "+",
+            LexemeType::OPERATOR,
+            OperatorType::UNARY,
+            Associativity::RIGHT,
+            Precedence::LVL6
+    };
+    inline const Lexeme BINARY_MINUS{
+            "-",
+            LexemeType::OPERATOR,
+            OperatorType::BINARY,
+            Associativity::LEFT,
+            Precedence::LVL3
+    };
+    inline const Lexeme BINARY_PLUS{
+            "+",
+            LexemeType::OPERATOR,
+            OperatorType::BINARY,
+            Associativity::LEFT,
+            Precedence::LVL3
     };
 }
 

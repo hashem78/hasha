@@ -38,7 +38,7 @@ add_executable(hasha
         src/Parser/Tokens/Parameter.cpp
         src/Parser/Tokens/Parameter.h
         src/Parser/Tokens/Literal/Literal.h
-        src/Parser/Tokens/Operator.h
+        src/Parser/Tokens/Operator/BinaryOperator.h
         src/Parser/Pattern.h
         src/Parser/Tokens/Literal/StringLiteral.h
         src/Parser/Tokens/Literal/NumericLiteral.h
@@ -47,7 +47,7 @@ add_executable(hasha
         src/Parser/Tokens/FunctionCall.cpp
         src/Parser/Tokens/FunctionCall.h
         src/Utils/ErrorOr.h
-        src/Parser/Tokens/Operator.cpp
+        src/Parser/Tokens/Operator/BinaryOperator.cpp
         src/Parser/Tokens/Literal/BooleanLiteral.cpp
         src/Parser/Tokens/Literal/Literal.cpp
         src/Parser/Tokens/Literal/NumericLiteral.cpp
@@ -77,6 +77,22 @@ add_executable(hasha
         src/Scope/ScopeTree.cpp
         src/Scope/ScopeTree.h
         src/Scope/Scope.cpp
-        src/Parser/Tokens/Type/GenericType.cpp src/Parser/Tokens/Type/GenericType.h src/Interpreter/SymbolTable.cpp src/Interpreter/SymbolTable.h src/Interpreter/SymbolTree.cpp src/Interpreter/SymbolTree.h src/Parser/Tokens/Type/DefaultTypes.h src/TypeChecker/TypeChecker.cpp src/TypeChecker/TypeChecker.h src/Interpreter/ExpressionResult.h src/Interpreter/HashaVariable.h src/Interpreter/HashaVariableType.h)
+        src/Parser/Tokens/Type/GenericType.cpp
+        src/Parser/Tokens/Type/GenericType.h
+        src/Interpreter/SymbolTable.cpp
+        src/Interpreter/SymbolTable.h
+        src/Interpreter/SymbolTree.cpp
+        src/Interpreter/SymbolTree.h
+        src/Parser/Tokens/Type/DefaultTypes.h
+        src/TypeChecker/TypeChecker.cpp
+        src/TypeChecker/TypeChecker.h
+        src/Interpreter/ExpressionResult.h
+        src/Interpreter/HashaVariable.h
+        src/Interpreter/HashaVariableType.h
+        src/Parser/Tokens/Operator/BinaryOperator.cpp
+        src/Parser/Tokens/Operator/BinaryOperator.h
+        src/Parser/Tokens/Operator/UnaryOperator.cpp
+        src/Parser/Tokens/Operator/UnaryOperator.h
+        src/Lexer/LexerTypes.h)
 
 target_link_libraries(hasha fmt::fmt nlohmann_json::nlohmann_json magic_enum::magic_enum)

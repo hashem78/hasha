@@ -6,41 +6,16 @@
 #define HASHA_LEXEME_H
 
 #include "Span.h"
+#include "LexerTypes.h"
 
 namespace hasha {
-
-    enum class LexemeType {
-        OPERATOR,
-        IDENTIFIER,
-        LITERAL,
-        BOOLEAN_LITERAL,
-        NUMERIC_LITERAL,
-        STRING_LITERAL,
-        SYMBOL,
-        KEYWORD,
-        ILLEGAL,
-    };
-
-    enum class Associativity {
-        LEFT,
-        RIGHT,
-        NONE
-    };
-    enum class Precedence {
-        LVL6 = 6,
-        LVL5 = 5,
-        LVL4 = 4,
-        LVL3 = 3,
-        LVL2 = 2,
-        LVL1 = 1,
-        NONE = 0
-    };
 
     class Lexeme {
         std::string m_data;
         LexemeType m_type;
         Associativity m_associativity;
         Precedence m_precedence;
+        OperatorType m_operator_type;
         Span m_span;
 
     public:
@@ -50,6 +25,7 @@ namespace hasha {
         Lexeme(
                 std::string data,
                 LexemeType type,
+                OperatorType operator_type,
                 Associativity associativity,
                 Precedence precedence
         );
@@ -78,14 +54,19 @@ namespace hasha {
         LexemeType type() const noexcept;
 
         [[nodiscard]]
+        OperatorType operator_type() const noexcept;
+
+        [[nodiscard]]
         Precedence precedence() const noexcept;
 
         [[nodiscard]]
         Associativity associativity() const noexcept;
 
-        Span &span() noexcept;
+        [[nodiscard]]
+        const Span &span() const noexcept;
 
-        void set_span(const Span&) noexcept;
+        [[nodiscard]]
+        Lexeme with_span(const Span &) const noexcept;
     };
 
     using LexemeList = std::vector<Lexeme>;
