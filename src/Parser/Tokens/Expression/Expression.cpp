@@ -2,12 +2,7 @@
 // Created by mythi on 01/09/22.
 //
 
-#include <stack>
-
 #include "Expression.h"
-#include "Literal/NumericLiteral.h"
-#include "Operator.h"
-#include "Identifier.h"
 
 namespace hasha {
     nlohmann::json Expression::to_json() const {
