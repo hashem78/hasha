@@ -29,8 +29,8 @@ namespace hasha {
     inline const Lexeme EQUALS{"=", LexemeType::OPERATOR, Associativity::RIGHT, Precedence::LVL1};
     inline const Lexeme LAND{"&&", LexemeType::OPERATOR, Associativity::RIGHT, Precedence::LVL2};
     inline const Lexeme LOR{"||", LexemeType::OPERATOR, Associativity::RIGHT, Precedence::LVL2};
-    inline const Lexeme HYPHEN{"-", LexemeType::OPERATOR, Associativity::LEFT, Precedence::LVL3};
-    inline const Lexeme ADDITION{"+", LexemeType::OPERATOR, Associativity::LEFT, Precedence::LVL3};
+    inline const Lexeme MINUS{"-", LexemeType::OPERATOR, Associativity::LEFT, Precedence::LVL3};
+    inline const Lexeme PLUS{"+", LexemeType::OPERATOR, Associativity::LEFT, Precedence::LVL3};
     inline const Lexeme FSLASH{"/", LexemeType::OPERATOR, Associativity::LEFT, Precedence::LVL5};
     inline const Lexeme ASTERISK{"*", LexemeType::OPERATOR, Associativity::LEFT, Precedence::LVL5};
     inline const Lexeme ARROW{"->", LexemeType::SYMBOL};
@@ -47,21 +47,21 @@ namespace hasha {
             {"}",      RCURLY},
             {"(",      LPAREN},
             {")",      RPAREN},
-            {"[",      LBRACKET},
-            {"]",      RBRACKET},
-            {"<",      LANGEL},
-            {">",      RANGEL},
-            {",",      COMMA},
-            {";",      SEMICOLON},
-            {":",      COLON},
-            {"=",      EQUALS},
-            {"&&",     LAND},
-            {"||",     LOR},
-            {"-",      HYPHEN},
-            {"+",      ADDITION},
-            {"/",      FSLASH},
-            {"*",      ASTERISK},
-            {"->",     ARROW},
+            {"[",  LBRACKET},
+            {"]",  RBRACKET},
+            {"<",  LANGEL},
+            {">",  RANGEL},
+            {",",  COMMA},
+            {";",  SEMICOLON},
+            {":",  COLON},
+            {"=",  EQUALS},
+            {"&&", LAND},
+            {"||", LOR},
+            {"-",  MINUS},
+            {"+",  PLUS},
+            {"/",  FSLASH},
+            {"*",  ASTERISK},
+            {"->", ARROW},
     };
 }
 
