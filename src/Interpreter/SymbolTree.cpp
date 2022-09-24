@@ -5,7 +5,7 @@
 #include <queue>
 #include "SymbolTree.h"
 
-namespace hasha {
+namespace hasha::interpeter {
 
     SymbolTree::SymbolTree() : root(nullptr) {}
 

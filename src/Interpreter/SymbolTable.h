@@ -15,7 +15,7 @@
 #include "ExpressionResult.h"
 #include "HashaVariableType.h"
 
-namespace hasha {
+namespace hasha::interpeter {
 
     struct SymbolTable {
         std::unordered_map<std::string, HashaVariable> variables;

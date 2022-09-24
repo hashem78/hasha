@@ -7,7 +7,7 @@
 
 #include <string>
 
-namespace hasha {
+namespace hasha::interpeter {
 
     struct HashaVariableType {
         std::string type;
