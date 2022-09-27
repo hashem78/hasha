@@ -186,7 +186,7 @@ namespace hasha {
 
         set_context(current_context().set_parsing_expression(true));
 
-        auto create_operator = [&scope](const Lexeme& lexeme) -> TokenPtr {
+        auto create_operator = [&scope](const Lexeme &lexeme) -> TokenPtr {
             if (lexeme.operator_type() == OperatorType::BINARY) {
                 return BinaryOperator::create(lexeme.data(), lexeme.span(), scope.id);
             }
@@ -373,6 +373,7 @@ namespace hasha {
         auto name = TRY(identifier(scope, true));
         EXPECT(COLON)
         auto decl_type = TRY(type(scope));
+        EXPECT(EQUALS)
 
 
         auto asx = TRY(parse_expression(scope));
