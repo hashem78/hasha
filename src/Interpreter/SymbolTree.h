@@ -8,7 +8,7 @@
 #include <memory>
 #include "SymbolTable.h"
 
-namespace hasha::interpeter {
+namespace hasha {
 
     class SymbolTree {
 

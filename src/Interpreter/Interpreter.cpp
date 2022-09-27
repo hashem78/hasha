@@ -13,7 +13,7 @@
 #include "Operator/UnaryOperator.h"
 #include "Operator/BinaryOperator.h"
 
-namespace hasha::interpeter {
+namespace hasha {
     Interpreter::Interpreter(
             Block::Ptr block,
             ScopeTree::Ptr scope_tree

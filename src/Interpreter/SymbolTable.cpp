@@ -5,7 +5,7 @@
 #include "SymbolTable.h"
 #include "fmt/core.h"
 
-namespace hasha::interpeter {
+namespace hasha {
 
     SymbolTable::SymbolTable(SymbolTable *parent) : id(id_++), parent(parent) {
 

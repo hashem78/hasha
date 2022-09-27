@@ -16,7 +16,7 @@
 #include "Literal/Literal.h"
 #include "ExpressionResult.h"
 
-namespace hasha::interpeter {
+namespace hasha {
 
     class Interpreter {
         Block::Ptr global_block;

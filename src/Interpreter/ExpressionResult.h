@@ -7,7 +7,7 @@
 
 #include <string>
 
-namespace hasha::interpeter {
+namespace hasha {
 
     struct ExpressionResult {
         std::string res;
