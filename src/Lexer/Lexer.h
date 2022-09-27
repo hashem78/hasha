@@ -31,7 +31,7 @@ namespace hasha {
         int line;
         int col;
 
-        Lexeme next_token() noexcept;
+        ErrorOr<Lexeme> next_token() noexcept;
 
         void skip_spaces() noexcept;
 
@@ -45,6 +45,9 @@ namespace hasha {
 
         [[nodiscard]]
         char peek(int= 0) const noexcept;
+
+        [[nodiscard]]
+        std::string collect() noexcept;
 
         static bool is_legal_character(char) noexcept;
 

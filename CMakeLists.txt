@@ -41,7 +41,8 @@ add_executable(hasha
         src/Parser/Tokens/Operator/BinaryOperator.h
         src/Parser/Pattern.h
         src/Parser/Tokens/Literal/StringLiteral.h
-        src/Parser/Tokens/Literal/NumericLiteral.h
+        src/Parser/Tokens/Literal/IntegerLiteral.h
+        src/Parser/Tokens/Literal/FloatingPointLiteral.h
         src/Parser/Tokens/Literal/BooleanLiteral.h
         src/Lexer/Constants.h
         src/Parser/Tokens/FunctionCall.cpp
@@ -50,7 +51,8 @@ add_executable(hasha
         src/Parser/Tokens/Operator/BinaryOperator.cpp
         src/Parser/Tokens/Literal/BooleanLiteral.cpp
         src/Parser/Tokens/Literal/Literal.cpp
-        src/Parser/Tokens/Literal/NumericLiteral.cpp
+        src/Parser/Tokens/Literal/IntegerLiteral.cpp
+        src/Parser/Tokens/Literal/FloatingPointLiteral.cpp
         src/Parser/Tokens/Literal/StringLiteral.cpp
         src/Parser/Tokens/Statement/IfStatement.cpp
         src/Parser/Tokens/Statement/IfStatement.h

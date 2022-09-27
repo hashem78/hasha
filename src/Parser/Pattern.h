@@ -34,7 +34,8 @@ namespace hasha::Patterns {
     };
 
     inline const Pattern LiteralTypes{
-            LexemeType::NUMERIC_LITERAL,
+            LexemeType::INTEGER_LITERAL,
+            LexemeType::FLOATINGPOINT_LITERAL,
             LexemeType::BOOLEAN_LITERAL,
             LexemeType::STRING_LITERAL
     };

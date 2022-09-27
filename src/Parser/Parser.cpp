@@ -244,8 +244,11 @@ namespace hasha {
             } else {
                 if (x != COMMA) {
                     switch (x.type()) {
-                        case LexemeType::NUMERIC_LITERAL:
-                            token_list.push_back(NumericLiteral::create(x.data(), x.span(), scope.id));
+                        case LexemeType::INTEGER_LITERAL:
+                            token_list.push_back(IntegerLiteral::create(x.data(), x.span(), scope.id));
+                            break;
+                        case LexemeType::FLOATINGPOINT_LITERAL:
+                            token_list.push_back(FloatingPointLiteral::create(x.data(), x.span(), scope.id));
                             break;
                         case LexemeType::STRING_LITERAL:
                             token_list.push_back(StringLiteral::create(x.data(), x.span(), scope.id));
@@ -534,8 +537,11 @@ namespace hasha {
 
             return BooleanLiteral::create(peek(-1).data(), peek(-1).span(), scope.id);
         }
-        if (match(LexemeType::NUMERIC_LITERAL, -1)) {
-            return NumericLiteral::create(peek(-1).data(), peek(-1).span(), scope.id);
+        if (match(LexemeType::INTEGER_LITERAL, -1)) {
+            return IntegerLiteral::create(peek(-1).data(), peek(-1).span(), scope.id);
+        }
+        if (match(LexemeType::FLOATINGPOINT_LITERAL, -1)) {
+            return IntegerLiteral::create(peek(-1).data(), peek(-1).span(), scope.id);
         }
 
         return StringLiteral::create(peek(-1).data(), peek(-1).span(), scope.id);

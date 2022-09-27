@@ -34,7 +34,7 @@ namespace hasha {
 
         while (!done()) {
 
-            auto lexeme = next_token();
+            auto lexeme = TRY(next_token());
             if (lexeme == ILLEGAL) {
                 return fmt::format(
                         "Illegal token {} on line: {}, col: {}",
@@ -83,10 +83,10 @@ namespace hasha {
 
     }
 
-    Lexeme Lexer::next_token() noexcept {
+    ErrorOr<Lexeme> Lexer::next_token() noexcept {
 
 #define MATCH(STRING_REP, LEXEME) if (match(STRING_REP)) return LEXEME.with_span(create_span());
-        if (done()) return {{}, {}, Span{}};
+        if (done()) return Lexeme{{}, {}, Span{}};
 
         skip_spaces();
         int begin = cursor;
@@ -126,7 +126,11 @@ namespace hasha {
                 // BINRAY
                 // -----
                 // LITERAL
-                if (previous_lexeme.type() == LexemeType::NUMERIC_LITERAL) {
+                if (previous_lexeme.type() == LexemeType::INTEGER_LITERAL) {
+                    advance();
+                    return binary_version.with_span(create_span());
+                }
+                if (previous_lexeme.type() == LexemeType::FLOATINGPOINT_LITERAL) {
                     advance();
                     return binary_version.with_span(create_span());
                 }
@@ -200,23 +204,38 @@ namespace hasha {
             } while (peek() != '"');
             string_ltrl += '"';
             advance();
-            return {string_ltrl, LexemeType::STRING_LITERAL, create_span()};
+            return Lexeme{string_ltrl, LexemeType::STRING_LITERAL, create_span()};
         }
 
 
         // Collect chars
-        auto token = std::string{};
-        while (std::isalnum(peek()) || peek() == '_') {
-            token += peek();
-            advance();
-        }
+        auto token = collect();
 
         // If all the collected chars are digits we have a numeric literal
-        if (is_numeric_literal(token))
-            return {token, LexemeType::NUMERIC_LITERAL, create_span()};
+        if (is_numeric_literal(token)) {
+            if (peek() == '.') {
+                advance();
+                auto decimal_part = collect();
+                if (!is_numeric_literal(decimal_part)) {
+                    auto span = create_span();
+                    return fmt::format(
+                            "Expected a decimal part for literal {} on line: {}, col {}",
+                            token,
+                            span.line,
+                            span.col
+                    );
+                }
+                return Lexeme{
+                        fmt::format("{}.{}", token, decimal_part),
+                        LexemeType::FLOATINGPOINT_LITERAL,
+                        create_span()
+                };
+            }
+            return Lexeme{token, LexemeType::INTEGER_LITERAL, create_span()};
+        }
 
         if (is_identifier(token))
-            return {token, LexemeType::IDENTIFIER, create_span()};
+            return Lexeme{token, LexemeType::IDENTIFIER, create_span()};
 
         return ILLEGAL.with_span(create_span());
     }
@@ -270,9 +289,20 @@ namespace hasha {
     }
 
     bool Lexer::is_numeric_literal(std::string_view str) noexcept {
-        if(str.empty())
+
+        if (str.empty())
             return false;
         return std::all_of(str.cbegin(), str.cend(), [](char c) { return std::isdigit(c); });
+    }
+
+    std::string Lexer::collect() noexcept {
+
+        auto token = std::string{};
+        while (std::isalnum(peek()) || peek() == '_') {
+            token += peek();
+            advance();
+        }
+        return token;
     }
 
 } // hasha
