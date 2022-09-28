@@ -13,7 +13,6 @@
 #include "fmt/core.h"
 #include "Span.h"
 #include "ErrorOr.h"
-#include "ScopeTree.h"
 
 namespace hasha {
 
