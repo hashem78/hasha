@@ -30,6 +30,7 @@ namespace hasha {
                     return -A;
 
             }
+            return {};
         }
     };
 
@@ -61,6 +62,7 @@ namespace hasha {
                 case HashaNumberBinaryOperation::Subtraction:
                     return A - B;
             }
+            return {};
         }
     };
 

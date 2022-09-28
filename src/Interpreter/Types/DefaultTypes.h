@@ -11,7 +11,7 @@
 namespace hasha {
 
     using HashaInteger = long long int;
-    using HashaFloat = long double;
+    using HashaFloat = double;
 
     using HashaNumber = std::variant<HashaInteger, HashaFloat>;
 }

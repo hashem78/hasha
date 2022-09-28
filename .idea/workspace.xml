@@ -19,20 +19,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Add floating point default types to parser and lexer">
-      <change afterPath="$PROJECT_DIR$/src/Interpreter/Types/DefaultOperations.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interpreter/Types/DefaultTypes.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Interpreter/ExpressionResult.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Interpreter/HashaVariable.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/HashaVariable.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Interpreter/Interpreter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/Interpreter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Interpreter/Interpreter.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/Interpreter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Interpreter/SymbolTable.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/SymbolTable.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal/BooleanLiteral.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal/BooleanLiteral.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal/FloatingPointLiteral.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal/FloatingPointLiteral.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal/IntegerLiteral.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal/IntegerLiteral.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal/StringLiteral.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal/StringLiteral.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type/DefaultTypes.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/DefaultParserTypes.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
