@@ -20,10 +20,10 @@ namespace hasha {
 
         static Ptr create();
 
-        Scope &create_scope(int parent_id = 0);
+        Scope::Ptr create_scope(int parent_id = 0);
 
         [[nodiscard]]
-        Scope *get_by_id(int id) const;
+        Scope::Ptr get_by_id(int id) const;
 
         void print() const;
     };

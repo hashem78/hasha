@@ -5,14 +5,14 @@
 #include "Scope.h"
 
 namespace hasha {
-    Scope::Scope(Scope *parent) : parent(parent), id(_id++) {}
+    Scope::Scope(Ptr parent) : parent(std::move(parent)), id(_id++) {}
 
-    Scope::Ptr Scope::create(Scope *parent) {
+    Scope::Ptr Scope::create(Ptr parent) {
 
         return std::make_shared<Scope>(parent);
     }
 
-    bool Scope::is_identifier_in_scope(const std::string &name) {
+    bool Scope::is_declaration_in_scope(const std::string &name) {
 
         auto temp = this;
         while (temp != nullptr) {
@@ -28,7 +28,7 @@ namespace hasha {
     bool Scope::is_function_in_scope(const std::string &name) {
 
 
-        auto temp = this;
+        auto temp = shared_from_this();
         while (temp != nullptr) {
 
             if (temp->functions.contains(name)) {
@@ -44,7 +44,7 @@ namespace hasha {
 
     const Function *Scope::get_function(const std::string &name) const {
 
-        auto temp = this;
+        auto temp = shared_from_this();
         while (temp != nullptr) {
 
             if (temp->functions.contains(name)) {

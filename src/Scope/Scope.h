@@ -20,20 +20,20 @@ namespace hasha {
 
     class Parameter;
 
-    struct Scope {
+    struct Scope : public std::enable_shared_from_this<Scope> {
         using Ptr = std::shared_ptr<Scope>;
 
         std::unordered_map<std::string, Identifier *> identifiers;
         std::unordered_map<std::string, Parameter *> parameters;
         std::unordered_map<std::string, Function *> functions;
 
-        Scope *parent;
+        Ptr parent;
         int id;
         std::vector<Ptr> children;
 
-        explicit Scope(Scope *parent = nullptr);
+        explicit Scope(Ptr parent);
 
-        static Ptr create(Scope *parent = nullptr);
+        static Ptr create(Ptr parent);
 
         bool is_identifier_in_scope(const std::string &name);
 

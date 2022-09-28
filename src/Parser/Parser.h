@@ -71,44 +71,37 @@ namespace hasha {
         [[nodiscard]]
         bool match_any(const Patterns::Pattern &matchers) const noexcept;
 
-
-
         [[nodiscard]]
-        ErrorOr<Identifier::Ptr>
-        identifier(
-                Scope &scope,
-                bool check_for_redefiniton = false,
-                bool register_to_scope = true
-        ) noexcept;
+        ErrorOr<Identifier::Ptr> identifier(const Scope::Ptr& scope) noexcept;
 
-        ErrorOr<Type::Ptr> type(Scope &scope) noexcept;
+        ErrorOr<Type::Ptr> type(const Scope::Ptr& scope) noexcept;
 
-        ErrorOr<Parameter::Ptr> parameter(Scope &scope);
+        ErrorOr<Parameter::Ptr> parameter(const Scope::Ptr& scope);
 
-        ErrorOr<Declaration::Ptr> declaration(Scope &scope);
+        ErrorOr<Declaration::Ptr> declaration(const Scope::Ptr& scope);
 
-        ErrorOr<FunctionCall::Ptr> function_call(Scope &scope, bool check_scope = false);
+        ErrorOr<FunctionCall::Ptr> function_call(const Scope::Ptr& scope, bool check_scope = false);
 
-        ErrorOr<Expression::Ptr> parse_expression(Scope &scope, const Lexeme &delimiter = SEMICOLON);
+        ErrorOr<Expression::Ptr> parse_expression(const Scope::Ptr& scope, const Lexeme &delimiter = SEMICOLON);
 
         ErrorOr<ExpressionList>
-        parse_multiple(Scope &scope, const Lexeme &left, const Lexeme &right, const Lexeme &separator = COMMA);
+        parse_multiple(const Scope::Ptr& scope, const Lexeme &left, const Lexeme &right, const Lexeme &separator = COMMA);
 
-        ErrorOr<Literal::Ptr> literal(Scope &scope);
+        ErrorOr<Literal::Ptr> literal(const Scope::Ptr& scope);
 
-        ErrorOr<Block::Ptr> block(Scope &scope) noexcept;
+        ErrorOr<Block::Ptr> block(const Scope::Ptr& scope) noexcept;
 
-        ErrorOr<Function::Ptr> function(Scope &scope);
+        ErrorOr<Function::Ptr> function(const Scope::Ptr& scope);
 
-        ErrorOr<IfStatement::Ptr> if_statement(Scope &scope);
+        ErrorOr<IfStatement::Ptr> if_statement(const Scope::Ptr& scope);
 
-        ErrorOr<ElifStatement::Ptr> elif_statement(Scope &scope);
+        ErrorOr<ElifStatement::Ptr> elif_statement(const Scope::Ptr& scope);
 
-        ErrorOr<ElseStatement::Ptr> else_statement(Scope &scope);
+        ErrorOr<ElseStatement::Ptr> else_statement(const Scope::Ptr& scope);
 
-        ErrorOr<Expression::Ptr> return_expression(Scope &scope);
+        ErrorOr<Expression::Ptr> return_expression(const Scope::Ptr& scope);
 
-        ErrorOr<Assignment::Ptr> assignment(Scope &scope);
+        ErrorOr<Assignment::Ptr> assignment(const Scope::Ptr& scope);
 
 
         template<class T>

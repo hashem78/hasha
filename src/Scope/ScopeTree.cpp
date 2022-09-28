@@ -3,7 +3,6 @@
 //
 
 #include "ScopeTree.h"
-#include "fmt/core.h"
 
 namespace hasha {
 
@@ -14,27 +13,27 @@ namespace hasha {
         return std::make_shared<ScopeTree>();
     }
 
-    Scope &ScopeTree::create_scope(int parent_id) {
+    Scope::Ptr ScopeTree::create_scope(int parent_id) {
 
         if (root == nullptr) {
-            root = Scope::create();
-            return *root;
+            root = Scope::create(nullptr);
+            return root;
         }
 
         if (parent_id == 0) {
-            root->children.push_back(Scope::create(root.get()));
-            return *root->children.back();
+            root->children.push_back(Scope::create(root));
+            return root->children.back();
         }
 
         auto parent = get_by_id(parent_id);
         root->children.push_back(Scope::create(parent));
-        return *root->children.back();;
+        return root->children.back();
     }
 
-    Scope *ScopeTree::get_by_id(int id) const {
+    Scope::Ptr ScopeTree::get_by_id(int id) const {
 
-        std::queue<Scope *> scopes;
-        scopes.push(root.get());
+        std::queue<Scope::Ptr> scopes;
+        scopes.push(root);
         while (!scopes.empty()) {
 
             auto scope = scopes.front();
@@ -45,23 +44,22 @@ namespace hasha {
             }
 
             for (auto &child: scope->children)
-                scopes.push(child.get());
+                scopes.push(child);
         }
-        return root.get();
+        return root;
     }
 
     void ScopeTree::print() const {
-        std::queue<Scope *> scopes;
-        scopes.push(root.get());
+
+        std::queue<Scope::Ptr> scopes;
+        scopes.push(root);
         while (!scopes.empty()) {
 
             auto scope = scopes.front();
             scopes.pop();
 
-            fmt::print("Scope: {}\n",scope->id);
-
             for (auto &child: scope->children)
-                scopes.push(child.get());
+                scopes.push(child);
         }
 
     }
