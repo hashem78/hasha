@@ -4,12 +4,14 @@
 
 #include "Scope.h"
 
+#include <utility>
+
 namespace hasha {
     Scope::Scope(Ptr parent) : parent(std::move(parent)), id(_id++) {}
 
     Scope::Ptr Scope::create(Ptr parent) {
 
-        return std::make_shared<Scope>(parent);
+        return std::make_unique<Scope>(std::move(parent));
     }
 
     bool Scope::is_declaration_in_scope(const std::string &name) {
