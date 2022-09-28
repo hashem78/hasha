@@ -32,11 +32,6 @@ namespace hasha {
 
     int SymbolTable::id_ = 0;
 
-    void SymbolTable::set_variable_value(const std::string &key, const ExpressionResult &value) {
-
-        set_variable_value(key, HashaVariable{value.res});
-    }
-
     void SymbolTable::set_variable_type(const std::string &key, const HashaVariableType &type) {
 
         variable_types[key] = type;

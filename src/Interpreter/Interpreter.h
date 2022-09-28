@@ -14,7 +14,7 @@
 #include "Statement/ElseStatement.h"
 #include "SymbolTree.h"
 #include "Literal/Literal.h"
-#include "ExpressionResult.h"
+#include "Types/DefaultTypes.h"
 
 namespace hasha {
 
@@ -34,7 +34,7 @@ namespace hasha {
 
         ErrorOr<void> interpret_assignment(const Assignment& assignment,SymbolTable &table);
 
-        ErrorOr<ExpressionResult> interpret_expression(const Expression &expression, SymbolTable &table);
+        ErrorOr<HashaNumber> interpret_expression(const Expression &expression, SymbolTable &table);
 
         ErrorOr<void> interpret_declaration(const Declaration &declaration, SymbolTable &table);
 

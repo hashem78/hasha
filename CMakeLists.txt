@@ -85,16 +85,15 @@ add_executable(hasha
         src/Interpreter/SymbolTable.h
         src/Interpreter/SymbolTree.cpp
         src/Interpreter/SymbolTree.h
-        src/Parser/Tokens/Type/DefaultTypes.h
+        src/Parser/Tokens/Type/DefaultParserTypes.h
         src/TypeChecker/TypeChecker.cpp
         src/TypeChecker/TypeChecker.h
-        src/Interpreter/ExpressionResult.h
         src/Interpreter/HashaVariable.h
         src/Interpreter/HashaVariableType.h
         src/Parser/Tokens/Operator/BinaryOperator.cpp
         src/Parser/Tokens/Operator/BinaryOperator.h
         src/Parser/Tokens/Operator/UnaryOperator.cpp
         src/Parser/Tokens/Operator/UnaryOperator.h
-        src/Lexer/LexerTypes.h)
+        src/Lexer/LexerTypes.h src/Interpreter/Types/DefaultTypes.h src/Interpreter/Types/DefaultOperations.h)
 
 target_link_libraries(hasha fmt::fmt nlohmann_json::nlohmann_json magic_enum::magic_enum)

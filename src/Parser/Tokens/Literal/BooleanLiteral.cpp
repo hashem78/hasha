@@ -2,7 +2,7 @@
 // Created by mythi on 26/08/22.
 //
 #include "BooleanLiteral.h"
-#include "Type/DefaultTypes.h"
+#include "Type/DefaultParserTypes.h"
 
 namespace hasha {
 

@@ -2,7 +2,7 @@
 // Created by mythi on 26/08/22.
 //
 #include "IntegerLiteral.h"
-#include "Type/DefaultTypes.h"
+#include "Type/DefaultParserTypes.h"
 
 namespace hasha {
     IntegerLiteral::Ptr IntegerLiteral::create(std::string literal, const Span &span, int scope_id) {

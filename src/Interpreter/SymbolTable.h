@@ -12,7 +12,6 @@
 
 #include "ErrorOr.h"
 #include "HashaVariable.h"
-#include "ExpressionResult.h"
 #include "HashaVariableType.h"
 
 namespace hasha {
@@ -35,8 +34,6 @@ namespace hasha {
         void set_variable_type(const std::string &key,const HashaVariableType &type);
 
         ErrorOr<HashaVariableType> get_type_for(const std::string &key) const;
-
-        void set_variable_value(const std::string &key, const ExpressionResult &value);
 
         ErrorOr<HashaVariable> get_value_for(const std::string &key) const;
 

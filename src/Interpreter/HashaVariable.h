@@ -6,12 +6,12 @@
 #define HASHA_HASHAVARIABLE_H
 
 #include <string>
+#include "Types/DefaultTypes.h"
 
 namespace hasha {
 
-    struct HashaVariable {
-
-        std::string value;
+    struct HashaVariable: std::variant<HashaNumber> {
+        using std::variant<HashaNumber>::variant;
     };
 
 } // hasha
