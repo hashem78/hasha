@@ -34,8 +34,26 @@ namespace hasha {
             } else if (auto function_call = dynamic_cast<FunctionCall *>(token.get())) {
 
                 TRY(check_function_call(*function_call));
+            } else if (auto identifier = dynamic_cast<Identifier *>(token.get())) {
+
+                TRY(check_identifier(*identifier));
+
             }
         }
+        return {};
+    }
+
+    ErrorOr<void> TypeChecker::check_identifier(const Identifier &identifier) {
+
+        auto declaration = scope.get_declaration(identifier.get());
+        if (declaration->type() != current_type())
+            return fmt::format(
+                    "Identifier {} is not of type {} on line: {}, col: {}",
+                    identifier.get(),
+                    current_type().get_type(),
+                    identifier.span().line,
+                    identifier.span().col
+            );
         return {};
     }
 
@@ -134,5 +152,6 @@ namespace hasha {
 
         types.pop();
     }
+
 
 } // hasha

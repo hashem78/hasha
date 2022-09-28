@@ -15,6 +15,7 @@
 #include "Declaration.h"
 
 #include "Function.h"
+#include "Scope.h"
 
 namespace hasha {
 
@@ -40,6 +41,10 @@ namespace hasha {
         ErrorOr<void> check_expression(
                 const Expression &expression
 
+        );
+
+        ErrorOr<void> check_identifier(
+                const Identifier &identifier
         );
 
         ErrorOr<void> check_literal(

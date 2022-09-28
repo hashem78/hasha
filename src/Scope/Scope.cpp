@@ -16,9 +16,9 @@ namespace hasha {
 
     bool Scope::is_declaration_in_scope(const std::string &name) {
 
-        auto temp = this;
+        auto temp = shared_from_this();
         while (temp != nullptr) {
-            if (temp->identifiers.contains(name) || temp->parameters.contains(name)) {
+            if (temp->declarations.contains(name) || temp->parameters.contains(name)) {
                 return true;
             }
             temp = temp->parent;
@@ -51,6 +51,19 @@ namespace hasha {
 
             if (temp->functions.contains(name)) {
                 return temp->functions.at(name);
+            }
+            temp = temp->parent;
+        }
+        return nullptr;
+    }
+
+    const Declaration *Scope::get_declaration(const std::string &name) const {
+
+        auto temp = shared_from_this();
+        while (temp != nullptr) {
+
+            if (temp->declarations.contains(name)) {
+                return temp->declarations.at(name);
             }
             temp = temp->parent;
         }

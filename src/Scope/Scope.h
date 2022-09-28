@@ -14,7 +14,7 @@
 #include "fmt/core.h"
 
 namespace hasha {
-    class Identifier;
+    class Declaration;
 
     class Function;
 
@@ -23,7 +23,7 @@ namespace hasha {
     struct Scope : public std::enable_shared_from_this<Scope> {
         using Ptr = std::shared_ptr<Scope>;
 
-        std::unordered_map<std::string, Identifier *> identifiers;
+        std::unordered_map<std::string, Declaration *> declarations;
         std::unordered_map<std::string, Parameter *> parameters;
         std::unordered_map<std::string, Function *> functions;
 
@@ -35,11 +35,13 @@ namespace hasha {
 
         static Ptr create(Ptr parent);
 
-        bool is_identifier_in_scope(const std::string &name);
+        bool is_declaration_in_scope(const std::string &name);
 
         bool is_function_in_scope(const std::string &name);
 
         const Function *get_function(const std::string &name) const;
+
+        const Declaration *get_declaration(const std::string &name) const;
 
     private:
         static int _id;
