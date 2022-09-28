@@ -87,7 +87,7 @@ namespace hasha {
             }
             if (auto numeric_literal = dynamic_cast<FloatingPointLiteral *>(token.get())) {
 
-                stk.push(std::stold(numeric_literal->get_literal()));
+                stk.push(std::stod(numeric_literal->get_literal()));
             }
             // StringLiteral
             if (auto string_literal = dynamic_cast<StringLiteral *>(token.get())) {
