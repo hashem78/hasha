@@ -11,6 +11,7 @@
 #include <memory>
 #include <queue>
 #include "SymbolTable.h"
+#include "fmt/core.h"
 
 namespace hasha {
     class Identifier;
