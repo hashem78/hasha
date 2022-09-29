@@ -46,6 +46,7 @@ namespace hasha {
             lexemes.push_back(lexeme);
 
         }
+        lexemes.push_back(EOFL);
 
         Analyzer analyzer(lexemes);
         TRY(analyzer.analyze_bracket_pairs());

@@ -411,7 +411,7 @@ namespace hasha {
         auto token_list = TokenList{};
         auto begin_span = peek().span();
 
-        while (!match(RCURLY)) {
+        while (!match(RCURLY) && !match(EOFL)) {
 
             // Parse the unambigous statements first
             if (match(FN)) {

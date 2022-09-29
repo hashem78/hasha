@@ -9,6 +9,7 @@
 
 namespace hasha {
     inline const Lexeme ILLEGAL{"", LexemeType::ILLEGAL};
+    inline const Lexeme EOFL{"", LexemeType::EOFT};
     inline const Lexeme FN{"fn", LexemeType::KEYWORD};
     inline const Lexeme IF{"if", LexemeType::KEYWORD};
     inline const Lexeme ELSE{"else", LexemeType::KEYWORD};

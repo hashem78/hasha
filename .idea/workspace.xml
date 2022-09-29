@@ -18,12 +18,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Interpret and Type check identifiers in expressions">
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Introduce void return type">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Context.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Context.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Context.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Context.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type/DefaultParserTypes.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/DefaultParserTypes.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -154,14 +150,8 @@
       <workItem from="1663949524481" duration="13392000" />
       <workItem from="1664355912978" duration="1608000" />
       <workItem from="1664394847767" duration="9287000" />
-      <workItem from="1664442136880" duration="1750000" />
-    </task>
-    <task id="LOCAL-00037" summary="If statements can be parsed now.&#10;&#10;The syntax is if [condition] [block]">
-      <created>1661527932381</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1661527932381</updated>
+      <workItem from="1664442136880" duration="3949000" />
+      <workItem from="1664487275410" duration="1000" />
     </task>
     <task id="LOCAL-00038" summary="elif and else statements can now be parsed">
       <created>1661538138778</created>
@@ -499,7 +489,14 @@
       <option name="project" value="LOCAL" />
       <updated>1664404562189</updated>
     </task>
-    <option name="localTasksCounter" value="86" />
+    <task id="LOCAL-00086" summary="Introduce void return type">
+      <created>1664485861249</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1664485861249</updated>
+    </task>
+    <option name="localTasksCounter" value="87" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -520,7 +517,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Add InlineAssignments, and breakup assignment operations in the parser." />
     <MESSAGE value="Add colon to lexer" />
     <MESSAGE value="Change declaration syntax and introduce generic types&#10;&#10;name : [type | generic_type]" />
     <MESSAGE value="Fix parsing function calls in expressions" />
@@ -545,7 +541,8 @@
     <MESSAGE value="Fix major bug related to scope lifetimes.&#10;&#10;Switched to handling scopes with shared::ptr because scopes were going of scope quicker that anticipated." />
     <MESSAGE value="make_unique -&gt; make_shared" />
     <MESSAGE value="Interpret and Type check identifiers in expressions" />
-    <option name="LAST_COMMIT_MESSAGE" value="Interpret and Type check identifiers in expressions" />
+    <MESSAGE value="Introduce void return type" />
+    <option name="LAST_COMMIT_MESSAGE" value="Introduce void return type" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

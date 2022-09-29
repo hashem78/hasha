@@ -16,6 +16,7 @@ namespace hasha {
         SYMBOL,
         KEYWORD,
         ILLEGAL,
+        EOFT,
     };
     enum class OperatorType {
         UNARY,
