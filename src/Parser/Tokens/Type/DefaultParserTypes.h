@@ -12,6 +12,7 @@ namespace hasha {
     static inline const Type DefFloatingPointType{"float", Span{}, 0};
     static inline const Type DefStringType{"string", Span{}, 0};
     static inline const Type DefBooleanType{"bool", Span{}, 0};
+    static inline const Type DefVoidType{"void", Span{}, 0};
 }
 
 #endif //HASHA_DEFAULTPARSERTYPES_H

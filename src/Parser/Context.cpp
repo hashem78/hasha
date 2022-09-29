@@ -25,4 +25,9 @@ namespace hasha {
         parsing_return_expression = val;
         return *this;
     }
+
+    Context &Context::set_parsing_void_function(bool val) noexcept {
+        parsing_void_function = val;
+        return *this;
+    }
 }
