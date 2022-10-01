@@ -1,3 +1,5 @@
+
+
 //
 // Created by mythi on 20/09/22.
 //
@@ -5,14 +7,16 @@
 #ifndef HASHA_DEFAULTPARSERTYPES_H
 #define HASHA_DEFAULTPARSERTYPES_H
 
-#include "Type.h"
+#include "NormalType.h"
+#include "Span.h"
+#include "Box.h"
 
 namespace hasha {
-    static inline const Type DefIntegerType{"int", Span{}, 0};
-    static inline const Type DefFloatingPointType{"float", Span{}, 0};
-    static inline const Type DefStringType{"string", Span{}, 0};
-    static inline const Type DefBooleanType{"bool", Span{}, 0};
-    static inline const Type DefVoidType{"void", Span{}, 0};
+    static inline const auto DefIntegerType = make_box<NormalType>("int", Span{}, 0);
+    static inline const auto DefFloatingPointType = make_box<NormalType>("float", Span{}, 0);
+    static inline const auto DefStringType = make_box<NormalType>("string", Span{}, 0);
+    static inline const auto DefBooleanType = make_box<NormalType>("bool", Span{}, 0);
+    static inline const auto DefVoidType = make_box<NormalType>("void", Span{}, 0);
 }
 
 #endif //HASHA_DEFAULTPARSERTYPES_H

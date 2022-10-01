@@ -66,7 +66,7 @@ namespace hasha {
     Lexeme::Lexeme(
             std::string data,
             LexemeType type,
-            OperatorType operator_type,
+            LexOperatorType operator_type,
             Associativity associativity,
             Precedence precedence
     ) :
@@ -82,15 +82,36 @@ namespace hasha {
             m_type(type),
             m_associativity(Associativity::NONE),
             m_precedence(Precedence::NONE),
-            m_operator_type(OperatorType::NONE),
+            m_operator_type(),
             m_span(Span{}) {}
 
-    Lexeme::Lexeme(std::string data, LexemeType type, Span span) :
+    Lexeme::Lexeme(
+            std::string data,
+            LexemeType type,
+            LexLitrealType litreal_type
+    ) :
             m_data(std::move(data)),
             m_type(type),
+            m_litreal_type(litreal_type),
             m_associativity(Associativity::NONE),
             m_precedence(Precedence::NONE),
-            m_operator_type(OperatorType::NONE),
+            m_operator_type(),
+            m_span(Span{}) {
+
+    }
+
+    Lexeme::Lexeme(
+            std::string data,
+            LexemeType type,
+            LexLitrealType op,
+            Span span
+    ) :
+            m_data(std::move(data)),
+            m_type(type),
+            m_litreal_type(op),
+            m_associativity(Associativity::NONE),
+            m_precedence(Precedence::NONE),
+            m_operator_type(),
             m_span(span) {}
 
 
@@ -113,8 +134,15 @@ namespace hasha {
                std::tie(other.m_data, other.m_type, other.m_precedence, other.m_associativity);
     }
 
-    OperatorType Lexeme::operator_type() const noexcept {
+    LexOperatorType Lexeme::operator_type() const noexcept {
 
         return m_operator_type;
     }
+
+    LexLitrealType Lexeme::litreal_type() const noexcept {
+
+        return m_litreal_type;
+    }
+
+
 } // hasha

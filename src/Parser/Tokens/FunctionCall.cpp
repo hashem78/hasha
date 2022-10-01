@@ -1,63 +1,35 @@
 //
-// Created by mythi on 12/08/22.
+// Created by mythi on 01/10/22.
 //
 
 #include "FunctionCall.h"
 
-
-
 namespace hasha {
-    std::string FunctionCall::get_callee() const noexcept {
+
+    FunctionCall::FunctionCall(
+            std::string callee,
+            std::vector<Box<Expression>> tokens,
+            const Span &span,
+            int scope_id
+    ) :
+            m_callee(std::move(callee)),
+            m_arguments(std::move(tokens)),
+            TokenBase(span, scope_id) {
+
+    }
+
+    const std::string &FunctionCall::get_callee() const noexcept {
 
         return m_callee;
     }
 
-    const ExpressionList& FunctionCall::get_arguments() const noexcept {
+    const std::vector<Box<Expression>> &FunctionCall::get_arguments() const noexcept {
 
         return m_arguments;
-    }
-
-    FunctionCall::FunctionCall(
-            std::string callee,
-            ExpressionList tokens,
-            const Span &span,
-            int scope_id
-            ) :
-            m_callee(std::move(callee)),
-            m_arguments(std::move(tokens)),
-            Token(span,scope_id) {
-
     }
 
     int FunctionCall::get_number_of_args() const noexcept {
 
         return static_cast<int>(m_arguments.size());
     }
-
-    FunctionCall::Ptr FunctionCall::create(
-            std::string callee,
-            ExpressionList tokens,
-            const Span &span,
-            int scope_id
-    ) {
-
-        return std::make_unique<FunctionCall>(
-                std::move(callee),
-                std::move(tokens),
-                span,
-                scope_id
-        );
-    }
-
-    nlohmann::json FunctionCall::to_json() const {
-
-        auto json = nlohmann::json();
-
-        json["token_type"] = "FunctionCall";
-        json["callee"] = m_callee;
-        json["arguments"] = expression_list_to_json(m_arguments);
-        json["span"] = m_span.to_json();
-        return json;
-    }
-
 } // hasha

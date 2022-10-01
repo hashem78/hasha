@@ -5,6 +5,7 @@
 #ifndef HASHA_LEXEME_H
 #define HASHA_LEXEME_H
 
+#include "nlohmann/json.hpp"
 #include "Span.h"
 #include "LexerTypes.h"
 
@@ -15,7 +16,8 @@ namespace hasha {
         LexemeType m_type;
         Associativity m_associativity;
         Precedence m_precedence;
-        OperatorType m_operator_type;
+        LexOperatorType m_operator_type;
+        LexLitrealType m_litreal_type;
         Span m_span;
 
     public:
@@ -25,7 +27,7 @@ namespace hasha {
         Lexeme(
                 std::string data,
                 LexemeType type,
-                OperatorType operator_type,
+                LexOperatorType operator_type,
                 Associativity associativity,
                 Precedence precedence
         );
@@ -38,6 +40,13 @@ namespace hasha {
         Lexeme(
                 std::string data,
                 LexemeType type,
+                LexLitrealType litreal_type
+        );
+
+        Lexeme(
+                std::string data,
+                LexemeType type,
+                LexLitrealType literal_type,
                 Span span
         );
 
@@ -54,7 +63,10 @@ namespace hasha {
         LexemeType type() const noexcept;
 
         [[nodiscard]]
-        OperatorType operator_type() const noexcept;
+        LexOperatorType operator_type() const noexcept;
+
+        [[nodiscard]]
+        LexLitrealType litreal_type() const noexcept;
 
         [[nodiscard]]
         Precedence precedence() const noexcept;

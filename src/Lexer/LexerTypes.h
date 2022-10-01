@@ -9,20 +9,22 @@ namespace hasha {
     enum class LexemeType {
         OPERATOR,
         IDENTIFIER,
-        BOOLEAN_LITERAL,
-        INTEGER_LITERAL,
-        FLOATINGPOINT_LITERAL,
-        STRING_LITERAL,
+        LITERAL,
         SYMBOL,
         KEYWORD,
         ILLEGAL,
         EOFT,
     };
-    enum class OperatorType {
+    enum class LexLitrealType {
+        BOOLEAN_LITERAL,
+        INTEGER_LITERAL,
+        FLOATINGPOINT_LITERAL,
+        STRING_LITERAL
+    };
+    enum class LexOperatorType {
         UNARY,
         BINARY,
-        TERNARY,
-        NONE
+        TERNARY
     };
 
     enum class Associativity {

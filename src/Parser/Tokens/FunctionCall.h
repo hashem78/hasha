@@ -1,50 +1,40 @@
 //
-// Created by mythi on 12/08/22.
+// Created by mythi on 01/10/22.
 //
 
 #ifndef HASHA_FUNCTIONCALL_H
 #define HASHA_FUNCTIONCALL_H
 
-#include "Token.h"
-#include "Tokens/Expression/Expression.h"
+#include "TokenForwards.h"
+#include "TokenBase.h"
+#include "Box.h"
 
 namespace hasha {
 
-    class FunctionCall : public Token {
+    class FunctionCall : public TokenBase {
         std::string m_callee;
-        ExpressionList m_arguments;
+        std::vector<Box<Expression>> m_arguments;
 
     public:
 
         FunctionCall(
                 std::string callee,
-                ExpressionList tokens,
+                std::vector<Box<Expression>> tokens,
                 const Span &span,
                 int scope_id
         );
 
-        using Ptr = std::unique_ptr<FunctionCall>;
-
-        static Ptr create(
-                std::string callee,
-                ExpressionList tokens,
-                const Span& span,
-                int scope_id
-        );
 
         [[nodiscard]]
         int get_number_of_args() const noexcept;
 
         [[nodiscard]]
-        std::string get_callee() const noexcept;
+        const std::string &get_callee() const noexcept;
 
         [[nodiscard]]
-        const ExpressionList& get_arguments() const noexcept;
-
-        [[nodiscard]]
-        nlohmann::json to_json() const override;
+        const std::vector<Box<Expression>>& get_arguments() const noexcept;
     };
-
+    using BoxedFunctionCall = Box<FunctionCall>;
 } // hasha
 
 #endif //HASHA_FUNCTIONCALL_H

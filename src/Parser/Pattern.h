@@ -9,6 +9,7 @@
 
 #include <variant>
 #include "Lexeme.h"
+#include "LexerTypes.h"
 #include "Constants.h"
 
 namespace hasha::Patterns {
@@ -33,11 +34,9 @@ namespace hasha::Patterns {
             LPAREN
     };
 
-    inline const Pattern LiteralTypes{
-            LexemeType::INTEGER_LITERAL,
-            LexemeType::FLOATINGPOINT_LITERAL,
-            LexemeType::BOOLEAN_LITERAL,
-            LexemeType::STRING_LITERAL
+    inline const Pattern GenericType{
+            LexemeType::IDENTIFIER,
+            LANGEL
     };
 
     inline const Pattern Declaration{

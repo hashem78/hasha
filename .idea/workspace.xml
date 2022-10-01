@@ -18,10 +18,88 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Introduce void return type">
-      <change afterPath="$PROJECT_DIR$/src/Utils/Box.h" afterDir="false" />
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Add Box type based on https://github.com/jbcoe/polymorphic_value">
+      <change afterPath="$PROJECT_DIR$/src/Parser/TokenForwards.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Expression.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Expression.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Operator.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Operator.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/TokenBase.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/NormalType.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/NormalType.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Utils/Overload.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interpreter/HashaVariable.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interpreter/HashaVariableType.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interpreter/Interpreter.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interpreter/Interpreter.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interpreter/SymbolTable.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interpreter/SymbolTable.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interpreter/SymbolTree.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interpreter/SymbolTree.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interpreter/Types/DefaultOperations.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interpreter/Types/DefaultTypes.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Lexer/Constants.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Constants.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexeme.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexeme.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexeme.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexeme.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Lexer/LexerTypes.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/LexerTypes.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Pattern.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Pattern.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Assignment.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Assignment.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Assignment.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Assignment.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Block.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Block.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Block.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Block.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expression/Expression.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expression/Expression.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expression/ReturnExpression.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expression/ReturnExpression.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Function.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Function.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Function.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Function.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/FunctionCall.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/FunctionCall.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/FunctionCall.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/FunctionCall.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Identifier.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Identifier.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Identifier.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Identifier.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal/BooleanLiteral.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal/BooleanLiteral.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal/FloatingPointLiteral.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal/FloatingPointLiteral.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal/IntegerLiteral.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal/IntegerLiteral.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal/Literal.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal/Literal.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal/StringLiteral.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal/StringLiteral.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Operator/BinaryOperator.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Operator/BinaryOperator.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Operator/UnaryOperator.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Operator/UnaryOperator.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Statement/ElifStatement.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Statement/ElifStatement.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Statement/ElifStatement.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Statement/ElifStatement.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Statement/ElseStatement.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Statement/ElseStatement.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Statement/ElseStatement.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Statement/ElseStatement.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Statement/IfStatement.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Statement/IfStatement.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Statement/IfStatement.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Statement/IfStatement.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Token.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/TokenBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Token.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Token.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type/DefaultParserTypes.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/DefaultParserTypes.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type/GenericType.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/GenericType.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type/GenericType.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/GenericType.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type/Type.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type/Type.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/Type.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Scope/Scope.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Scope/Scope.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TypeChecker/TypeChecker.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TypeChecker/TypeChecker.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Utils/Span.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/Span.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,11 +162,11 @@
       <recent name="$PROJECT_DIR$/src/Parser/Tokens/Assignment" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/Parser/Tokens" />
+      <recent name="$PROJECT_DIR$/src/Parser/Tokens/Type" />
       <recent name="$PROJECT_DIR$/src/Parser/Tokens/Operator" />
       <recent name="$PROJECT_DIR$/src/Interpreter" />
       <recent name="$PROJECT_DIR$/src/Scope" />
-      <recent name="$PROJECT_DIR$/src/Parser/Tokens/Type" />
-      <recent name="$PROJECT_DIR$/src/Parser/Tokens" />
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.hasha">
@@ -159,13 +237,8 @@
       <workItem from="1664394847767" duration="9287000" />
       <workItem from="1664442136880" duration="3949000" />
       <workItem from="1664487275410" duration="1000" />
-    </task>
-    <task id="LOCAL-00038" summary="elif and else statements can now be parsed">
-      <created>1661538138778</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1661538138778</updated>
+      <workItem from="1664645791991" duration="263000" />
+      <workItem from="1664646064130" duration="14237000" />
     </task>
     <task id="LOCAL-00039" summary="Improvements to Lexer">
       <created>1661907007848</created>
@@ -503,7 +576,14 @@
       <option name="project" value="LOCAL" />
       <updated>1664485861249</updated>
     </task>
-    <option name="localTasksCounter" value="87" />
+    <task id="LOCAL-00087" summary="Add Box type based on https://github.com/jbcoe/polymorphic_value">
+      <created>1664629403465</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1664629403465</updated>
+    </task>
+    <option name="localTasksCounter" value="88" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -524,7 +604,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Add colon to lexer" />
     <MESSAGE value="Change declaration syntax and introduce generic types&#10;&#10;name : [type | generic_type]" />
     <MESSAGE value="Fix parsing function calls in expressions" />
     <MESSAGE value="Switch function parameter parsing to the new syntax" />
@@ -549,7 +628,8 @@
     <MESSAGE value="make_unique -&gt; make_shared" />
     <MESSAGE value="Interpret and Type check identifiers in expressions" />
     <MESSAGE value="Introduce void return type" />
-    <option name="LAST_COMMIT_MESSAGE" value="Introduce void return type" />
+    <MESSAGE value="Add Box type based on https://github.com/jbcoe/polymorphic_value" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add Box type based on https://github.com/jbcoe/polymorphic_value" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

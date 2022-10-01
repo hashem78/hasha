@@ -1,51 +1,40 @@
 //
-// Created by mythi on 25/07/22.
+// Created by mythi on 02/10/22.
 //
 
 #ifndef HASHA_PARAMETER_H
 #define HASHA_PARAMETER_H
 
-#include "Token.h"
-#include "Tokens/Type/Type.h"
-#include "Identifier.h"
+#include <variant>
+#include "TokenForwards.h"
+#include "Box.h"
+#include "TokenBase.h"
 
 namespace hasha {
 
-    class Parameter : public Token {
-        Type::Ptr m_type;
-        Identifier m_name;
+    class Parameter : public TokenBase {
+        std::variant<Box<NormalType>, Box<GenericType>> m_type;
+        Box<Identifier> m_name;
 
     public:
-        explicit Parameter(
-                Type::Ptr type,
-                Identifier name,
-                const Span &span,
+        Parameter(
+                std::variant<Box<NormalType>, Box<GenericType>> type,
+                Box<Identifier> name,
+                Span span,
                 int scope_id
         ) noexcept;
 
-        using Ptr = std::unique_ptr<Parameter>;
-
-        static Ptr create(
-                Type::Ptr type,
-                Identifier name,
-                const Span &span,
-                int scope_id
-        );
+        [[nodiscard]]
+        const Identifier &name() const noexcept;
 
         [[nodiscard]]
-        nlohmann::json to_json() const override;
-
-        [[nodiscard]]
-        const Identifier &get_name() const noexcept;
-
-        [[nodiscard]]
-        const Type &type() const noexcept;
+        const std::variant<Box<NormalType>, Box<GenericType>> &type() const noexcept;
 
     };
 
-    using ParameterList = std::vector<Parameter::Ptr>;
+    using BoxedParameter = Box<Parameter>;
+    using BoxedParameterList = std::vector<BoxedParameter>;
 
-    nlohmann::json parameter_list_to_json(const ParameterList& parameter_list);
 
 } // hasha
 

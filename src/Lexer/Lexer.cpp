@@ -87,7 +87,7 @@ namespace hasha {
     ErrorOr<Lexeme> Lexer::next_token() noexcept {
 
 #define MATCH(STRING_REP, LEXEME) if (match(STRING_REP)) return LEXEME.with_span(create_span());
-        if (done()) return Lexeme{{}, {}, Span{}};
+        if (done()) return Lexeme{{}, {}, {}, Span{}};
 
         skip_spaces();
         int begin = cursor;
@@ -127,11 +127,7 @@ namespace hasha {
                 // BINRAY
                 // -----
                 // LITERAL
-                if (previous_lexeme.type() == LexemeType::INTEGER_LITERAL) {
-                    advance();
-                    return binary_version.with_span(create_span());
-                }
-                if (previous_lexeme.type() == LexemeType::FLOATINGPOINT_LITERAL) {
+                if (previous_lexeme.type() == LexemeType::LITERAL) {
                     advance();
                     return binary_version.with_span(create_span());
                 }
@@ -205,7 +201,7 @@ namespace hasha {
             } while (peek() != '"');
             string_ltrl += '"';
             advance();
-            return Lexeme{string_ltrl, LexemeType::STRING_LITERAL, create_span()};
+            return Lexeme{string_ltrl, LexemeType::LITERAL, LexLitrealType::STRING_LITERAL, create_span()};
         }
 
 
@@ -228,15 +224,16 @@ namespace hasha {
                 }
                 return Lexeme{
                         fmt::format("{}.{}", token, decimal_part),
-                        LexemeType::FLOATINGPOINT_LITERAL,
+                        LexemeType::LITERAL,
+                        LexLitrealType::FLOATINGPOINT_LITERAL,
                         create_span()
                 };
             }
-            return Lexeme{token, LexemeType::INTEGER_LITERAL, create_span()};
+            return Lexeme{token, LexemeType::LITERAL, LexLitrealType::INTEGER_LITERAL, create_span()};
         }
 
         if (is_identifier(token))
-            return Lexeme{token, LexemeType::IDENTIFIER, create_span()};
+            return Lexeme{token, LexemeType::IDENTIFIER, {}, create_span()};
 
         return ILLEGAL.with_span(create_span());
     }

@@ -17,7 +17,7 @@ namespace hasha {
 
         bool operator==(const Span &) const = default;
 
-        explicit Span(
+        explicit constexpr Span(
                 int begin = 0,
                 int end = 0,
                 int line = 0,
@@ -40,28 +40,14 @@ namespace hasha {
             };
         }
 
-        Span &set_begin(int val) noexcept {
-
-            begin = val;
-            return *this;
-        }
-
-        Span &set_end(int val) noexcept {
-
-            end = val;
-            return *this;
-        }
-
-        Span &set_line(int val) noexcept {
-
-            line = val;
-            return *this;
-        }
-
-        Span &set_col(int val) noexcept {
-
-            col = val;
-            return *this;
+        [[nodiscard]]
+        Span merge_with(Span other) const {
+            return Span{
+                    begin,
+                    other.end,
+                    line,
+                    col
+            };
         }
 
     };

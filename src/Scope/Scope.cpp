@@ -44,30 +44,30 @@ namespace hasha {
 
     int Scope::_id = 0;
 
-    const Function *Scope::get_function(const std::string &name) const {
+    const Function &Scope::get_function(const std::string &name) const {
 
         auto temp = shared_from_this();
         while (temp != nullptr) {
 
             if (temp->functions.contains(name)) {
-                return temp->functions.at(name);
+                return *temp->functions.at(name);
             }
             temp = temp->parent;
         }
-        return nullptr;
+
     }
 
-    const Declaration *Scope::get_declaration(const std::string &name) const {
+    const Declaration &Scope::get_declaration(const std::string &name) const {
 
         auto temp = shared_from_this();
         while (temp != nullptr) {
 
             if (temp->declarations.contains(name)) {
-                return temp->declarations.at(name);
+                return *temp->declarations.at(name);
             }
             temp = temp->parent;
         }
-        return nullptr;
+
     }
 
 }

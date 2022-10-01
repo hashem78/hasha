@@ -1,33 +1,31 @@
 //
-// Created by mythi on 21/07/22.
+// Created by mythi on 01/10/22.
 //
 
 #ifndef HASHA_BLOCK_H
 #define HASHA_BLOCK_H
 
+#include "TokenBase.h"
+#include "TokenForwards.h"
 #include "Token.h"
-#include "fmt/format.h"
-#include "Tokens/Expression/Expression.h"
 
 namespace hasha {
 
-    class Block : public Token {
+    class Block : public TokenBase {
         TokenList m_tokens;
 
     public:
-        explicit Block(TokenList tokens, const Span &span, int scope_id);
-
-        using Ptr = std::unique_ptr<Block>;
-
-        static Ptr create(TokenList tokens, const Span &span, int scope_id);
-
-        [[nodiscard]]
-        const TokenList& get_tokens() const;
+        Block(
+                TokenList tokens,
+                Span span,
+                int scope_id
+        ) noexcept;
 
         [[nodiscard]]
-        nlohmann::json to_json() const override;
+        const TokenList &tokens() const noexcept;
     };
 
+    using BoxedBlock = Box<Block>;
 } // hasha
 
 #endif //HASHA_BLOCK_H

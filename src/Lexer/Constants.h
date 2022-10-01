@@ -15,8 +15,8 @@ namespace hasha {
     inline const Lexeme ELSE{"else", LexemeType::KEYWORD};
     inline const Lexeme ELIF{"elif", LexemeType::KEYWORD};
     inline const Lexeme RETURN{"return", LexemeType::KEYWORD};
-    inline const Lexeme TRUE{"true", LexemeType::BOOLEAN_LITERAL};
-    inline const Lexeme FALSE{"false", LexemeType::BOOLEAN_LITERAL};
+    inline const Lexeme TRUE{"true", LexemeType::LITERAL, LexLitrealType::BOOLEAN_LITERAL};
+    inline const Lexeme FALSE{"false", LexemeType::LITERAL, LexLitrealType::BOOLEAN_LITERAL};
     inline const Lexeme LCURLY{"{", LexemeType::SYMBOL};
     inline const Lexeme RCURLY{"}", LexemeType::SYMBOL};
     inline const Lexeme LPAREN{"(", LexemeType::SYMBOL};
@@ -32,63 +32,63 @@ namespace hasha {
     inline const Lexeme EQUALS{
             "=",
             LexemeType::OPERATOR,
-            OperatorType::BINARY,
+            LexOperatorType::BINARY,
             Associativity::RIGHT,
             Precedence::LVL1
     };
     inline const Lexeme LAND{
             "&&",
             LexemeType::OPERATOR,
-            OperatorType::BINARY,
+            LexOperatorType::BINARY,
             Associativity::RIGHT,
             Precedence::LVL2
     };
     inline const Lexeme LOR{
             "||",
             LexemeType::OPERATOR,
-            OperatorType::BINARY,
+            LexOperatorType::BINARY,
             Associativity::RIGHT,
             Precedence::LVL2
     };
     inline const Lexeme FSLASH{
             "/",
             LexemeType::OPERATOR,
-            OperatorType::BINARY,
+            LexOperatorType::BINARY,
             Associativity::LEFT,
             Precedence::LVL5
     };
     inline const Lexeme ASTERISK{
             "*",
             LexemeType::OPERATOR,
-            OperatorType::BINARY,
+            LexOperatorType::BINARY,
             Associativity::LEFT,
             Precedence::LVL5
     };
     inline const Lexeme UNARY_MINUS{
             "-",
             LexemeType::OPERATOR,
-            OperatorType::UNARY,
+            LexOperatorType::UNARY,
             Associativity::RIGHT,
             Precedence::LVL6
     };
     inline const Lexeme UNARY_PLUS{
             "+",
             LexemeType::OPERATOR,
-            OperatorType::UNARY,
+            LexOperatorType::UNARY,
             Associativity::RIGHT,
             Precedence::LVL6
     };
     inline const Lexeme BINARY_MINUS{
             "-",
             LexemeType::OPERATOR,
-            OperatorType::BINARY,
+            LexOperatorType::BINARY,
             Associativity::LEFT,
             Precedence::LVL3
     };
     inline const Lexeme BINARY_PLUS{
             "+",
             LexemeType::OPERATOR,
-            OperatorType::BINARY,
+            LexOperatorType::BINARY,
             Associativity::LEFT,
             Precedence::LVL3
     };

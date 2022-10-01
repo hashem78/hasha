@@ -8,8 +8,8 @@
 
 #include "Parser.h"
 #include "Constants.h"
+#include "Overload.h"
 #include "Type/DefaultParserTypes.h"
-
 
 #define EXPECT(lexeme) if(!match(lexeme)) {return fmt::format("Expected {} Found {}",lexeme.to_string(),peek().to_string());}else{advance();}
 
@@ -32,51 +32,24 @@ namespace hasha {
         set_context(Context{});
     }
 
-    ErrorOr<Block::Ptr> Parser::parse() {
+    ErrorOr<void> Parser::parse() {
 
-        auto blk = TRY(block(scope_tree->create_scope()));
 
-        std::ofstream ojson("parser_output.json");
-        if (ojson.is_open()) {
-            ojson << blk->to_string();
-        }
+        auto scope = scope_tree->create_scope();
 
-        return blk;
+        auto sx = TRY(block(scope));
 
+        return {};
     }
 
-    Lexeme Parser::peek(std::size_t k) const noexcept {
 
-        if (cursor + k < lexemes.size()) return lexemes[cursor + k];
-
-        return lexemes.back();
-    }
-
-    bool Parser::done(int k) const noexcept {
-
-        if (cursor + k >= lexemes.size() || cursor + k < 0)
-            return true;
-
-        return false;
-    }
-
-    Lexeme Parser::advance(int k) noexcept {
-
-        if (!done(k)) {
-            cursor += k;
-            return lexemes[cursor];
-        }
-
-        return lexemes.back();
-    }
-
-    ErrorOr<Identifier::Ptr> Parser::identifier(const Scope::Ptr &scope) noexcept {
+    ErrorOr<Box<Identifier>> Parser::identifier(const Scope::Ptr &scope) noexcept {
 
         const auto name = peek().data();
 
-        if (name.empty()) return "Failed to parse identifier name";
+        if (name.empty()) return "Failed to parse name name";
 
-        if (std::isdigit(name[0])) return "An identifier cannot start with a digit";
+        if (std::isdigit(name[0])) return "An name cannot start with a digit";
 
         auto is_legal = [](char c) -> bool {
             return std::isalnum(c) || c == '_';
@@ -89,10 +62,10 @@ namespace hasha {
 
         advance();
 
-        return Identifier::create(name, peek(-1).span(), scope->id);
+        return make_box<Identifier>(name, peek(-1).span(), scope->id);
     }
 
-    ErrorOr<Type::Ptr> Parser::type(const Scope::Ptr &scope) noexcept {
+    ErrorOr<BoxedNormalType> Parser::type(const Scope::Ptr &scope) noexcept {
 
         auto type_name = peek().data();
 
@@ -108,75 +81,157 @@ namespace hasha {
                 return fmt::format("Illegal character {}", ch);
             }
         }
-        auto before_span = peek().span();
+
         advance();
 
-        if (match(LANGEL)) {
-            SWALLOW(LANGEL)
-            auto type_list = TypeList{};
-            while (!match(RANGEL) && !match(SEMICOLON)) {
-                SWALLOW(COMMA)
-                type_list.push_back(TRY(type(scope)));
-            }
-            if (type_list.empty())
-                return fmt::format(
-                        "Generic Type {} with no type list, line: {}, col: {}",
-                        type_name,
-                        before_span.line,
-                        before_span.col
-                );
+        return make_box<NormalType>(type_name, peek(-1).span(), scope->id);
+    }
 
-            EXPECT(RANGEL)
-            auto after_span = peek(-1).span();
+    ErrorOr<BoxedGenericType> Parser::generic_type(const Scope::Ptr &scope) noexcept {
 
-
-            return GenericType::create(
-                    type_name,
-                    before_span,
-                    std::move(type_list),
-                    Span{
-                            before_span.begin,
-                            after_span.end,
-                            before_span.line,
-                            before_span.col
-                    },
-                    scope->id
+        auto generic = TRY(type(scope));
+        auto before_span = peek().span();
+        EXPECT(LANGEL)
+        auto type_list = BoxedTypeList{};
+        while (!match(RANGEL) && !match(SEMICOLON)) {
+            SWALLOW(COMMA)
+            type_list.push_back(TRY(type(scope)));
+        }
+        if (type_list.empty()) {
+            return fmt::format(
+                    "Generic Type {} with no type list, line: {}, col: {}",
+                    generic->type(),
+                    before_span.line,
+                    before_span.col
             );
+        }
+        EXPECT(RANGEL)
+        auto after_span = peek(-1).span();
 
+        return make_box<GenericType>(
+                generic,
+                type_list,
+                before_span.merge_with(after_span),
+                scope->id
+        );
+    }
+
+    ErrorOr<BoxedDeclaration> Parser::declaration(const Scope::Ptr &scope) noexcept {
+
+        auto before_span = peek().span();
+        auto name = TRY(identifier(scope));
+
+        EXPECT(COLON)
+        BoxedType decl_type;
+        if (match(Patterns::GenericType))
+            decl_type = TRY(generic_type(scope));
+        else
+            decl_type = TRY(type(scope));
+
+        EXPECT(EQUALS)
+
+        auto asx = TRY(parse_expression(scope));
+
+        if (asx->empty()) {
+            return fmt::format(
+                    "Unintialized declaration of variable {} on line: {}, col: {}",
+                    name->name(),
+                    before_span.line,
+                    before_span.col
+            );
+        }
+        for (const auto &token: asx->expression()) {
+            TRY(std::visit(
+                    Overload{
+                            [&name = name->name()](const BoxedIdentifier &var) -> ErrorOr<void> {
+
+                                if (var->name() == name) {
+                                    return fmt::format(
+                                            "Tried to access {} before its declaration is compelete, on line: {}, col: {}",
+                                            var->name(),
+                                            var->span().line,
+                                            var->span().col
+                                    );
+                                }
+                                return {};
+                            },
+                            [](auto) -> ErrorOr<void> { return {}; }
+                    },
+                    token
+            ));
         }
 
-        return Type::create(type_name, peek(-1).span(), scope->id);
+        auto after_span = peek(-1).span();
+
+        auto span = Span{
+                before_span.begin,
+                after_span.end,
+                before_span.line,
+                before_span.col
+        };
+
+        auto declaration = make_box<Declaration>(
+                decl_type,
+                name,
+                asx,
+                span,
+                scope->id
+        );
+        return declaration;
+
     }
 
-    ErrorOr<Parameter::Ptr> Parser::parameter(const Scope::Ptr &scope) {
+    ErrorOr<Box<Expression>> Parser::parse_expression(
+            const Scope::Ptr &scope,
+            const Lexeme &delimiter
+    ) {
 
-        auto b_span = peek().span();
-        auto name = TRY(identifier(scope));
-        EXPECT(COLON)
-        auto param_type = TRY(type(scope));
-
-        SWALLOW(COMMA)
-
-        b_span.set_end(peek(-1).span().end);
-        return Parameter::create(std::move(param_type), *name, b_span, scope->id);
-    }
-
-
-    ErrorOr<Expression::Ptr> Parser::parse_expression(const Scope::Ptr &scope, const Lexeme &delimiter) {
 
         std::deque<Lexeme> operators; // stack
         auto token_list = TokenList{};
 
         set_context(current_context().set_parsing_expression(true));
 
-        auto create_operator = [&scope](const Lexeme &lexeme) -> TokenPtr {
-            if (lexeme.operator_type() == OperatorType::BINARY) {
-                return BinaryOperator::create(lexeme.data(), lexeme.span(), scope->id);
-            }
-            return UnaryOperator::create(lexeme.data(), lexeme.span(), scope->id);
-        };
 
         auto begin_span = peek().span();
+
+
+        auto push_operator = [&scope, &token_list](const Lexeme &lexeme) {
+            switch (lexeme.operator_type()) {
+
+                case LexOperatorType::UNARY:
+                    token_list.push_back(
+                            make_box<Operator>(
+                                    OperatorType::Unary,
+                                    lexeme.data(),
+                                    lexeme.span(),
+                                    scope->id
+                            )
+                    );
+                    break;
+                case LexOperatorType::BINARY:
+                    token_list.push_back(
+                            make_box<Operator>(
+                                    OperatorType::Binary,
+                                    lexeme.data(),
+                                    lexeme.span(),
+                                    scope->id
+                            )
+                    );
+                    break;
+                case LexOperatorType::TERNARY:
+                    token_list.push_back(
+                            make_box<Operator>(
+                                    OperatorType::Ternary,
+                                    lexeme.data(),
+                                    lexeme.span(),
+                                    scope->id
+                            )
+                    );
+                    break;
+            }
+
+        };
 
         while (!match(delimiter)) {
 
@@ -202,7 +257,8 @@ namespace hasha {
                         (x.associativity() == Associativity::RIGHT &&
                          x.precedence() < y.precedence())) {
 
-                        token_list.push_back(create_operator(y));
+                        push_operator(y);
+
                         operators.pop_front();
 
                     } else {
@@ -217,7 +273,7 @@ namespace hasha {
                 while (operators.front() != LPAREN) {
                     // TODO: If the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
                     if (operators.empty()) break;
-                    token_list.push_back(create_operator(operators.front()));
+                    push_operator(operators.front());
                     operators.pop_front();
                 }
                 // TODO: If the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
@@ -227,30 +283,23 @@ namespace hasha {
             } else {
                 if (x != COMMA) {
                     switch (x.type()) {
-                        case LexemeType::INTEGER_LITERAL:
-                            token_list.push_back(IntegerLiteral::create(x.data(), x.span(), scope->id));
-                            break;
-                        case LexemeType::FLOATINGPOINT_LITERAL:
-                            token_list.push_back(FloatingPointLiteral::create(x.data(), x.span(), scope->id));
-                            break;
-                        case LexemeType::STRING_LITERAL:
-                            token_list.push_back(StringLiteral::create(x.data(), x.span(), scope->id));
-                            break;
-                        case LexemeType::BOOLEAN_LITERAL:
-                            token_list.push_back(BooleanLiteral::create(x.data(), x.span(), scope->id));
+                        case LexemeType::LITERAL: {
+                            advance(-1);
+                            token_list.push_back(TRY(literal(scope)));
+                        }
                             break;
                         case LexemeType::IDENTIFIER: {
                             advance(-1);
                             auto idn = TRY(identifier(scope));
-                            if (!scope->is_declaration_in_scope(idn->get())) {
+                            if (!scope->is_declaration_in_scope(idn->name())) {
                                 return fmt::format(
                                         "Identifier {} is undefined in this scope, line: {}, col {}",
-                                        idn->get(),
+                                        idn->name(),
                                         idn->span().line,
                                         idn->span().col
                                 );
                             }
-                            token_list.push_back(std::move(idn));
+                            token_list.push_back(idn);
                         }
                             break;
                         default:
@@ -264,39 +313,65 @@ namespace hasha {
                 }
             }
         }
-
         while (!operators.empty()) {
-            token_list.push_back(create_operator(operators.front()));
+            push_operator(operators.front());
             operators.pop_front();
         }
 
         restore_context();
         auto end_span = peek(-1).span();
 
-        if (current_context().parsing_return_expression) {
-            return ReturnExpression::create(
-                    std::move(token_list),
-                    Span{begin_span.begin, end_span.end, begin_span.line, begin_span.col},
-                    scope->id
-            );
-        }
-
-        return Expression::create(
-                std::move(token_list),
-                Span{begin_span.begin, end_span.end, begin_span.line, begin_span.col},
+        return make_box<Expression>(
+                token_list,
+                begin_span.merge_with(end_span),
                 scope->id
         );
-
     }
 
+    ErrorOr<BoxedFunctionCall>
+    Parser::function_call(
+            const Scope::Ptr &scope,
+            bool check_scope
+    ) noexcept {
 
-    ErrorOr<ExpressionList>
-    Parser::parse_multiple(const Scope::Ptr &scope, const Lexeme &left, const Lexeme &right, const Lexeme &separator) {
+        auto before_span = peek().span();
+        auto idn = TRY(identifier(scope));
+        if (check_scope) {
 
+            if (!scope->is_function_in_scope(idn->name())) {
+
+                return fmt::format(
+                        "Function {} is not defined line {}, col {}",
+                        idn->name(),
+                        idn->span().line,
+                        idn->span().col
+                );
+            }
+        }
+        set_context(current_context().set_parsing_args(true));
+        auto exprs = TRY(parse_multiple(scope, LPAREN, RPAREN));
+        restore_context();
+        auto after_span = peek(-1).span();
+
+        return make_box<FunctionCall>(
+                idn->name(),
+                exprs,
+                before_span.merge_with(after_span),
+                scope->id
+        );
+    }
+
+    ErrorOr<BoxedExpressionList>
+    Parser::parse_multiple(
+            const Scope::Ptr &scope,
+            const Lexeme &left,
+            const Lexeme &right,
+            const Lexeme &separator
+    ) {
 
         EXPECT(left)
 
-        auto exprs = ExpressionList{};
+        auto exprs = BoxedExpressionList{};
 
         while (!match(right)) {
             SWALLOW(separator)
@@ -307,106 +382,50 @@ namespace hasha {
         return exprs;
     }
 
-    ErrorOr<IfStatement::Ptr> Parser::if_statement(const Scope::Ptr &scope) {
-
-        auto span = peek().span();
-        EXPECT(IF)
-        auto condition = TRY(parse_expression(scope, LCURLY));
-        EXPECT(LCURLY)
-        auto blk = TRY(block(scope_tree->create_scope(scope->id)));
-        EXPECT(RCURLY)
-
-        return IfStatement::create(
-                std::move(condition),
-                std::move(blk),
-                span,
-                scope->id
-        );
-    }
-
-    ErrorOr<ElifStatement::Ptr> Parser::elif_statement(const Scope::Ptr &scope) {
+    ErrorOr<BoxedLiteral> Parser::literal(const Scope::Ptr &scope) noexcept {
 
 
-        auto span = peek().span();
-        EXPECT(ELIF)
-        auto condition = TRY(parse_expression(scope, LCURLY));
-        EXPECT(LCURLY)
-        auto blk = TRY(block(scope_tree->create_scope(scope->id)));
-        EXPECT(RCURLY)
+        if (!match(LexemeType::LITERAL))
+            return fmt::format("Expected literal got {}", peek().to_string());
 
-        return ElifStatement::create(
-                std::move(condition),
-                std::move(blk),
-                span,
-                scope->id
-        );
-    }
-
-    ErrorOr<ElseStatement::Ptr> Parser::else_statement(const Scope::Ptr &scope) {
-
-        auto span = peek().span();
-        EXPECT(ELSE)
-        EXPECT(LCURLY)
-        auto blk = TRY(block(scope_tree->create_scope(scope->id)));
-        EXPECT(RCURLY)
-
-        return ElseStatement::create(std::move(blk), span, scope->id);
-    }
-
-    ErrorOr<Declaration::Ptr> Parser::declaration(const Scope::Ptr &scope) {
-
-        auto before_span = peek().span();
-        auto name = TRY(identifier(scope));
-
-        EXPECT(COLON)
-        auto decl_type = TRY(type(scope));
-        EXPECT(EQUALS)
-
-
-        auto asx = TRY(parse_expression(scope));
-        if (asx->empty()) {
-            return fmt::format(
-                    "Unintialized declaration of variable {} on line: {}, col: {}",
-                    name->get(),
-                    before_span.line,
-                    before_span.col
-            );
-        }
-        for (const auto &token: asx->expression_tokens()) {
-            if (auto identifier = dynamic_cast<Identifier *>(token.get())) {
-                if (identifier->get() == name->get()) {
-                    return fmt::format(
-                            "Tried to access {} before its declaration is compelete, on line: {}, col: {}",
-                            name->get(),
-                            identifier->span().line,
-                            identifier->span().col
-                    );
-                }
-            }
-        }
-
-        auto after_span = peek(-1).span();
-
-        auto span = Span{
-                before_span.begin,
-                after_span.end,
-                before_span.line,
-                before_span.col
+        auto create_literal = [&scope, this](LiteralType type) {
+            auto ltrl = make_box<Literal>(type, peek().data(), peek().span(), scope->id);
+            advance();
+            return ltrl;
         };
-        EXPECT(SEMICOLON)
-        auto declaration = Declaration::create(
-                std::move(decl_type),
-                *name,
-                span,
-                scope->id,
-                std::move(asx)
-        );
 
-        scope->declarations[name->get()] = declaration.get();
-        return declaration;
+        switch (peek().litreal_type()) {
+
+            case LexLitrealType::BOOLEAN_LITERAL:
+                return create_literal(LiteralType::Boolean);
+            case LexLitrealType::INTEGER_LITERAL:
+                return create_literal(LiteralType::Integer);
+            case LexLitrealType::FLOATINGPOINT_LITERAL:
+                return create_literal(LiteralType::Float);
+            case LexLitrealType::STRING_LITERAL:
+                return create_literal(LiteralType::String);
+        }
+
+        return {};
     }
 
-    ErrorOr<Block::Ptr> Parser::block(const Scope::Ptr &scope) noexcept {
+//    ErrorOr<Box<IfStatement>> Parser::if_statement(const Scope::Ptr &scope) {
+//
+//
+//        );
+//    }
+//
+//    ErrorOr<Box<ElifStatement>> Parser::elif_statement(const Scope::Ptr &scope) {
+//
+//
+//    }
+//
+//    ErrorOr<Box<ElseStatement>> Parser::else_statement(const Scope::Ptr &scope) {
+//
+//    }
+//
+
+    ErrorOr<BoxedBlock> Parser::block(const Scope::Ptr &scope) noexcept {
 
         auto token_list = TokenList{};
         auto begin_span = peek().span();
@@ -419,28 +438,21 @@ namespace hasha {
             } else if (match(IF)) {
                 token_list.push_back(TRY(if_statement(scope)));
             } else if (match(ELSE)) {
-
-                if (!is_previous_of<IfStatement>(token_list) && !is_previous_of<ElifStatement>(token_list))
-                    return "Rouge else statement";
-
-                token_list.push_back(TRY(else_statement(scope)));
+                // FIXME: Rouge else statements at the start of a block cause access problems
+                token_list.push_back(TRY(else_statement(token_list.back(), scope)));
             } else if (match(ELIF)) {
-
-                if (!is_previous_of<IfStatement>(token_list) && !is_previous_of<ElifStatement>(token_list))
-                    return "Rouge elif statement";
-                if (is_previous_of<ElseStatement>(token_list))
-                    return "An else statement cannot be followed by and elif statement";
-
-                token_list.push_back(TRY(elif_statement(scope)));
+                // FIXME: Rouge elif statements at the start of a block cause access problems
+                token_list.push_back(TRY(elif_statement(token_list.back(), scope)));
             } else if (match(Patterns::Declaration)) {
                 token_list.push_back(TRY(declaration(scope)));
+                EXPECT(SEMICOLON)
             } else if (match(Patterns::Assignment)) {
                 token_list.push_back(TRY(assignment(scope)));
             } else if (match(RETURN)) {
-                auto ret = TRY(return_expression(scope));
+                auto ret = TRY(parse_expression(scope));
 
                 if (current_context().parsing_void_function) {
-                    if (!ret->expression_tokens().empty())
+                    if (!ret->expression().empty())
                         return fmt::format(
                                 "Expected empty return expression on line: {}, col: {} ",
                                 ret->span().line,
@@ -455,16 +467,33 @@ namespace hasha {
             }
         }
         auto end_span = peek().span();
-        auto span = Span{
-                begin_span.begin,
-                end_span.end,
-                begin_span.line,
-                begin_span.col
-        };
-        return Block::create(std::move(token_list), span, scope->id);
+
+        return make_box<Block>(
+                token_list,
+                begin_span.merge_with(end_span),
+                scope->id
+        );
+
     }
 
-    ErrorOr<Function::Ptr> Parser::function(const Scope::Ptr &scope) {
+    ErrorOr<BoxedParameter> Parser::parameter(const Scope::Ptr &scope) noexcept {
+
+        auto before_span = peek().span();
+        auto name = TRY(identifier(scope));
+        EXPECT(COLON)
+        auto param_type = TRY(type(scope));
+
+        auto after_span = peek().span();
+
+        return make_box<Parameter>(
+                param_type,
+                name,
+                before_span.merge_with(after_span),
+                scope->id
+        );
+    }
+
+    ErrorOr<BoxedFunction> Parser::function(const Scope::Ptr &scope) noexcept {
 
         auto begin_span = peek().span();
         SWALLOW(FN)
@@ -475,14 +504,16 @@ namespace hasha {
 
         EXPECT(LPAREN)
 
-        auto params = ParameterList{};
+        auto params = BoxedParameterList{};
+
 
         while (!match(RPAREN)) {
+            SWALLOW(COMMA)
             params.push_back(TRY(parameter(function_scope)));
         }
 
         for (const auto &parameter: params) {
-            scope->parameters[parameter->get_name().get()] = parameter.get();
+            scope->parameters[parameter->name().name()] = parameter;
         }
 
         EXPECT(RPAREN)
@@ -490,36 +521,172 @@ namespace hasha {
 
         EXPECT(ARROW)
 
-        auto return_type = TRY(type(scope));
+        if (match(Patterns::GenericType)) {
+            auto return_type = TRY(generic_type(scope));
 
-        if (*return_type == DefVoidType) {
-            set_context(current_context().set_parsing_void_function(true));
+            EXPECT(LCURLY)
+
+            auto parsed_block = TRY(block(function_scope));
+
+            EXPECT(RCURLY)
+            auto end_span = peek().span();
+
+            auto fn = make_box<Function>(
+                    name,
+                    params,
+                    return_type,
+                    parsed_block,
+                    begin_span.merge_with(end_span),
+                    scope->id
+            );
+
+            scope->functions[name->name()] = fn;
+            return fn;
+        } else {
+            auto return_type = TRY(type(scope));
+
+            if (*return_type == *DefVoidType) {
+                set_context(current_context().set_parsing_void_function(true));
+            }
+
+            EXPECT(LCURLY)
+
+            auto parsed_block = TRY(block(function_scope));
+
+            if (*return_type == *DefVoidType) {
+                restore_context();
+            }
+
+            EXPECT(RCURLY)
+            auto end_span = peek().span();
+
+            auto fn = make_box<Function>(
+                    name,
+                    params,
+                    return_type,
+                    parsed_block,
+                    begin_span.merge_with(end_span),
+                    scope->id
+            );
+
+            scope->functions[name->name()] = fn;
+            return fn;
         }
+    }
 
-        EXPECT(LCURLY)
+    ErrorOr<BoxedAssignment> Parser::assignment(const Scope::Ptr &scope) noexcept {
 
-        auto parsed_block = TRY(block(function_scope));
+        auto begin_span = peek().span();
+        auto idn = TRY(identifier(scope));
 
-        if (*return_type == DefVoidType) {
-            restore_context();
+        if (!scope->is_declaration_in_scope(idn->name())) {
+            return fmt::format(
+                    "{} is not declared in this scope on line: {}, col: {}",
+                    idn->name(),
+                    idn->span().line,
+                    idn->span().col
+            );
         }
+        EXPECT(EQUALS)
+        auto expr = TRY(parse_expression(scope));
+        auto end_span = peek(-1).span();
+        EXPECT(SEMICOLON)
 
-        EXPECT(RCURLY)
-        auto end_span = peek().span();
-
-        auto span = Span{begin_span.begin, end_span.end, begin_span.line, begin_span.col};
-
-        auto fn = Function::create(
-                std::move(params),
-                std::move(parsed_block),
-                *name,
-                std::move(return_type),
-                span,
+        return make_box<Assignment>(
+                idn,
+                expr,
+                begin_span.merge_with(end_span),
                 scope->id
         );
+    }
 
-        scope->functions[name->get()] = fn.get();
-        return fn;
+    ErrorOr<BoxedIfStatement> Parser::if_statement(const Scope::Ptr &scope) noexcept {
+
+        auto before_span = peek().span();
+        EXPECT(IF)
+        auto condition = TRY(parse_expression(scope, LCURLY));
+        EXPECT(LCURLY)
+        auto blk = TRY(block(scope_tree->create_scope(scope->id)));
+        EXPECT(RCURLY)
+        auto after_span = peek(-1).span();
+
+        return make_box<IfStatement>(
+                condition,
+                blk,
+                before_span.merge_with(after_span),
+                scope->id
+        );
+    }
+
+    ErrorOr<BoxedElifStatement> Parser::elif_statement(
+            const Token &previous_token,
+            const Scope::Ptr &scope
+    ) noexcept {
+
+        auto previous_is_if = std::holds_alternative<BoxedIfStatement>(previous_token);
+        auto previous_is_else = std::holds_alternative<BoxedElseStatement>(previous_token);
+        auto previous_is_elif = std::holds_alternative<BoxedIfStatement>(previous_token);
+
+        if (!previous_is_if && !previous_is_elif) {
+            return fmt::format(
+                    "elif statement has to be preceeded by either if or elif statments on line: {}, col: {}",
+                    peek().span().line,
+                    peek().span().col
+            );
+        }
+
+        if (previous_is_else) {
+            return fmt::format(
+                    "elif statement cannot to be preceeded by else statment on line: {}, col: {}",
+                    peek().span().line,
+                    peek().span().col
+            );
+        }
+
+        auto before_span = peek().span();
+        EXPECT(ELIF)
+        auto condition = TRY(parse_expression(scope, LCURLY));
+        EXPECT(LCURLY)
+        auto blk = TRY(block(scope_tree->create_scope(scope->id)));
+        EXPECT(RCURLY)
+        auto after_span = peek(-1).span();
+
+        return make_box<ElifStatement>(
+                condition,
+                blk,
+                before_span.merge_with(after_span),
+                scope->id
+        );
+    }
+
+    ErrorOr<BoxedElseStatement> Parser::else_statement(
+            const Token &previous_token,
+            const Scope::Ptr &scope
+    ) noexcept {
+
+        auto previous_is_if = std::holds_alternative<BoxedIfStatement>(previous_token);
+        auto previous_is_elif = std::holds_alternative<BoxedIfStatement>(previous_token);
+
+        if (!previous_is_if && !previous_is_elif) {
+            return fmt::format(
+                    "else statement has to be preceeded by either if or else statments on line: {}, col: {}",
+                    peek().span().line,
+                    peek().span().col
+            );
+        }
+
+        auto before_span = peek().span();
+        EXPECT(ELSE)
+        EXPECT(LCURLY)
+        auto blk = TRY(block(scope_tree->create_scope(scope->id)));
+        EXPECT(RCURLY)
+        auto after_span = peek(-1).span();
+
+        return make_box<ElseStatement>(
+                blk,
+                before_span.merge_with(after_span),
+                scope->id
+        );
     }
 
     bool Parser::match(const Lexeme &match, int start) const noexcept {
@@ -532,101 +699,10 @@ namespace hasha {
         return peek(start).type() == match;
     }
 
-    ErrorOr<Literal::Ptr> Parser::literal(const Scope::Ptr &scope) {
-
-        if (!match_any(Patterns::LiteralTypes))
-            return fmt::format("Expected literal got {}", peek().to_string());
-
-        advance();
-        if (match(LexemeType::BOOLEAN_LITERAL, -1)) {
-
-            return BooleanLiteral::create(peek(-1).data(), peek(-1).span(), scope->id);
-        }
-        if (match(LexemeType::INTEGER_LITERAL, -1)) {
-            return IntegerLiteral::create(peek(-1).data(), peek(-1).span(), scope->id);
-        }
-        if (match(LexemeType::FLOATINGPOINT_LITERAL, -1)) {
-            return IntegerLiteral::create(peek(-1).data(), peek(-1).span(), scope->id);
-        }
-
-        return StringLiteral::create(peek(-1).data(), peek(-1).span(), scope->id);
-
-    }
-
-    ErrorOr<FunctionCall::Ptr> Parser::function_call(const Scope::Ptr &scope, bool check_scope) {
-
-        auto before_span = peek().span();
-        auto name = TRY(identifier(scope));
-        if (check_scope) {
-
-            if (!scope->is_function_in_scope(name->get())) {
-
-                return fmt::format(
-                        "Function {} is not defined line {}, col {}",
-                        name->get(),
-                        name->span().line,
-                        name->span().col
-                );
-            }
-        }
-        set_context(current_context().set_parsing_args(true));
-        auto exprs = TRY(parse_multiple(scope, LPAREN, RPAREN));
-        restore_context();
-        auto after_span = peek(-1).span();
-        auto span = Span{before_span.begin, after_span.end, before_span.line, before_span.col};
-        return FunctionCall::create(name->get(), std::move(exprs), span, scope->id);
-    }
-
-    Context Parser::current_context() {
-
-        return context_stack.top();
-    }
-
-    void Parser::set_context(Context context) {
-
-        context_stack.push(context);
-    }
-
-    void Parser::restore_context() {
-
-        context_stack.pop();
-    }
-
-    ErrorOr<Expression::Ptr> Parser::return_expression(const Scope::Ptr &scope) {
-
-        EXPECT(RETURN)
-        set_context(current_context().set_parsing_return_expression(true));
-        auto expr = TRY(parse_expression(scope));
-        restore_context();
-        EXPECT(SEMICOLON)
-        return expr;
-    }
-
-    bool Parser::match_any(const Patterns::Pattern &matchers) const noexcept {
-
-        for (const auto &matcher: matchers) {
-
-            auto matched = std::visit(
-                    Patterns::PatternVisitor{
-                            [&, this](const Lexeme &lexeme) -> bool {
-                                return peek() == lexeme;
-                            },
-                            [&, this](const LexemeType &lexeme_type) -> bool {
-                                return peek().type() == lexeme_type;
-                            }
-                    }, matcher
-            );
-            if (matched)
-                return true;
-
-        }
-        return false;
-    }
-
-    bool Parser::match(const Patterns::Pattern &matchers, int start) const noexcept {
+    bool Parser::match(const Patterns::Pattern &matchers) const noexcept {
 
         int lookahed = 0;
-        for (std::size_t i = start; i < matchers.size(); ++i) {
+        for (std::size_t i = 0; i < matchers.size(); ++i) {
 
             auto not_matched = std::visit(
                     Patterns::PatternVisitor{
@@ -645,30 +721,44 @@ namespace hasha {
         return true;
     }
 
-    ErrorOr<Assignment::Ptr> Parser::assignment(const Scope::Ptr &scope) {
+    Context Parser::current_context() {
 
-        auto begin_span = peek().span();
-        auto name = TRY(identifier(scope));
+        return context_stack.top();
+    }
 
-        if (!scope->is_declaration_in_scope(name->get())) {
-            return fmt::format(
-                    "{} is not declared in this scope on line: {}, col: {}",
-                    name->get(),
-                    name->span().line,
-                    name->span().col
-            );
+    void Parser::set_context(Context context) {
+
+        context_stack.push(context);
+    }
+
+    void Parser::restore_context() {
+
+        context_stack.pop();
+    }
+
+    Lexeme Parser::peek(std::size_t k) const noexcept {
+
+        if (cursor + k < lexemes.size()) return lexemes[cursor + k];
+
+        return lexemes.back();
+    }
+
+    bool Parser::done(int k) const noexcept {
+
+        if (cursor + k >= lexemes.size() || cursor + k < 0)
+            return true;
+
+        return false;
+    }
+
+    Lexeme Parser::advance(int k) noexcept {
+
+        if (!done(k)) {
+            cursor += k;
+            return lexemes[cursor];
         }
-        EXPECT(EQUALS)
-        auto expr = TRY(parse_expression(scope));
-        auto end_span = peek(-1).span();
-        auto span = Span{begin_span.begin, end_span.end, begin_span.line, begin_span.col};
-        EXPECT(SEMICOLON)
-        return Assignment::create(
-                std::move(name),
-                std::move(expr),
-                span,
-                scope->id
-        );
+
+        return lexemes.back();
     }
 
 

@@ -5,56 +5,45 @@
 #ifndef HASHA_DECLARATION_H
 #define HASHA_DECLARATION_H
 
-#include "Token.h"
-#include "fmt/format.h"
-#include "Assignment.h"
-#include "Tokens/Type/Type.h"
-#include "Identifier.h"
-#include "ErrorOr.h"
+#include <variant>
+#include "TokenBase.h"
+#include "Box.h"
+#include "TokenForwards.h"
+
 
 namespace hasha {
 
-    class Declaration : public Token {
+    class Declaration : public TokenBase {
 
     protected:
 
-        Type::Ptr m_type;
-        Identifier m_name;
-        Expression::Ptr m_assignment_expression;
+        std::variant<Box<NormalType>, Box<GenericType>> m_type;
+        Box<Identifier> m_name;
+        Box<Expression> m_assignment_expression;
 
     public:
 
         Declaration(
-                Type::Ptr type,
-                Identifier name,
-                const Span &span,
-                int scope_id,
-                Expression::Ptr assignment_expression = nullptr
-        );
-
-        using Ptr = std::unique_ptr<Declaration>;
-
-        static Ptr create(
-                Type::Ptr type,
-                Identifier name,
-                const Span &span,
-                int scope_id,
-                Expression::Ptr assignment_expression = nullptr
-        );
+                std::variant<Box<NormalType>, Box<GenericType>> type,
+                Box<Identifier> name,
+                Box<Expression> assignment_expression,
+                Span span,
+                int scope_id
+        ) noexcept;
 
         [[nodiscard]]
-        const Type &type() const;
+        const std::variant<Box<NormalType>, Box<GenericType>> &type() const noexcept;
 
         [[nodiscard]]
-        const Identifier &name() const;
+        const Identifier &name() const noexcept;
 
         [[nodiscard]]
-        const Expression &assignment_expression() const;
+        const Expression &assignment_expression() const noexcept;
 
-        [[nodiscard]]
-        nlohmann::json to_json() const override;
     };
 
+    using BoxedDeclaration = Box<Declaration>;
+    using BoxedDeclarationList = std::vector<BoxedDeclaration>;
 } // hasha
 
 #endif //HASHA_DECLARATION_H

@@ -1,83 +1,47 @@
 //
-// Created by mythi on 21/07/22.
+// Created by mythi on 01/10/22.
 //
 
 #include "Function.h"
 
-
 namespace hasha {
-    nlohmann::json Function::to_json() const {
-
-        auto json = nlohmann::json();
-
-        json["token_type"] = "Function";
-        json["name"] = m_name.get();
-        json["return_type"] = m_return_type->to_json();
-        json["parameters"] = parameter_list_to_json(m_parameters);
-        json["block"] = m_block->to_json();
-        json["span"] = m_span.to_json();
-
-        return json;
-    }
-
-
     Function::Function(
-            ParameterList parameters,
-            Block::Ptr block,
-            Identifier name,
-            Type::Ptr return_type,
-            const Span &span,
+            Box<Identifier> name,
+            std::vector<Box<Parameter>> parameters,
+            std::variant<Box<NormalType>, Box<GenericType>> return_type,
+            Box<Block> block,
+            Span span,
             int scope_id
-    )
-            : m_parameters(std::move(parameters)),
-              m_block(std::move(block)),
-              m_return_type(std::move(return_type)),
-              m_name(std::move(name)),
-              Token(span, scope_id) {
+    ) noexcept:
+            m_name(std::move(name)),
+            m_parameters(std::move(parameters)),
+            m_return_type(std::move(return_type)),
+            m_block(std::move(block)),
+            TokenBase(span, scope_id) {
     }
 
-    Function::Ptr Function::create(
-            ParameterList parameters,
-            Block::Ptr block,
-            Identifier name,
-            Type::Ptr return_type,
-            const Span &span,
-            int scope_id
-    ) {
+    const Identifier &Function::name() const noexcept {
 
-        return std::make_unique<Function>(
-                std::move(parameters),
-                std::move(block),
-                std::move(name),
-                std::move(return_type),
-                span,
-                scope_id
-        );
+        return *m_name;
     }
 
-    const Identifier& Function::name() const {
+    const std::variant<Box<NormalType>, Box<GenericType>> &Function::return_type() const noexcept {
 
-        return m_name;
+        return m_return_type;
     }
 
-    const Type &Function::return_type() const {
-
-        return *m_return_type;
-    }
-
-    const ParameterList &Function::parameters() const {
+    const std::vector<Box<Parameter>> &Function::parameters() const noexcept {
 
         return m_parameters;
     }
 
-    const class Block &Function::block() const {
-
-        return *m_block;
-    }
-
-    int Function::number_of_parameters() const {
+    int Function::number_of_parameters() const noexcept {
 
         return static_cast<int>(m_parameters.size());
     }
 
+    const Block &Function::block() const noexcept {
+
+        return *m_block;
+    }
 } // hasha

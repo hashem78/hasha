@@ -1,19 +1,18 @@
 //
-// Created by mythi on 24/07/22.
+// Created by mythi on 01/10/22.
 //
 
 #ifndef HASHA_IDENTIFIER_H
 #define HASHA_IDENTIFIER_H
 
-#include "Token.h"
-#include "fmt/format.h"
+#include "TokenBase.h"
+#include "Box.h"
 
 namespace hasha {
 
-    class Identifier : public Token {
+    class Identifier : public TokenBase {
 
         std::string m_identifier;
-
 
     public:
         explicit Identifier(
@@ -22,23 +21,11 @@ namespace hasha {
                 int scope_id
         ) noexcept;
 
-        using Ptr = std::unique_ptr<Identifier>;
-
-        static Ptr create(
-                std::string name,
-                const Span &span,
-                int scope_id
-        );
-
         [[nodiscard]]
-        nlohmann::json to_json() const override;
-
-        [[nodiscard]]
-        const std::string &get() const noexcept;
-
-        void set(const std::string &name) noexcept;
-
+        const std::string &name() const noexcept;
     };
+
+    using BoxedIdentifier = Box<Identifier>;
 
 } // hasha
 

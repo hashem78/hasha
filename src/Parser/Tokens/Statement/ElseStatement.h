@@ -1,40 +1,32 @@
 //
-// Created by mythi on 26/08/22.
+// Created by mythi on 02/10/22.
 //
 
 #ifndef HASHA_ELSESTATEMENT_H
 #define HASHA_ELSESTATEMENT_H
 
-#include "Token.h"
-#include "Block.h"
+#include "TokenBase.h"
+#include "TokenForwards.h"
+#include "Box.h"
 
 namespace hasha {
 
-    class ElseStatement : public Token {
-        Block::Ptr m_block;
+    class ElseStatement : public TokenBase {
+
+        Box<Block> m_block;
     public:
-        using Ptr = std::unique_ptr<ElseStatement>;
 
         ElseStatement(
-                Block::Ptr block,
-                const Span &span,
+                Box<Block> block,
+                Span span,
                 int scope_id
-        );
-
-        static ElseStatement::Ptr create(
-                Block::Ptr block,
-                const Span &span,
-                int scope_id
-        );
-
+        ) noexcept;
 
         [[nodiscard]]
-        nlohmann::json to_json() const override;
-
-        [[nodiscard]]
-        const Block &block() const;
+        const Block &block() const noexcept;
     };
 
+    using BoxedElseStatement = Box<ElseStatement>;
 } // hasha
 
 #endif //HASHA_ELSESTATEMENT_H

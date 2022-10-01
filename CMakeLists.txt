@@ -11,11 +11,8 @@ include_directories(
         src/Lexer
         src/Parser
         src/Parser/Tokens
-        src/Parser/Scope
-        src/Interpreter
         src/Utils
         src/Scope
-        src/TypeChecker
 )
 add_executable(hasha
         src/main.cpp
@@ -27,70 +24,14 @@ add_executable(hasha
         src/Lexer/Analyzer.h
         src/Lexer/LexerTypes.h
         src/Lexer/Constants.h
+        src/Parser/Tokens/Token.h
+        src/Parser/Tokens/TokenBase.cpp
+        src/Parser/Tokens/TokenBase.h
         src/Parser/Parser.cpp
         src/Parser/Parser.h
-        src/Parser/Tokens/Token.cpp
-        src/Parser/Tokens/Token.h
-        src/Parser/Tokens/Declaration.cpp
-        src/Parser/Tokens/Declaration.h
-        src/Parser/Tokens/Block.cpp
-        src/Parser/Tokens/Block.h
-        src/Parser/Tokens/Function.cpp
-        src/Parser/Tokens/Function.h
-        src/Parser/Tokens/Identifier.cpp
-        src/Parser/Tokens/Identifier.h
-        src/Parser/Tokens/Parameter.cpp
-        src/Parser/Tokens/Parameter.h
-        src/Parser/Tokens/Literal/Literal.h
-        src/Parser/Tokens/Operator/BinaryOperator.h
         src/Parser/Pattern.h
-        src/Parser/Tokens/Literal/StringLiteral.h
-        src/Parser/Tokens/Literal/IntegerLiteral.h
-        src/Parser/Tokens/Literal/FloatingPointLiteral.h
-        src/Parser/Tokens/Literal/BooleanLiteral.h
-        src/Parser/Tokens/FunctionCall.cpp
-        src/Parser/Tokens/FunctionCall.h
-        src/Parser/Tokens/Operator/BinaryOperator.cpp
-        src/Parser/Tokens/Literal/BooleanLiteral.cpp
-        src/Parser/Tokens/Literal/Literal.cpp
-        src/Parser/Tokens/Literal/IntegerLiteral.cpp
-        src/Parser/Tokens/Literal/FloatingPointLiteral.cpp
-        src/Parser/Tokens/Literal/StringLiteral.cpp
-        src/Parser/Tokens/Statement/IfStatement.cpp
-        src/Parser/Tokens/Statement/IfStatement.h
-        src/Parser/Tokens/Statement/ElifStatement.cpp
-        src/Parser/Tokens/Statement/ElifStatement.h
-        src/Parser/Tokens/Statement/ElseStatement.cpp
-        src/Parser/Tokens/Statement/ElseStatement.h
-        src/Parser/Tokens/Type/Type.cpp
-        src/Parser/Tokens/Type/Type.h
         src/Parser/Context.h
-        src/Parser/Tokens/Expression/Expression.cpp
-        src/Parser/Tokens/Expression/Expression.h
-        src/Parser/Tokens/Assignment.cpp
-        src/Parser/Tokens/Assignment.h
         src/Parser/Context.cpp
-        src/Parser/Tokens/Expression/ReturnExpression.h
-        src/Parser/Tokens/Expression/ReturnExpression.cpp
-        src/Parser/Tokens/Operator/BinaryOperator.cpp
-        src/Parser/Tokens/Operator/BinaryOperator.h
-        src/Parser/Tokens/Operator/UnaryOperator.cpp
-        src/Parser/Tokens/Operator/UnaryOperator.h
-        src/Parser/Tokens/Type/GenericType.cpp
-        src/Parser/Tokens/Type/GenericType.h
-        src/Parser/Tokens/Type/DefaultParserTypes.h
-        src/Interpreter/Interpreter.cpp
-        src/Interpreter/Interpreter.h
-        src/Interpreter/SymbolTable.cpp
-        src/Interpreter/SymbolTable.h
-        src/Interpreter/SymbolTree.cpp
-        src/Interpreter/SymbolTree.h
-        src/Interpreter/Types/DefaultTypes.h
-        src/Interpreter/Types/DefaultOperations.h
-        src/Interpreter/HashaVariable.h
-        src/Interpreter/HashaVariableType.h
-        src/TypeChecker/TypeChecker.cpp
-        src/TypeChecker/TypeChecker.h
         src/Scope/Scope.h
         src/Scope/ScopeTree.cpp
         src/Scope/ScopeTree.h
@@ -98,6 +39,17 @@ add_executable(hasha
         src/Utils/ErrorOr.h
         src/Utils/Span.h
         src/Utils/Box.h
-        )
-
+        src/Parser/Tokens/Identifier.cpp
+        src/Parser/Tokens/Identifier.h
+        src/Parser/Tokens/Type/NormalType.cpp
+        src/Parser/Tokens/Type/NormalType.h
+        src/Parser/Tokens/Type/GenericType.cpp
+        src/Parser/Tokens/Type/GenericType.h
+        src/Parser/Tokens/Type/Type.h
+        src/Parser/TokenForwards.h
+        src/Parser/Tokens/Declaration.cpp
+        src/Parser/Tokens/Declaration.h
+        src/Parser/Tokens/Expression.cpp
+        src/Parser/Tokens/Expression.h
+        src/Utils/Overload.h src/Parser/Tokens/Literal.cpp src/Parser/Tokens/Literal.h src/Parser/Tokens/Operator.h src/Parser/Tokens/Operator.cpp src/Parser/Tokens/FunctionCall.cpp src/Parser/Tokens/FunctionCall.h src/Parser/Tokens/Block.cpp src/Parser/Tokens/Block.h src/Parser/Tokens/Assignment.cpp src/Parser/Tokens/Assignment.h src/Parser/Tokens/Function.cpp src/Parser/Tokens/Function.h src/Parser/Tokens/Type/DefaultParserTypes.h src/Parser/Tokens/Parameter.cpp src/Parser/Tokens/Parameter.h src/Parser/Tokens/Statement/IfStatement.cpp src/Parser/Tokens/Statement/IfStatement.h src/Parser/Tokens/Statement/ElifStatement.cpp src/Parser/Tokens/Statement/ElifStatement.h src/Parser/Tokens/Statement/ElseStatement.cpp src/Parser/Tokens/Statement/ElseStatement.h)
 target_link_libraries(hasha fmt::fmt nlohmann_json::nlohmann_json magic_enum::magic_enum)

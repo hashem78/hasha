@@ -1,48 +1,36 @@
 //
-// Created by mythi on 26/08/22.
+// Created by mythi on 02/10/22.
 //
 
 #ifndef HASHA_ELIFSTATEMENT_H
 #define HASHA_ELIFSTATEMENT_H
 
-#include "Token.h"
-#include "Block.h"
-#include "Expression/Expression.h"
+#include "TokenBase.h"
+#include "TokenForwards.h"
+#include "Box.h"
 
 namespace hasha {
 
-    class ElifStatement : public Token {
-        Expression::Ptr m_condition;
-        Block::Ptr m_block;
-
+    class ElifStatement : public TokenBase {
+        Box<Expression> m_condition;
+        Box<Block> m_block;
     public:
 
         ElifStatement(
-                Expression::Ptr condition,
-                Block::Ptr block,
+                Box<Expression> condition,
+                Box<Block> block,
                 const Span &span,
                 int scope_id
-        );
-
-        using Ptr = std::unique_ptr<ElifStatement>;
-
-        static ElifStatement::Ptr create(
-                Expression::Ptr condition,
-                Block::Ptr block,
-                const Span &span,
-                int scope_id
-        );
+        ) noexcept;
 
         [[nodiscard]]
-        const Expression &condition() const;
+        const Expression &condition() const noexcept;
 
         [[nodiscard]]
-        const Block &block() const;
-
-        [[nodiscard]]
-        nlohmann::json to_json() const override;
+        const Block &block() const noexcept;
     };
 
+    using BoxedElifStatement = Box<ElifStatement>;
 } // hasha
 
 #endif //HASHA_ELIFSTATEMENT_H

@@ -1,47 +1,39 @@
 //
-// Created by mythi on 01/09/22.
+// Created by mythi on 01/10/22.
 //
 
 #ifndef HASHA_ASSIGNMENT_H
 #define HASHA_ASSIGNMENT_H
 
-#include "Tokens/Expression/Expression.h"
-#include "Identifier.h"
+#include "TokenBase.h"
+#include "TokenForwards.h"
+#include "Box.h"
 
 namespace hasha {
 
-    class Assignment : public Token {
+    class Assignment : public TokenBase {
 
-        Identifier::Ptr m_assignee;
-        Expression::Ptr m_expression;
+        Box<Identifier> m_assignee;
+        Box<Expression> m_expression;
 
     public:
-        using Ptr = std::unique_ptr<Assignment>;
 
-        explicit Assignment(
-                Identifier::Ptr assignee,
-                Expression::Ptr expression,
-                const Span &span,
+        Assignment(
+                Box<Identifier> assignee,
+                Box<Expression> expression,
+                Span span,
                 int scope_id
-        );
+        ) noexcept;
 
-        static Ptr create(
-                Identifier::Ptr assignee,
-                Expression::Ptr expression,
-                const Span &span,
-                int scope_id
-        );
 
         [[nodiscard]]
-        const Expression &expression() const;
+        const Expression &expression() const noexcept;
 
         [[nodiscard]]
-        const Identifier &assignee() const;
-
-        [[nodiscard]]
-        nlohmann::json to_json() const override;
+        const Identifier &assignee() const noexcept;
     };
 
+    using BoxedAssignment = Box<Assignment>;
 } // hasha
 
 #endif //HASHA_ASSIGNMENT_H
