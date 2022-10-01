@@ -23,6 +23,10 @@ add_executable(hasha
         src/Lexer/Lexer.h
         src/Lexer/Lexeme.cpp
         src/Lexer/Lexeme.h
+        src/Lexer/Analyzer.cpp
+        src/Lexer/Analyzer.h
+        src/Lexer/LexerTypes.h
+        src/Lexer/Constants.h
         src/Parser/Parser.cpp
         src/Parser/Parser.h
         src/Parser/Tokens/Token.cpp
@@ -44,10 +48,8 @@ add_executable(hasha
         src/Parser/Tokens/Literal/IntegerLiteral.h
         src/Parser/Tokens/Literal/FloatingPointLiteral.h
         src/Parser/Tokens/Literal/BooleanLiteral.h
-        src/Lexer/Constants.h
         src/Parser/Tokens/FunctionCall.cpp
         src/Parser/Tokens/FunctionCall.h
-        src/Utils/ErrorOr.h
         src/Parser/Tokens/Operator/BinaryOperator.cpp
         src/Parser/Tokens/Literal/BooleanLiteral.cpp
         src/Parser/Tokens/Literal/Literal.cpp
@@ -68,32 +70,34 @@ add_executable(hasha
         src/Parser/Tokens/Assignment.cpp
         src/Parser/Tokens/Assignment.h
         src/Parser/Context.cpp
-        src/Utils/Span.h
         src/Parser/Tokens/Expression/ReturnExpression.h
         src/Parser/Tokens/Expression/ReturnExpression.cpp
-        src/Lexer/Analyzer.cpp
-        src/Lexer/Analyzer.h
-        src/Interpreter/Interpreter.cpp
-        src/Interpreter/Interpreter.h
-        src/Scope/Scope.h
-        src/Scope/ScopeTree.cpp
-        src/Scope/ScopeTree.h
-        src/Scope/Scope.cpp
-        src/Parser/Tokens/Type/GenericType.cpp
-        src/Parser/Tokens/Type/GenericType.h
-        src/Interpreter/SymbolTable.cpp
-        src/Interpreter/SymbolTable.h
-        src/Interpreter/SymbolTree.cpp
-        src/Interpreter/SymbolTree.h
-        src/Parser/Tokens/Type/DefaultParserTypes.h
-        src/TypeChecker/TypeChecker.cpp
-        src/TypeChecker/TypeChecker.h
-        src/Interpreter/HashaVariable.h
-        src/Interpreter/HashaVariableType.h
         src/Parser/Tokens/Operator/BinaryOperator.cpp
         src/Parser/Tokens/Operator/BinaryOperator.h
         src/Parser/Tokens/Operator/UnaryOperator.cpp
         src/Parser/Tokens/Operator/UnaryOperator.h
-        src/Lexer/LexerTypes.h src/Interpreter/Types/DefaultTypes.h src/Interpreter/Types/DefaultOperations.h)
+        src/Parser/Tokens/Type/GenericType.cpp
+        src/Parser/Tokens/Type/GenericType.h
+        src/Parser/Tokens/Type/DefaultParserTypes.h
+        src/Interpreter/Interpreter.cpp
+        src/Interpreter/Interpreter.h
+        src/Interpreter/SymbolTable.cpp
+        src/Interpreter/SymbolTable.h
+        src/Interpreter/SymbolTree.cpp
+        src/Interpreter/SymbolTree.h
+        src/Interpreter/Types/DefaultTypes.h
+        src/Interpreter/Types/DefaultOperations.h
+        src/Interpreter/HashaVariable.h
+        src/Interpreter/HashaVariableType.h
+        src/TypeChecker/TypeChecker.cpp
+        src/TypeChecker/TypeChecker.h
+        src/Scope/Scope.h
+        src/Scope/ScopeTree.cpp
+        src/Scope/ScopeTree.h
+        src/Scope/Scope.cpp
+        src/Utils/ErrorOr.h
+        src/Utils/Span.h
+        src/Utils/Box.h
+        )
 
 target_link_libraries(hasha fmt::fmt nlohmann_json::nlohmann_json magic_enum::magic_enum)
