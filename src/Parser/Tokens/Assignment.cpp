@@ -17,13 +17,13 @@ namespace hasha {
 
     }
 
-    const Expression &Assignment::expression() const noexcept {
+    const Box<Expression> &Assignment::expression() const noexcept {
 
-        return *m_expression;
+        return m_expression;
     }
 
-    const Identifier &Assignment::assignee() const noexcept {
+    const Box<Identifier> &Assignment::assignee() const noexcept {
 
-        return *m_assignee;
+        return m_assignee;
     }
 } // hasha

@@ -15,13 +15,13 @@ namespace hasha {
             m_block(std::move(block)),
             TokenBase(span, scope_id, "ElifStatement") {}
 
-    const Expression &ElifStatement::condition() const noexcept {
+    const Box<Expression> &ElifStatement::condition() const noexcept {
 
-        return *m_condition;
+        return m_condition;
     }
 
-    const Block &ElifStatement::block() const noexcept {
+    const Box<Block> &ElifStatement::block() const noexcept {
 
-        return *m_block;
+        return m_block;
     }
 } // hasha

@@ -25,7 +25,7 @@ namespace hasha {
         ) noexcept;
 
         [[nodiscard]]
-        const Identifier &name() const noexcept;
+        const Box<Identifier> &name() const noexcept;
 
         [[nodiscard]]
         const std::variant<Box<NormalType>, Box<GenericType>> &type() const noexcept;

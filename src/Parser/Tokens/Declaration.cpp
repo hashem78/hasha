@@ -23,13 +23,13 @@ namespace hasha {
         return m_type;
     }
 
-    const Identifier &Declaration::name() const noexcept {
+    const Box<Identifier> &Declaration::name() const noexcept {
 
-        return *m_name;
+        return m_name;
     }
 
-    const Expression &Declaration::assignment_expression() const noexcept {
+    const Box<Expression> &Declaration::assignment_expression() const noexcept {
 
-        return *m_assignment_expression;
+        return m_assignment_expression;
     }
 } // hasha

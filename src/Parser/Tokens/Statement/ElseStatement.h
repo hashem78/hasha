@@ -23,7 +23,7 @@ namespace hasha {
         ) noexcept;
 
         [[nodiscard]]
-        const Block &block() const noexcept;
+        const Box<Block> &block() const noexcept;
     };
 
     using BoxedElseStatement = Box<ElseStatement>;

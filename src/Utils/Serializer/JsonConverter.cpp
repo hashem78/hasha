@@ -28,15 +28,6 @@ namespace hasha {
         };
     }
 
-    nlohmann::ordered_json JsonConverter::operator()(const Identifier &obj) const noexcept {
-
-        return {
-                {"token_type", obj.token_type()},
-                {"span",       obj.span().to_json()},
-                {"identifier", obj.identifier()}
-        };
-    }
-
     nlohmann::ordered_json JsonConverter::operator()(const BoxedIdentifier &obj) const noexcept {
 
         return {
@@ -127,21 +118,6 @@ namespace hasha {
         };
     }
 
-    nlohmann::ordered_json JsonConverter::operator()(const Block &obj) const noexcept {
-
-        auto tokens = nlohmann::ordered_json::array();
-        for (const auto &token: obj.tokens()) {
-            tokens.push_back(std::visit(JsonConverter{}, token));
-        }
-
-
-        return {
-                {"token_type", obj.token_type()},
-                {"span",       obj.span().to_json()},
-                {"tokens",     tokens}
-        };
-    }
-
     nlohmann::ordered_json JsonConverter::operator()(const BoxedAssignment &obj) const noexcept {
 
         return {
@@ -183,7 +159,7 @@ namespace hasha {
     nlohmann::ordered_json JsonConverter::operator()(const BoxedIfStatement &obj) const noexcept {
 
         auto condition = nlohmann::ordered_json::array();
-        for (const auto &token: obj->condition().expression()) {
+        for (const auto &token: obj->condition()->expression()) {
             condition.push_back(std::visit(JsonConverter{}, token));
         }
 
@@ -198,7 +174,7 @@ namespace hasha {
     nlohmann::ordered_json JsonConverter::operator()(const BoxedElifStatement &obj) const noexcept {
 
         auto condition = nlohmann::ordered_json::array();
-        for (const auto &token: obj->condition().expression()) {
+        for (const auto &token: obj->condition()->expression()) {
             condition.push_back(std::visit(JsonConverter{}, token));
         }
 

@@ -13,8 +13,8 @@ namespace hasha {
             m_block(std::move(block)),
             TokenBase(span, scope_id, "ElseStatement"sv) {}
 
-    const Block &ElseStatement::block() const noexcept {
+    const Box<Block> &ElseStatement::block() const noexcept {
 
-        return *m_block;
+        return m_block;
     }
 } // hasha

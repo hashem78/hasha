@@ -15,9 +15,9 @@ namespace hasha {
             m_name(std::move(name)),
             TokenBase(span, scope_id, "Parameter"sv) {}
 
-    const Identifier &Parameter::name() const noexcept {
+    const Box<Identifier> &Parameter::name() const noexcept {
 
-        return *m_name;
+        return m_name;
     }
 
     const std::variant<Box<NormalType>, Box<GenericType>> &Parameter::type() const noexcept {

@@ -35,9 +35,6 @@ namespace hasha {
         nlohmann::ordered_json operator()(const BoxedGenericType &obj) const noexcept;
 
         [[nodiscard]]
-        nlohmann::ordered_json operator()(const Identifier &obj) const noexcept;
-
-        [[nodiscard]]
         nlohmann::ordered_json operator()(const BoxedIdentifier &obj) const noexcept;
 
         [[nodiscard]]
@@ -60,9 +57,6 @@ namespace hasha {
 
         [[nodiscard]]
         nlohmann::ordered_json operator()(const BoxedBlock &obj) const noexcept;
-
-        [[nodiscard]]
-        nlohmann::ordered_json operator()(const Block &obj) const noexcept;
 
         [[nodiscard]]
         nlohmann::ordered_json operator()(const BoxedAssignment &obj) const noexcept;

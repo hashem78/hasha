@@ -20,9 +20,9 @@ namespace hasha {
             TokenBase(span, scope_id, "Function"sv) {
     }
 
-    const Identifier &Function::name() const noexcept {
+    const Box<Identifier> &Function::name() const noexcept {
 
-        return *m_name;
+        return m_name;
     }
 
     const std::variant<Box<NormalType>, Box<GenericType>> &Function::return_type() const noexcept {
@@ -40,8 +40,8 @@ namespace hasha {
         return static_cast<int>(m_parameters.size());
     }
 
-    const Block &Function::block() const noexcept {
+    const Box<Block> &Function::block() const noexcept {
 
-        return *m_block;
+        return m_block;
     }
 } // hasha

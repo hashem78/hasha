@@ -27,10 +27,10 @@ namespace hasha {
 
 
         [[nodiscard]]
-        const Expression &expression() const noexcept;
+        const Box<Expression> &expression() const noexcept;
 
         [[nodiscard]]
-        const Identifier &assignee() const noexcept;
+        const Box<Identifier> &assignee() const noexcept;
     };
 
     using BoxedAssignment = Box<Assignment>;

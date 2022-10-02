@@ -32,7 +32,7 @@ namespace hasha {
         ) noexcept;
 
         [[nodiscard]]
-        const Identifier &name() const noexcept;
+        const Box<Identifier> &name() const noexcept;
 
         [[nodiscard]]
         const std::variant<Box<NormalType>, Box<GenericType>> &return_type() const noexcept;
@@ -44,7 +44,7 @@ namespace hasha {
         int number_of_parameters() const noexcept;
 
         [[nodiscard]]
-        const Block &block() const noexcept;
+        const Box<Block> &block() const noexcept;
     };
 
     using BoxedFunction = Box<Function>;

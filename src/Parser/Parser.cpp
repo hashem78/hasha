@@ -492,7 +492,7 @@ namespace hasha {
         }
 
         for (const auto &parameter: params) {
-            scope->parameters[parameter->name().identifier()] = parameter;
+            scope->parameters[parameter->name()->identifier()] = parameter;
         }
 
         EXPECT(RPAREN)

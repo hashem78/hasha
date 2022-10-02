@@ -25,10 +25,10 @@ namespace hasha {
         ) noexcept;
 
         [[nodiscard]]
-        const Expression &condition() const noexcept;
+        const Box<Expression> &condition() const noexcept;
 
         [[nodiscard]]
-        const Block &block() const noexcept;
+        const Box<Block> &block() const noexcept;
     };
 
     using BoxedIfStatement = Box<IfStatement>;

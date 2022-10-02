@@ -35,10 +35,10 @@ namespace hasha {
         const std::variant<Box<NormalType>, Box<GenericType>> &type() const noexcept;
 
         [[nodiscard]]
-        const Identifier &name() const noexcept;
+        const Box<Identifier> &name() const noexcept;
 
         [[nodiscard]]
-        const Expression &assignment_expression() const noexcept;
+        const Box<Expression> &assignment_expression() const noexcept;
 
     };
 
