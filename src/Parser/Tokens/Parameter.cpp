@@ -13,7 +13,7 @@ namespace hasha {
     ) noexcept:
             m_type(std::move(type)),
             m_name(std::move(name)),
-            TokenBase(span, scope_id) {}
+            TokenBase(span, scope_id, "Parameter"sv) {}
 
     const Identifier &Parameter::name() const noexcept {
 

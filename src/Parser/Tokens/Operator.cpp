@@ -14,7 +14,7 @@ namespace hasha {
     ) :
             m_type(type),
             m_op(std::move(op)),
-            TokenBase(span, scope_id) {
+            TokenBase(span, scope_id, "Operator"sv) {
     }
 
     const std::string &Operator::operation() const noexcept {

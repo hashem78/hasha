@@ -17,7 +17,7 @@ namespace hasha {
             m_parameters(std::move(parameters)),
             m_return_type(std::move(return_type)),
             m_block(std::move(block)),
-            TokenBase(span, scope_id) {
+            TokenBase(span, scope_id, "Function"sv) {
     }
 
     const Identifier &Function::name() const noexcept {

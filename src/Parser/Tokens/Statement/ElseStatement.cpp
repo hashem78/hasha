@@ -11,7 +11,7 @@ namespace hasha {
             int scope_id
     ) noexcept:
             m_block(std::move(block)),
-            TokenBase(span, scope_id) {}
+            TokenBase(span, scope_id, "ElseStatement"sv) {}
 
     const Block &ElseStatement::block() const noexcept {
 

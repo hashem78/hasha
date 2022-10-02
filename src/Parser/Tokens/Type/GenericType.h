@@ -7,6 +7,7 @@
 
 #include "TokenBase.h"
 #include "Type.h"
+
 namespace hasha {
 
     class GenericType : public TokenBase {
@@ -14,7 +15,6 @@ namespace hasha {
         BoxedTypeList m_generics_list;
 
     public:
-        using Ptr = std::unique_ptr<GenericType>;
 
         GenericType(
                 BoxedType type,
@@ -23,6 +23,11 @@ namespace hasha {
                 int scope_id
         );
 
+        [[nodiscard]]
+        const BoxedType &type() const;
+
+        [[nodiscard]]
+        const BoxedTypeList &generics_list() const;
     };
 } // hasha
 #endif //HASHA_GENERICTYPE_H

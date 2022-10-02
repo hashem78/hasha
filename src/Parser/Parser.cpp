@@ -32,14 +32,9 @@ namespace hasha {
         set_context(Context{});
     }
 
-    ErrorOr<void> Parser::parse() {
+    ErrorOr<BoxedBlock> Parser::parse() {
 
-
-        auto scope = scope_tree->create_scope();
-
-        auto sx = TRY(block(scope));
-
-        return {};
+        return TRY(block(scope_tree->create_scope()));
     }
 
 
@@ -135,7 +130,7 @@ namespace hasha {
         if (asx->empty()) {
             return fmt::format(
                     "Unintialized declaration of variable {} on line: {}, col: {}",
-                    name->name(),
+                    name->identifier(),
                     before_span.line,
                     before_span.col
             );
@@ -143,12 +138,12 @@ namespace hasha {
         for (const auto &token: asx->expression()) {
             TRY(std::visit(
                     Overload{
-                            [&name = name->name()](const BoxedIdentifier &var) -> ErrorOr<void> {
+                            [&name = name->identifier()](const BoxedIdentifier &var) -> ErrorOr<void> {
 
-                                if (var->name() == name) {
+                                if (var->identifier() == name) {
                                     return fmt::format(
                                             "Tried to access {} before its declaration is compelete, on line: {}, col: {}",
-                                            var->name(),
+                                            var->identifier(),
                                             var->span().line,
                                             var->span().col
                                     );
@@ -291,10 +286,10 @@ namespace hasha {
                         case LexemeType::IDENTIFIER: {
                             advance(-1);
                             auto idn = TRY(identifier(scope));
-                            if (!scope->is_declaration_in_scope(idn->name())) {
+                            if (!scope->is_declaration_in_scope(idn->identifier())) {
                                 return fmt::format(
                                         "Identifier {} is undefined in this scope, line: {}, col {}",
-                                        idn->name(),
+                                        idn->identifier(),
                                         idn->span().line,
                                         idn->span().col
                                 );
@@ -338,11 +333,11 @@ namespace hasha {
         auto idn = TRY(identifier(scope));
         if (check_scope) {
 
-            if (!scope->is_function_in_scope(idn->name())) {
+            if (!scope->is_function_in_scope(idn->identifier())) {
 
                 return fmt::format(
                         "Function {} is not defined line {}, col {}",
-                        idn->name(),
+                        idn->identifier(),
                         idn->span().line,
                         idn->span().col
                 );
@@ -354,7 +349,7 @@ namespace hasha {
         auto after_span = peek(-1).span();
 
         return make_box<FunctionCall>(
-                idn->name(),
+                idn->identifier(),
                 exprs,
                 before_span.merge_with(after_span),
                 scope->id
@@ -408,22 +403,6 @@ namespace hasha {
 
         return {};
     }
-
-//    ErrorOr<Box<IfStatement>> Parser::if_statement(const Scope::Ptr &scope) {
-//
-//
-//        );
-//    }
-//
-//    ErrorOr<Box<ElifStatement>> Parser::elif_statement(const Scope::Ptr &scope) {
-//
-//
-//    }
-//
-//    ErrorOr<Box<ElseStatement>> Parser::else_statement(const Scope::Ptr &scope) {
-//
-//    }
-//
 
     ErrorOr<BoxedBlock> Parser::block(const Scope::Ptr &scope) noexcept {
 
@@ -513,7 +492,7 @@ namespace hasha {
         }
 
         for (const auto &parameter: params) {
-            scope->parameters[parameter->name().name()] = parameter;
+            scope->parameters[parameter->name().identifier()] = parameter;
         }
 
         EXPECT(RPAREN)
@@ -540,7 +519,7 @@ namespace hasha {
                     scope->id
             );
 
-            scope->functions[name->name()] = fn;
+            scope->functions[name->identifier()] = fn;
             return fn;
         } else {
             auto return_type = TRY(type(scope));
@@ -569,7 +548,7 @@ namespace hasha {
                     scope->id
             );
 
-            scope->functions[name->name()] = fn;
+            scope->functions[name->identifier()] = fn;
             return fn;
         }
     }
@@ -579,10 +558,10 @@ namespace hasha {
         auto begin_span = peek().span();
         auto idn = TRY(identifier(scope));
 
-        if (!scope->is_declaration_in_scope(idn->name())) {
+        if (!scope->is_declaration_in_scope(idn->identifier())) {
             return fmt::format(
                     "{} is not declared in this scope on line: {}, col: {}",
-                    idn->name(),
+                    idn->identifier(),
                     idn->span().line,
                     idn->span().col
             );

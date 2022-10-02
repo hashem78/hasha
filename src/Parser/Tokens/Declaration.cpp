@@ -16,7 +16,7 @@ namespace hasha {
             m_type(std::move(type)),
             m_name(std::move(name)),
             m_assignment_expression(std::move(assignment_expression)),
-            TokenBase(span, scope_id) {}
+            TokenBase(span, scope_id, "Declaration"sv) {}
 
     const std::variant<Box<NormalType>, Box<GenericType>> &Declaration::type() const noexcept {
 

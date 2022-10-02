@@ -13,7 +13,7 @@ namespace hasha {
     ) :
             m_type(type),
             m_literal(std::move(literal)),
-            TokenBase(span, scope_id) {
+            TokenBase(span, scope_id, "Literal"sv) {
 
     }
 

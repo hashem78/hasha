@@ -12,7 +12,6 @@
 
 namespace hasha {
     using Token = std::variant<
-            std::monostate,
             Box<Identifier>,
             std::variant<Box<NormalType>, Box<GenericType>>,
             Box<Expression>,

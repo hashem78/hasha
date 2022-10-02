@@ -11,11 +11,11 @@ namespace hasha {
             int scope_id
     ) noexcept:
             m_identifier(std::move(identifier)),
-            TokenBase(span,scope_id) {
+            TokenBase(span, scope_id, "Identifier"sv) {
 
     }
 
-    const std::string &Identifier::name() const noexcept {
+    const std::string &Identifier::identifier() const noexcept {
 
         return m_identifier;
     }

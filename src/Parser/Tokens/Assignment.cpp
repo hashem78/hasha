@@ -13,7 +13,7 @@ namespace hasha {
     ) noexcept:
             m_assignee(std::move(assignee)),
             m_expression(std::move(expression)),
-            TokenBase(span, scope_id) {
+            TokenBase(span, scope_id, "Assignment"sv) {
 
     }
 

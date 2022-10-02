@@ -120,7 +120,7 @@ namespace hasha {
 
         explicit Parser(std::string file_name, ScopeTree::Ptr scope_tree);
 
-        ErrorOr<void> parse();
+        ErrorOr<BoxedBlock> parse();
 
     };
 

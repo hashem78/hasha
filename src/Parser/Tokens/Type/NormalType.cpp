@@ -10,7 +10,7 @@ namespace hasha {
             const Span &span,
             int scope_id
     ) : m_type(std::move(type)),
-        TokenBase(span, scope_id) {
+        TokenBase(span, scope_id, "NormalType"sv) {
 
     }
 

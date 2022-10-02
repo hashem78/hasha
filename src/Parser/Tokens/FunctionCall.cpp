@@ -14,21 +14,21 @@ namespace hasha {
     ) :
             m_callee(std::move(callee)),
             m_arguments(std::move(tokens)),
-            TokenBase(span, scope_id) {
+            TokenBase(span, scope_id, "FunctionCall"sv) {
 
     }
 
-    const std::string &FunctionCall::get_callee() const noexcept {
+    const std::string &FunctionCall::callee() const noexcept {
 
         return m_callee;
     }
 
-    const std::vector<Box<Expression>> &FunctionCall::get_arguments() const noexcept {
+    const std::vector<Box<Expression>> &FunctionCall::arguments() const noexcept {
 
         return m_arguments;
     }
 
-    int FunctionCall::get_number_of_args() const noexcept {
+    int FunctionCall::number_of_args() const noexcept {
 
         return static_cast<int>(m_arguments.size());
     }

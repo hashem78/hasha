@@ -11,7 +11,7 @@ namespace hasha {
             int scope_id
     ) :
             m_expression(std::move(expr)),
-            TokenBase(span, scope_id) {
+            TokenBase(span, scope_id, "Expression"sv) {
     }
 
     bool Expression::empty() const noexcept {

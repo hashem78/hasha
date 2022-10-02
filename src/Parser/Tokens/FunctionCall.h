@@ -26,14 +26,15 @@ namespace hasha {
 
 
         [[nodiscard]]
-        int get_number_of_args() const noexcept;
+        int number_of_args() const noexcept;
 
         [[nodiscard]]
-        const std::string &get_callee() const noexcept;
+        const std::string &callee() const noexcept;
 
         [[nodiscard]]
-        const std::vector<Box<Expression>>& get_arguments() const noexcept;
+        const std::vector<Box<Expression>> &arguments() const noexcept;
     };
+
     using BoxedFunctionCall = Box<FunctionCall>;
 } // hasha
 

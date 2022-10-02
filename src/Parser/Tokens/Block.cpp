@@ -11,7 +11,7 @@ namespace hasha {
             int scope_id
     ) noexcept:
             m_tokens(std::move(tokens)),
-            TokenBase(span, scope_id) {
+            TokenBase(span, scope_id, "Block"sv) {
 
     }
 

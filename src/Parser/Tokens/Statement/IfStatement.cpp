@@ -13,7 +13,7 @@ namespace hasha {
     ) noexcept:
             m_condition(std::move(condition)),
             m_block(std::move(block)),
-            TokenBase(span, scope_id) {}
+            TokenBase(span, scope_id, "IfStatement"sv) {}
 
     const Expression &IfStatement::condition() const noexcept {
 

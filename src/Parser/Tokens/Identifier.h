@@ -16,13 +16,13 @@ namespace hasha {
 
     public:
         explicit Identifier(
-                std::string name,
+                std::string identifier,
                 const Span &span,
                 int scope_id
         ) noexcept;
 
         [[nodiscard]]
-        const std::string &name() const noexcept;
+        const std::string &identifier() const noexcept;
     };
 
     using BoxedIdentifier = Box<Identifier>;
