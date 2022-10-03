@@ -173,8 +173,8 @@ namespace hasha {
                 span,
                 scope->id
         );
+        scope->declarations[name->identifier()] = declaration;
         return declaration;
-
     }
 
     ErrorOr<Box<Expression>> Parser::parse_expression(
