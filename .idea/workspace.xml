@@ -18,36 +18,23 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Rework Parser to use new Token type.&#10;&#10;- Includes changes to the lexer to simplify parsing literals.&#10;- Includes changes to Scope to be compatible with the new changes.&#10;- Remove ReturnExpression.&#10;- Remove to_json and to_string methods from Token (which is now TokenBase).&#10;- Removes the type checker and interpreter temporarily.">
-      <change afterPath="$PROJECT_DIR$/src/Utils/Serializer/JsonConverter.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Utils/Serializer/JsonConverter.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Utils/Serializer/Serializer.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Utils/Serializer/Serializer.h" afterDir="false" />
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Return references to boxed objects instead of raw ones in some places.">
+      <change afterPath="$PROJECT_DIR$/src/Interpreter/ExpressionEvaluator.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interpreter/ExpressionEvaluator.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interpreter/Interpreter.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interpreter/Interpreter.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interpreter/Language/Variable.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interpreter/Language/Variable.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interpreter/SymbolTable.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interpreter/SymbolTable.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interpreter/SymbolTableTree.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interpreter/SymbolTableTree.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interpreter/Vistors/GlobalBlockVisitor.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interpreter/Vistors/GlobalBlockVisitor.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Assignment.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Assignment.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Block.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Block.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Declaration.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Expression.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Expression.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Function.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Function.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/FunctionCall.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/FunctionCall.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/FunctionCall.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/FunctionCall.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Identifier.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Identifier.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Identifier.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Identifier.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Operator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Operator.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Parameter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Statement/ElifStatement.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Statement/ElifStatement.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Statement/ElseStatement.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Statement/ElseStatement.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Statement/IfStatement.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Statement/IfStatement.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Token.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Token.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/TokenBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/TokenBase.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/TokenBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/TokenBase.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type/GenericType.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/GenericType.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type/GenericType.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/GenericType.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Type/NormalType.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Type/NormalType.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -87,23 +74,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;cf.advertisement.text.has.clang-format&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/mythi/development/cpp/hasha/src/Parser/Tokens/Literal&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
-    &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "cf.advertisement.text.has.clang-format": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "last_opened_file_path": "/home/mythi/development/cpp/hasha/src/Parser/Tokens/Literal",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "dynamic.analysis.tools.valgrind",
+    "structure.view.defaults.are.configured": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/Parser/Tokens/Literal" />
@@ -111,17 +98,17 @@
       <recent name="$PROJECT_DIR$/src/Parser/Tokens/Assignment" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/Interpreter/Vistors" />
       <recent name="$PROJECT_DIR$/src/Utils/Serializer" />
       <recent name="$PROJECT_DIR$/src/Parser/Tokens" />
       <recent name="$PROJECT_DIR$/src/Parser/Tokens/Type" />
       <recent name="$PROJECT_DIR$/src/Parser/Tokens/Operator" />
-      <recent name="$PROJECT_DIR$/src/Interpreter" />
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.hasha">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="fmt" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="hasha" TARGET_NAME="fmt" CONFIG_NAME="Debug">
@@ -189,21 +176,8 @@
       <workItem from="1664645791991" duration="263000" />
       <workItem from="1664646064130" duration="14237000" />
       <workItem from="1664664851607" duration="3753000" />
-      <workItem from="1664707519138" duration="13789000" />
-    </task>
-    <task id="LOCAL-00040" summary="Naming improvements">
-      <created>1661934425990</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1661934425990</updated>
-    </task>
-    <task id="LOCAL-00041" summary="LEXER: simplified next_token method">
-      <created>1662026350982</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1662026350982</updated>
+      <workItem from="1664707519138" duration="25265000" />
+      <workItem from="1664789703194" duration="10380000" />
     </task>
     <task id="LOCAL-00042" summary="Remove useless print">
       <created>1662026423673</created>
@@ -534,7 +508,21 @@
       <option name="project" value="LOCAL" />
       <updated>1664668722627</updated>
     </task>
-    <option name="localTasksCounter" value="89" />
+    <task id="LOCAL-00089" summary="Restore the ability to serialize tokens.">
+      <created>1664737520539</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1664737520539</updated>
+    </task>
+    <task id="LOCAL-00090" summary="Return references to boxed objects instead of raw ones in some places.">
+      <created>1664742981013</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1664742981013</updated>
+    </task>
+    <option name="localTasksCounter" value="91" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -555,8 +543,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Fix parsing function calls in expressions" />
-    <MESSAGE value="Switch function parameter parsing to the new syntax" />
     <MESSAGE value="Remove references to parsing arrays.&#10;&#10;1. We are switching to List being the default array type.&#10;2. List literals will be introduced at a later stage." />
     <MESSAGE value="Remove parsing_value_type from context" />
     <MESSAGE value="Remove artifact of removing the functor pattern matcher." />
@@ -580,7 +566,9 @@
     <MESSAGE value="Introduce void return type" />
     <MESSAGE value="Add Box type based on https://github.com/jbcoe/polymorphic_value" />
     <MESSAGE value="Rework Parser to use new Token type.&#10;&#10;- Includes changes to the lexer to simplify parsing literals.&#10;- Includes changes to Scope to be compatible with the new changes.&#10;- Remove ReturnExpression.&#10;- Remove to_json and to_string methods from Token (which is now TokenBase).&#10;- Removes the type checker and interpreter temporarily." />
-    <option name="LAST_COMMIT_MESSAGE" value="Rework Parser to use new Token type.&#10;&#10;- Includes changes to the lexer to simplify parsing literals.&#10;- Includes changes to Scope to be compatible with the new changes.&#10;- Remove ReturnExpression.&#10;- Remove to_json and to_string methods from Token (which is now TokenBase).&#10;- Removes the type checker and interpreter temporarily." />
+    <MESSAGE value="Restore the ability to serialize tokens." />
+    <MESSAGE value="Return references to boxed objects instead of raw ones in some places." />
+    <option name="LAST_COMMIT_MESSAGE" value="Return references to boxed objects instead of raw ones in some places." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

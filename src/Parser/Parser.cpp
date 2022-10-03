@@ -32,9 +32,10 @@ namespace hasha {
         set_context(Context{});
     }
 
-    ErrorOr<BoxedBlock> Parser::parse() {
+    ErrorOr<std::pair<Scope::Ptr, BoxedBlock>> Parser::parse() {
 
-        return TRY(block(scope_tree->create_scope()));
+        auto global_scope = scope_tree->create_scope();
+        return std::make_pair(global_scope, TRY(block(global_scope)));
     }
 
 

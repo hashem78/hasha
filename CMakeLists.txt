@@ -13,6 +13,7 @@ include_directories(
         src/Parser/Tokens
         src/Utils
         src/Scope
+        src/Interpreter
 )
 add_executable(hasha
         src/main.cpp
@@ -51,5 +52,5 @@ add_executable(hasha
         src/Parser/Tokens/Declaration.h
         src/Parser/Tokens/Expression.cpp
         src/Parser/Tokens/Expression.h
-        src/Utils/Overload.h src/Parser/Tokens/Literal.cpp src/Parser/Tokens/Literal.h src/Parser/Tokens/Operator.h src/Parser/Tokens/Operator.cpp src/Parser/Tokens/FunctionCall.cpp src/Parser/Tokens/FunctionCall.h src/Parser/Tokens/Block.cpp src/Parser/Tokens/Block.h src/Parser/Tokens/Assignment.cpp src/Parser/Tokens/Assignment.h src/Parser/Tokens/Function.cpp src/Parser/Tokens/Function.h src/Parser/Tokens/Type/DefaultParserTypes.h src/Parser/Tokens/Parameter.cpp src/Parser/Tokens/Parameter.h src/Parser/Tokens/Statement/IfStatement.cpp src/Parser/Tokens/Statement/IfStatement.h src/Parser/Tokens/Statement/ElifStatement.cpp src/Parser/Tokens/Statement/ElifStatement.h src/Parser/Tokens/Statement/ElseStatement.cpp src/Parser/Tokens/Statement/ElseStatement.h src/Utils/Serializer/Serializer.cpp src/Utils/Serializer/Serializer.h src/Utils/Serializer/JsonConverter.cpp src/Utils/Serializer/JsonConverter.h)
+        src/Utils/Overload.h src/Parser/Tokens/Literal.cpp src/Parser/Tokens/Literal.h src/Parser/Tokens/Operator.h src/Parser/Tokens/Operator.cpp src/Parser/Tokens/FunctionCall.cpp src/Parser/Tokens/FunctionCall.h src/Parser/Tokens/Block.cpp src/Parser/Tokens/Block.h src/Parser/Tokens/Assignment.cpp src/Parser/Tokens/Assignment.h src/Parser/Tokens/Function.cpp src/Parser/Tokens/Function.h src/Parser/Tokens/Type/DefaultParserTypes.h src/Parser/Tokens/Parameter.cpp src/Parser/Tokens/Parameter.h src/Parser/Tokens/Statement/IfStatement.cpp src/Parser/Tokens/Statement/IfStatement.h src/Parser/Tokens/Statement/ElifStatement.cpp src/Parser/Tokens/Statement/ElifStatement.h src/Parser/Tokens/Statement/ElseStatement.cpp src/Parser/Tokens/Statement/ElseStatement.h src/Utils/Serializer/Serializer.cpp src/Utils/Serializer/Serializer.h src/Utils/Serializer/JsonConverter.cpp src/Utils/Serializer/JsonConverter.h src/Interpreter/Interpreter.cpp src/Interpreter/Interpreter.h src/Interpreter/Vistors/GlobalBlockVisitor.cpp src/Interpreter/Vistors/GlobalBlockVisitor.h src/Interpreter/SymbolTable.cpp src/Interpreter/SymbolTable.h src/Interpreter/SymbolTableTree.cpp src/Interpreter/SymbolTableTree.h src/Interpreter/Language/Variable.cpp src/Interpreter/Language/Variable.h src/Interpreter/ExpressionEvaluator.cpp src/Interpreter/ExpressionEvaluator.h)
 target_link_libraries(hasha fmt::fmt nlohmann_json::nlohmann_json magic_enum::magic_enum)
