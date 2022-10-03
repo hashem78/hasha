@@ -31,6 +31,7 @@
 #include "Statement/IfStatement.h"
 #include "Statement/ElifStatement.h"
 #include "Statement/ElseStatement.h"
+#include "ReturnToken.h"
 
 
 namespace hasha {
@@ -90,6 +91,8 @@ namespace hasha {
                 const Token &previous_token,
                 const Scope::Ptr &scope
         ) noexcept;
+
+        ErrorOr<BoxedReturnToken> return_token(const Scope::Ptr &scope) noexcept;
 
         ContextStack context_stack;
 

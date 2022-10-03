@@ -194,4 +194,13 @@ namespace hasha {
                 {"block",      operator()(obj->block())}
         };
     }
+
+    nlohmann::ordered_json JsonConverter::operator()(const BoxedReturnToken &obj) const noexcept {
+
+        return {
+                {"token_type", obj->token_type()},
+                {"span",       obj->span().to_json()},
+                {"expression", operator()(obj->expression())}
+        };
+    }
 } // hasha

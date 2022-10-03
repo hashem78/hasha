@@ -37,5 +37,7 @@ namespace hasha {
     class ElifStatement;
 
     class ElseStatement;
+
+    class ReturnToken;
 }
 #endif //HASHA_TOKENFORWARDS_H

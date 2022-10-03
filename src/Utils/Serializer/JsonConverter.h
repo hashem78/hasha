@@ -21,6 +21,7 @@
 #include "Statement/IfStatement.h"
 #include "Statement/ElifStatement.h"
 #include "Statement/ElseStatement.h"
+#include "ReturnToken.h"
 #include "nlohmann/json.hpp"
 #include "magic_enum.hpp"
 #include "fmt/core.h"
@@ -75,6 +76,9 @@ namespace hasha {
 
         [[nodiscard]]
         nlohmann::ordered_json operator()(const BoxedElseStatement &obj) const noexcept;
+
+        [[nodiscard]]
+        nlohmann::ordered_json operator()(const BoxedReturnToken &obj) const noexcept;
     };
 
 } // hasha

@@ -409,6 +409,7 @@ namespace hasha {
 
         auto token_list = TokenList{};
         auto begin_span = peek().span();
+        bool found_return = false;
 
         while (!match(RCURLY) && !match(EOFL)) {
 
@@ -429,18 +430,8 @@ namespace hasha {
             } else if (match(Patterns::Assignment)) {
                 token_list.push_back(TRY(assignment(scope)));
             } else if (match(RETURN)) {
-                auto ret = TRY(parse_expression(scope));
-
-                if (current_context().parsing_void_function) {
-                    if (!ret->expression().empty())
-                        return fmt::format(
-                                "Expected empty return expression on line: {}, col: {} ",
-                                ret->span().line,
-                                ret->span().col
-                        );
-                }
-
-                token_list.push_back(std::move(ret));
+                token_list.push_back(TRY(return_token(scope)));
+                found_return = true;
             } else {
                 token_list.push_back(TRY(parse_expression(scope)));
                 EXPECT(SEMICOLON)
@@ -451,7 +442,8 @@ namespace hasha {
         return make_box<Block>(
                 token_list,
                 begin_span.merge_with(end_span),
-                scope->id
+                scope->id,
+                found_return
         );
 
     }
@@ -508,6 +500,15 @@ namespace hasha {
 
             auto parsed_block = TRY(block(function_scope));
 
+            if (!parsed_block->contains_return()) {
+                fmt::print(
+                        "Non-void function {} does not return anything on line: {}, col: {}",
+                        name->identifier(),
+                        name->span().line,
+                        name->span().col
+                );
+            }
+
             EXPECT(RCURLY)
             auto end_span = peek().span();
 
@@ -525,7 +526,9 @@ namespace hasha {
         } else {
             auto return_type = TRY(type(scope));
 
-            if (*return_type == *DefVoidType) {
+            auto return_type_is_void = *return_type == *DefVoidType;
+
+            if (return_type_is_void) {
                 set_context(current_context().set_parsing_void_function(true));
             }
 
@@ -533,8 +536,17 @@ namespace hasha {
 
             auto parsed_block = TRY(block(function_scope));
 
-            if (*return_type == *DefVoidType) {
+            if (return_type_is_void) {
                 restore_context();
+            }
+
+            if (!return_type_is_void && !parsed_block->contains_return()) {
+                fmt::print(
+                        "Non-void function {} does not return anything on line: {}, col: {}",
+                        name->identifier(),
+                        name->span().line,
+                        name->span().col
+                );
             }
 
             EXPECT(RCURLY)
@@ -665,6 +677,38 @@ namespace hasha {
         return make_box<ElseStatement>(
                 blk,
                 before_span.merge_with(after_span),
+                scope->id
+        );
+    }
+
+    ErrorOr<BoxedReturnToken> Parser::return_token(const Scope::Ptr &scope) noexcept {
+
+        auto begin_span = peek().span();
+        EXPECT(RETURN);
+        auto ret = TRY(parse_expression(scope));
+
+        if (current_context().parsing_void_function) {
+            if (!ret->expression().empty()) {
+                return fmt::format(
+                        "Expected empty return expression on line: {}, col: {} ",
+                        ret->span().line,
+                        ret->span().col
+                );
+            }
+        } else {
+            if (ret->expression().empty()) {
+                return fmt::format(
+                        "Expected non-empty return expression on line: {}, col: {} ",
+                        ret->span().line,
+                        ret->span().col
+                );
+            }
+        }
+        auto end_span = peek().span();
+
+        return make_box<ReturnToken>(
+                ret,
+                begin_span.merge_with(end_span),
                 scope->id
         );
     }

@@ -25,7 +25,8 @@ namespace hasha {
             Box<Parameter>,
             Box<IfStatement>,
             Box<ElifStatement>,
-            Box<ElseStatement>
+            Box<ElseStatement>,
+            Box<ReturnToken>
     >;
     using TokenList = std::vector<Token>;
 }
