@@ -66,7 +66,16 @@ namespace hasha {
     }
 
     ErrorOr<void> TokenVisitor::operator()(const BoxedIfStatement &obj) {
+        auto evaluator = ExpressionEvaluator{obj->condition(), symbol_tree, symbol_table};
+        auto condition = std::get<bool>(TRY(evaluator.evaluate()));
+        if (condition) {
 
+            auto block_symbol_table = symbol_tree->create_table(symbol_table);
+
+            for (const auto &token: obj->block()->tokens()) {
+                TRY(std::visit(TokenVisitor{symbol_tree, block_symbol_table}, token));
+            }
+        }
         return {};
     }
 
