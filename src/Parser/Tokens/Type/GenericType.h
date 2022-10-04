@@ -24,6 +24,9 @@ namespace hasha {
         );
 
         [[nodiscard]]
+        bool operator==(const GenericType &other) const noexcept;
+
+        [[nodiscard]]
         const BoxedType &type() const;
 
         [[nodiscard]]

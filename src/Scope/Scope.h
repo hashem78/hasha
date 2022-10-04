@@ -34,9 +34,11 @@ namespace hasha {
 
         bool is_function_in_scope(const std::string &name);
 
-        const Function &get_function(const std::string &name) const;
+        const Function *get_function(const std::string &name) const;
 
-        const Declaration &get_declaration(const std::string &name) const;
+        const Declaration *get_declaration(const std::string &name) const;
+
+        const Parameter *get_parameter(const std::string &name) const;
 
     private:
         static int _id;

@@ -3,6 +3,9 @@
 //
 
 #include "GenericType.h"
+#include "Overload.h"
+#include "NormalType.h"
+#include "TypeComparer.h"
 
 namespace hasha {
     GenericType::GenericType(
@@ -25,5 +28,18 @@ namespace hasha {
     const BoxedTypeList &GenericType::generics_list() const {
 
         return m_generics_list;
+    }
+
+    bool GenericType::operator==(const GenericType &other) const noexcept {
+
+        if (!std::visit(TypeComparer{}, m_type, other.m_type)) { return false; }
+
+        if (m_generics_list.size() != other.m_generics_list.size())
+            return false;
+        for (size_t i = 0; i < m_generics_list.size(); i++) {
+            if(!std::visit(TypeComparer{}, m_generics_list[i], other.m_generics_list[i]))
+                return false;
+        }
+        return true;
     }
 } // hasha

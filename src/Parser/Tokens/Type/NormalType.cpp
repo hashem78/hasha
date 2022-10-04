@@ -16,7 +16,7 @@ namespace hasha {
 
     bool NormalType::operator==(const NormalType &other) const {
 
-        return m_type == other.type();
+        return m_type == other.m_type;
     }
 
     const std::string &NormalType::type() const {

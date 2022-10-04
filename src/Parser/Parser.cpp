@@ -10,6 +10,7 @@
 #include "Constants.h"
 #include "Overload.h"
 #include "Type/DefaultParserTypes.h"
+#include "../TypeChecker/TypeChecker.h"
 
 #define EXPECT(lexeme) if(!match(lexeme)) {return fmt::format("Expected {} Found {}",lexeme.to_string(),peek().to_string());}else{advance();}
 
@@ -156,6 +157,9 @@ namespace hasha {
                     token
             ));
         }
+
+        auto checker = TypeChecker{decl_type, scope};
+        TRY(checker.check_expression(asx));
 
         auto after_span = peek(-1).span();
 
@@ -507,6 +511,14 @@ namespace hasha {
                         name->span().line,
                         name->span().col
                 );
+            } else {
+                auto checker = TypeChecker{return_type, function_scope};
+                for (const auto &token: parsed_block->tokens()) {
+                    if (std::holds_alternative<BoxedReturnToken>(token)) {
+                        const auto &return_token = std::get<BoxedReturnToken>(token);
+                        TRY(checker.check_expression(return_token->expression()));
+                    }
+                }
             }
 
             EXPECT(RCURLY)
@@ -547,6 +559,14 @@ namespace hasha {
                         name->span().line,
                         name->span().col
                 );
+            } else {
+                auto checker = TypeChecker{return_type, function_scope};
+                for (const auto &token: parsed_block->tokens()) {
+                    if (std::holds_alternative<BoxedReturnToken>(token)) {
+                        const auto &return_token = std::get<BoxedReturnToken>(token);
+                        TRY(checker.check_expression(return_token->expression()));
+                    }
+                }
             }
 
             EXPECT(RCURLY)
@@ -581,6 +601,9 @@ namespace hasha {
         }
         EXPECT(EQUALS)
         auto expr = TRY(parse_expression(scope));
+        auto declaration = scope->get_declaration(idn->identifier());
+        auto checker = TypeChecker{declaration->type(), scope};
+        TRY(checker.check_expression(expr));
         auto end_span = peek(-1).span();
         EXPECT(SEMICOLON)
 
@@ -597,6 +620,8 @@ namespace hasha {
         auto before_span = peek().span();
         EXPECT(IF)
         auto condition = TRY(parse_expression(scope, LCURLY));
+        auto checker = TypeChecker{DefBooleanType, scope};
+        TRY(checker.check_expression(condition));
         EXPECT(LCURLY)
         auto blk = TRY(block(scope_tree->create_scope(scope->id)));
         EXPECT(RCURLY)
@@ -638,6 +663,8 @@ namespace hasha {
         auto before_span = peek().span();
         EXPECT(ELIF)
         auto condition = TRY(parse_expression(scope, LCURLY));
+        auto checker = TypeChecker{DefBooleanType, scope};
+        TRY(checker.check_expression(condition));
         EXPECT(LCURLY)
         auto blk = TRY(block(scope_tree->create_scope(scope->id)));
         EXPECT(RCURLY)
