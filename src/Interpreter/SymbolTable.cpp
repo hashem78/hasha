@@ -3,6 +3,7 @@
 //
 
 #include "SymbolTable.h"
+#include "Identifier.h"
 #include "fmt/core.h"
 
 namespace hasha {
@@ -24,9 +25,35 @@ namespace hasha {
         variables.emplace(variable.name, variable);
     }
 
-    lang::Variable &SymbolTable::get_varible(const std::string &key) {
+    ErrorOr<lang::Variable *> SymbolTable::get_varible(const std::string &key) {
 
-        return variables.at(key);
+        auto temp = shared_from_this();
+
+        while (temp != nullptr) {
+            if (temp->variables.contains(key))
+                return &variables.at(key);
+            temp = temp->parent;
+        }
+
+        return fmt::format("RUNTIME: Failed to access variable {}", key);
+    }
+
+    void SymbolTable::register_function(const BoxedFunction &function) {
+
+        functions.insert({function->name()->identifier(), function});
+    }
+
+    ErrorOr<BoxedFunction> SymbolTable::get_function(const std::string &key) {
+
+        auto temp = shared_from_this();
+
+        while (temp != nullptr) {
+            if (temp->functions.contains(key))
+                return functions.at(key);
+            temp = temp->parent;
+        }
+
+        return fmt::format("RUNTIME: Failed to load function {}", key);
     }
 
 

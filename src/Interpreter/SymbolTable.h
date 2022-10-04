@@ -12,11 +12,12 @@
 #include "Language/Variable.h"
 
 #include "ErrorOr.h"
+#include "Function.h"
 
 
 namespace hasha {
 
-    struct SymbolTable {
+    struct SymbolTable: std::enable_shared_from_this<SymbolTable> {
 
         using Ptr = std::shared_ptr<SymbolTable>;
 
@@ -30,10 +31,15 @@ namespace hasha {
 
         void register_varible(const lang::Variable &variable);
 
-        lang::Variable &get_varible(const std::string &key);
+        ErrorOr<lang::Variable*> get_varible(const std::string &key);
+
+        void register_function(const BoxedFunction &function);
+
+        ErrorOr<BoxedFunction> get_function(const std::string &key);
 
     private:
         std::unordered_map<std::string, lang::Variable> variables;
+        std::unordered_map<std::string, BoxedFunction> functions;
         static int id_;
     };
 

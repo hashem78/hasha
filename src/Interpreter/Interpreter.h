@@ -27,7 +27,8 @@ namespace hasha {
         ) noexcept;
 
         ErrorOr<void> interpret();
-
+        ErrorOr<void> first_pass();
+        ErrorOr<void> second_pass();
     };
 
 } // hasha

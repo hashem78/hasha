@@ -27,7 +27,7 @@ namespace hasha::lang {
                 },
                 value
         );
-        fmt::print("Variable: {} {}", name, val);
+        fmt::print("Variable: {} {}\n", name, val);
 
     }
 } // lang

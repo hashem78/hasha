@@ -8,13 +8,19 @@
 #include "Identifier.h"
 #include "Operator.h"
 #include "Literal.h"
+#include "FunctionCall.h"
+#include "Vistors/TokenVisitor.h"
+#include "fmt/core.h"
+#include "FunctionEvaluator.h"
 
 namespace hasha {
     ExpressionEvaluator::ExpressionEvaluator(
             BoxedExpression expression,
+            SymbolTableTree::Ptr symbol_tree,
             SymbolTable::Ptr symbol_table
     ) noexcept:
             expression(std::move(expression)),
+            symbol_tree(std::move(symbol_tree)),
             symbol_table(std::move(symbol_table)) {
     }
 
@@ -27,7 +33,7 @@ namespace hasha {
                             Overload{
                                     [](auto) -> ErrorOr<void> { return {}; },
                                     [&, this](const BoxedIdentifier &identifier) -> ErrorOr<void> {
-                                        stk.push(symbol_table->get_varible(identifier->identifier()).value);
+                                        stk.push(TRY(symbol_table->get_varible(identifier->identifier()))->value);
                                         return {};
                                     },
                                     [&](const BoxedOperator &op) -> ErrorOr<void> {
@@ -114,6 +120,40 @@ namespace hasha {
                                                 }
                                                 break;
                                         }
+                                        stk.push(val);
+                                        return {};
+                                    },
+                                    [&, this](const BoxedFunctionCall &function_call) -> ErrorOr<void> {
+                                        auto call_name = function_call->callee();
+                                        auto call_arguments = function_call->arguments();
+
+                                        auto function = TRY(symbol_table->get_function(call_name));
+                                        auto function_parameters = function->parameters();
+
+                                        if (call_arguments.size() != function_parameters.size()) {
+                                            return fmt::format(
+                                                    "{} expects {} got {} arguments on line: {}, col: {}",
+                                                    call_name,
+                                                    function_parameters.size(),
+                                                    call_arguments.size(),
+                                                    function_call->span().line,
+                                                    function_call->span().col
+                                            );
+                                        }
+                                        // Register parameters with evaled arguments
+                                        int arg_index = 0;
+                                        for (const auto &arg_expression: call_arguments) {
+                                            auto evaluator = ExpressionEvaluator{
+                                                    arg_expression, symbol_tree,
+                                                    symbol_table
+                                            };
+                                            auto val = TRY(evaluator.evaluate());
+                                            auto param_name = function_parameters[arg_index++]->name()->identifier();
+                                            auto variable = lang::Variable{param_name, val};
+                                            symbol_table->register_varible(variable);
+                                        }
+                                        auto evaluator = FunctionEvaluator{function, symbol_tree, symbol_table};
+                                        auto val = TRY(evaluator.evaluate());
                                         stk.push(val);
                                         return {};
                                     }

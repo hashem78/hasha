@@ -18,24 +18,21 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Return references to boxed objects instead of raw ones in some places.">
-      <change afterPath="$PROJECT_DIR$/src/Interpreter/ExpressionEvaluator.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interpreter/ExpressionEvaluator.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interpreter/Interpreter.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interpreter/Interpreter.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interpreter/Language/Variable.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interpreter/Language/Variable.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interpreter/SymbolTable.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interpreter/SymbolTable.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interpreter/SymbolTableTree.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interpreter/SymbolTableTree.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interpreter/Vistors/GlobalBlockVisitor.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interpreter/Vistors/GlobalBlockVisitor.h" afterDir="false" />
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Add return token to parser.&#10;&#10;This solves the problem of return expressions in functions.&#10;&#10;Note that this commit will break build because some build files were deleted prematurely while working on a followup commit">
+      <change afterPath="$PROJECT_DIR$/src/Interpreter/Evaluators/FunctionEvaluator.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interpreter/Evaluators/FunctionEvaluator.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interpreter/Vistors/TokenVisitor.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interpreter/Vistors/TokenVisitor.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interpreter/ExpressionEvaluator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/Evaluators/ExpressionEvaluator.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interpreter/ExpressionEvaluator.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/Evaluators/ExpressionEvaluator.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interpreter/Interpreter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/Interpreter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interpreter/Interpreter.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/Interpreter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interpreter/SymbolTable.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/SymbolTable.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interpreter/SymbolTable.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/SymbolTable.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interpreter/Vistors/GlobalBlockVisitor.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interpreter/Vistors/GlobalBlockVisitor.h" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,23 +71,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "cf.advertisement.text.has.clang-format": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "last_opened_file_path": "/home/mythi/development/cpp/hasha/src/Parser/Tokens/Literal",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "dynamic.analysis.tools.valgrind",
-    "structure.view.defaults.are.configured": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;cf.advertisement.text.has.clang-format&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/mythi/development/cpp/hasha/src/Parser/Tokens/Literal&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;dynamic.analysis.tools.valgrind&quot;,
+    &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/Parser/Tokens/Literal" />
@@ -98,17 +95,17 @@
       <recent name="$PROJECT_DIR$/src/Parser/Tokens/Assignment" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/Interpreter/Evaluators" />
+      <recent name="$PROJECT_DIR$/src/Interpreter" />
       <recent name="$PROJECT_DIR$/src/Interpreter/Vistors" />
       <recent name="$PROJECT_DIR$/src/Utils/Serializer" />
       <recent name="$PROJECT_DIR$/src/Parser/Tokens" />
-      <recent name="$PROJECT_DIR$/src/Parser/Tokens/Type" />
-      <recent name="$PROJECT_DIR$/src/Parser/Tokens/Operator" />
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.hasha">
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
     </configuration>
     <configuration name="fmt" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="hasha" TARGET_NAME="fmt" CONFIG_NAME="Debug">
@@ -177,28 +174,8 @@
       <workItem from="1664646064130" duration="14237000" />
       <workItem from="1664664851607" duration="3753000" />
       <workItem from="1664707519138" duration="25265000" />
-      <workItem from="1664789703194" duration="10380000" />
-    </task>
-    <task id="LOCAL-00042" summary="Remove useless print">
-      <created>1662026423673</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1662026423673</updated>
-    </task>
-    <task id="LOCAL-00043" summary="Remove separation of operator types.&#10;&#10;Operators are context dependant so lumping them in groups is a bad idea that caused the expression parser to miss parses.">
-      <created>1662027741754</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1662027741754</updated>
-    </task>
-    <task id="LOCAL-00044" summary="Remove missed debug prints in previous commit">
-      <created>1662027801280</created>
-      <option name="number" value="00044" />
-      <option name="presentableId" value="LOCAL-00044" />
-      <option name="project" value="LOCAL" />
-      <updated>1662027801280</updated>
+      <workItem from="1664789703194" duration="11266000" />
+      <workItem from="1664816720928" duration="16918000" />
     </task>
     <task id="LOCAL-00045" summary="Remove missed debug prints in previous commit">
       <created>1662027929552</created>
@@ -522,7 +499,28 @@
       <option name="project" value="LOCAL" />
       <updated>1664742981013</updated>
     </task>
-    <option name="localTasksCounter" value="91" />
+    <task id="LOCAL-00091" summary="Begin work on new and improved interpreter">
+      <created>1664811807887</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1664811807887</updated>
+    </task>
+    <task id="LOCAL-00092" summary="Declarations were not getting added to scope">
+      <created>1664811909618</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1664811909618</updated>
+    </task>
+    <task id="LOCAL-00093" summary="Add return token to parser.&#10;&#10;This solves the problem of return expressions in functions.&#10;&#10;Note that this commit will break build because some build files were deleted prematurely while working on a followup commit">
+      <created>1664839914651</created>
+      <option name="number" value="00093" />
+      <option name="presentableId" value="LOCAL-00093" />
+      <option name="project" value="LOCAL" />
+      <updated>1664839914651</updated>
+    </task>
+    <option name="localTasksCounter" value="94" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -543,9 +541,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Remove references to parsing arrays.&#10;&#10;1. We are switching to List being the default array type.&#10;2. List literals will be introduced at a later stage." />
-    <MESSAGE value="Remove parsing_value_type from context" />
-    <MESSAGE value="Remove artifact of removing the functor pattern matcher." />
     <MESSAGE value="Add inline assignments." />
     <MESSAGE value="Declarations are forced to have an assignment expression" />
     <MESSAGE value="Start actual work on the interpreter" />
@@ -568,7 +563,10 @@
     <MESSAGE value="Rework Parser to use new Token type.&#10;&#10;- Includes changes to the lexer to simplify parsing literals.&#10;- Includes changes to Scope to be compatible with the new changes.&#10;- Remove ReturnExpression.&#10;- Remove to_json and to_string methods from Token (which is now TokenBase).&#10;- Removes the type checker and interpreter temporarily." />
     <MESSAGE value="Restore the ability to serialize tokens." />
     <MESSAGE value="Return references to boxed objects instead of raw ones in some places." />
-    <option name="LAST_COMMIT_MESSAGE" value="Return references to boxed objects instead of raw ones in some places." />
+    <MESSAGE value="Begin work on new and improved interpreter" />
+    <MESSAGE value="Declarations were not getting added to scope" />
+    <MESSAGE value="Add return token to parser.&#10;&#10;This solves the problem of return expressions in functions.&#10;&#10;Note that this commit will break build because some build files were deleted prematurely while working on a followup commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add return token to parser.&#10;&#10;This solves the problem of return expressions in functions.&#10;&#10;Note that this commit will break build because some build files were deleted prematurely while working on a followup commit" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

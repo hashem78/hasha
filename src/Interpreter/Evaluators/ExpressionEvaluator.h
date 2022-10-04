@@ -8,15 +8,18 @@
 #include "Expression.h"
 #include "SymbolTable.h"
 #include "ErrorOr.h"
+#include "SymbolTableTree.h"
 
 namespace hasha {
 
     struct ExpressionEvaluator {
         BoxedExpression expression;
         SymbolTable::Ptr symbol_table;
+        SymbolTableTree::Ptr symbol_tree;
 
         explicit ExpressionEvaluator(
                 BoxedExpression expression,
+                SymbolTableTree::Ptr symbol_tree,
                 SymbolTable::Ptr symbol_table
         ) noexcept;
 
