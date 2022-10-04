@@ -18,7 +18,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Add return token to parser.&#10;&#10;This solves the problem of return expressions in functions.&#10;&#10;Note that this commit will break build because some build files were deleted prematurely while working on a followup commit">
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Functions can now be called and evaluated, expressions take their values into account too.">
       <change afterPath="$PROJECT_DIR$/src/Interpreter/Evaluators/FunctionEvaluator.cpp" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/Interpreter/Evaluators/FunctionEvaluator.h" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/Interpreter/Vistors/TokenVisitor.cpp" afterDir="false" />
@@ -29,6 +29,7 @@
       <change beforePath="$PROJECT_DIR$/src/Interpreter/ExpressionEvaluator.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/Evaluators/ExpressionEvaluator.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Interpreter/Interpreter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/Interpreter.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Interpreter/Interpreter.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/Interpreter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interpreter/Language/Variable.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/Language/Variable.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Interpreter/SymbolTable.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/SymbolTable.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Interpreter/SymbolTable.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/SymbolTable.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Interpreter/Vistors/GlobalBlockVisitor.cpp" beforeDir="false" />
@@ -175,14 +176,7 @@
       <workItem from="1664664851607" duration="3753000" />
       <workItem from="1664707519138" duration="25265000" />
       <workItem from="1664789703194" duration="11266000" />
-      <workItem from="1664816720928" duration="16918000" />
-    </task>
-    <task id="LOCAL-00045" summary="Remove missed debug prints in previous commit">
-      <created>1662027929552</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1662027929552</updated>
+      <workItem from="1664816720928" duration="17458000" />
     </task>
     <task id="LOCAL-00046" summary="Add missing template deduction type for PatternVisitor">
       <created>1662028176580</created>
@@ -520,7 +514,14 @@
       <option name="project" value="LOCAL" />
       <updated>1664839914651</updated>
     </task>
-    <option name="localTasksCounter" value="94" />
+    <task id="LOCAL-00094" summary="Functions can now be called and evaluated, expressions take their values into account too.">
+      <created>1664842201159</created>
+      <option name="number" value="00094" />
+      <option name="presentableId" value="LOCAL-00094" />
+      <option name="project" value="LOCAL" />
+      <updated>1664842201159</updated>
+    </task>
+    <option name="localTasksCounter" value="95" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -541,7 +542,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Add inline assignments." />
     <MESSAGE value="Declarations are forced to have an assignment expression" />
     <MESSAGE value="Start actual work on the interpreter" />
     <MESSAGE value="Remove useless SPEC file" />
@@ -566,7 +566,8 @@
     <MESSAGE value="Begin work on new and improved interpreter" />
     <MESSAGE value="Declarations were not getting added to scope" />
     <MESSAGE value="Add return token to parser.&#10;&#10;This solves the problem of return expressions in functions.&#10;&#10;Note that this commit will break build because some build files were deleted prematurely while working on a followup commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add return token to parser.&#10;&#10;This solves the problem of return expressions in functions.&#10;&#10;Note that this commit will break build because some build files were deleted prematurely while working on a followup commit" />
+    <MESSAGE value="Functions can now be called and evaluated, expressions take their values into account too." />
+    <option name="LAST_COMMIT_MESSAGE" value="Functions can now be called and evaluated, expressions take their values into account too." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

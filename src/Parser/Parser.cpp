@@ -485,7 +485,7 @@ namespace hasha {
         }
 
         for (const auto &parameter: params) {
-            scope->parameters[parameter->name()->identifier()] = parameter;
+            function_scope->parameters[parameter->name()->identifier()] = parameter;
         }
 
         EXPECT(RPAREN)
