@@ -91,6 +91,20 @@ namespace hasha {
                                                                     [](auto z) { return z; }
                                                             }, a, b
                                                     );
+                                                } else if (op->operation() == "&&") {
+                                                    result = std::visit<lang::VariableValue>(
+                                                            Overload{
+                                                                    [](bool i1, bool i2) { return i1 && i2; },
+                                                                    [](auto z) { return true; }
+                                                            }, a, b
+                                                    );
+                                                } else if (op->operation() == "||") {
+                                                    result = std::visit<lang::VariableValue>(
+                                                            Overload{
+                                                                    [](bool i1, bool i2) { return i1 || i2; },
+                                                                    [](auto z) { return true; }
+                                                            }, a, b
+                                                    );
                                                 }
                                             }
                                                 break;
