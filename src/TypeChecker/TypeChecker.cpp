@@ -96,7 +96,46 @@ namespace hasha {
             const BoxedLiteral &literal
     ) {
 
-        // TODO: check literal types.
+        bool failed = false;
+
+        auto helper = [this](const std::string &str_tp) {
+            return !std::visit(
+                    Overload{
+                            [&](const BoxedNormalType &tp) { return tp->type() == str_tp; },
+                            [](auto) { return false; }
+                    }, type
+            );
+        };
+        std::string fail_type;
+        switch (literal->type()) {
+
+            case LiteralType::Integer:
+                failed = helper("int");
+                fail_type = "int";
+                break;
+            case LiteralType::Float:
+                failed = helper("float");
+                fail_type = "float";
+                break;
+            case LiteralType::String:
+                failed = helper("string");
+                fail_type = "string";
+                break;
+            case LiteralType::Boolean:
+                failed = helper("bool");
+                fail_type = "bool";
+                break;
+        }
+        if (failed) {
+            return fmt::format(
+                    "Unexpected literal {} of type {} instead of type {} on line: {}, col: {}",
+                    literal->literal(),
+                    fail_type,
+                    std::visit(TypeToStringBuilder{}, type),
+                    literal->span().line,
+                    literal->span().col
+            );
+        }
         return {};
     }
 
