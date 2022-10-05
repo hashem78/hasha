@@ -18,18 +18,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Remove LexOperatorType and use OperatorType as a shared type">
-      <change afterPath="$PROJECT_DIR$/src/SharedTypes/LiteralType.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Lexer/Constants.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Constants.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexeme.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexeme.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexeme.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexeme.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Lexer/LexerTypes.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/LexerTypes.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Literal.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Literal.h" afterDir="false" />
-    </list>
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Remove LexLiteralType and use LiteralType as a shared type" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -173,13 +162,6 @@
       <workItem from="1664789703194" duration="11266000" />
       <workItem from="1664816720928" duration="19569000" />
       <workItem from="1664878008233" duration="15977000" />
-    </task>
-    <task id="LOCAL-00052" summary="Token Lists are no longer pointers &#10;&#10;They were pointers to std::deque, but now they're simply instances of std::vector">
-      <created>1662709529521</created>
-      <option name="number" value="00052" />
-      <option name="presentableId" value="LOCAL-00052" />
-      <option name="project" value="LOCAL" />
-      <updated>1662709529521</updated>
     </task>
     <task id="LOCAL-00053" summary="Update Error code">
       <created>1662711432108</created>
@@ -517,7 +499,14 @@
       <option name="project" value="LOCAL" />
       <updated>1665010594089</updated>
     </task>
-    <option name="localTasksCounter" value="101" />
+    <task id="LOCAL-00101" summary="Remove LexLiteralType and use LiteralType as a shared type">
+      <created>1665011002317</created>
+      <option name="number" value="00101" />
+      <option name="presentableId" value="LOCAL-00101" />
+      <option name="project" value="LOCAL" />
+      <updated>1665011002318</updated>
+    </task>
+    <option name="localTasksCounter" value="102" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -538,7 +527,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Conditionals no longer derive from IfStatement&#10;but directly from token." />
     <MESSAGE value="More work on the Interpreter and introduce the TypeChecker" />
     <MESSAGE value="Remove useless junk from Expression.cpp" />
     <MESSAGE value="Parser Expect EQUALS in declaration" />
@@ -563,7 +551,8 @@
     <MESSAGE value="Boolean expressions can be evaluated now." />
     <MESSAGE value="Split TokenVisitor implementation to cpp file" />
     <MESSAGE value="Remove LexOperatorType and use OperatorType as a shared type" />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove LexOperatorType and use OperatorType as a shared type" />
+    <MESSAGE value="Remove LexLiteralType and use LiteralType as a shared type" />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove LexLiteralType and use LiteralType as a shared type" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
