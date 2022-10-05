@@ -46,6 +46,7 @@ namespace hasha {
 
         return {
                 {"token_type", obj->token_type()},
+                {"assignment_expression", this->operator()(obj->assignment_expression())},
                 {"span",       obj->span().to_json()},
                 {"name",       this->operator()(obj->name())},
                 {"type",       std::visit(JsonConverter{}, obj->type())}
