@@ -15,8 +15,8 @@ namespace hasha {
     inline const Lexeme ELSE{"else", LexemeType::KEYWORD};
     inline const Lexeme ELIF{"elif", LexemeType::KEYWORD};
     inline const Lexeme RETURN{"return", LexemeType::KEYWORD};
-    inline const Lexeme TRUE{"true", LexemeType::LITERAL, LexLitrealType::BOOLEAN_LITERAL};
-    inline const Lexeme FALSE{"false", LexemeType::LITERAL, LexLitrealType::BOOLEAN_LITERAL};
+    inline const Lexeme TRUE{"true", LexemeType::LITERAL, LiteralType::Boolean};
+    inline const Lexeme FALSE{"false", LexemeType::LITERAL, LiteralType::Boolean};
     inline const Lexeme LCURLY{"{", LexemeType::SYMBOL};
     inline const Lexeme RCURLY{"}", LexemeType::SYMBOL};
     inline const Lexeme LPAREN{"(", LexemeType::SYMBOL};

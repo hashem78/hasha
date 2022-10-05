@@ -201,7 +201,7 @@ namespace hasha {
             } while (peek() != '"');
             string_ltrl += '"';
             advance();
-            return Lexeme{string_ltrl, LexemeType::LITERAL, LexLitrealType::STRING_LITERAL, create_span()};
+            return Lexeme{string_ltrl, LexemeType::LITERAL, LiteralType::String, create_span()};
         }
 
 
@@ -225,11 +225,11 @@ namespace hasha {
                 return Lexeme{
                         fmt::format("{}.{}", token, decimal_part),
                         LexemeType::LITERAL,
-                        LexLitrealType::FLOATINGPOINT_LITERAL,
+                        LiteralType::Float,
                         create_span()
                 };
             }
-            return Lexeme{token, LexemeType::LITERAL, LexLitrealType::INTEGER_LITERAL, create_span()};
+            return Lexeme{token, LexemeType::LITERAL, LiteralType::Integer, create_span()};
         }
 
         if (is_identifier(token))

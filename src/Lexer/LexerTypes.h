@@ -15,13 +15,6 @@ namespace hasha {
         ILLEGAL,
         EOFT,
     };
-    enum class LexLitrealType {
-        BOOLEAN_LITERAL,
-        INTEGER_LITERAL,
-        FLOATINGPOINT_LITERAL,
-        STRING_LITERAL
-    };
-
     enum class Associativity {
         LEFT,
         RIGHT,

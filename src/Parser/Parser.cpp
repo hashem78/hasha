@@ -362,25 +362,8 @@ namespace hasha {
         if (!match(LexemeType::LITERAL))
             return fmt::format("Expected literal got {}", peek().to_string());
 
-        auto create_literal = [&scope, this](LiteralType type) {
-            auto ltrl = make_box<Literal>(type, peek().data(), peek().span(), scope->id);
-            advance();
-            return ltrl;
-        };
-
-        switch (peek().litreal_type()) {
-
-            case LexLitrealType::BOOLEAN_LITERAL:
-                return create_literal(LiteralType::Boolean);
-            case LexLitrealType::INTEGER_LITERAL:
-                return create_literal(LiteralType::Integer);
-            case LexLitrealType::FLOATINGPOINT_LITERAL:
-                return create_literal(LiteralType::Float);
-            case LexLitrealType::STRING_LITERAL:
-                return create_literal(LiteralType::String);
-        }
-
-        return {};
+        advance();
+        return  make_box<Literal>(peek(-1).litreal_type(), peek(-1).data(), peek(-1).span(), scope->id);
     }
 
     ErrorOr<BoxedBlock> Parser::block(const Scope::Ptr &scope) noexcept {

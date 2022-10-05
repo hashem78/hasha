@@ -99,6 +99,6 @@ add_executable(hasha
         src/TypeChecker/TypeChecker.h
         src/Parser/Tokens/Type/TypeComparer.h
         src/Parser/Tokens/Type/TypeToStringBuilder.h
-        src/SharedTypes/OperatorType.h)
+        src/SharedTypes/OperatorType.h src/SharedTypes/LiteralType.h)
 
 target_link_libraries(hasha fmt::fmt nlohmann_json::nlohmann_json magic_enum::magic_enum)

@@ -9,6 +9,7 @@
 #include "Span.h"
 #include "LexerTypes.h"
 #include "OperatorType.h"
+#include "LiteralType.h"
 
 namespace hasha {
 
@@ -18,7 +19,7 @@ namespace hasha {
         Associativity m_associativity;
         Precedence m_precedence;
         OperatorType m_operator_type;
-        LexLitrealType m_litreal_type;
+        LiteralType m_litreal_type;
         Span m_span;
 
     public:
@@ -41,13 +42,13 @@ namespace hasha {
         Lexeme(
                 std::string data,
                 LexemeType type,
-                LexLitrealType litreal_type
+                LiteralType litreal_type
         );
 
         Lexeme(
                 std::string data,
                 LexemeType type,
-                LexLitrealType literal_type,
+                LiteralType literal_type,
                 Span span
         );
 
@@ -67,7 +68,7 @@ namespace hasha {
         OperatorType operator_type() const noexcept;
 
         [[nodiscard]]
-        LexLitrealType litreal_type() const noexcept;
+        LiteralType litreal_type() const noexcept;
 
         [[nodiscard]]
         Precedence precedence() const noexcept;

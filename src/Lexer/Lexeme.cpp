@@ -88,7 +88,7 @@ namespace hasha {
     Lexeme::Lexeme(
             std::string data,
             LexemeType type,
-            LexLitrealType litreal_type
+            LiteralType litreal_type
     ) :
             m_data(std::move(data)),
             m_type(type),
@@ -103,7 +103,7 @@ namespace hasha {
     Lexeme::Lexeme(
             std::string data,
             LexemeType type,
-            LexLitrealType op,
+            LiteralType op,
             Span span
     ) :
             m_data(std::move(data)),
@@ -139,7 +139,7 @@ namespace hasha {
         return m_operator_type;
     }
 
-    LexLitrealType Lexeme::litreal_type() const noexcept {
+    LiteralType Lexeme::litreal_type() const noexcept {
 
         return m_litreal_type;
     }

@@ -7,14 +7,9 @@
 
 #include "TokenBase.h"
 #include "Box.h"
+#include "LiteralType.h"
 
 namespace hasha {
-    enum class LiteralType {
-        Integer,
-        Float,
-        String,
-        Boolean
-    };
 
     class Literal : public TokenBase {
     protected:
@@ -37,6 +32,7 @@ namespace hasha {
         LiteralType type() const;
 
     };
+
     using BoxedLiteral = Box<Literal>;
 } // hasha
 
