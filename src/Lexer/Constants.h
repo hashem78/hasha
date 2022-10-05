@@ -32,63 +32,63 @@ namespace hasha {
     inline const Lexeme EQUALS{
             "=",
             LexemeType::OPERATOR,
-            LexOperatorType::BINARY,
+            OperatorType::Binary,
             Associativity::RIGHT,
             Precedence::LVL1
     };
     inline const Lexeme LAND{
             "&&",
             LexemeType::OPERATOR,
-            LexOperatorType::BINARY,
+            OperatorType::Binary,
             Associativity::RIGHT,
             Precedence::LVL2
     };
     inline const Lexeme LOR{
             "||",
             LexemeType::OPERATOR,
-            LexOperatorType::BINARY,
+            OperatorType::Binary,
             Associativity::RIGHT,
             Precedence::LVL2
     };
     inline const Lexeme FSLASH{
             "/",
             LexemeType::OPERATOR,
-            LexOperatorType::BINARY,
+            OperatorType::Binary,
             Associativity::LEFT,
             Precedence::LVL5
     };
     inline const Lexeme ASTERISK{
             "*",
             LexemeType::OPERATOR,
-            LexOperatorType::BINARY,
+            OperatorType::Binary,
             Associativity::LEFT,
             Precedence::LVL5
     };
     inline const Lexeme UNARY_MINUS{
             "-",
             LexemeType::OPERATOR,
-            LexOperatorType::UNARY,
+            OperatorType::Unary,
             Associativity::RIGHT,
             Precedence::LVL6
     };
     inline const Lexeme UNARY_PLUS{
             "+",
             LexemeType::OPERATOR,
-            LexOperatorType::UNARY,
+            OperatorType::Unary,
             Associativity::RIGHT,
             Precedence::LVL6
     };
     inline const Lexeme BINARY_MINUS{
             "-",
             LexemeType::OPERATOR,
-            LexOperatorType::BINARY,
+            OperatorType::Binary,
             Associativity::LEFT,
             Precedence::LVL3
     };
     inline const Lexeme BINARY_PLUS{
             "+",
             LexemeType::OPERATOR,
-            LexOperatorType::BINARY,
+            OperatorType::Binary,
             Associativity::LEFT,
             Precedence::LVL3
     };

@@ -21,11 +21,6 @@ namespace hasha {
         FLOATINGPOINT_LITERAL,
         STRING_LITERAL
     };
-    enum class LexOperatorType {
-        UNARY,
-        BINARY,
-        TERNARY
-    };
 
     enum class Associativity {
         LEFT,

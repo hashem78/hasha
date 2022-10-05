@@ -7,14 +7,9 @@
 
 #include "TokenBase.h"
 #include "Box.h"
+#include "OperatorType.h"
 
 namespace hasha {
-
-    enum class OperatorType {
-        Unary,
-        Binary,
-        Ternary
-    };
 
     class Operator : public TokenBase {
     protected:
@@ -35,6 +30,7 @@ namespace hasha {
         [[nodiscard]]
         OperatorType type() const noexcept;
     };
+
     using BoxedOperator = Box<Operator>;
 } // hasha
 

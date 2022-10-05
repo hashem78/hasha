@@ -66,7 +66,7 @@ namespace hasha {
     Lexeme::Lexeme(
             std::string data,
             LexemeType type,
-            LexOperatorType operator_type,
+            OperatorType operator_type,
             Associativity associativity,
             Precedence precedence
     ) :
@@ -134,7 +134,7 @@ namespace hasha {
                std::tie(other.m_data, other.m_type, other.m_precedence, other.m_associativity);
     }
 
-    LexOperatorType Lexeme::operator_type() const noexcept {
+    OperatorType Lexeme::operator_type() const noexcept {
 
         return m_operator_type;
     }

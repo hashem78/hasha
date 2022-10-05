@@ -19,8 +19,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Split TokenVisitor implementation to cpp file">
+      <change afterPath="$PROJECT_DIR$/src/SharedTypes/OperatorType.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Tokens/Operator.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Tokens/Operator.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

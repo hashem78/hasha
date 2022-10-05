@@ -187,7 +187,7 @@ namespace hasha {
     ) {
 
 
-        std::deque<Lexeme> operators; // stack
+        std::deque <Lexeme> operators; // stack
         auto token_list = TokenList{};
 
         set_context(current_context().set_parsing_expression(true));
@@ -197,40 +197,14 @@ namespace hasha {
 
 
         auto push_operator = [&scope, &token_list](const Lexeme &lexeme) {
-            switch (lexeme.operator_type()) {
-
-                case LexOperatorType::UNARY:
-                    token_list.push_back(
-                            make_box<Operator>(
-                                    OperatorType::Unary,
-                                    lexeme.data(),
-                                    lexeme.span(),
-                                    scope->id
-                            )
-                    );
-                    break;
-                case LexOperatorType::BINARY:
-                    token_list.push_back(
-                            make_box<Operator>(
-                                    OperatorType::Binary,
-                                    lexeme.data(),
-                                    lexeme.span(),
-                                    scope->id
-                            )
-                    );
-                    break;
-                case LexOperatorType::TERNARY:
-                    token_list.push_back(
-                            make_box<Operator>(
-                                    OperatorType::Ternary,
-                                    lexeme.data(),
-                                    lexeme.span(),
-                                    scope->id
-                            )
-                    );
-                    break;
-            }
-
+            token_list.push_back(
+                    make_box<Operator>(
+                            lexeme.operator_type(),
+                            lexeme.data(),
+                            lexeme.span(),
+                            scope->id
+                    )
+            );
         };
 
         while (!match(delimiter)) {
