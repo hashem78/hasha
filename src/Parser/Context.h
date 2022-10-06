@@ -10,8 +10,10 @@
 namespace hasha {
 
     struct Context {
-
+        bool parsing_args;
         bool parsing_void_function;
+
+        Context &set_parsing_args(bool val) noexcept;
 
         Context &set_parsing_void_function(bool val) noexcept;
 

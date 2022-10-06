@@ -178,7 +178,8 @@ namespace hasha {
     }
 
     ErrorOr<Box<Expression>> Parser::parse_expression(
-            const Scope::Ptr &scope
+            const Scope::Ptr &scope,
+            const Lexeme &delimiter
     ) {
 
 
@@ -199,12 +200,7 @@ namespace hasha {
             );
         };
 
-        auto is_terminal = [this]() {
-
-            return match(SEMICOLON) || match(COMMA) || match(LCURLY) || match(RPAREN);
-        };
-
-        while (!is_terminal()) {
+        while (!match(delimiter)) {
 
             if (match(Patterns::FunctionCall)) {
                 token_list.push_back(TRY(function_call(scope, true)));
@@ -212,6 +208,11 @@ namespace hasha {
             }
 
             auto x = peek();
+
+            if (current_context().parsing_args && x == RPAREN)
+                break;
+            if (current_context().parsing_args && x == COMMA)
+                break;
 
             advance();
             if (x.type() == LexemeType::OPERATOR) {
@@ -284,6 +285,7 @@ namespace hasha {
             operators.pop_front();
         }
 
+        restore_context();
         auto end_span = peek(-1).span();
 
         return make_box<Expression>(
@@ -313,9 +315,9 @@ namespace hasha {
                 );
             }
         }
-
+        set_context(current_context().set_parsing_args(true));
         auto exprs = TRY(parse_multiple(scope, LPAREN, RPAREN));
-
+        restore_context();
         auto after_span = peek(-1).span();
 
         return make_box<FunctionCall>(
@@ -549,7 +551,7 @@ namespace hasha {
 
         auto before_span = peek().span();
         EXPECT(IF)
-        auto condition = TRY(parse_expression(scope));
+        auto condition = TRY(parse_expression(scope, LCURLY));
         EXPECT(LCURLY)
         auto blk = TRY(block(scope_tree->create_scope(scope->id)));
         EXPECT(RCURLY)
@@ -590,7 +592,7 @@ namespace hasha {
 
         auto before_span = peek().span();
         EXPECT(ELIF)
-        auto condition = TRY(parse_expression(scope));
+        auto condition = TRY(parse_expression(scope, LCURLY));
         EXPECT(LCURLY)
         auto blk = TRY(block(scope_tree->create_scope(scope->id)));
         EXPECT(RCURLY)
