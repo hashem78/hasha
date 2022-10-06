@@ -18,10 +18,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Remove LexLiteralType and use LiteralType as a shared type">
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Parsing expressions no longer relies on the context object.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Utils/Serializer/JsonConverter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/Serializer/JsonConverter.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -166,13 +165,6 @@
       <workItem from="1664789703194" duration="11266000" />
       <workItem from="1664816720928" duration="19569000" />
       <workItem from="1664878008233" duration="15977000" />
-    </task>
-    <task id="LOCAL-00053" summary="Update Error code">
-      <created>1662711432108</created>
-      <option name="number" value="00053" />
-      <option name="presentableId" value="LOCAL-00053" />
-      <option name="project" value="LOCAL" />
-      <updated>1662711432108</updated>
     </task>
     <task id="LOCAL-00054" summary="ExpressionLists are no longer pointers.">
       <created>1662711498172</created>
@@ -510,7 +502,14 @@
       <option name="project" value="LOCAL" />
       <updated>1665011002318</updated>
     </task>
-    <option name="localTasksCounter" value="102" />
+    <task id="LOCAL-00102" summary="Parsing expressions no longer relies on the context object.">
+      <created>1665052438885</created>
+      <option name="number" value="00102" />
+      <option name="presentableId" value="LOCAL-00102" />
+      <option name="project" value="LOCAL" />
+      <updated>1665052438885</updated>
+    </task>
+    <option name="localTasksCounter" value="103" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -531,7 +530,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="More work on the Interpreter and introduce the TypeChecker" />
     <MESSAGE value="Remove useless junk from Expression.cpp" />
     <MESSAGE value="Parser Expect EQUALS in declaration" />
     <MESSAGE value="Add floating point default types to parser and lexer" />
@@ -556,7 +554,8 @@
     <MESSAGE value="Split TokenVisitor implementation to cpp file" />
     <MESSAGE value="Remove LexOperatorType and use OperatorType as a shared type" />
     <MESSAGE value="Remove LexLiteralType and use LiteralType as a shared type" />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove LexLiteralType and use LiteralType as a shared type" />
+    <MESSAGE value="Parsing expressions no longer relies on the context object." />
+    <option name="LAST_COMMIT_MESSAGE" value="Parsing expressions no longer relies on the context object." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

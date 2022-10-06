@@ -45,11 +45,11 @@ namespace hasha {
     nlohmann::ordered_json JsonConverter::operator()(const BoxedDeclaration &obj) const noexcept {
 
         return {
-                {"token_type", obj->token_type()},
+                {"token_type",            obj->token_type()},
                 {"assignment_expression", this->operator()(obj->assignment_expression())},
-                {"span",       obj->span().to_json()},
-                {"name",       this->operator()(obj->name())},
-                {"type",       std::visit(JsonConverter{}, obj->type())}
+                {"span",                  obj->span().to_json()},
+                {"name",                  this->operator()(obj->name())},
+                {"type",                  std::visit(JsonConverter{}, obj->type())}
         };
     }
 
@@ -89,12 +89,8 @@ namespace hasha {
     nlohmann::ordered_json JsonConverter::operator()(const BoxedFunctionCall &obj) const noexcept {
 
         auto arguments = nlohmann::ordered_json::array();
-        int arg_no = 1;
         for (const auto &expression: obj->arguments()) {
-
-            arguments.push_back(
-                    {fmt::format("arg_{}", arg_no++), operator()(expression)}
-            );
+            arguments.push_back(operator()(expression));
         }
         return {
                 {"token_type", obj->token_type()},
