@@ -18,9 +18,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Parsing expressions no longer relies on the context object.">
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Fix bug in symbol table get methods">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Utils/Serializer/JsonConverter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/Serializer/JsonConverter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interpreter/Evaluators/ExpressionEvaluator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/Evaluators/ExpressionEvaluator.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interpreter/Evaluators/FunctionEvaluator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/Evaluators/FunctionEvaluator.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interpreter/SymbolTable.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interpreter/SymbolTable.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -165,20 +167,6 @@
       <workItem from="1664789703194" duration="11266000" />
       <workItem from="1664816720928" duration="19569000" />
       <workItem from="1664878008233" duration="15977000" />
-    </task>
-    <task id="LOCAL-00054" summary="ExpressionLists are no longer pointers.">
-      <created>1662711498172</created>
-      <option name="number" value="00054" />
-      <option name="presentableId" value="LOCAL-00054" />
-      <option name="project" value="LOCAL" />
-      <updated>1662711498172</updated>
-    </task>
-    <task id="LOCAL-00055" summary="Fix span for function calls">
-      <created>1662711528193</created>
-      <option name="number" value="00055" />
-      <option name="presentableId" value="LOCAL-00055" />
-      <option name="project" value="LOCAL" />
-      <updated>1662711528193</updated>
     </task>
     <task id="LOCAL-00056" summary="Added gaurds for elif and else statements.&#10;&#10;Those should have been there, but they were not for some reason.">
       <created>1662711577778</created>
@@ -509,7 +497,21 @@
       <option name="project" value="LOCAL" />
       <updated>1665052438885</updated>
     </task>
-    <option name="localTasksCounter" value="103" />
+    <task id="LOCAL-00103" summary="Fix serializing function call objects">
+      <created>1665061591388</created>
+      <option name="number" value="00103" />
+      <option name="presentableId" value="LOCAL-00103" />
+      <option name="project" value="LOCAL" />
+      <updated>1665061591388</updated>
+    </task>
+    <task id="LOCAL-00104" summary="Fix bug in symbol table get methods">
+      <created>1665071938639</created>
+      <option name="number" value="00104" />
+      <option name="presentableId" value="LOCAL-00104" />
+      <option name="project" value="LOCAL" />
+      <updated>1665071938639</updated>
+    </task>
+    <option name="localTasksCounter" value="105" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -530,8 +532,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Remove useless junk from Expression.cpp" />
-    <MESSAGE value="Parser Expect EQUALS in declaration" />
     <MESSAGE value="Add floating point default types to parser and lexer" />
     <MESSAGE value="Remove ScopeTree.h from Token.h" />
     <MESSAGE value="Remove fmt include from Scope.h" />
@@ -555,7 +555,9 @@
     <MESSAGE value="Remove LexOperatorType and use OperatorType as a shared type" />
     <MESSAGE value="Remove LexLiteralType and use LiteralType as a shared type" />
     <MESSAGE value="Parsing expressions no longer relies on the context object." />
-    <option name="LAST_COMMIT_MESSAGE" value="Parsing expressions no longer relies on the context object." />
+    <MESSAGE value="Fix serializing function call objects" />
+    <MESSAGE value="Fix bug in symbol table get methods" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix bug in symbol table get methods" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

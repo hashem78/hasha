@@ -12,6 +12,7 @@
 #include "Vistors/TokenVisitor.h"
 #include "fmt/core.h"
 #include "FunctionEvaluator.h"
+#include "fmt/std.h"
 
 namespace hasha {
     ExpressionEvaluator::ExpressionEvaluator(
@@ -156,17 +157,18 @@ namespace hasha {
                                         }
                                         // Register parameters with evaled arguments
                                         int arg_index = 0;
+                                        auto sym_t = symbol_tree->create_table(symbol_table);
                                         for (const auto &arg_expression: call_arguments) {
                                             auto evaluator = ExpressionEvaluator{
                                                     arg_expression, symbol_tree,
-                                                    symbol_table
+                                                    sym_t
                                             };
                                             auto val = TRY(evaluator.evaluate());
                                             auto param_name = function_parameters[arg_index++]->name()->identifier();
                                             auto variable = lang::Variable{param_name, val};
-                                            symbol_table->register_varible(variable);
+                                            sym_t->register_varible(variable);
                                         }
-                                        auto evaluator = FunctionEvaluator{function, symbol_tree, symbol_table};
+                                        auto evaluator = FunctionEvaluator{function, symbol_tree, sym_t};
                                         auto val = TRY(evaluator.evaluate());
                                         stk.push(val);
                                         return {};
