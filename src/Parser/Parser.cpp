@@ -186,6 +186,9 @@ namespace hasha {
         std::deque<Lexeme> operators; // stack
         auto token_list = TokenList{};
 
+        set_context(current_context().set_parsing_expression(true));
+
+
         auto begin_span = peek().span();
 
 
