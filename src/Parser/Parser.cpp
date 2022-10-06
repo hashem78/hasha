@@ -288,7 +288,6 @@ namespace hasha {
             operators.pop_front();
         }
 
-        restore_context();
         auto end_span = peek(-1).span();
 
         return make_box<Expression>(
