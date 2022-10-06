@@ -31,7 +31,7 @@ namespace hasha {
 
         while (temp != nullptr) {
             if (temp->variables.contains(key))
-                return &variables.at(key);
+                return &this->variables.at(key);
             temp = temp->parent;
         }
 
@@ -49,7 +49,7 @@ namespace hasha {
 
         while (temp != nullptr) {
             if (temp->functions.contains(key))
-                return functions.at(key);
+                return temp->functions.at(key);
             temp = temp->parent;
         }
 
