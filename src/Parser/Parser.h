@@ -52,8 +52,7 @@ namespace hasha {
 
         ErrorOr<BoxedExpression>
         parse_expression(
-                const Scope::Ptr &lexeme,
-                const Lexeme &delimiter = SEMICOLON
+                const Scope::Ptr &lexeme
         );
 
         ErrorOr<BoxedFunctionCall>

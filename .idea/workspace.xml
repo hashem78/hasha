@@ -18,7 +18,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Remove LexLiteralType and use LiteralType as a shared type" />
+    <list default="true" id="6099971c-69d8-4f5d-b555-a9373245c71d" name="Changes" comment="Remove LexLiteralType and use LiteralType as a shared type">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Parser.h" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -88,9 +92,9 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.hasha">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="fmt" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="hasha" TARGET_NAME="fmt" CONFIG_NAME="Debug">
