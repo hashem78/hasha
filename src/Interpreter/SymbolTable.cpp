@@ -31,7 +31,7 @@ namespace hasha {
 
         while (temp != nullptr) {
             if (temp->variables.contains(key))
-                return &this->variables.at(key);
+                return &temp->variables.at(key);
             temp = temp->parent;
         }
 
