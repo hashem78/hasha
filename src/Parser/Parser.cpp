@@ -183,7 +183,7 @@ namespace hasha {
     ) {
 
 
-        std::deque<Lexeme> operators; // stack
+        std::stack<Lexeme> operators; // stack
         auto token_list = TokenList{};
 
 
@@ -217,8 +217,8 @@ namespace hasha {
 
             advance();
             if (x.type() == LexemeType::OPERATOR) {
-                while (!operators.empty() && operators.front().type() == LexemeType::OPERATOR) {
-                    auto y = operators.front();
+                while (!operators.empty() && operators.top().type() == LexemeType::OPERATOR) {
+                    auto y = operators.top();
 
                     if ((x.associativity() == Associativity::LEFT &&
                          x.precedence() <= y.precedence()) ||
@@ -227,27 +227,29 @@ namespace hasha {
 
                         push_operator(y);
 
-                        operators.pop_front();
+                        operators.pop();
 
                     } else {
                         break;
                     }
 
                 }
-                operators.push_front(x);
+                operators.push(x);
             } else if (x == LPAREN) {
-                operators.push_front(x);
+                operators.push(x);
             } else if (x == RPAREN) {
-                while (operators.front() != LPAREN) {
+                if (!operators.empty()) {
+                    while (operators.top() != LPAREN) {
+                        // TODO: If the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
+                        if (operators.empty()) break;
+                        push_operator(operators.top());
+                        operators.pop();
+                    }
                     // TODO: If the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
-                    if (operators.empty()) break;
-                    push_operator(operators.front());
-                    operators.pop_front();
+                    if (operators.top() != LPAREN)
+                        break;
+                    operators.pop();
                 }
-                // TODO: If the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
-                if (operators.front() != LPAREN)
-                    break;
-                operators.pop_front();
             } else {
                 if (x != COMMA) {
                     switch (x.type()) {
@@ -282,8 +284,8 @@ namespace hasha {
             }
         }
         while (!operators.empty()) {
-            push_operator(operators.front());
-            operators.pop_front();
+            push_operator(operators.top());
+            operators.pop();
         }
 
         auto end_span = peek(-1).span();
