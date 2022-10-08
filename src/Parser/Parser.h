@@ -56,19 +56,7 @@ namespace hasha {
                 const Lexeme &delimiter = SEMICOLON
         );
 
-        ErrorOr<BoxedFunctionCall>
-        function_call(
-                const Scope::Ptr &scope,
-                bool check_scope
-        ) noexcept;
-
-        ErrorOr<BoxedExpressionList>
-        parse_multiple(
-                const Scope::Ptr &scope,
-                const Lexeme &left,
-                const Lexeme &right,
-                const Lexeme &separator = COMMA
-        );
+        ErrorOr<BoxedFunctionCall> function_call(const Scope::Ptr &scope) noexcept;
 
         ErrorOr<BoxedLiteral> literal(const Scope::Ptr &scope) noexcept;
 

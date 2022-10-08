@@ -186,8 +186,6 @@ namespace hasha {
         std::deque<Lexeme> operators; // stack
         auto token_list = TokenList{};
 
-        set_context(current_context().set_parsing_expression(true));
-
 
         auto begin_span = peek().span();
 
@@ -206,7 +204,7 @@ namespace hasha {
         while (!match(delimiter)) {
 
             if (match(Patterns::FunctionCall)) {
-                token_list.push_back(TRY(function_call(scope, true)));
+                token_list.push_back(TRY(function_call(scope)));
                 continue;
             }
 
@@ -299,26 +297,34 @@ namespace hasha {
 
     ErrorOr<BoxedFunctionCall>
     Parser::function_call(
-            const Scope::Ptr &scope,
-            bool check_scope
+            const Scope::Ptr &scope
     ) noexcept {
 
         auto before_span = peek().span();
         auto idn = TRY(identifier(scope));
-        if (check_scope) {
 
-            if (!scope->is_function_in_scope(idn->identifier())) {
 
-                return fmt::format(
-                        "Function {} is not defined line {}, col {}",
-                        idn->identifier(),
-                        idn->span().line,
-                        idn->span().col
-                );
-            }
+        if (!scope->is_function_in_scope(idn->identifier())) {
+
+            return fmt::format(
+                    "Function {} is not defined line {}, col {}",
+                    idn->identifier(),
+                    idn->span().line,
+                    idn->span().col
+            );
         }
+
         set_context(current_context().set_parsing_args(true));
-        auto exprs = TRY(parse_multiple(scope, LPAREN, RPAREN));
+        EXPECT(LPAREN)
+
+        auto exprs = BoxedExpressionList{};
+
+        while (!match(RPAREN)) {
+            SWALLOW(COMMA)
+            exprs.push_back(TRY(parse_expression(scope)));
+        }
+        EXPECT(RPAREN)
+
         restore_context();
         auto after_span = peek(-1).span();
 
@@ -328,27 +334,6 @@ namespace hasha {
                 before_span.merge_with(after_span),
                 scope->id
         );
-    }
-
-    ErrorOr<BoxedExpressionList>
-    Parser::parse_multiple(
-            const Scope::Ptr &scope,
-            const Lexeme &left,
-            const Lexeme &right,
-            const Lexeme &separator
-    ) {
-
-        EXPECT(left)
-
-        auto exprs = BoxedExpressionList{};
-
-        while (!match(right)) {
-            SWALLOW(separator)
-            exprs.push_back(TRY(parse_expression(scope)));
-        }
-        EXPECT(right)
-
-        return exprs;
     }
 
     ErrorOr<BoxedLiteral> Parser::literal(const Scope::Ptr &scope) noexcept {
