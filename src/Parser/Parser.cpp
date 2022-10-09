@@ -41,6 +41,14 @@ namespace hasha {
 
     ErrorOr<Box<Identifier>> Parser::identifier(const Scope::Ptr &scope) noexcept {
 
+        if (!match(LexemeType::IDENTIFIER))
+            return fmt::format(
+                    "Expected Identifier found {} on line: {}, col: {}",
+                    peek().to_string(),
+                    peek().span().line,
+                    peek().span().col
+            );
+
         const auto name = peek().data();
 
         advance();
@@ -49,6 +57,14 @@ namespace hasha {
     }
 
     ErrorOr<BoxedNormalType> Parser::type(const Scope::Ptr &scope) noexcept {
+
+        if (!match(LexemeType::IDENTIFIER))
+            return fmt::format(
+                    "Expected Identifier found {} on line: {}, col: {}",
+                    peek().to_string(),
+                    peek().span().line,
+                    peek().span().col
+            );
 
         auto type_name = peek().data();
 
@@ -293,7 +309,7 @@ namespace hasha {
 
         while (!match(RPAREN)) {
             SWALLOW(COMMA)
-            exprs.push_back(TRY(parse_expression(scope,{RPAREN,COMMA})));
+            exprs.push_back(TRY(parse_expression(scope, {RPAREN, COMMA})));
         }
         EXPECT(RPAREN)
 
@@ -679,6 +695,7 @@ namespace hasha {
         }
         return false;
     }
+
     Context Parser::current_context() {
 
         return context_stack.top();
@@ -718,7 +735,6 @@ namespace hasha {
 
         return lexemes.back();
     }
-
 
 
 } // hasha
