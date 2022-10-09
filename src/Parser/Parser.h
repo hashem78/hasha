@@ -6,6 +6,8 @@
 #define HASHA_PARSER_H
 
 
+#include <stack>
+
 #include "Lexeme.h"
 #include "Lexer.h"
 #include "Pattern.h"
@@ -37,6 +39,7 @@
 namespace hasha {
 
     class Parser {
+        using ContextStack = std::stack<Context>;
         ScopeTree::Ptr scope_tree;
         Lexer lexer;
         std::vector<Lexeme> lexemes;
@@ -53,7 +56,7 @@ namespace hasha {
         ErrorOr<BoxedExpression>
         parse_expression(
                 const Scope::Ptr &lexeme,
-                const Lexeme &delimiter = SEMICOLON
+                const Patterns::Pattern &delimiters = {SEMICOLON}
         );
 
         ErrorOr<BoxedFunctionCall> function_call(const Scope::Ptr &scope) noexcept;
@@ -106,6 +109,9 @@ namespace hasha {
 
         [[nodiscard]]
         bool match(const Patterns::Pattern &matchers) const noexcept;
+
+        [[nodiscard]]
+        bool match_any(const Patterns::Pattern &matchers) const noexcept;
 
     public:
 

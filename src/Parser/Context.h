@@ -5,27 +5,13 @@
 #ifndef HASHA_CONTEXT_H
 #define HASHA_CONTEXT_H
 
-#include <stack>
-
 namespace hasha {
 
     struct Context {
-        bool parsing_expression;
-        bool parsing_args;
-        bool parsing_return_expression;
         bool parsing_void_function;
 
-        Context &set_parsing_expression(bool val) noexcept;
-
-        Context &set_parsing_args(bool val) noexcept;
-
-        Context &set_parsing_return_expression(bool val) noexcept;
-
         Context &set_parsing_void_function(bool val) noexcept;
-
     };
-
-    using ContextStack = std::stack<Context>;
 } // hasha
 
 #endif //HASHA_CONTEXT_H

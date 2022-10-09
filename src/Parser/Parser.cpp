@@ -179,7 +179,7 @@ namespace hasha {
 
     ErrorOr<Box<Expression>> Parser::parse_expression(
             const Scope::Ptr &scope,
-            const Lexeme &delimiter
+            const Patterns::Pattern &delimiters
     ) {
 
 
@@ -201,7 +201,7 @@ namespace hasha {
             );
         };
 
-        while (!match(delimiter)) {
+        while (!match_any(delimiters)) {
 
             if (match(Patterns::FunctionCall)) {
                 token_list.push_back(TRY(function_call(scope)));
@@ -209,11 +209,6 @@ namespace hasha {
             }
 
             auto x = peek();
-
-            if (current_context().parsing_args && x == RPAREN)
-                break;
-            if (current_context().parsing_args && x == COMMA)
-                break;
 
             advance();
             if (x.type() == LexemeType::OPERATOR) {
@@ -236,20 +231,23 @@ namespace hasha {
                 }
                 operators.push(x);
             } else if (x == LPAREN) {
-                operators.push(x);
+                auto expr = TRY(parse_expression(scope, {RPAREN}));
+                token_list.push_back(expr);
+                EXPECT(RPAREN)
             } else if (x == RPAREN) {
-                if (!operators.empty()) {
-                    while (operators.top() != LPAREN) {
-                        // TODO: If the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
-                        if (operators.empty()) break;
-                        push_operator(operators.top());
-                        operators.pop();
-                    }
+
+                while (!operators.empty() && operators.top() != LPAREN) {
                     // TODO: If the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
-                    if (operators.top() != LPAREN)
-                        break;
+                    if (operators.empty()) break;
+                    push_operator(operators.top());
                     operators.pop();
                 }
+                // TODO: If the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
+                if (!operators.empty() && operators.top() != LPAREN)
+                    break;
+                if (!operators.empty())
+                    operators.pop();
+
             } else {
                 if (x != COMMA) {
                     switch (x.type()) {
@@ -305,7 +303,6 @@ namespace hasha {
         auto before_span = peek().span();
         auto idn = TRY(identifier(scope));
 
-
         if (!scope->is_function_in_scope(idn->identifier())) {
 
             return fmt::format(
@@ -316,18 +313,16 @@ namespace hasha {
             );
         }
 
-        set_context(current_context().set_parsing_args(true));
         EXPECT(LPAREN)
 
         auto exprs = BoxedExpressionList{};
 
         while (!match(RPAREN)) {
             SWALLOW(COMMA)
-            exprs.push_back(TRY(parse_expression(scope)));
+            exprs.push_back(TRY(parse_expression(scope,{RPAREN,COMMA})));
         }
         EXPECT(RPAREN)
 
-        restore_context();
         auto after_span = peek(-1).span();
 
         return make_box<FunctionCall>(
@@ -540,7 +535,7 @@ namespace hasha {
 
         auto before_span = peek().span();
         EXPECT(IF)
-        auto condition = TRY(parse_expression(scope, LCURLY));
+        auto condition = TRY(parse_expression(scope, {LCURLY}));
         EXPECT(LCURLY)
         auto blk = TRY(block(scope_tree->create_scope(scope->id)));
         EXPECT(RCURLY)
@@ -581,7 +576,7 @@ namespace hasha {
 
         auto before_span = peek().span();
         EXPECT(ELIF)
-        auto condition = TRY(parse_expression(scope, LCURLY));
+        auto condition = TRY(parse_expression(scope, {LCURLY}));
         EXPECT(LCURLY)
         auto blk = TRY(block(scope_tree->create_scope(scope->id)));
         EXPECT(RCURLY)
@@ -689,6 +684,27 @@ namespace hasha {
         return true;
     }
 
+    bool Parser::match_any(const Patterns::Pattern &matchers) const noexcept {
+
+
+        for (const auto &matcher: matchers) {
+
+            auto matched = std::visit(
+                    Patterns::PatternVisitor{
+                            [&, this](const Lexeme &lexeme) -> bool {
+                                return peek() == lexeme;
+                            },
+                            [&, this](const LexemeType &lexeme_type) -> bool {
+                                return peek().type() == lexeme_type;
+                            }
+                    }, matcher
+            );
+
+            if (matched)
+                return true;
+        }
+        return false;
+    }
     Context Parser::current_context() {
 
         return context_stack.top();
@@ -728,6 +744,7 @@ namespace hasha {
 
         return lexemes.back();
     }
+
 
 
 } // hasha

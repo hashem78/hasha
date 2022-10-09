@@ -33,6 +33,11 @@ namespace hasha {
                     std::visit(
                             Overload{
                                     [](auto) -> ErrorOr<void> { return {}; },
+                                    [&, this](const BoxedExpression &expr) -> ErrorOr<void> {
+                                      auto evaluator = ExpressionEvaluator{expr,symbol_tree,symbol_table};
+                                      stk.push(TRY(evaluator.evaluate()));
+                                      return {};
+                                    },
                                     [&, this](const BoxedIdentifier &identifier) -> ErrorOr<void> {
                                         stk.push(TRY(symbol_table->get_varible(identifier->identifier()))->value);
                                         return {};
