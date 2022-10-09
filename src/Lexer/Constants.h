@@ -35,19 +35,33 @@ namespace hasha {
             Associativity::RIGHT,
             Precedence::LVL1
     };
-    inline const Lexeme LAND{
-            "&&",
-            LexemeType::OPERATOR,
-            OperatorType::Binary,
-            Associativity::RIGHT,
-            Precedence::LVL2
-    };
     inline const Lexeme LOR{
             "||",
             LexemeType::OPERATOR,
             OperatorType::Binary,
             Associativity::RIGHT,
             Precedence::LVL2
+    };
+    inline const Lexeme LAND{
+            "&&",
+            LexemeType::OPERATOR,
+            OperatorType::Binary,
+            Associativity::RIGHT,
+            Precedence::LVL3
+    };
+    inline const Lexeme BINARY_PLUS{
+            "+",
+            LexemeType::OPERATOR,
+            OperatorType::Binary,
+            Associativity::LEFT,
+            Precedence::LVL4
+    };
+    inline const Lexeme BINARY_MINUS{
+            "-",
+            LexemeType::OPERATOR,
+            OperatorType::Binary,
+            Associativity::LEFT,
+            Precedence::LVL4
     };
     inline const Lexeme FSLASH{
             "/",
@@ -76,20 +90,6 @@ namespace hasha {
             OperatorType::Unary,
             Associativity::RIGHT,
             Precedence::LVL6
-    };
-    inline const Lexeme BINARY_MINUS{
-            "-",
-            LexemeType::OPERATOR,
-            OperatorType::Binary,
-            Associativity::LEFT,
-            Precedence::LVL3
-    };
-    inline const Lexeme BINARY_PLUS{
-            "+",
-            LexemeType::OPERATOR,
-            OperatorType::Binary,
-            Associativity::LEFT,
-            Precedence::LVL3
     };
 }
 
