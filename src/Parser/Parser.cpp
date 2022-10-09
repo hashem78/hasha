@@ -43,19 +43,6 @@ namespace hasha {
 
         const auto name = peek().data();
 
-        if (name.empty()) return "Failed to parse name name";
-
-        if (std::isdigit(name[0])) return "An name cannot start with a digit";
-
-        auto is_legal = [](char c) -> bool {
-            return std::isalnum(c) || c == '_';
-        };
-        for (const auto &ch: name) {
-            if (!is_legal(ch)) {
-                return fmt::format("Illegal character {}", ch);
-            }
-        }
-
         advance();
 
         return make_box<Identifier>(name, peek(-1).span(), scope->id);
@@ -64,19 +51,6 @@ namespace hasha {
     ErrorOr<BoxedNormalType> Parser::type(const Scope::Ptr &scope) noexcept {
 
         auto type_name = peek().data();
-
-        if (type_name.empty()) return "Failed to parse type name";
-
-        if (std::isdigit(type_name[0])) return "A type cannot start with a digit";
-
-        auto is_legal = [](char c) -> bool {
-            return std::isalnum(c) || c == '_';
-        };
-        for (const auto &ch: type_name) {
-            if (!is_legal(ch)) {
-                return fmt::format("Illegal character {}", ch);
-            }
-        }
 
         advance();
 

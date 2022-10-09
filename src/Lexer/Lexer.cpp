@@ -35,10 +35,10 @@ namespace hasha {
         while (!done()) {
 
             auto lexeme = TRY(next_token());
-            if (lexeme == ILLEGAL) {
+            if (lexeme.type() == LexemeType::ILLEGAL) {
                 return fmt::format(
                         "Illegal token {} on line: {}, col: {}",
-                        data[lexeme.span().begin],
+                        lexeme.data(),
                         lexeme.span().line,
                         lexeme.span().col
                 );
@@ -235,7 +235,7 @@ namespace hasha {
         if (is_identifier(token))
             return Lexeme{token, LexemeType::IDENTIFIER, {}, create_span()};
 
-        return ILLEGAL.with_span(create_span());
+        return Lexeme{token, LexemeType::ILLEGAL};
     }
 
     bool Lexer::done() const noexcept {
