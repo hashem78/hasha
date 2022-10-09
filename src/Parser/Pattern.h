@@ -16,12 +16,6 @@ namespace hasha::Patterns {
 
     using PatternType = std::variant<LexemeType, Lexeme>;
 
-    template<class... Ts>
-    struct PatternVisitor : Ts ... {
-        using Ts::operator()...;
-    };
-    template<class... Ts> PatternVisitor(Ts...) -> PatternVisitor<Ts...>;
-
     using Pattern = std::vector<PatternType>;
 
     inline const Pattern Assignment{

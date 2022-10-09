@@ -642,7 +642,7 @@ namespace hasha {
         for (std::size_t i = 0; i < matchers.size(); ++i) {
 
             auto not_matched = std::visit(
-                    Patterns::PatternVisitor{
+                    Overload{
                             [&, this](const Lexeme &lexeme) -> bool {
                                 return peek(i + lookahed) != lexeme;
                             },
@@ -664,7 +664,7 @@ namespace hasha {
         for (const auto &matcher: matchers) {
 
             auto matched = std::visit(
-                    Patterns::PatternVisitor{
+                    Overload{
                             [&, this](const Lexeme &lexeme) -> bool {
                                 return peek() == lexeme;
                             },
