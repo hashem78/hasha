@@ -32,8 +32,7 @@ namespace hasha {
           return_expression,
           symbol_tree,
           symbol_table};
-        auto res = TRY(evaluator.evaluate());
-        return res;
+        return TRY(evaluator.evaluate());
       }
       TRYV(
         token,
