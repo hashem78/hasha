@@ -6,8 +6,8 @@
 
 namespace hasha {
 
-    Context &Context::set_parsing_void_function(bool val) noexcept {
-        parsing_void_function = val;
-        return *this;
-    }
-}
+  Context &Context::set_parsing_void_function(bool val) noexcept {
+    parsing_void_function = val;
+    return *this;
+  }
+}// namespace hasha

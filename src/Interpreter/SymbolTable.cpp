@@ -8,53 +8,53 @@
 
 namespace hasha {
 
-    SymbolTable::SymbolTable(SymbolTable::Ptr parent) :
-            id(id_++),
-            parent(std::move(parent)) {
+  SymbolTable::SymbolTable(SymbolTable::Ptr parent)
+      : id(id_++),
+        parent(std::move(parent)) {
+  }
+
+  SymbolTable::Ptr SymbolTable::create(SymbolTable::Ptr parent) {
+
+    return std::make_shared<SymbolTable>(std::move(parent));
+  }
+
+  int SymbolTable::id_ = 0;
+
+  void SymbolTable::register_varible(const lang::Variable &variable) {
+
+    variables.emplace(variable.name, variable);
+  }
+
+  ErrorOr<lang::Variable *> SymbolTable::get_varible(const std::string &key) {
+
+    auto temp = shared_from_this();
+
+    while (temp != nullptr) {
+      if (temp->variables.contains(key))
+        return &temp->variables.at(key);
+      temp = temp->parent;
     }
 
-    SymbolTable::Ptr SymbolTable::create(SymbolTable::Ptr parent) {
+    return fmt::format("RUNTIME: Failed to access variable {}", key);
+  }
 
-        return std::make_shared<SymbolTable>(std::move(parent));
+  void SymbolTable::register_function(const BoxedFunction &function) {
+
+    functions.insert({function->name()->identifier(), function});
+  }
+
+  ErrorOr<BoxedFunction> SymbolTable::get_function(const std::string &key) {
+
+    auto temp = shared_from_this();
+
+    while (temp != nullptr) {
+      if (temp->functions.contains(key))
+        return temp->functions.at(key);
+      temp = temp->parent;
     }
 
-    int SymbolTable::id_ = 0;
-
-    void SymbolTable::register_varible(const lang::Variable &variable) {
-
-        variables.emplace(variable.name, variable);
-    }
-
-    ErrorOr<lang::Variable *> SymbolTable::get_varible(const std::string &key) {
-
-        auto temp = shared_from_this();
-
-        while (temp != nullptr) {
-            if (temp->variables.contains(key))
-                return &temp->variables.at(key);
-            temp = temp->parent;
-        }
-
-        return fmt::format("RUNTIME: Failed to access variable {}", key);
-    }
-
-    void SymbolTable::register_function(const BoxedFunction &function) {
-
-        functions.insert({function->name()->identifier(), function});
-    }
-
-    ErrorOr<BoxedFunction> SymbolTable::get_function(const std::string &key) {
-
-        auto temp = shared_from_this();
-
-        while (temp != nullptr) {
-            if (temp->functions.contains(key))
-                return temp->functions.at(key);
-            temp = temp->parent;
-        }
-
-        return fmt::format("RUNTIME: Failed to load function {}", key);
-    }
+    return fmt::format("RUNTIME: Failed to load function {}", key);
+  }
 
 
-} // hasha
+}// namespace hasha

@@ -9,25 +9,23 @@
 
 namespace hasha {
 
-    class SymbolTableTree {
-        SymbolTable::Ptr root;
+  class SymbolTableTree {
+    SymbolTable::Ptr root;
 
-    public:
+   public:
+    SymbolTableTree();
 
-        SymbolTableTree();
+    SymbolTable::Ptr global_symbol_table();
 
-        SymbolTable::Ptr global_symbol_table();
+    using Ptr = std::shared_ptr<SymbolTableTree>;
 
-        using Ptr = std::shared_ptr<SymbolTableTree>;
+    static Ptr create();
 
-        static Ptr create();
+    SymbolTable::Ptr create_table(const SymbolTable::Ptr &parent);
 
-        SymbolTable::Ptr create_table(const SymbolTable::Ptr &parent);
+    [[nodiscard]] SymbolTable::Ptr get_by_id(int id) const;
+  };
 
-        [[nodiscard]]
-        SymbolTable::Ptr get_by_id(int id) const;
-    };
+}// namespace hasha
 
-} // hasha
-
-#endif //HASHA_SYMBOLTABLETREE_H
+#endif//HASHA_SYMBOLTABLETREE_H

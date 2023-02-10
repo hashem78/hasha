@@ -10,27 +10,23 @@
 
 namespace hasha {
 
-    class GenericType : public TokenBase {
-        BoxedType m_type;
-        BoxedTypeList m_generics_list;
+  class GenericType : public TokenBase {
+    BoxedType m_type;
+    BoxedTypeList m_generics_list;
 
-    public:
+   public:
+    GenericType(
+      BoxedType type,
+      BoxedTypeList generics_list,
+      Span span,
+      int scope_id
+    );
 
-        GenericType(
-                BoxedType type,
-                BoxedTypeList generics_list,
-                Span span,
-                int scope_id
-        );
+    [[nodiscard]] bool operator==(const GenericType &other) const noexcept;
 
-        [[nodiscard]]
-        bool operator==(const GenericType &other) const noexcept;
+    [[nodiscard]] const BoxedType &type() const;
 
-        [[nodiscard]]
-        const BoxedType &type() const;
-
-        [[nodiscard]]
-        const BoxedTypeList &generics_list() const;
-    };
-} // hasha
-#endif //HASHA_GENERICTYPE_H
+    [[nodiscard]] const BoxedTypeList &generics_list() const;
+  };
+}// namespace hasha
+#endif//HASHA_GENERICTYPE_H

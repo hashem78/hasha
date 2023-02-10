@@ -5,31 +5,28 @@
 #ifndef HASHA_EXPRESSION_H
 #define HASHA_EXPRESSION_H
 
-#include "TokenBase.h"
 #include "Token.h"
+#include "TokenBase.h"
 
 namespace hasha {
 
-    class Expression : public TokenBase {
-        TokenList m_expression;
+  class Expression : public TokenBase {
+    TokenList m_expression;
 
-    public:
+   public:
+    Expression(
+      TokenList expr,
+      Span span,
+      int scope_id
+    );
 
-        Expression(
-                TokenList expr,
-                Span span,
-                int scope_id
-        );
+    [[nodiscard]] bool empty() const noexcept;
 
-        [[nodiscard]]
-        bool empty() const noexcept;
+    [[nodiscard]] const TokenList &expression() const noexcept;
+  };
 
-        [[nodiscard]]
-        const TokenList &expression() const noexcept;
-    };
+  using BoxedExpression = Box<Expression>;
+  using BoxedExpressionList = std::vector<BoxedExpression>;
+}// namespace hasha
 
-    using BoxedExpression = Box<Expression>;
-    using BoxedExpressionList = std::vector<BoxedExpression>;
-} // hasha
-
-#endif //HASHA_EXPRESSION_H
+#endif//HASHA_EXPRESSION_H

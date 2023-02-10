@@ -1,91 +1,88 @@
-    //
+//
 // Created by mythi on 03/10/22.
 //
 
 #include "TokenVisitor.h"
 
 namespace hasha {
-    ErrorOr<void> TokenVisitor::operator()(const BoxedDeclaration &obj) {
+  ErrorOr<void> TokenVisitor::operator()(const BoxedDeclaration &obj) {
 
-        auto evaluator = ExpressionEvaluator{
-                obj->assignment_expression(),
-                symbol_tree,
-                symbol_table
-        };
-        auto assignment_value = TRY(evaluator.evaluate());
-        auto variable = lang::Variable{obj->name()->identifier(), assignment_value};
-        symbol_table->register_varible(variable);
-        variable.print();
+    auto evaluator = ExpressionEvaluator{
+      obj->assignment_expression(),
+      symbol_tree,
+      symbol_table};
+    auto assignment_value = TRY(evaluator.evaluate());
+    auto variable = lang::Variable{obj->name()->identifier(), assignment_value};
+    symbol_table->register_varible(variable);
+    variable.print();
 
-        return {};
+    return {};
+  }
+
+  ErrorOr<void> TokenVisitor::operator()(const BoxedExpression &obj) const {
+
+    auto evaluator = ExpressionEvaluator{
+      obj,
+      symbol_tree,
+      symbol_table};
+    auto value = TRY(evaluator.evaluate());
+
+    // TODO: Expressions should have side effects
+
+    return {};
+  }
+
+  ErrorOr<void> TokenVisitor::operator()(const BoxedFunctionCall &obj) {
+
+    // TODO: FunctionCalls should have side effects
+
+    return {};
+  }
+
+  ErrorOr<void> TokenVisitor::operator()(const BoxedAssignment &obj) {
+
+    auto evaluator = ExpressionEvaluator{
+      obj->expression(),
+      symbol_tree,
+      symbol_table};
+    auto value = TRY(evaluator.evaluate());
+    auto var_name = obj->assignee()->identifier();
+    TRY(symbol_table->get_varible(var_name))->value = value;
+
+    return {};
+  }
+
+  ErrorOr<void> TokenVisitor::operator()(const BoxedBlock &obj) {
+
+    auto block_symbol_table = symbol_tree->create_table(symbol_table);
+
+    for (const auto &token: obj->tokens()) {
+      TRY(std::visit(TokenVisitor{symbol_tree, block_symbol_table}, token));
     }
+    return {};
+  }
 
-    ErrorOr<void> TokenVisitor::operator()(const BoxedExpression &obj) const {
+  ErrorOr<void> TokenVisitor::operator()(const BoxedIfStatement &obj) {
+    auto evaluator = ExpressionEvaluator{obj->condition(), symbol_tree, symbol_table};
+    auto condition = std::get<bool>(TRY(evaluator.evaluate()));
+    if (condition) {
 
-        auto evaluator = ExpressionEvaluator{
-                obj,
-                symbol_tree,
-                symbol_table
-        };
-        auto value = TRY(evaluator.evaluate());
+      auto block_symbol_table = symbol_tree->create_table(symbol_table);
 
-        // TODO: Expressions should have side effects
-
-        return {};
+      for (const auto &token: obj->block()->tokens()) {
+        TRY(std::visit(TokenVisitor{symbol_tree, block_symbol_table}, token));
+      }
     }
+    return {};
+  }
 
-    ErrorOr<void> TokenVisitor::operator()(const BoxedFunctionCall &obj) {
+  ErrorOr<void> TokenVisitor::operator()(const BoxedElifStatement &obj) {
 
-        // TODO: FunctionCalls should have side effects
+    return {};
+  }
 
-        return {};
-    }
+  ErrorOr<void> TokenVisitor::operator()(const BoxedElseStatement &obj) {
 
-    ErrorOr<void> TokenVisitor::operator()(const BoxedAssignment &obj) {
-
-        auto evaluator = ExpressionEvaluator{
-                obj->expression(),
-                symbol_tree,
-                symbol_table
-        };
-        auto value = TRY(evaluator.evaluate());
-        auto var_name = obj->assignee()->identifier();
-        TRY(symbol_table->get_varible(var_name))->value = value;
-
-        return {};
-    }
-
-    ErrorOr<void> TokenVisitor::operator()(const BoxedBlock &obj) {
-
-        auto block_symbol_table = symbol_tree->create_table(symbol_table);
-
-        for (const auto &token: obj->tokens()) {
-            TRY(std::visit(TokenVisitor{symbol_tree, block_symbol_table}, token));
-        }
-        return {};
-    }
-
-    ErrorOr<void> TokenVisitor::operator()(const BoxedIfStatement &obj) {
-        auto evaluator = ExpressionEvaluator{obj->condition(), symbol_tree, symbol_table};
-        auto condition = std::get<bool>(TRY(evaluator.evaluate()));
-        if (condition) {
-
-            auto block_symbol_table = symbol_tree->create_table(symbol_table);
-
-            for (const auto &token: obj->block()->tokens()) {
-                TRY(std::visit(TokenVisitor{symbol_tree, block_symbol_table}, token));
-            }
-        }
-        return {};
-    }
-
-    ErrorOr<void> TokenVisitor::operator()(const BoxedElifStatement &obj) {
-
-        return {};
-    }
-
-    ErrorOr<void> TokenVisitor::operator()(const BoxedElseStatement &obj) {
-
-        return {};
-    }
-} // hasha
+    return {};
+  }
+}// namespace hasha

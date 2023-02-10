@@ -5,25 +5,24 @@
 #include "Assignment.h"
 
 namespace hasha {
-    Assignment::Assignment(
-            Box<Identifier> assignee,
-            Box<Expression> expression,
-            Span span,
-            int scope_id
-    ) noexcept:
-            m_assignee(std::move(assignee)),
-            m_expression(std::move(expression)),
-            TokenBase(span, scope_id, "Assignment"sv) {
+  Assignment::Assignment(
+    Box<Identifier> assignee,
+    Box<Expression> expression,
+    Span span,
+    int scope_id
+  ) noexcept
+      : m_assignee(std::move(assignee)),
+        m_expression(std::move(expression)),
+        TokenBase(span, scope_id, "Assignment"sv) {
+  }
 
-    }
+  const Box<Expression> &Assignment::expression() const noexcept {
 
-    const Box<Expression> &Assignment::expression() const noexcept {
+    return m_expression;
+  }
 
-        return m_expression;
-    }
+  const Box<Identifier> &Assignment::assignee() const noexcept {
 
-    const Box<Identifier> &Assignment::assignee() const noexcept {
-
-        return m_assignee;
-    }
-} // hasha
+    return m_assignee;
+  }
+}// namespace hasha

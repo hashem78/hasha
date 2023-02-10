@@ -9,17 +9,16 @@
 #include <variant>
 
 namespace hasha::lang {
-    using VariableValue = std::variant<int, float, bool>;
+  using VariableValue = std::variant<int, float, bool>;
 
-    struct Variable {
-        explicit Variable(std::string name, VariableValue value);
-        void print() const;
+  struct Variable {
+    explicit Variable(std::string name, VariableValue value);
+    void print() const;
 
-        std::string name;
-        VariableValue value;
+    std::string name;
+    VariableValue value;
+  };
 
-    };
+}// namespace hasha::lang
 
-} // lang
-
-#endif //HASHA_VARIABLE_H
+#endif//HASHA_VARIABLE_H

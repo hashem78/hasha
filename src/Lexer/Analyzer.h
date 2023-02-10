@@ -11,14 +11,15 @@
 
 namespace hasha {
 
-    class Analyzer {
-        const LexemeList &lexemes;
-    public:
-        explicit Analyzer(const LexemeList &lexemes);
+  class Analyzer {
+    const LexemeList &lexemes;
 
-        ErrorOr<void> analyze_bracket_pairs();
-    };
+   public:
+    explicit Analyzer(const LexemeList &lexemes);
 
-} // hasha
+    ErrorOr<void> analyze_bracket_pairs();
+  };
 
-#endif //HASHA_ANALYZER_H
+}// namespace hasha
+
+#endif//HASHA_ANALYZER_H

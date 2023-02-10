@@ -5,25 +5,24 @@
 #include "Block.h"
 
 namespace hasha {
-    Block::Block(
-            TokenList tokens,
-            Span span,
-            int scope_id,
-            bool contains_return
-    ) noexcept:
-            m_tokens(std::move(tokens)),
-            m_contains_return(contains_return),
-            TokenBase(span, scope_id, "Block"sv) {
+  Block::Block(
+    TokenList tokens,
+    Span span,
+    int scope_id,
+    bool contains_return
+  ) noexcept
+      : m_tokens(std::move(tokens)),
+        m_contains_return(contains_return),
+        TokenBase(span, scope_id, "Block"sv) {
+  }
 
-    }
+  const TokenList &Block::tokens() const noexcept {
 
-    const TokenList &Block::tokens() const noexcept {
+    return m_tokens;
+  }
 
-        return m_tokens;
-    }
+  bool Block::contains_return() const noexcept {
 
-    bool Block::contains_return() const noexcept {
-
-        return m_contains_return;
-    }
-} // hasha
+    return m_contains_return;
+  }
+}// namespace hasha

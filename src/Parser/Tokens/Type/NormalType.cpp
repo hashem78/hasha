@@ -5,22 +5,22 @@
 #include "NormalType.h"
 
 namespace hasha {
-    NormalType::NormalType(
-            std::string type,
-            const Span &span,
-            int scope_id
-    ) : m_type(std::move(type)),
+  NormalType::NormalType(
+    std::string type,
+    const Span &span,
+    int scope_id
+  )
+      : m_type(std::move(type)),
         TokenBase(span, scope_id, "NormalType"sv) {
+  }
 
-    }
+  bool NormalType::operator==(const NormalType &other) const {
 
-    bool NormalType::operator==(const NormalType &other) const {
+    return m_type == other.m_type;
+  }
 
-        return m_type == other.m_type;
-    }
+  const std::string &NormalType::type() const {
 
-    const std::string &NormalType::type() const {
-
-        return m_type;
-    }
-} // hasha
+    return m_type;
+  }
+}// namespace hasha

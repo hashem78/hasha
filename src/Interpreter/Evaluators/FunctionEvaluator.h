@@ -10,21 +10,22 @@
 
 namespace hasha {
 
-    class FunctionEvaluator {
+  class FunctionEvaluator {
 
-        BoxedFunction function;
-        SymbolTableTree::Ptr symbol_tree;
-        SymbolTable::Ptr symbol_table;
-    public:
-        explicit FunctionEvaluator(
-                BoxedFunction function,
-                SymbolTableTree::Ptr symbol_tree,
-                SymbolTable::Ptr symbol_table
-        ) noexcept;
+    BoxedFunction function;
+    SymbolTableTree::Ptr symbol_tree;
+    SymbolTable::Ptr symbol_table;
 
-        ErrorOr<lang::VariableValue> evaluate();
-    };
+   public:
+    explicit FunctionEvaluator(
+      BoxedFunction function,
+      SymbolTableTree::Ptr symbol_tree,
+      SymbolTable::Ptr symbol_table
+    ) noexcept;
 
-} // hasha
+    ErrorOr<lang::VariableValue> evaluate();
+  };
 
-#endif //HASHA_FUNCTIONEVALUATOR_H
+}// namespace hasha
+
+#endif//HASHA_FUNCTIONEVALUATOR_H

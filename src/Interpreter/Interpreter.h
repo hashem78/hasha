@@ -12,25 +12,25 @@
 
 namespace hasha {
 
-    class Interpreter {
+  class Interpreter {
 
-        BoxedBlock global_block;
-        ScopeTree::Ptr scope_tree;
-        SymbolTableTree::Ptr symbol_table_tree;
-        Scope::Ptr global_scope;
+    BoxedBlock global_block;
+    ScopeTree::Ptr scope_tree;
+    SymbolTableTree::Ptr symbol_table_tree;
+    Scope::Ptr global_scope;
 
-    public:
-        explicit Interpreter(
-                BoxedBlock block,
-                ScopeTree::Ptr scope_tree,
-                Scope::Ptr global_scope
-        ) noexcept;
+   public:
+    explicit Interpreter(
+      BoxedBlock block,
+      ScopeTree::Ptr scope_tree,
+      Scope::Ptr global_scope
+    ) noexcept;
 
-        ErrorOr<void> interpret();
-        ErrorOr<void> first_pass();
-        ErrorOr<void> second_pass();
-    };
+    ErrorOr<void> interpret();
+    ErrorOr<void> first_pass();
+    ErrorOr<void> second_pass();
+  };
 
-} // hasha
+}// namespace hasha
 
-#endif //HASHA_INTERPRETER_H
+#endif//HASHA_INTERPRETER_H

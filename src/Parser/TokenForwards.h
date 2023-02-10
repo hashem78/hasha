@@ -6,38 +6,38 @@
 #define HASHA_TOKENFORWARDS_H
 namespace hasha {
 
-    class Type;
+  class Type;
 
-    class Identifier;
+  class Identifier;
 
-    class GenericType;
+  class GenericType;
 
-    class NormalType;
+  class NormalType;
 
-    class Declaration;
+  class Declaration;
 
-    class Expression;
+  class Expression;
 
-    class Literal;
+  class Literal;
 
-    class Operator;
+  class Operator;
 
-    class FunctionCall;
+  class FunctionCall;
 
-    class Block;
+  class Block;
 
-    class Assignment;
+  class Assignment;
 
-    class Function;
+  class Function;
 
-    class Parameter;
+  class Parameter;
 
-    class IfStatement;
+  class IfStatement;
 
-    class ElifStatement;
+  class ElifStatement;
 
-    class ElseStatement;
+  class ElseStatement;
 
-    class ReturnToken;
-}
-#endif //HASHA_TOKENFORWARDS_H
+  class ReturnToken;
+}// namespace hasha
+#endif//HASHA_TOKENFORWARDS_H

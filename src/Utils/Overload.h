@@ -6,12 +6,13 @@
 #define HASHA_OVERLOAD_H
 
 namespace hasha {
-    template<typename ...Ts>
-    struct Overload : Ts ... {
-        using Ts::operator()...;
-    };
+  template<typename... Ts>
+  struct Overload : Ts... {
+    using Ts::operator()...;
+  };
 
-    template<typename ...Ts> Overload(Ts...) -> Overload<Ts...>;
-}
+  template<typename... Ts>
+  Overload(Ts...) -> Overload<Ts...>;
+}// namespace hasha
 
-#endif //HASHA_OVERLOAD_H
+#endif//HASHA_OVERLOAD_H

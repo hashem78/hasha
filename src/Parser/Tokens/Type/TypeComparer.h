@@ -6,28 +6,28 @@
 #define HASHA_TYPECOMPARER_H
 
 
-#include "NormalType.h"
 #include "Box.h"
 #include "GenericType.h"
+#include "NormalType.h"
 #include "fmt/core.h"
 
 namespace hasha {
-    struct TypeComparer {
-        bool operator()(const BoxedNormalType &a, const BoxedNormalType &b) const noexcept {
+  struct TypeComparer {
+    bool operator()(const BoxedNormalType &a, const BoxedNormalType &b) const noexcept {
 
-            return *a == *b;
-        }
+      return *a == *b;
+    }
 
-        bool operator()(const BoxedGenericType &a, const BoxedGenericType &b) const noexcept {
+    bool operator()(const BoxedGenericType &a, const BoxedGenericType &b) const noexcept {
 
-            return *a == *b;
-        }
+      return *a == *b;
+    }
 
-        bool operator()(auto, auto) const noexcept {
+    bool operator()(auto, auto) const noexcept {
 
-            return false;
-        }
-    };
-}
+      return false;
+    }
+  };
+}// namespace hasha
 
-#endif //HASHA_TYPECOMPARER_H
+#endif//HASHA_TYPECOMPARER_H

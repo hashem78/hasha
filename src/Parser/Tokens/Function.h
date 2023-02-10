@@ -5,49 +5,43 @@
 #ifndef HASHA_FUNCTION_H
 #define HASHA_FUNCTION_H
 
-#include <variant>
-#include "TokenBase.h"
 #include "Box.h"
+#include "TokenBase.h"
 #include "TokenForwards.h"
+#include <variant>
 
 namespace hasha {
 
 
-    class Function : public TokenBase {
+  class Function : public TokenBase {
 
-        Box<Identifier> m_name;
-        std::vector<Box<Parameter>> m_parameters;
-        std::variant<Box<NormalType>, Box<GenericType>> m_return_type;
-        Box<Block> m_block;
+    Box<Identifier> m_name;
+    std::vector<Box<Parameter>> m_parameters;
+    std::variant<Box<NormalType>, Box<GenericType>> m_return_type;
+    Box<Block> m_block;
 
-    public:
+   public:
+    Function(
+      Box<Identifier> name,
+      std::vector<Box<Parameter>> parameters,
+      std::variant<Box<NormalType>, Box<GenericType>> return_type,
+      Box<Block> block,
+      Span span,
+      int scope_id
+    ) noexcept;
 
-        Function(
-                Box<Identifier> name,
-                std::vector<Box<Parameter>> parameters,
-                std::variant<Box<NormalType>, Box<GenericType>> return_type,
-                Box<Block> block,
-                Span span,
-                int scope_id
-        ) noexcept;
+    [[nodiscard]] const Box<Identifier> &name() const noexcept;
 
-        [[nodiscard]]
-        const Box<Identifier> &name() const noexcept;
+    [[nodiscard]] const std::variant<Box<NormalType>, Box<GenericType>> &return_type() const noexcept;
 
-        [[nodiscard]]
-        const std::variant<Box<NormalType>, Box<GenericType>> &return_type() const noexcept;
+    [[nodiscard]] const std::vector<Box<Parameter>> &parameters() const noexcept;
 
-        [[nodiscard]]
-        const std::vector<Box<Parameter>> &parameters() const noexcept;
+    [[nodiscard]] int number_of_parameters() const noexcept;
 
-        [[nodiscard]]
-        int number_of_parameters() const noexcept;
+    [[nodiscard]] const Box<Block> &block() const noexcept;
+  };
 
-        [[nodiscard]]
-        const Box<Block> &block() const noexcept;
-    };
+  using BoxedFunction = Box<Function>;
+}// namespace hasha
 
-    using BoxedFunction = Box<Function>;
-} // hasha
-
-#endif //HASHA_FUNCTION_H
+#endif//HASHA_FUNCTION_H

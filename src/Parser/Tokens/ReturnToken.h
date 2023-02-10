@@ -5,29 +5,27 @@
 #ifndef HASHA_RETURNTOKEN_H
 #define HASHA_RETURNTOKEN_H
 
+#include "Box.h"
 #include "TokenBase.h"
 #include "TokenForwards.h"
-#include "Box.h"
 
 namespace hasha {
 
-    class ReturnToken : public TokenBase {
-        Box<Expression> m_expression;
-    public:
+  class ReturnToken : public TokenBase {
+    Box<Expression> m_expression;
 
-        explicit ReturnToken(
-                Box<Expression> expression,
-                Span span,
-                int scope_id
-        ) noexcept;
+   public:
+    explicit ReturnToken(
+      Box<Expression> expression,
+      Span span,
+      int scope_id
+    ) noexcept;
 
-        [[nodiscard]]
-        const Box<Expression> &expression() const noexcept;
+    [[nodiscard]] const Box<Expression> &expression() const noexcept;
+  };
 
-    };
+  using BoxedReturnToken = Box<ReturnToken>;
 
-    using BoxedReturnToken = Box<ReturnToken>;
+}// namespace hasha
 
-} // hasha
-
-#endif //HASHA_RETURNTOKEN_H
+#endif//HASHA_RETURNTOKEN_H

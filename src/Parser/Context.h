@@ -7,11 +7,11 @@
 
 namespace hasha {
 
-    struct Context {
-        bool parsing_void_function;
+  struct Context {
+    bool parsing_void_function;
 
-        Context &set_parsing_void_function(bool val) noexcept;
-    };
-} // hasha
+    Context &set_parsing_void_function(bool val) noexcept;
+  };
+}// namespace hasha
 
-#endif //HASHA_CONTEXT_H
+#endif//HASHA_CONTEXT_H

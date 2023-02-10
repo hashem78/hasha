@@ -5,37 +5,33 @@
 #ifndef HASHA_FUNCTIONCALL_H
 #define HASHA_FUNCTIONCALL_H
 
-#include "TokenForwards.h"
-#include "TokenBase.h"
 #include "Box.h"
+#include "TokenBase.h"
+#include "TokenForwards.h"
 
 namespace hasha {
 
-    class FunctionCall : public TokenBase {
-        std::string m_callee;
-        std::vector<Box<Expression>> m_arguments;
+  class FunctionCall : public TokenBase {
+    std::string m_callee;
+    std::vector<Box<Expression>> m_arguments;
 
-    public:
+   public:
+    FunctionCall(
+      std::string callee,
+      std::vector<Box<Expression>> tokens,
+      const Span &span,
+      int scope_id
+    );
 
-        FunctionCall(
-                std::string callee,
-                std::vector<Box<Expression>> tokens,
-                const Span &span,
-                int scope_id
-        );
 
+    [[nodiscard]] int number_of_args() const noexcept;
 
-        [[nodiscard]]
-        int number_of_args() const noexcept;
+    [[nodiscard]] const std::string &callee() const noexcept;
 
-        [[nodiscard]]
-        const std::string &callee() const noexcept;
+    [[nodiscard]] const std::vector<Box<Expression>> &arguments() const noexcept;
+  };
 
-        [[nodiscard]]
-        const std::vector<Box<Expression>> &arguments() const noexcept;
-    };
+  using BoxedFunctionCall = Box<FunctionCall>;
+}// namespace hasha
 
-    using BoxedFunctionCall = Box<FunctionCall>;
-} // hasha
-
-#endif //HASHA_FUNCTIONCALL_H
+#endif//HASHA_FUNCTIONCALL_H

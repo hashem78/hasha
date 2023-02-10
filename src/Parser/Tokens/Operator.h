@@ -5,33 +5,31 @@
 #ifndef HASHA_OPERATOR_H
 #define HASHA_OPERATOR_H
 
-#include "TokenBase.h"
 #include "Box.h"
 #include "OperatorType.h"
+#include "TokenBase.h"
 
 namespace hasha {
 
-    class Operator : public TokenBase {
-    protected:
-        OperatorType m_type;
-        std::string m_op;
+  class Operator : public TokenBase {
+   protected:
+    OperatorType m_type;
+    std::string m_op;
 
-    public:
-        Operator(
-                OperatorType type,
-                std::string op,
-                Span span,
-                int scope_id
-        );
+   public:
+    Operator(
+      OperatorType type,
+      std::string op,
+      Span span,
+      int scope_id
+    );
 
-        [[nodiscard]]
-        const std::string &operation() const noexcept;
+    [[nodiscard]] const std::string &operation() const noexcept;
 
-        [[nodiscard]]
-        OperatorType type() const noexcept;
-    };
+    [[nodiscard]] OperatorType type() const noexcept;
+  };
 
-    using BoxedOperator = Box<Operator>;
-} // hasha
+  using BoxedOperator = Box<Operator>;
+}// namespace hasha
 
-#endif //HASHA_OPERATOR_H
+#endif//HASHA_OPERATOR_H

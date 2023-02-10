@@ -6,11 +6,11 @@
 #define HASHA_OPERATORTYPE_H
 
 namespace hasha {
-    enum class OperatorType{
-        Unary,
-        Binary,
-        Ternary
-    };
+  enum class OperatorType {
+    Unary,
+    Binary,
+    Ternary
+  };
 }
 
-#endif //HASHA_OPERATORTYPE_H
+#endif//HASHA_OPERATORTYPE_H

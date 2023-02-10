@@ -6,29 +6,29 @@
 #define HASHA_LEXERTYPES_H
 
 namespace hasha {
-    enum class LexemeType {
-        OPERATOR,
-        IDENTIFIER,
-        LITERAL,
-        SYMBOL,
-        KEYWORD,
-        ILLEGAL,
-        EOFT,
-    };
-    enum class Associativity {
-        LEFT,
-        RIGHT,
-        NONE
-    };
-    enum class Precedence {
-        LVL6 = 6,
-        LVL5 = 5,
-        LVL4 = 4,
-        LVL3 = 3,
-        LVL2 = 2,
-        LVL1 = 1,
-        NONE = 0
-    };
-}
+  enum class LexemeType {
+    OPERATOR,
+    IDENTIFIER,
+    LITERAL,
+    SYMBOL,
+    KEYWORD,
+    ILLEGAL,
+    EOFT,
+  };
+  enum class Associativity {
+    LEFT,
+    RIGHT,
+    NONE
+  };
+  enum class Precedence {
+    LVL6 = 6,
+    LVL5 = 5,
+    LVL4 = 4,
+    LVL3 = 3,
+    LVL2 = 2,
+    LVL1 = 1,
+    NONE = 0
+  };
+}// namespace hasha
 
-#endif //HASHA_LEXERTYPES_H
+#endif//HASHA_LEXERTYPES_H

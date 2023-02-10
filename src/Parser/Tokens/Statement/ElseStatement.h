@@ -5,28 +5,27 @@
 #ifndef HASHA_ELSESTATEMENT_H
 #define HASHA_ELSESTATEMENT_H
 
+#include "Box.h"
 #include "TokenBase.h"
 #include "TokenForwards.h"
-#include "Box.h"
 
 namespace hasha {
 
-    class ElseStatement : public TokenBase {
+  class ElseStatement : public TokenBase {
 
-        Box<Block> m_block;
-    public:
+    Box<Block> m_block;
 
-        ElseStatement(
-                Box<Block> block,
-                Span span,
-                int scope_id
-        ) noexcept;
+   public:
+    ElseStatement(
+      Box<Block> block,
+      Span span,
+      int scope_id
+    ) noexcept;
 
-        [[nodiscard]]
-        const Box<Block> &block() const noexcept;
-    };
+    [[nodiscard]] const Box<Block> &block() const noexcept;
+  };
 
-    using BoxedElseStatement = Box<ElseStatement>;
-} // hasha
+  using BoxedElseStatement = Box<ElseStatement>;
+}// namespace hasha
 
-#endif //HASHA_ELSESTATEMENT_H
+#endif//HASHA_ELSESTATEMENT_H

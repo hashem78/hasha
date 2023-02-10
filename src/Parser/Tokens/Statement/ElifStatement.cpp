@@ -5,23 +5,24 @@
 #include "ElifStatement.h"
 
 namespace hasha {
-    ElifStatement::ElifStatement(
-            Box<Expression> condition,
-            Box<Block> block,
-            const Span &span,
-            int scope_id
-    ) noexcept:
-            m_condition(std::move(condition)),
-            m_block(std::move(block)),
-            TokenBase(span, scope_id, "ElifStatement") {}
+  ElifStatement::ElifStatement(
+    Box<Expression> condition,
+    Box<Block> block,
+    const Span &span,
+    int scope_id
+  ) noexcept
+      : m_condition(std::move(condition)),
+        m_block(std::move(block)),
+        TokenBase(span, scope_id, "ElifStatement") {
+  }
 
-    const Box<Expression> &ElifStatement::condition() const noexcept {
+  const Box<Expression> &ElifStatement::condition() const noexcept {
 
-        return m_condition;
-    }
+    return m_condition;
+  }
 
-    const Box<Block> &ElifStatement::block() const noexcept {
+  const Box<Block> &ElifStatement::block() const noexcept {
 
-        return m_block;
-    }
-} // hasha
+    return m_block;
+  }
+}// namespace hasha

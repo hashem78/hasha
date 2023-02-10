@@ -6,62 +6,63 @@
 
 namespace hasha {
 
-    ScopeTree::ScopeTree() : root(nullptr) {}
+  ScopeTree::ScopeTree()
+      : root(nullptr) {
+  }
 
-    ScopeTree::Ptr ScopeTree::create() {
+  ScopeTree::Ptr ScopeTree::create() {
 
-        return std::make_shared<ScopeTree>();
+    return std::make_shared<ScopeTree>();
+  }
+
+  Scope::Ptr ScopeTree::create_scope(int parent_id) {
+
+    if (root == nullptr) {
+      root = Scope::create(nullptr);
+      return root;
     }
 
-    Scope::Ptr ScopeTree::create_scope(int parent_id) {
-
-        if (root == nullptr) {
-            root = Scope::create(nullptr);
-            return root;
-        }
-
-        if (parent_id == 0) {
-            root->children.push_back(Scope::create(root));
-            return root->children.back();
-        }
-
-        auto parent = get_by_id(parent_id);
-        root->children.push_back(Scope::create(parent));
-        return root->children.back();
+    if (parent_id == 0) {
+      root->children.push_back(Scope::create(root));
+      return root->children.back();
     }
 
-    Scope::Ptr ScopeTree::get_by_id(int id) const {
+    auto parent = get_by_id(parent_id);
+    root->children.push_back(Scope::create(parent));
+    return root->children.back();
+  }
 
-        std::queue<Scope::Ptr> scopes;
-        scopes.push(root);
-        while (!scopes.empty()) {
+  Scope::Ptr ScopeTree::get_by_id(int id) const {
 
-            auto scope = scopes.front();
-            scopes.pop();
+    std::queue<Scope::Ptr> scopes;
+    scopes.push(root);
+    while (!scopes.empty()) {
 
-            if (scope->id == id) {
-                return scope;
-            }
+      auto scope = scopes.front();
+      scopes.pop();
 
-            for (auto &child: scope->children)
-                scopes.push(child);
-        }
-        return root;
+      if (scope->id == id) {
+        return scope;
+      }
+
+      for (auto &child: scope->children)
+        scopes.push(child);
     }
+    return root;
+  }
 
-    void ScopeTree::print() const {
+  void ScopeTree::print() const {
 
-        std::queue<Scope::Ptr> scopes;
-        scopes.push(root);
-        while (!scopes.empty()) {
+    std::queue<Scope::Ptr> scopes;
+    scopes.push(root);
+    while (!scopes.empty()) {
 
-            auto scope = scopes.front();
-            scopes.pop();
+      auto scope = scopes.front();
+      scopes.pop();
 
-            for (auto &child: scope->children)
-                scopes.push(child);
-        }
-
+      for (auto &child: scope->children)
+        scopes.push(child);
     }
+  }
 
-} // hasha
+}// namespace hasha

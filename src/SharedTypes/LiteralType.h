@@ -7,13 +7,13 @@
 
 namespace hasha {
 
-    enum class LiteralType {
-        Integer,
-        Float,
-        String,
-        Boolean
-    };
+  enum class LiteralType {
+    Integer,
+    Float,
+    String,
+    Boolean
+  };
 
-} // hasha
+}// namespace hasha
 
-#endif //HASHA_LITERALTYPE_H
+#endif//HASHA_LITERALTYPE_H

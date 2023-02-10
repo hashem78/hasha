@@ -7,55 +7,50 @@
 
 #include <vector>
 
-#include "Lexeme.h"
 #include "ErrorOr.h"
+#include "Lexeme.h"
 
 
 namespace hasha {
 
-    class Lexer {
-    public:
-        explicit Lexer(std::string);
+  class Lexer {
+   public:
+    explicit Lexer(std::string);
 
-        ErrorOr<void> lex();
+    ErrorOr<void> lex();
 
-        [[nodiscard]]
-        const LexemeList &get_lexemes() const;
+    [[nodiscard]] const LexemeList &get_lexemes() const;
 
-        std::vector<char> data;
-    private:
+    std::vector<char> data;
 
-        LexemeList lexemes;
-        std::string file_name;
-        int cursor;
-        int line;
-        int col;
+   private:
+    LexemeList lexemes;
+    std::string file_name;
+    int cursor;
+    int line;
+    int col;
 
-        ErrorOr<Lexeme> next_token() noexcept;
+    ErrorOr<Lexeme> next_token() noexcept;
 
-        void skip_spaces() noexcept;
+    void skip_spaces() noexcept;
 
-        void advance(int k = 1);
+    void advance(int k = 1);
 
-        [[nodiscard]]
-        bool done() const noexcept;
+    [[nodiscard]] bool done() const noexcept;
 
-        [[nodiscard]]
-        bool match(std::string_view str) noexcept;
+    [[nodiscard]] bool match(std::string_view str) noexcept;
 
-        [[nodiscard]]
-        char peek(int= 0) const noexcept;
+    [[nodiscard]] char peek(int = 0) const noexcept;
 
-        [[nodiscard]]
-        std::string collect() noexcept;
+    [[nodiscard]] std::string collect() noexcept;
 
-        static bool is_legal_character(char) noexcept;
+    static bool is_legal_character(char) noexcept;
 
-        static bool is_numeric_literal(std::string_view str) noexcept;
+    static bool is_numeric_literal(std::string_view str) noexcept;
 
-        static bool is_identifier(std::string_view) noexcept;
-    };
+    static bool is_identifier(std::string_view) noexcept;
+  };
 
-} // hasha
+}// namespace hasha
 
-#endif //HASHA_LEXER_H
+#endif//HASHA_LEXER_H

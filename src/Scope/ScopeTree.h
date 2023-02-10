@@ -9,25 +9,24 @@
 
 namespace hasha {
 
-    class ScopeTree {
-        Scope::Ptr root;
+  class ScopeTree {
+    Scope::Ptr root;
 
 
-    public:
-        ScopeTree();
+   public:
+    ScopeTree();
 
-        using Ptr = std::shared_ptr<ScopeTree>;
+    using Ptr = std::shared_ptr<ScopeTree>;
 
-        static Ptr create();
+    static Ptr create();
 
-        Scope::Ptr create_scope(int parent_id = 0);
+    Scope::Ptr create_scope(int parent_id = 0);
 
-        [[nodiscard]]
-        Scope::Ptr get_by_id(int id) const;
+    [[nodiscard]] Scope::Ptr get_by_id(int id) const;
 
-        void print() const;
-    };
+    void print() const;
+  };
 
-} // hasha
+}// namespace hasha
 
-#endif //HASHA_SCOPETREE_H
+#endif//HASHA_SCOPETREE_H

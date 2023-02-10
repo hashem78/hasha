@@ -5,16 +5,17 @@
 #include "ElseStatement.h"
 
 namespace hasha {
-    ElseStatement::ElseStatement(
-            Box<Block> block,
-            Span span,
-            int scope_id
-    ) noexcept:
-            m_block(std::move(block)),
-            TokenBase(span, scope_id, "ElseStatement"sv) {}
+  ElseStatement::ElseStatement(
+    Box<Block> block,
+    Span span,
+    int scope_id
+  ) noexcept
+      : m_block(std::move(block)),
+        TokenBase(span, scope_id, "ElseStatement"sv) {
+  }
 
-    const Box<Block> &ElseStatement::block() const noexcept {
+  const Box<Block> &ElseStatement::block() const noexcept {
 
-        return m_block;
-    }
-} // hasha
+    return m_block;
+  }
+}// namespace hasha

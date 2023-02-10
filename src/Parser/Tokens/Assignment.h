@@ -5,35 +5,32 @@
 #ifndef HASHA_ASSIGNMENT_H
 #define HASHA_ASSIGNMENT_H
 
+#include "Box.h"
 #include "TokenBase.h"
 #include "TokenForwards.h"
-#include "Box.h"
 
 namespace hasha {
 
-    class Assignment : public TokenBase {
+  class Assignment : public TokenBase {
 
-        Box<Identifier> m_assignee;
-        Box<Expression> m_expression;
+    Box<Identifier> m_assignee;
+    Box<Expression> m_expression;
 
-    public:
+   public:
+    Assignment(
+      Box<Identifier> assignee,
+      Box<Expression> expression,
+      Span span,
+      int scope_id
+    ) noexcept;
 
-        Assignment(
-                Box<Identifier> assignee,
-                Box<Expression> expression,
-                Span span,
-                int scope_id
-        ) noexcept;
 
+    [[nodiscard]] const Box<Expression> &expression() const noexcept;
 
-        [[nodiscard]]
-        const Box<Expression> &expression() const noexcept;
+    [[nodiscard]] const Box<Identifier> &assignee() const noexcept;
+  };
 
-        [[nodiscard]]
-        const Box<Identifier> &assignee() const noexcept;
-    };
+  using BoxedAssignment = Box<Assignment>;
+}// namespace hasha
 
-    using BoxedAssignment = Box<Assignment>;
-} // hasha
-
-#endif //HASHA_ASSIGNMENT_H
+#endif//HASHA_ASSIGNMENT_H
