@@ -4,6 +4,7 @@
 
 #include "Interpreter.h"
 #include "Declaration.h"
+#include "ErrorOr.h"
 #include "Evaluators/ExpressionEvaluator.h"
 #include "Identifier.h"
 #include "Overload.h"
@@ -34,29 +35,24 @@ namespace hasha {
     auto global_symbol_table = symbol_table_tree->global_symbol_table();
 
     for (const auto &token: global_block->tokens()) {
+      TRYV(
+        token,
+        [&](const BoxedDeclaration &obj) noexcept -> ErrorOr<void> {
+          auto evaluator = ExpressionEvaluator{
+            obj->assignment_expression(),
+            symbol_table_tree,
+            global_symbol_table};
+          auto assignment_value = TRY(evaluator.evaluate());
+          auto variable = lang::Variable{obj->name()->identifier(), assignment_value};
+          global_symbol_table->register_varible(variable);
 
-      TRY(
-        std::visit(
-          Overload{
-            [&](const BoxedDeclaration &obj) noexcept -> ErrorOr<void> {
-              auto evaluator = ExpressionEvaluator{
-                obj->assignment_expression(),
-                symbol_table_tree,
-                global_symbol_table};
-              auto assignment_value = TRY(evaluator.evaluate());
-              auto variable = lang::Variable{obj->name()->identifier(), assignment_value};
-              global_symbol_table->register_varible(variable);
+          return {};
+        },
+        [&](const BoxedFunction &obj) noexcept -> ErrorOr<void> {
+          global_symbol_table->register_function(obj);
 
-              return {};
-            },
-            [&](const BoxedFunction &obj) noexcept -> ErrorOr<void> {
-              global_symbol_table->register_function(obj);
-
-              return {};
-            },
-            [](auto) -> ErrorOr<void> { return {}; }},
-          token
-        )
+          return {};
+        }
       );
     }
     return {};
@@ -68,13 +64,9 @@ namespace hasha {
     auto main_function = TRY(global_symbol_table->get_function("main"));
     for (const auto &token: main_function->block()->tokens()) {
 
-      TRY(
-        std::visit(
-          TokenVisitor{
-            symbol_table_tree,
-            global_symbol_table},
-          token
-        )
+      TRYV(
+        token,
+        TokenVisitor{symbol_table_tree, global_symbol_table}
       );
     }
 

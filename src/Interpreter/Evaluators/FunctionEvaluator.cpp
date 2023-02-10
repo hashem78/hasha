@@ -4,6 +4,7 @@
 
 #include "FunctionEvaluator.h"
 #include "Block.h"
+#include "Overload.h"
 #include "ReturnToken.h"
 #include "Vistors/TokenVisitor.h"
 
@@ -28,7 +29,10 @@ namespace hasha {
         auto res = TRY(evaluator.evaluate());
         return res;
       }
-      TRY(std::visit(TokenVisitor{symbol_tree, symbol_table}, token));
+      TRYV(
+        token,
+        TokenVisitor{symbol_tree, symbol_table}
+      );
     }
     return {};
   }

@@ -3,6 +3,7 @@
 //
 
 #include "TokenVisitor.h"
+#include "Overload.h"
 
 namespace hasha {
   ErrorOr<void> TokenVisitor::operator()(const BoxedDeclaration &obj) {
@@ -57,7 +58,10 @@ namespace hasha {
     auto block_symbol_table = symbol_tree->create_table(symbol_table);
 
     for (const auto &token: obj->tokens()) {
-      TRY(std::visit(TokenVisitor{symbol_tree, block_symbol_table}, token));
+      TRYV(
+        token,
+        TokenVisitor{symbol_tree, block_symbol_table}
+      );
     }
     return {};
   }
@@ -70,7 +74,10 @@ namespace hasha {
       auto block_symbol_table = symbol_tree->create_table(symbol_table);
 
       for (const auto &token: obj->block()->tokens()) {
-        TRY(std::visit(TokenVisitor{symbol_tree, block_symbol_table}, token));
+        TRYV(
+          token,
+          TokenVisitor{symbol_tree, block_symbol_table}
+        );
       }
     }
     return {};

@@ -135,22 +135,20 @@ namespace hasha {
       );
     }
     for (const auto &token: asx->expression()) {
-      TRY(std::visit(
-        Overload{
-          [&name = name->identifier()](const BoxedIdentifier &var) -> ErrorOr<void> {
-            if (var->identifier() == name) {
-              return fmt::format(
-                "Tried to access {} before its declaration is compelete, on line: {}, col: {}",
-                var->identifier(),
-                var->span().line,
-                var->span().col
-              );
-            }
-            return {};
-          },
-          [](auto) -> ErrorOr<void> { return {}; }},
-        token
-      ));
+      TRYV(
+        token,
+        [&name = name->identifier()](const BoxedIdentifier &var) -> ErrorOr<void> {
+          if (var->identifier() == name) {
+            return fmt::format(
+              "Tried to access {} before its declaration is compelete, on line: {}, col: {}",
+              var->identifier(),
+              var->span().line,
+              var->span().col
+            );
+          }
+          return {};
+        }
+      );
     }
 
     auto after_span = peek(-1).span();
