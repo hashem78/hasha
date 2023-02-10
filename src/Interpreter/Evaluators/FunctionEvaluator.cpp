@@ -6,7 +6,9 @@
 #include "Block.h"
 #include "Overload.h"
 #include "ReturnToken.h"
+#include "Token.h"
 #include "Vistors/TokenVisitor.h"
+#include <optional>
 
 namespace hasha {
 
@@ -23,9 +25,13 @@ namespace hasha {
   ErrorOr<lang::VariableValue> FunctionEvaluator::evaluate() {
 
     for (const auto &token: function->block()->tokens()) {
-      if (holds_alternative<BoxedReturnToken>(token)) {
-        auto return_expression = std::get<BoxedReturnToken>(token)->expression();
-        auto evaluator = ExpressionEvaluator{return_expression, symbol_tree, symbol_table};
+
+      if (auto return_token = token.as<ReturnToken>()) {
+        auto return_expression = EXTRACT(return_token)->expression();
+        auto evaluator = ExpressionEvaluator{
+          return_expression,
+          symbol_tree,
+          symbol_table};
         auto res = TRY(evaluator.evaluate());
         return res;
       }

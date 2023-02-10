@@ -540,9 +540,9 @@ namespace hasha {
     const Scope::Ptr &scope
   ) noexcept {
 
-    auto previous_is_if = std::holds_alternative<BoxedIfStatement>(previous_token);
-    auto previous_is_else = std::holds_alternative<BoxedElseStatement>(previous_token);
-    auto previous_is_elif = std::holds_alternative<BoxedIfStatement>(previous_token);
+    auto previous_is_if = previous_token.is<BoxedIfStatement>();
+    auto previous_is_else = previous_token.is<BoxedElseStatement>();
+    auto previous_is_elif = previous_token.is<BoxedIfStatement>();
 
     if (!previous_is_if && !previous_is_elif) {
       return fmt::format(
@@ -581,8 +581,8 @@ namespace hasha {
     const Scope::Ptr &scope
   ) noexcept {
 
-    auto previous_is_if = std::holds_alternative<BoxedIfStatement>(previous_token);
-    auto previous_is_elif = std::holds_alternative<BoxedIfStatement>(previous_token);
+    auto previous_is_if = previous_token.is<BoxedIfStatement>();
+    auto previous_is_elif = previous_token.is<BoxedIfStatement>();
 
     if (!previous_is_if && !previous_is_elif) {
       return fmt::format(
