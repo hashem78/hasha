@@ -2,3 +2,5 @@
 .idea/
 build/
 .cache/
+sample.hasha
+parser_output.json

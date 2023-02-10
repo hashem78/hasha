@@ -1,0 +1,17 @@
+{
+    "editor.formatOnSave": true,
+    "clangd.checkUpdates": true,
+    "clangd.onConfigChanged": "restart",
+    "clangd.arguments": [
+        "-background-index",
+        "-header-insertion=iwyu",
+        "-header-insertion-decorators",
+        "--inlay-hints",
+        "--function-arg-placeholders",
+        "--compile-commands-dir=/${workspaceFolder}/build"
+    ],
+    "lldb.displayFormat": "auto",
+    "lldb.showDisassembly": "never",
+    "lldb.dereferencePointers": true,
+    "lldb.consoleMode": "commands"
+}
