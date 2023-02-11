@@ -20,6 +20,9 @@
 #define TRYV(VISITABLE, ...) \
   TRY(std::visit(Overload{__VA_ARGS__, [](auto) -> ErrorOr<void> { return {}; }}, VISITABLE))
 
+#define TRYV2(VISITABLE1, VISITABLE2, ...) \
+  TRY(std::visit(Overload{__VA_ARGS__, [](auto) -> ErrorOr<void> { return {}; }}, VISITABLE1, VISITABLE2))
+
 namespace hasha {
 
   using ErrorType = std::string;
