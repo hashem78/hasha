@@ -22,7 +22,7 @@ int main() {
   auto res = hasha_main();
 
   if (res.is_error()) {
-    fmt::print("{}", res.error());
+    fmt::print("{}\n", res.error());
     return 1;
   }
 

@@ -27,6 +27,6 @@ namespace hasha::lang {
         [](const std::string &val) { return val; }},
       value
     );
-    fmt::print("Variable: {} {}\n", name, val);
+    fmt::print("Variable: {} {}", name, val);
   }
 }// namespace hasha::lang

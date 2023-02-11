@@ -32,7 +32,7 @@ namespace hasha {
 
     auto res = lexer.lex();
     if (res.is_error()) {
-      fmt::print("{}\n", res.error());
+      fmt::print("{}", res.error());
       exit(1);
     } else {
 
@@ -260,7 +260,7 @@ namespace hasha {
             } break;
             default:
               return fmt::format(
-                "Unknown token {} in expression, line: {} col: {}\n",
+                "Unknown token {} in expression, line: {} col: {}",
                 x.to_string(),
                 x.span().line,
                 x.span().col
@@ -506,7 +506,7 @@ namespace hasha {
     }
     EXPECT(EQUALS)
     auto expr = TRY(parse_expression(scope));
-    
+
     auto end_span = peek(-1).span();
     EXPECT(SEMICOLON)
 

@@ -22,7 +22,7 @@ namespace hasha {
     std::ifstream file(this->file_name, std::ios::binary);
 
     if (!file.is_open() || !file.good()) {
-      fmt::print("Failed to open {}\n", this->file_name);
+      fmt::print("Failed to open {}", this->file_name);
       exit(1);
     }
 
