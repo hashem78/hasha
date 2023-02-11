@@ -4,6 +4,7 @@
 
 #include "TokenVisitor.h"
 #include "Overload.h"
+#include "Type/DefaultParserTypes.h"
 
 namespace hasha {
   ErrorOr<void> TokenVisitor::operator()(const BoxedDeclaration &obj) {
@@ -11,21 +12,26 @@ namespace hasha {
     auto evaluator = ExpressionEvaluator{
       obj->assignment_expression(),
       symbol_tree,
-      symbol_table};
+      symbol_table,
+      obj->type()};
     auto assignment_value = TRY(evaluator.evaluate());
-    auto variable = lang::Variable{obj->name()->identifier(), assignment_value};
+    auto variable = lang::Variable{
+      obj->name()->identifier(),
+      obj->type(),
+      assignment_value};
     symbol_table->register_varible(variable);
     variable.print();
 
     return {};
   }
 
-  ErrorOr<void> TokenVisitor::operator()(const BoxedExpression &obj) const {
+  ErrorOr<void> TokenVisitor::operator()(const BoxedExpression &) const {
 
-    auto evaluator = ExpressionEvaluator{
-      obj,
-      symbol_tree,
-      symbol_table};
+    // auto evaluator = ExpressionEvaluator{
+    //   obj,
+    //   symbol_tree,
+    //   symbol_table,
+    //   };
 
     // TODO: Expressions should have side effects
 
@@ -41,13 +47,16 @@ namespace hasha {
 
   ErrorOr<void> TokenVisitor::operator()(const BoxedAssignment &obj) {
 
+    auto var_name = obj->assignee()->identifier();
+    auto var = TRY(symbol_table->get_varible(var_name));
+
     auto evaluator = ExpressionEvaluator{
       obj->expression(),
       symbol_tree,
-      symbol_table};
+      symbol_table,
+      var->type};
     auto value = TRY(evaluator.evaluate());
-    auto var_name = obj->assignee()->identifier();
-    TRY(symbol_table->get_varible(var_name))->value = value;
+    var->value = value;
 
     return {};
   }
@@ -66,7 +75,11 @@ namespace hasha {
   }
 
   ErrorOr<void> TokenVisitor::operator()(const BoxedIfStatement &obj) {
-    auto evaluator = ExpressionEvaluator{obj->condition(), symbol_tree, symbol_table};
+    auto evaluator = ExpressionEvaluator{
+      obj->condition(),
+      symbol_tree,
+      symbol_table,
+      DefBooleanType};
     auto condition = std::get<bool>(TRY(evaluator.evaluate()));
     if (condition) {
 

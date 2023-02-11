@@ -9,20 +9,26 @@
 #include "Literal.h"
 #include "Operator.h"
 #include "Overload.h"
+#include "Type/DefaultParserTypes.h"
+#include "Type/Type.h"
+#include "Vistors/BoxedTypeStringifier.h"
 #include "Vistors/TokenVisitor.h"
 #include "fmt/core.h"
 #include "fmt/std.h"
 #include <stack>
+#include <variant>
 
 namespace hasha {
   ExpressionEvaluator::ExpressionEvaluator(
     BoxedExpression expression,
     SymbolTableTree::Ptr symbol_tree,
-    SymbolTable::Ptr symbol_table
+    SymbolTable::Ptr symbol_table,
+    std::variant<Box<NormalType>, Box<GenericType>> expected_type
   ) noexcept
       : expression(std::move(expression)),
         symbol_tree(std::move(symbol_tree)),
-        symbol_table(std::move(symbol_table)) {
+        symbol_table(std::move(symbol_table)),
+        expected_type(std::move(expected_type)) {
   }
 
   ErrorOr<lang::VariableValue> ExpressionEvaluator::evaluate() const {
@@ -34,7 +40,11 @@ namespace hasha {
           Overload{
             [](auto) -> ErrorOr<void> { return {}; },
             [&, this](const BoxedExpression &expr) -> ErrorOr<void> {
-              auto evaluator = ExpressionEvaluator{expr, symbol_tree, symbol_table};
+              auto evaluator = ExpressionEvaluator{
+                expr,
+                symbol_tree,
+                symbol_table,
+                expected_type};
               stk.push(TRY(evaluator.evaluate()));
               return {};
             },
@@ -154,6 +164,60 @@ namespace hasha {
               auto function = TRY(symbol_table->get_function(call_name));
               auto function_parameters = function->parameters();
 
+              TRY(
+                std::visit(
+                  Overload{
+                    [&](const BoxedNormalType &a, const BoxedGenericType &b) -> ErrorOr<void> {
+                      return fmt::format(
+                        "Return type of {} is {}, expected {} in this context on line: {}, col: {}",
+                        call_name,
+                        a->type(),
+                        std::visit(BoxedTypeToString{}, b->type()),
+                        b->details().span.line,
+                        b->details().span.col
+                      );
+                    },
+                    [&](const BoxedGenericType &a, const BoxedNormalType &b) -> ErrorOr<void> {
+                      return fmt::format(
+                        "Return type of {} is {}, expected {} in this context on line: {}, col: {}",
+                        call_name,
+                        std::visit(BoxedTypeToString{}, a->type()),
+                        b->type(),
+                        b->details().span.line,
+                        b->details().span.col
+                      );
+                    },
+                    [&](const BoxedGenericType &a, const BoxedGenericType &b) -> ErrorOr<void> {
+                      if (*a != *b) {
+                        return fmt::format(
+                          "Return type of {} is {}, expected {} in this context on line: {}, col: {}",
+                          call_name,
+                          std::visit(BoxedTypeToString{}, a->type()),
+                          std::visit(BoxedTypeToString{}, b->type()),
+                          b->details().span.line,
+                          b->details().span.col
+                        );
+                      }
+                      return {};
+                    },
+                    [&](const BoxedNormalType &a, const BoxedNormalType &b) -> ErrorOr<void> {
+                      if (*a != *b) {
+                        return fmt::format(
+                          "Return type of {} is {}, expected {} in this context on line: {}, col: {}",
+                          call_name,
+                          a->type(),
+                          b->type(),
+                          b->details().span.line,
+                          b->details().span.col
+                        );
+                      }
+                      return {};
+                    }},
+                  function->return_type(),
+                  expected_type
+                )
+              );
+
               if (call_arguments.size() != function_parameters.size()) {
                 return fmt::format(
                   "{} expects {} got {} arguments on line: {}, col: {}",
@@ -171,13 +235,25 @@ namespace hasha {
                 auto evaluator = ExpressionEvaluator{
                   arg_expression,
                   symbol_tree,
-                  sym_t};
+                  sym_t,
+                  expected_type};
                 auto val = TRY(evaluator.evaluate());
+                auto val_type = std::visit(
+                  Overload{
+                    [](int) { return DefIntegerType; },
+                    [](float) { return DefFloatingPointType; },
+                    [](bool) { return DefBooleanType; }},
+                  val
+                );
                 auto param_name = function_parameters[arg_index++]->name()->identifier();
-                auto variable = lang::Variable{param_name, val};
+                auto variable = lang::Variable{param_name, val_type, val};
                 sym_t->register_varible(variable);
               }
-              auto evaluator = FunctionEvaluator{function, symbol_tree, sym_t};
+              auto evaluator = FunctionEvaluator{
+                function,
+                symbol_tree,
+                sym_t
+                };
               auto val = TRY(evaluator.evaluate());
               stk.push(val);
               return {};

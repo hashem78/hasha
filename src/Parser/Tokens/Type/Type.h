@@ -8,6 +8,7 @@
 #include "Box.h"
 #include "TokenForwards.h"
 #include <variant>
+#include <vector>
 
 namespace hasha {
   using BoxedNormalType = Box<NormalType>;

@@ -41,9 +41,13 @@ namespace hasha {
           auto evaluator = ExpressionEvaluator{
             obj->assignment_expression(),
             symbol_table_tree,
-            global_symbol_table};
+            global_symbol_table,
+            obj->type()};
           auto assignment_value = TRY(evaluator.evaluate());
-          auto variable = lang::Variable{obj->name()->identifier(), assignment_value};
+          auto variable = lang::Variable{
+            obj->name()->identifier(),
+            obj->type(),
+            assignment_value};
           global_symbol_table->register_varible(variable);
 
           return {};

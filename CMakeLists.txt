@@ -95,6 +95,7 @@ add_executable(hasha
         src/Interpreter/Evaluators/ExpressionEvaluator.h
         src/Interpreter/Vistors/TokenVisitor.cpp
         src/Interpreter/Vistors/TokenVisitor.h
+        src/Interpreter/Vistors/BoxedTypeStringifier.h
         src/Parser/Tokens/ReturnToken.cpp
         src/Parser/Tokens/ReturnToken.h
         src/Interpreter/Evaluators/FunctionEvaluator.cpp

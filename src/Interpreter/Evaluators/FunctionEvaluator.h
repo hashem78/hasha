@@ -7,6 +7,7 @@
 
 #include "Function.h"
 #include "SymbolTableTree.h"
+#include "Type/Type.h"
 
 namespace hasha {
 
@@ -21,6 +22,7 @@ namespace hasha {
       BoxedFunction function,
       SymbolTableTree::Ptr symbol_tree,
       SymbolTable::Ptr symbol_table
+
     ) noexcept;
 
     ErrorOr<lang::VariableValue> evaluate();

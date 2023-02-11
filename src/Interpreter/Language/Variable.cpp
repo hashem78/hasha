@@ -4,6 +4,7 @@
 
 #include "Variable.h"
 #include "Overload.h"
+#include "Type/Type.h"
 #include "fmt/core.h"
 
 #include <utility>
@@ -11,9 +12,11 @@
 namespace hasha::lang {
   Variable::Variable(
     std::string name,
+    BoxedType type,
     VariableValue value
   )
       : name(std::move(name)),
+        type(std::move(type)),
         value(std::move(value)) {
   }
 

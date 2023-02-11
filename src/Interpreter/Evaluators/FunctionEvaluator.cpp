@@ -31,7 +31,8 @@ namespace hasha {
         auto evaluator = ExpressionEvaluator{
           return_expression,
           symbol_tree,
-          symbol_table};
+          symbol_table,
+          function->return_type()};
         return TRY(evaluator.evaluate());
       }
       TRYV(
