@@ -11,6 +11,9 @@
 #include "Constants.h"
 #include "Lexer.h"
 
+#define MATCH_LEXEME(STRING_REP, LEXEME) \
+  if (match(STRING_REP)) return LEXEME.with_span(create_span())
+
 namespace hasha {
 
   Lexer::Lexer(std::string file_name)
@@ -82,8 +85,6 @@ namespace hasha {
 
   ErrorOr<Lexeme> Lexer::next_token() noexcept {
 
-#define MATCH(STRING_REP, LEXEME) \
-  if (match(STRING_REP)) return LEXEME.with_span(create_span());
     if (done()) return Lexeme{{}, {}, {}, Span{}};
 
     skip_spaces();
@@ -144,37 +145,39 @@ namespace hasha {
 
     // Match Keywords
     {
-      MATCH("fn", FN)
-        MATCH("if", IF)
-          MATCH("else", ELSE)
-            MATCH("elif", ELIF)
-              MATCH("return", RETURN)
-                MATCH("true", TRUE)
-                  MATCH("false", FALSE)}
+      MATCH_LEXEME("fn", FN);
+      MATCH_LEXEME("if", IF);
+      MATCH_LEXEME("else", ELSE);
+      MATCH_LEXEME("elif", ELIF);
+      MATCH_LEXEME("return", RETURN);
+      MATCH_LEXEME("true", TRUE);
+      MATCH_LEXEME("false", FALSE);
+    };
 
     // Match Symbols
     {
-      MATCH("{", LCURLY)
-        MATCH("}", RCURLY)
-          MATCH("(", LPAREN)
-            MATCH(")", RPAREN)
-              MATCH("<", LANGEL)
-                MATCH(">", RANGEL)
-                  MATCH("[", LBRACKET)
-                    MATCH("]", RBRACKET)
-                      MATCH(",", COMMA)
-                        MATCH(";", SEMICOLON)
-                          MATCH(":", COLON)
-                            MATCH("->", ARROW)}
+      MATCH_LEXEME("{", LCURLY);
+      MATCH_LEXEME("}", RCURLY);
+      MATCH_LEXEME("(", LPAREN);
+      MATCH_LEXEME(")", RPAREN);
+      MATCH_LEXEME("<", LANGEL);
+      MATCH_LEXEME(">", RANGEL);
+      MATCH_LEXEME("[", LBRACKET);
+      MATCH_LEXEME("]", RBRACKET);
+      MATCH_LEXEME(",", COMMA);
+      MATCH_LEXEME(";", SEMICOLON);
+      MATCH_LEXEME(":", COLON);
+      MATCH_LEXEME("->", ARROW);
+    }
 
     // Match Binary Operators
     {
-      MATCH("&&", LAND)
-      MATCH("||", LOR)
-      MATCH("->", ARROW)
-      MATCH("=", EQUALS)
-      MATCH("*", ASTERISK)
-      MATCH("/", FSLASH)
+      MATCH_LEXEME("&&", LAND);
+      MATCH_LEXEME("||", LOR);
+      MATCH_LEXEME("->", ARROW);
+      MATCH_LEXEME("=", EQUALS);
+      MATCH_LEXEME("*", ASTERISK);
+      MATCH_LEXEME("/", FSLASH);
     }
 
     // Operators with unary versions
