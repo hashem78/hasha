@@ -10,11 +10,11 @@ namespace hasha {
     OperatorType type,
     std::string op,
     Span span,
-    int scope_id
+    uuid scope_id
   )
       : m_type(type),
         m_op(std::move(op)),
-        TokenBase(span, scope_id, "Operator"sv) {
+        CONSTRUCT_DETAILS(Operator) {
   }
 
   const std::string &Operator::operation() const noexcept {

@@ -2,10 +2,14 @@ cmake_minimum_required(VERSION 3.22)
 project(hasha)
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti -fno-exceptions -Wall -Wextra -Werror -pedantic -Wno-gnu-statement-expression-from-macro-expansion ")
 
 add_subdirectory(libs/fmt)
 add_subdirectory(libs/json)
 add_subdirectory(libs/magic_enum)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/libs/stduuid/cmake")
+set(UUID_SYSTEM_GENERATOR ON)
+add_subdirectory(libs/stduuid)
 
 include_directories(
         src/Lexer
@@ -27,7 +31,6 @@ add_executable(hasha
         src/Lexer/LexerTypes.h
         src/Lexer/Constants.h
         src/Parser/Tokens/Token.h
-        src/Parser/Tokens/TokenBase.cpp
         src/Parser/Tokens/TokenBase.h
         src/Parser/Parser.cpp
         src/Parser/Parser.h
@@ -54,6 +57,7 @@ add_executable(hasha
         src/Parser/Tokens/Expression.cpp
         src/Parser/Tokens/Expression.h
         src/Utils/Overload.h
+        src/Utils/Helpers.h
         src/Parser/Tokens/Literal.cpp
         src/Parser/Tokens/Literal.h
         src/Parser/Tokens/Operator.h
@@ -101,4 +105,10 @@ add_executable(hasha
         src/Parser/Tokens/Type/TypeToStringBuilder.h
         src/SharedTypes/OperatorType.h src/SharedTypes/LiteralType.h)
 
-target_link_libraries(hasha fmt::fmt nlohmann_json::nlohmann_json magic_enum::magic_enum)
+target_link_libraries(
+        hasha 
+        fmt::fmt
+        nlohmann_json::nlohmann_json
+        magic_enum::magic_enum
+        stduuid
+)

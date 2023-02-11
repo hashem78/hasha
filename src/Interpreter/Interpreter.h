@@ -16,8 +16,8 @@ namespace hasha {
 
     BoxedBlock global_block;
     ScopeTree::Ptr scope_tree;
-    SymbolTableTree::Ptr symbol_table_tree;
     Scope::Ptr global_scope;
+    SymbolTableTree::Ptr symbol_table_tree;
 
    public:
     explicit Interpreter(

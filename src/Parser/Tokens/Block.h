@@ -5,25 +5,27 @@
 #ifndef HASHA_BLOCK_H
 #define HASHA_BLOCK_H
 
+#include "Box.h"
 #include "Token.h"
 #include "TokenBase.h"
-#include "TokenForwards.h"
 
 namespace hasha {
 
-  class Block : public TokenBase {
-    TokenList m_tokens;
+  class [[nodiscard]] Block final {
+    std::vector<Token> m_tokens;
     bool m_contains_return;
+
+    DEFINE_DETAILS()
 
    public:
     Block(
-      TokenList tokens,
+      std::vector<Token> tokens,
       Span span,
-      int scope_id,
+      uuid scope_id,
       bool contains_return = false
     ) noexcept;
 
-    [[nodiscard]] const TokenList &tokens() const noexcept;
+    [[nodiscard]] const std::vector<Token> &tokens() const noexcept;
 
     [[nodiscard]] bool contains_return() const noexcept;
   };

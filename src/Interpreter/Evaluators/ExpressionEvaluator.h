@@ -14,8 +14,8 @@ namespace hasha {
 
   struct ExpressionEvaluator {
     BoxedExpression expression;
-    SymbolTable::Ptr symbol_table;
     SymbolTableTree::Ptr symbol_tree;
+    SymbolTable::Ptr symbol_table;
 
     explicit ExpressionEvaluator(
       BoxedExpression expression,

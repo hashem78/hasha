@@ -19,8 +19,8 @@ namespace hasha {
     BoxedType type,
     Scope::Ptr scope
   )
-      : scope(std::move(scope)),
-        type(std::move(type)) {
+      : type(std::move(type)),
+        scope(std::move(scope)) {
   }
 
   ErrorOr<void> TypeChecker::check_declaration(const BoxedDeclaration &declaration) {
@@ -68,8 +68,8 @@ namespace hasha {
           "Identifier {} is not of type {} on line: {}, col: {}",
           identifier->identifier(),
           std::visit(TypeToStringBuilder{}, type),
-          identifier->span().line,
-          identifier->span().col
+          identifier->details().span.line,
+          identifier->details().span.col
         );
     } else if (auto parameter = scope->get_parameter(identifier->identifier())) {
       if (!std::visit(TypeComparer{}, parameter->type(), type))
@@ -77,15 +77,15 @@ namespace hasha {
           "Parameter {} is not of type {} on line: {}, col: {}",
           identifier->identifier(),
           std::visit(TypeToStringBuilder{}, type),
-          identifier->span().line,
-          identifier->span().col
+          identifier->details().span.line,
+          identifier->details().span.col
         );
     } else {
       return fmt::format(
         "Failed to typecheck identifier {} on line : {}, col: {}",
         identifier->identifier(),
-        identifier->span().line,
-        identifier->span().col
+        identifier->details().span.line,
+        identifier->details().span.col
       );
     }
     return {};
@@ -131,8 +131,8 @@ namespace hasha {
         literal->literal(),
         fail_type,
         std::visit(TypeToStringBuilder{}, type),
-        literal->span().line,
-        literal->span().col
+        literal->details().span.line,
+        literal->details().span.col
       );
     }
     return {};
@@ -140,7 +140,7 @@ namespace hasha {
 
   ErrorOr<void> TypeChecker::check_function_call(const BoxedFunctionCall &function_call) {
 
-    auto span = fmt::format("on line: {}, col: {}", function_call->span().line, function_call->span().col);
+    auto span = fmt::format("on line: {}, col: {}", function_call->details().span.line, function_call->details().span.col);
     auto function = scope->get_function(function_call->callee());
     if (function != nullptr) {
       if (!std::visit(TypeComparer{}, function->return_type(), type)) {
@@ -164,8 +164,8 @@ namespace hasha {
       return fmt::format(
         "Failed to typecheck call to {} on line: {}, col: {}",
         function_call->callee(),
-        function_call->span().line,
-        function_call->span().col
+        function_call->details().span.line,
+        function_call->details().span.col
       );
     }
 

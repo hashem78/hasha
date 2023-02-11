@@ -11,17 +11,18 @@
 
 namespace hasha {
 
-  class Literal : public TokenBase {
+  class [[nodiscard]] Literal final {
    protected:
     LiteralType m_type;
     std::string m_literal;
 
+    DEFINE_DETAILS()
    public:
     Literal(
       LiteralType type,
       std::string literal,
       Span span,
-      int scope_id
+      uuid scope_id
     );
 
     [[nodiscard]] const std::string &literal() const noexcept;

@@ -10,15 +10,16 @@
 
 namespace hasha {
 
-  class Identifier : public TokenBase {
+  class [[nodiscard]] Identifier final {
 
     std::string m_identifier;
 
+    DEFINE_DETAILS()
    public:
     explicit Identifier(
       std::string identifier,
-      const Span &span,
-      int scope_id
+      Span span,
+      uuid scope_id
     ) noexcept;
 
     [[nodiscard]] const std::string &identifier() const noexcept;

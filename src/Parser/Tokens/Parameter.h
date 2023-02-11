@@ -12,16 +12,17 @@
 
 namespace hasha {
 
-  class Parameter : public TokenBase {
+  class [[nodiscard]] Parameter final {
     std::variant<Box<NormalType>, Box<GenericType>> m_type;
     Box<Identifier> m_name;
 
+    DEFINE_DETAILS()
    public:
     Parameter(
       std::variant<Box<NormalType>, Box<GenericType>> type,
       Box<Identifier> name,
       Span span,
-      int scope_id
+      uuid scope_id
     ) noexcept;
 
     [[nodiscard]] const Box<Identifier> &name() const noexcept;

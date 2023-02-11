@@ -3,17 +3,18 @@
 //
 
 #include "Scope.h"
-
+#include "Helpers.h"
 #include <utility>
 
 namespace hasha {
-  Scope::Scope(Ptr parent)
-      : parent(std::move(parent)), id(_id++) {
+  Scope::Scope(Ptr parent, int level)
+      : parent(std::move(parent)),
+        level(level) {
   }
 
-  Scope::Ptr Scope::create(Ptr parent) {
+  Scope::Ptr Scope::create(Ptr parent, int level) {
 
-    return std::make_unique<Scope>(std::move(parent));
+    return std::make_unique<Scope>(std::move(parent), level);
   }
 
   bool Scope::is_declaration_in_scope(const std::string &name) {
@@ -43,8 +44,6 @@ namespace hasha {
 
     return false;
   }
-
-  int Scope::_id = 0;
 
   const Function *Scope::get_function(const std::string &name) const {
 

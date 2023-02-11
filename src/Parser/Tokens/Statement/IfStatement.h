@@ -11,17 +11,18 @@
 
 namespace hasha {
 
-  class IfStatement : public TokenBase {
+  class [[nodiscard]] IfStatement final {
 
     Box<Expression> m_condition;
     Box<Block> m_block;
 
+    DEFINE_DETAILS()
    public:
     IfStatement(
       Box<Expression> condition,
       Box<Block> block,
-      const Span &span,
-      int scope_id
+      Span span,
+      uuid scope_id
     ) noexcept;
 
     [[nodiscard]] const Box<Expression> &condition() const noexcept;

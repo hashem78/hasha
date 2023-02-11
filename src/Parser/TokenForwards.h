@@ -5,6 +5,9 @@
 #ifndef HASHA_TOKENFORWARDS_H
 #define HASHA_TOKENFORWARDS_H
 namespace hasha {
+  class Token;
+
+  struct Span;
 
   class Type;
 

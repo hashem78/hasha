@@ -10,14 +10,15 @@
 
 namespace hasha {
 
-  class NormalType : public TokenBase {
+  class [[nodiscard]] NormalType final {
     std::string m_type;
+    DEFINE_DETAILS()
 
    public:
     NormalType(
       std::string type,
-      const Span &span,
-      int scope_id
+      Span span,
+      uuid scope_id
     );
 
     bool operator==(const NormalType &other) const;

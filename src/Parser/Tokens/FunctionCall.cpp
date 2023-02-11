@@ -9,12 +9,12 @@ namespace hasha {
   FunctionCall::FunctionCall(
     std::string callee,
     std::vector<Box<Expression>> tokens,
-    const Span &span,
-    int scope_id
+    Span span,
+    uuid scope_id
   )
       : m_callee(std::move(callee)),
         m_arguments(std::move(tokens)),
-        TokenBase(span, scope_id, "FunctionCall"sv) {
+        CONSTRUCT_DETAILS(FunctionCall) {
   }
 
   const std::string &FunctionCall::callee() const noexcept {

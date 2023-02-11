@@ -3,6 +3,7 @@
 //
 
 #include "ScopeTree.h"
+#include "uuid.h"
 
 namespace hasha {
 
@@ -15,24 +16,24 @@ namespace hasha {
     return std::make_shared<ScopeTree>();
   }
 
-  Scope::Ptr ScopeTree::create_scope(int parent_id) {
+  Scope::Ptr ScopeTree::create_scope(uuids::uuid parent_id, int parent_level) {
 
     if (root == nullptr) {
-      root = Scope::create(nullptr);
+      root = Scope::create(nullptr, 0);
       return root;
     }
 
-    if (parent_id == 0) {
-      root->children.push_back(Scope::create(root));
+    if (parent_level == 0) {
+      root->children.push_back(Scope::create(root, 1));
       return root->children.back();
     }
 
     auto parent = get_by_id(parent_id);
-    root->children.push_back(Scope::create(parent));
+    root->children.push_back(Scope::create(parent, parent->level + 1));
     return root->children.back();
   }
 
-  Scope::Ptr ScopeTree::get_by_id(int id) const {
+  Scope::Ptr ScopeTree::get_by_id(uuids::uuid id) const {
 
     std::queue<Scope::Ptr> scopes;
     scopes.push(root);

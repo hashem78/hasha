@@ -7,3 +7,6 @@
 [submodule "libs/fmt"]
 	path = libs/fmt
 	url = https://github.com/fmtlib/fmt
+[submodule "libs/stduuid"]
+	path = libs/stduuid
+	url = https://github.com/mariusbancila/stduuid

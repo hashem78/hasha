@@ -8,18 +8,15 @@
 
 namespace hasha {
 
-  SymbolTable::SymbolTable(SymbolTable::Ptr parent)
-      : id(id_++),
-        parent(std::move(parent)) {
+  SymbolTable::SymbolTable(int level, SymbolTable::Ptr parent)
+      : id(generate_uuid()), parent(std::move(parent)), level(level) {
   }
 
-  SymbolTable::Ptr SymbolTable::create(SymbolTable::Ptr parent) {
+  SymbolTable::Ptr SymbolTable::create(int level, SymbolTable::Ptr parent) {
 
-    return std::make_shared<SymbolTable>(std::move(parent));
+    return std::make_shared<SymbolTable>(level, std::move(parent));
   }
-
-  int SymbolTable::id_ = 0;
-
+  
   void SymbolTable::register_varible(const lang::Variable &variable) {
 
     variables.emplace(variable.name, variable);

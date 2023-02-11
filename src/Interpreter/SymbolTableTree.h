@@ -21,9 +21,9 @@ namespace hasha {
 
     static Ptr create();
 
-    SymbolTable::Ptr create_table(const SymbolTable::Ptr &parent);
+    SymbolTable::Ptr create_table(SymbolTable::Ptr parent);
 
-    [[nodiscard]] SymbolTable::Ptr get_by_id(int id) const;
+    [[nodiscard]] SymbolTable::Ptr get_by_id(uuid id) const;
   };
 
 }// namespace hasha

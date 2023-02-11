@@ -11,17 +11,18 @@
 
 namespace hasha {
 
-  class Operator : public TokenBase {
+  class [[nodiscard]] Operator final {
    protected:
     OperatorType m_type;
     std::string m_op;
 
+    DEFINE_DETAILS()
    public:
     Operator(
       OperatorType type,
       std::string op,
       Span span,
-      int scope_id
+      uuid scope_id
     );
 
     [[nodiscard]] const std::string &operation() const noexcept;

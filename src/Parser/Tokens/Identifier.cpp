@@ -7,11 +7,11 @@
 namespace hasha {
   Identifier::Identifier(
     std::string identifier,
-    const Span &span,
-    int scope_id
+    Span span,
+    uuid scope_id
   ) noexcept
       : m_identifier(std::move(identifier)),
-        TokenBase(span, scope_id, "Identifier"sv) {
+        CONSTRUCT_DETAILS(Identifier) {
   }
 
   const std::string &Identifier::identifier() const noexcept {

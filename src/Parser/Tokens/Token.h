@@ -53,7 +53,6 @@ namespace hasha {
       return std::holds_alternative<Box<T>>(*this);
     }
   };
-  using TokenList = std::vector<Token>;
 }// namespace hasha
 
 #endif//HASHA_TOKEN_H

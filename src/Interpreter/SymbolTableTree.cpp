@@ -9,7 +9,7 @@
 namespace hasha {
 
   SymbolTableTree::SymbolTableTree()
-      : root(SymbolTable::create(nullptr)) {
+      : root(SymbolTable::create(0, nullptr)) {
   }
 
   SymbolTableTree::Ptr SymbolTableTree::create() {
@@ -17,21 +17,21 @@ namespace hasha {
     return std::make_shared<SymbolTableTree>();
   }
 
-  SymbolTable::Ptr SymbolTableTree::create_table(const SymbolTable::Ptr &parent) {
+  SymbolTable::Ptr SymbolTableTree::create_table(SymbolTable::Ptr parent) {
 
     assert(root);
 
-    if (parent->id == 0) {
-      root->children.push_back(SymbolTable::create(root));
+    if (parent->level == 0) {
+      root->children.push_back(SymbolTable::create(1, root));
       return root->children.back();
     }
 
-    root->children.push_back(SymbolTable::create(parent));
+    root->children.push_back(SymbolTable::create(parent->level + 1, parent));
     return root->children.back();
     ;
   }
 
-  SymbolTable::Ptr SymbolTableTree::get_by_id(int id) const {
+  SymbolTable::Ptr SymbolTableTree::get_by_id(uuid id) const {
 
     std::queue<SymbolTable::Ptr> trees;
     trees.push(root);

@@ -3,17 +3,18 @@
 //
 
 #include "Assignment.h"
+#include "TokenBase.h"
 
 namespace hasha {
   Assignment::Assignment(
     Box<Identifier> assignee,
     Box<Expression> expression,
     Span span,
-    int scope_id
+    uuid scope_id
   ) noexcept
       : m_assignee(std::move(assignee)),
         m_expression(std::move(expression)),
-        TokenBase(span, scope_id, "Assignment"sv) {
+        CONSTRUCT_DETAILS(Assignment) {
   }
 
   const Box<Expression> &Assignment::expression() const noexcept {

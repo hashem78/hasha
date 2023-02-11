@@ -11,16 +11,17 @@
 
 namespace hasha {
 
-  class ElifStatement : public TokenBase {
+  class [[nodiscard]] ElifStatement final {
     Box<Expression> m_condition;
     Box<Block> m_block;
 
+    DEFINE_DETAILS()
    public:
     ElifStatement(
       Box<Expression> condition,
       Box<Block> block,
-      const Span &span,
-      int scope_id
+      Span span,
+      uuid scope_id
     ) noexcept;
 
     [[nodiscard]] const Box<Expression> &condition() const noexcept;

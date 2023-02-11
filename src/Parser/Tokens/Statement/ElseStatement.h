@@ -11,15 +11,16 @@
 
 namespace hasha {
 
-  class ElseStatement : public TokenBase {
+  class [[nodiscard]] ElseStatement final {
 
     Box<Block> m_block;
 
+    DEFINE_DETAILS()
    public:
     ElseStatement(
       Box<Block> block,
       Span span,
-      int scope_id
+      uuid scope_id
     ) noexcept;
 
     [[nodiscard]] const Box<Block> &block() const noexcept;

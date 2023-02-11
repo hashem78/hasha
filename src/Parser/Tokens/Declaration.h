@@ -13,20 +13,20 @@
 
 namespace hasha {
 
-  class Declaration : public TokenBase {
-
+  class [[nodiscard]] Declaration final {
    protected:
     std::variant<Box<NormalType>, Box<GenericType>> m_type;
     Box<Identifier> m_name;
     Box<Expression> m_assignment_expression;
 
+    DEFINE_DETAILS()
    public:
     Declaration(
       std::variant<Box<NormalType>, Box<GenericType>> type,
       Box<Identifier> name,
       Box<Expression> assignment_expression,
       Span span,
-      int scope_id
+      uuid scope_id
     ) noexcept;
 
     [[nodiscard]] const std::variant<Box<NormalType>, Box<GenericType>> &type() const noexcept;

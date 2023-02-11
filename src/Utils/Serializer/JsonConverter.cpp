@@ -8,8 +8,8 @@ namespace hasha {
   nlohmann::ordered_json JsonConverter::operator()(const BoxedNormalType &obj) const noexcept {
 
     return {
-      {"token_type", obj->token_type()},
-      {"span", obj->span().to_json()},
+      {"token_type", obj->details().name},
+      {"span", obj->details().span.to_json()},
       {"type", obj->type()}};
   }
 
@@ -21,16 +21,16 @@ namespace hasha {
       generics.push_back(std::visit(JsonConverter{}, generic));
     }
     return {
-      {"token_type", obj->token_type()},
-      {"span", obj->span().to_json()},
+      {"token_type", obj->details().name},
+      {"span", obj->details().span.to_json()},
       {"type", type}};
   }
 
   nlohmann::ordered_json JsonConverter::operator()(const BoxedIdentifier &obj) const noexcept {
 
     return {
-      {"token_type", obj->token_type()},
-      {"span", obj->span().to_json()},
+      {"token_type", obj->details().name},
+      {"span", obj->details().span.to_json()},
       {"identifier", obj->identifier()}};
   }
 
@@ -42,9 +42,9 @@ namespace hasha {
   nlohmann::ordered_json JsonConverter::operator()(const BoxedDeclaration &obj) const noexcept {
 
     return {
-      {"token_type", obj->token_type()},
+      {"token_type", obj->details().name},
       {"assignment_expression", this->operator()(obj->assignment_expression())},
-      {"span", obj->span().to_json()},
+      {"span", obj->details().span.to_json()},
       {"name", this->operator()(obj->name())},
       {"type", std::visit(JsonConverter{}, obj->type())}};
   }
@@ -56,16 +56,16 @@ namespace hasha {
       arr.push_back(std::visit(JsonConverter{}, token));
     }
     return {
-      {"token_type", obj->token_type()},
-      {"span", obj->span().to_json()},
+      {"token_type", obj->details().name},
+      {"span", obj->details().span.to_json()},
       {"expression", arr}};
   }
 
   nlohmann::ordered_json JsonConverter::operator()(const BoxedLiteral &obj) const noexcept {
 
     return {
-      {"token_type", obj->token_type()},
-      {"span", obj->span().to_json()},
+      {"token_type", obj->details().name},
+      {"span", obj->details().span.to_json()},
       {"literal_type", magic_enum::enum_name(obj->type())},
       {"literal", obj->literal()}};
   }
@@ -73,8 +73,8 @@ namespace hasha {
   nlohmann::ordered_json JsonConverter::operator()(const BoxedOperator &obj) const noexcept {
 
     return {
-      {"token_type", obj->token_type()},
-      {"span", obj->span().to_json()},
+      {"token_type", obj->details().name},
+      {"span", obj->details().span.to_json()},
       {"operator_type", magic_enum::enum_name(obj->type())},
       {"operation", obj->operation()}};
   }
@@ -86,8 +86,8 @@ namespace hasha {
       arguments.push_back(operator()(expression));
     }
     return {
-      {"token_type", obj->token_type()},
-      {"span", obj->span().to_json()},
+      {"token_type", obj->details().name},
+      {"span", obj->details().span.to_json()},
       {"callee", obj->callee()},
       {"arguments", arguments}};
   }
@@ -101,16 +101,16 @@ namespace hasha {
 
 
     return {
-      {"token_type", obj->token_type()},
-      {"span", obj->span().to_json()},
+      {"token_type", obj->details().name},
+      {"span", obj->details().span.to_json()},
       {"tokens", tokens}};
   }
 
   nlohmann::ordered_json JsonConverter::operator()(const BoxedAssignment &obj) const noexcept {
 
     return {
-      {"token_type", obj->token_type()},
-      {"span", obj->span().to_json()}};
+      {"token_type", obj->details().name},
+      {"span", obj->details().span.to_json()}};
   }
 
   nlohmann::ordered_json JsonConverter::operator()(const BoxedFunction &obj) const noexcept {
@@ -124,8 +124,8 @@ namespace hasha {
       );
     }
     return {
-      {"token_type", obj->token_type()},
-      {"span", obj->span().to_json()},
+      {"token_type", obj->details().name},
+      {"span", obj->details().span.to_json()},
       {"name", operator()(obj->name())},
       {"parameters", parameters},
       {"return_type", operator()(obj->return_type())},
@@ -135,8 +135,8 @@ namespace hasha {
   nlohmann::ordered_json JsonConverter::operator()(const BoxedParameter &obj) const noexcept {
 
     return {
-      {"token_type", obj->token_type()},
-      {"span", obj->span().to_json()},
+      {"token_type", obj->details().name},
+      {"span", obj->details().span.to_json()},
       {"type", operator()(obj->type())},
       {"name", operator()(obj->name())},
     };
@@ -150,8 +150,8 @@ namespace hasha {
     }
 
     return {
-      {"token_type", obj->token_type()},
-      {"span", obj->span().to_json()},
+      {"token_type", obj->details().name},
+      {"span", obj->details().span.to_json()},
       {"condition", condition},
       {"block", operator()(obj->block())}};
   }
@@ -164,8 +164,8 @@ namespace hasha {
     }
 
     return {
-      {"token_type", obj->token_type()},
-      {"span", obj->span().to_json()},
+      {"token_type", obj->details().name},
+      {"span", obj->details().span.to_json()},
       {"condition", condition},
       {"block", operator()(obj->block())}};
   }
@@ -173,16 +173,16 @@ namespace hasha {
   nlohmann::ordered_json JsonConverter::operator()(const BoxedElseStatement &obj) const noexcept {
 
     return {
-      {"token_type", obj->token_type()},
-      {"span", obj->span().to_json()},
+      {"token_type", obj->details().name},
+      {"span", obj->details().span.to_json()},
       {"block", operator()(obj->block())}};
   }
 
   nlohmann::ordered_json JsonConverter::operator()(const BoxedReturnToken &obj) const noexcept {
 
     return {
-      {"token_type", obj->token_type()},
-      {"span", obj->span().to_json()},
+      {"token_type", obj->details().name},
+      {"span", obj->details().span.to_json()},
       {"expression", operator()(obj->expression())}};
   }
 }// namespace hasha

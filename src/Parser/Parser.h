@@ -42,7 +42,7 @@ namespace hasha {
     ScopeTree::Ptr scope_tree;
     Lexer lexer;
     std::vector<Lexeme> lexemes;
-    int cursor;
+    size_t cursor;
 
     ErrorOr<Box<Identifier>> identifier(const Scope::Ptr &scope) noexcept;
 

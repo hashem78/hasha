@@ -10,19 +10,20 @@
 
 namespace hasha {
 
-  class Expression : public TokenBase {
-    TokenList m_expression;
+  class [[nodiscard]] Expression final {
+    std::vector<Token> m_expression;
+    DEFINE_DETAILS()
 
    public:
     Expression(
-      TokenList expr,
+      std::vector<Token> expr,
       Span span,
-      int scope_id
+      uuid scope_id
     );
 
     [[nodiscard]] bool empty() const noexcept;
 
-    [[nodiscard]] const TokenList &expression() const noexcept;
+    [[nodiscard]] const std::vector<Token> &expression() const noexcept;
   };
 
   using BoxedExpression = Box<Expression>;

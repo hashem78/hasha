@@ -3,6 +3,7 @@
 //
 
 #include "Function.h"
+#include "TokenBase.h"
 
 namespace hasha {
   Function::Function(
@@ -11,13 +12,13 @@ namespace hasha {
     std::variant<Box<NormalType>, Box<GenericType>> return_type,
     Box<Block> block,
     Span span,
-    int scope_id
+    uuid scope_id
   ) noexcept
       : m_name(std::move(name)),
         m_parameters(std::move(parameters)),
         m_return_type(std::move(return_type)),
         m_block(std::move(block)),
-        TokenBase(span, scope_id, "Function"sv) {
+        CONSTRUCT_DETAILS(Function) {
   }
 
   const Box<Identifier> &Function::name() const noexcept {

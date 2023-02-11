@@ -6,12 +6,12 @@
 #define HASHA_SCOPETREE_H
 
 #include "Scope.h"
+#include "uuid.h"
 
 namespace hasha {
 
   class ScopeTree {
     Scope::Ptr root;
-
 
    public:
     ScopeTree();
@@ -20,9 +20,9 @@ namespace hasha {
 
     static Ptr create();
 
-    Scope::Ptr create_scope(int parent_id = 0);
+    Scope::Ptr create_scope(uuids::uuid parent_id, int parent_level);
 
-    [[nodiscard]] Scope::Ptr get_by_id(int id) const;
+    [[nodiscard]] Scope::Ptr get_by_id(uuids::uuid id) const;
 
     void print() const;
   };

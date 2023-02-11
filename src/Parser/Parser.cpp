@@ -4,6 +4,7 @@
 
 #include <fstream>
 
+#include "Helpers.h"
 #include "magic_enum.hpp"
 
 #include "Constants.h"
@@ -42,7 +43,7 @@ namespace hasha {
 
   ErrorOr<std::pair<Scope::Ptr, BoxedBlock>> Parser::parse() {
 
-    auto global_scope = scope_tree->create_scope();
+    auto global_scope = scope_tree->create_scope(generate_uuid(), 0);
     return std::make_pair(global_scope, TRY(block(global_scope)));
   }
 
@@ -142,8 +143,8 @@ namespace hasha {
             return fmt::format(
               "Tried to access {} before its declaration is compelete, on line: {}, col: {}",
               var->identifier(),
-              var->span().line,
-              var->span().col
+              var->details().span.line,
+              var->details().span.col
             );
           }
           return {};
@@ -177,7 +178,7 @@ namespace hasha {
 
 
     std::stack<Lexeme> operators;// stack
-    auto token_list = TokenList{};
+    auto token_list = std::vector<Token>{};
 
 
     auto begin_span = peek().span();
@@ -251,8 +252,8 @@ namespace hasha {
                 return fmt::format(
                   "Identifier {} is undefined in this scope, line: {}, col {}",
                   idn->identifier(),
-                  idn->span().line,
-                  idn->span().col
+                  idn->details().span.line,
+                  idn->details().span.col
                 );
               }
               token_list.push_back(idn);
@@ -295,8 +296,8 @@ namespace hasha {
       return fmt::format(
         "Function {} is not defined line {}, col {}",
         idn->identifier(),
-        idn->span().line,
-        idn->span().col
+        idn->details().span.line,
+        idn->details().span.col
       );
     }
 
@@ -332,7 +333,7 @@ namespace hasha {
 
   ErrorOr<BoxedBlock> Parser::block(const Scope::Ptr &scope) noexcept {
 
-    auto token_list = TokenList{};
+    auto token_list = std::vector<Token>{};
     auto begin_span = peek().span();
     bool found_return = false;
 
@@ -393,7 +394,7 @@ namespace hasha {
 
     auto begin_span = peek().span();
     SWALLOW(FN)
-    auto function_scope = scope_tree->create_scope(scope->id);
+    auto function_scope = scope_tree->create_scope(scope->id, scope->level);
 
     auto name = TRY(identifier(scope));
 
@@ -428,8 +429,8 @@ namespace hasha {
         fmt::print(
           "Non-void function {} does not return anything on line: {}, col: {}",
           name->identifier(),
-          name->span().line,
-          name->span().col
+          name->details().span.line,
+          name->details().span.col
         );
       }
 
@@ -468,8 +469,8 @@ namespace hasha {
         fmt::print(
           "Non-void function {} does not return anything on line: {}, col: {}",
           name->identifier(),
-          name->span().line,
-          name->span().col
+          name->details().span.line,
+          name->details().span.col
         );
       }
 
@@ -499,13 +500,13 @@ namespace hasha {
       return fmt::format(
         "{} is not declared in this scope on line: {}, col: {}",
         idn->identifier(),
-        idn->span().line,
-        idn->span().col
+        idn->details().span.line,
+        idn->details().span.col
       );
     }
     EXPECT(EQUALS)
     auto expr = TRY(parse_expression(scope));
-    auto declaration = scope->get_declaration(idn->identifier());
+    
     auto end_span = peek(-1).span();
     EXPECT(SEMICOLON)
 
@@ -523,7 +524,7 @@ namespace hasha {
     EXPECT(IF)
     auto condition = TRY(parse_expression(scope, {LCURLY}));
     EXPECT(LCURLY)
-    auto blk = TRY(block(scope_tree->create_scope(scope->id)));
+    auto blk = TRY(block(scope_tree->create_scope(scope->id, scope->level)));
     EXPECT(RCURLY)
     auto after_span = peek(-1).span();
 
@@ -564,7 +565,7 @@ namespace hasha {
     EXPECT(ELIF)
     auto condition = TRY(parse_expression(scope, {LCURLY}));
     EXPECT(LCURLY)
-    auto blk = TRY(block(scope_tree->create_scope(scope->id)));
+    auto blk = TRY(block(scope_tree->create_scope(scope->id, scope->level)));
     EXPECT(RCURLY)
     auto after_span = peek(-1).span();
 
@@ -595,7 +596,7 @@ namespace hasha {
     auto before_span = peek().span();
     EXPECT(ELSE)
     EXPECT(LCURLY)
-    auto blk = TRY(block(scope_tree->create_scope(scope->id)));
+    auto blk = TRY(block(scope_tree->create_scope(scope->id, scope->level)));
     EXPECT(RCURLY)
     auto after_span = peek(-1).span();
 
@@ -616,16 +617,16 @@ namespace hasha {
       if (!ret->expression().empty()) {
         return fmt::format(
           "Expected empty return expression on line: {}, col: {} ",
-          ret->span().line,
-          ret->span().col
+          ret->details().span.line,
+          ret->details().span.col
         );
       }
     } else {
       if (ret->expression().empty()) {
         return fmt::format(
           "Expected non-empty return expression on line: {}, col: {} ",
-          ret->span().line,
-          ret->span().col
+          ret->details().span.line,
+          ret->details().span.col
         );
       }
     }

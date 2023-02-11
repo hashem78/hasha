@@ -9,11 +9,11 @@ namespace hasha {
     LiteralType type,
     std::string literal,
     Span span,
-    int scope_id
+    uuid scope_id
   )
       : m_type(type),
         m_literal(std::move(literal)),
-        TokenBase(span, scope_id, "Literal"sv) {
+        CONSTRUCT_DETAILS(Literal) {
   }
 
   const std::string &Literal::literal() const noexcept {

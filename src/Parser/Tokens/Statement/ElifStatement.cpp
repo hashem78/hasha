@@ -8,12 +8,12 @@ namespace hasha {
   ElifStatement::ElifStatement(
     Box<Expression> condition,
     Box<Block> block,
-    const Span &span,
-    int scope_id
+    Span span,
+    uuid scope_id
   ) noexcept
       : m_condition(std::move(condition)),
         m_block(std::move(block)),
-        TokenBase(span, scope_id, "ElifStatement") {
+        CONSTRUCT_DETAILS(ElifStatement) {
   }
 
   const Box<Expression> &ElifStatement::condition() const noexcept {

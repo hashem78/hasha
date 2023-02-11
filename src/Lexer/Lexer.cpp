@@ -87,8 +87,8 @@ namespace hasha {
     if (done()) return Lexeme{{}, {}, {}, Span{}};
 
     skip_spaces();
-    int begin = cursor;
-    int start_col = col;
+    size_t begin = cursor;
+    size_t start_col = col;
     auto create_span = [&, this]() -> Span {
       return Span{begin, cursor, line, start_col};
     };

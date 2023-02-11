@@ -3,20 +3,21 @@
 //
 
 #include "Block.h"
+#include "TokenBase.h"
 
 namespace hasha {
   Block::Block(
-    TokenList tokens,
+    std::vector<Token> tokens,
     Span span,
-    int scope_id,
+    uuid scope_id,
     bool contains_return
   ) noexcept
       : m_tokens(std::move(tokens)),
         m_contains_return(contains_return),
-        TokenBase(span, scope_id, "Block"sv) {
+        CONSTRUCT_DETAILS(Block) {
   }
 
-  const TokenList &Block::tokens() const noexcept {
+  const std::vector<Token> &Block::tokens() const noexcept {
 
     return m_tokens;
   }

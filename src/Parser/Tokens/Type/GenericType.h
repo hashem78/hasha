@@ -10,16 +10,17 @@
 
 namespace hasha {
 
-  class GenericType : public TokenBase {
+  class [[nodiscard]] GenericType final {
     BoxedType m_type;
     BoxedTypeList m_generics_list;
 
+    DEFINE_DETAILS()
    public:
     GenericType(
       BoxedType type,
       BoxedTypeList generics_list,
       Span span,
-      int scope_id
+      uuid scope_id
     );
 
     [[nodiscard]] bool operator==(const GenericType &other) const noexcept;

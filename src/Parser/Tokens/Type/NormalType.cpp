@@ -7,11 +7,11 @@
 namespace hasha {
   NormalType::NormalType(
     std::string type,
-    const Span &span,
-    int scope_id
+    Span span,
+    uuid scope_id
   )
       : m_type(std::move(type)),
-        TokenBase(span, scope_id, "NormalType"sv) {
+        CONSTRUCT_DETAILS(NormalType) {
   }
 
   bool NormalType::operator==(const NormalType &other) const {

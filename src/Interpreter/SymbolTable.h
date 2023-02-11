@@ -5,6 +5,7 @@
 #ifndef HASHA_SYMBOLTABLE_H
 #define HASHA_SYMBOLTABLE_H
 
+#include "Helpers.h"
 #include "Language/Variable.h"
 #include <memory>
 #include <string>
@@ -21,13 +22,14 @@ namespace hasha {
 
     using Ptr = std::shared_ptr<SymbolTable>;
 
+    uuid id;
     SymbolTable::Ptr parent;
-    int id;
     std::vector<Ptr> children;
+    int level;
 
-    explicit SymbolTable(SymbolTable::Ptr parent = nullptr);
+    explicit SymbolTable(int level = 0, SymbolTable::Ptr parent = nullptr);
 
-    static Ptr create(SymbolTable::Ptr parent = nullptr);
+    static Ptr create(int level = 0, SymbolTable::Ptr parent = nullptr);
 
     void register_varible(const lang::Variable &variable);
 
@@ -40,7 +42,6 @@ namespace hasha {
    private:
     std::unordered_map<std::string, lang::Variable> variables;
     std::unordered_map<std::string, BoxedFunction> functions;
-    static int id_;
   };
 
 }// namespace hasha

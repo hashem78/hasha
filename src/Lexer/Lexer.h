@@ -26,9 +26,9 @@ namespace hasha {
    private:
     LexemeList lexemes;
     std::string file_name;
-    int cursor;
-    int line;
-    int col;
+    size_t cursor;
+    size_t line;
+    size_t col;
 
     ErrorOr<Lexeme> next_token() noexcept;
 

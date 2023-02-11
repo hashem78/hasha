@@ -11,16 +11,17 @@
 
 namespace hasha {
 
-  class FunctionCall : public TokenBase {
+  class [[nodiscard]] FunctionCall final {
     std::string m_callee;
     std::vector<Box<Expression>> m_arguments;
 
+    DEFINE_DETAILS()
    public:
     FunctionCall(
       std::string callee,
       std::vector<Box<Expression>> tokens,
-      const Span &span,
-      int scope_id
+      Span span,
+      uuid scope_id
     );
 
 

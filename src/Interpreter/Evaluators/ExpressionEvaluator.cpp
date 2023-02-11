@@ -104,7 +104,7 @@ namespace hasha {
                     result = std::visit<lang::VariableValue>(
                       Overload{
                         [](bool i1, bool i2) { return i1 && i2; },
-                        [](auto z) { return true; }},
+                        [](auto) { return true; }},
                       a,
                       b
                     );
@@ -112,7 +112,7 @@ namespace hasha {
                     result = std::visit<lang::VariableValue>(
                       Overload{
                         [](bool i1, bool i2) { return i1 || i2; },
-                        [](auto z) { return true; }},
+                        [](auto) { return true; }},
                       a,
                       b
                     );
@@ -160,8 +160,8 @@ namespace hasha {
                   call_name,
                   function_parameters.size(),
                   call_arguments.size(),
-                  function_call->span().line,
-                  function_call->span().col
+                  function_call->details().span.line,
+                  function_call->details().span.col
                 );
               }
               // Register parameters with evaled arguments

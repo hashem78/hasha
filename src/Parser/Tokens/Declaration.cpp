@@ -3,6 +3,7 @@
 //
 
 #include "Declaration.h"
+#include "TokenBase.h"
 
 namespace hasha {
 
@@ -11,12 +12,12 @@ namespace hasha {
     Box<Identifier> name,
     Box<Expression> assignment_expression,
     Span span,
-    int scope_id
+    uuid scope_id
   ) noexcept
       : m_type(std::move(type)),
         m_name(std::move(name)),
         m_assignment_expression(std::move(assignment_expression)),
-        TokenBase(span, scope_id, "Declaration"sv) {
+        CONSTRUCT_DETAILS(Declaration) {
   }
 
   const std::variant<Box<NormalType>, Box<GenericType>> &Declaration::type() const noexcept {

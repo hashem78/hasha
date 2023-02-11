@@ -8,12 +8,12 @@ namespace hasha {
   IfStatement::IfStatement(
     Box<Expression> condition,
     Box<Block> block,
-    const Span &span,
-    int scope_id
+    Span span,
+    uuid scope_id
   ) noexcept
       : m_condition(std::move(condition)),
         m_block(std::move(block)),
-        TokenBase(span, scope_id, "IfStatement"sv) {
+        CONSTRUCT_DETAILS(IfStatement) {
   }
 
   const Box<Expression> &IfStatement::condition() const noexcept {

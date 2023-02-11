@@ -9,19 +9,22 @@
 #include "TokenBase.h"
 #include "TokenForwards.h"
 
+
 namespace hasha {
 
-  class Assignment : public TokenBase {
+  class [[nodiscard]] Assignment final {
 
     Box<Identifier> m_assignee;
     Box<Expression> m_expression;
+
+    DEFINE_DETAILS()
 
    public:
     Assignment(
       Box<Identifier> assignee,
       Box<Expression> expression,
       Span span,
-      int scope_id
+      uuid scope_id
     ) noexcept;
 
 

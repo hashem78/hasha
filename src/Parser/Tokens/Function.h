@@ -13,12 +13,14 @@
 namespace hasha {
 
 
-  class Function : public TokenBase {
+  class [[nodiscard]] Function final {
 
     Box<Identifier> m_name;
     std::vector<Box<Parameter>> m_parameters;
     std::variant<Box<NormalType>, Box<GenericType>> m_return_type;
     Box<Block> m_block;
+
+    DEFINE_DETAILS()
 
    public:
     Function(
@@ -27,7 +29,7 @@ namespace hasha {
       std::variant<Box<NormalType>, Box<GenericType>> return_type,
       Box<Block> block,
       Span span,
-      int scope_id
+      uuid scope_id
     ) noexcept;
 
     [[nodiscard]] const Box<Identifier> &name() const noexcept;

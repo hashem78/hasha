@@ -26,14 +26,13 @@ namespace hasha {
       obj,
       symbol_tree,
       symbol_table};
-    auto value = TRY(evaluator.evaluate());
 
     // TODO: Expressions should have side effects
 
     return {};
   }
 
-  ErrorOr<void> TokenVisitor::operator()(const BoxedFunctionCall &obj) {
+  ErrorOr<void> TokenVisitor::operator()(const BoxedFunctionCall &) {
 
     // TODO: FunctionCalls should have side effects
 
@@ -83,12 +82,12 @@ namespace hasha {
     return {};
   }
 
-  ErrorOr<void> TokenVisitor::operator()(const BoxedElifStatement &obj) {
+  ErrorOr<void> TokenVisitor::operator()(const BoxedElifStatement &) {
 
     return {};
   }
 
-  ErrorOr<void> TokenVisitor::operator()(const BoxedElseStatement &obj) {
+  ErrorOr<void> TokenVisitor::operator()(const BoxedElseStatement &) {
 
     return {};
   }

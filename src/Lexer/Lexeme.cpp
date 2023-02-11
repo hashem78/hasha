@@ -91,10 +91,10 @@ namespace hasha {
   )
       : m_data(std::move(data)),
         m_type(type),
-        m_litreal_type(litreal_type),
         m_associativity(Associativity::NONE),
         m_precedence(Precedence::NONE),
         m_operator_type(),
+        m_litreal_type(litreal_type),
         m_span(Span{}) {
   }
 
@@ -106,20 +106,20 @@ namespace hasha {
   )
       : m_data(std::move(data)),
         m_type(type),
-        m_litreal_type(op),
         m_associativity(Associativity::NONE),
         m_precedence(Precedence::NONE),
         m_operator_type(),
+        m_litreal_type(op),
         m_span(span) {
   }
 
 
-  const Span &Lexeme::span() const noexcept {
+  Span Lexeme::span() const noexcept {
 
     return m_span;
   }
 
-  Lexeme Lexeme::with_span(const Span &span) const noexcept {
+  Lexeme Lexeme::with_span(Span span) const noexcept {
 
     Lexeme lexeme = *this;
     lexeme.m_span = span;

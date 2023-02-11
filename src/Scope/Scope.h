@@ -8,6 +8,7 @@
 #include "Box.h"
 #include "TokenForwards.h"
 #include "fmt/core.h"
+#include "uuid.h"
 #include <memory>
 #include <queue>
 #include <string>
@@ -23,12 +24,13 @@ namespace hasha {
     std::unordered_map<std::string, Box<Function>> functions;
 
     Ptr parent;
-    int id;
+    uuids::uuid id;
     std::vector<Ptr> children;
+    int level;
 
-    explicit Scope(Ptr parent);
+    explicit Scope(Ptr parent, int level);
 
-    static Ptr create(Ptr parent);
+    static Ptr create(Ptr parent, int level);
 
     bool is_declaration_in_scope(const std::string &name);
 
@@ -39,9 +41,6 @@ namespace hasha {
     const Declaration *get_declaration(const std::string &name) const;
 
     const Parameter *get_parameter(const std::string &name) const;
-
-   private:
-    static int _id;
   };
 
 }// namespace hasha

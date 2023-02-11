@@ -6,12 +6,12 @@
 
 namespace hasha {
   Expression::Expression(
-    TokenList expr,
+    std::vector<Token> expr,
     Span span,
-    int scope_id
+    uuid scope_id
   )
       : m_expression(std::move(expr)),
-        TokenBase(span, scope_id, "Expression"sv) {
+        CONSTRUCT_DETAILS(Expression) {
   }
 
   bool Expression::empty() const noexcept {
@@ -19,7 +19,7 @@ namespace hasha {
     return m_expression.empty();
   }
 
-  const TokenList &Expression::expression() const noexcept {
+  const std::vector<Token> &Expression::expression() const noexcept {
 
     return m_expression;
   }

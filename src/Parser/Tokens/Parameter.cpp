@@ -9,11 +9,11 @@ namespace hasha {
     std::variant<Box<NormalType>, Box<GenericType>> type,
     Box<Identifier> name,
     Span span,
-    int scope_id
+    uuid scope_id
   ) noexcept
       : m_type(std::move(type)),
         m_name(std::move(name)),
-        TokenBase(span, scope_id, "Parameter"sv) {
+        CONSTRUCT_DETAILS(Parameter) {
   }
 
   const Box<Identifier> &Parameter::name() const noexcept {

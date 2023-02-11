@@ -11,14 +11,15 @@
 
 namespace hasha {
 
-  class ReturnToken : public TokenBase {
+  class [[nodiscard]] ReturnToken final {
     Box<Expression> m_expression;
 
+    DEFINE_DETAILS()
    public:
     explicit ReturnToken(
       Box<Expression> expression,
       Span span,
-      int scope_id
+      uuid scope_id
     ) noexcept;
 
     [[nodiscard]] const Box<Expression> &expression() const noexcept;

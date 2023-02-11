@@ -10,18 +10,18 @@
 namespace hasha {
 
   struct Span {
-    int begin;
-    int end;
-    int line;
-    int col;
+    size_t begin;
+    size_t end;
+    size_t line;
+    size_t col;
 
     bool operator==(const Span &) const = default;
 
     explicit constexpr Span(
-      int begin = 0,
-      int end = 0,
-      int line = 0,
-      int col = 0
+      size_t begin = 0,
+      size_t end = 0,
+      size_t line = 0,
+      size_t col = 0
     )
         : begin(begin),
           end(end),

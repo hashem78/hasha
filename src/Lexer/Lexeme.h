@@ -67,9 +67,9 @@ namespace hasha {
 
     [[nodiscard]] Associativity associativity() const noexcept;
 
-    [[nodiscard]] const Span &span() const noexcept;
+    [[nodiscard]] Span span() const noexcept;
 
-    [[nodiscard]] Lexeme with_span(const Span &) const noexcept;
+    [[nodiscard]] Lexeme with_span(Span) const noexcept;
   };
 
   using LexemeList = std::vector<Lexeme>;
