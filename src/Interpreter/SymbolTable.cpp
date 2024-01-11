@@ -16,7 +16,7 @@ namespace hasha {
 
     return std::make_shared<SymbolTable>(level, std::move(parent));
   }
-  
+
   void SymbolTable::register_varible(const lang::Variable &variable) {
 
     variables.emplace(variable.name, variable);

@@ -18,13 +18,13 @@ namespace hasha {
     BoxedExpression expression;
     SymbolTableTree::Ptr symbol_tree;
     SymbolTable::Ptr symbol_table;
-    std::variant<Box<NormalType>,Box<GenericType>> expected_type;
+    std::variant<Box<NormalType>, Box<GenericType>> expected_type;
 
     explicit ExpressionEvaluator(
       BoxedExpression expression,
       SymbolTableTree::Ptr symbol_tree,
       SymbolTable::Ptr symbol_table,
-      std::variant<Box<NormalType>,Box<GenericType>> expected_type
+      std::variant<Box<NormalType>, Box<GenericType>> expected_type
     ) noexcept;
 
     [[nodiscard]] ErrorOr<lang::VariableValue> evaluate() const;
