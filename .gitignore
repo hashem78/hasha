@@ -4,3 +4,5 @@ build/
 .cache/
 sample.hasha
 parser_output.json
+/out/
+compile_commands.json
