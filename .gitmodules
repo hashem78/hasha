@@ -10,3 +10,6 @@
 [submodule "libs/stduuid"]
 	path = libs/stduuid
 	url = https://github.com/mariusbancila/stduuid
+[submodule "libs/range-v3"]
+	path = libs/range-v3
+	url = https://github.com/ericniebler/range-v3

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22)
 project(hasha)
 
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti -fno-exceptions -Wall -Wextra -Werror -pedantic -Wno-gnu-statement-expression-from-macro-expansion ")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror -pedantic -Wno-gnu-statement-expression-from-macro-expansion ")
 
 add_subdirectory(libs/fmt)
 add_subdirectory(libs/json)
@@ -10,6 +10,7 @@ add_subdirectory(libs/magic_enum)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/libs/stduuid/cmake")
 set(UUID_SYSTEM_GENERATOR ON)
 add_subdirectory(libs/stduuid)
+add_subdirectory(libs/range-v3)
 
 include_directories(
         src/Lexer
@@ -112,4 +113,5 @@ target_link_libraries(
         nlohmann_json::nlohmann_json
         magic_enum::magic_enum
         stduuid
+        range-v3
 )
