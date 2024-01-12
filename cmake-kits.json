@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Clang Hasha Kit",
+    "generator": "Ninja",
+    "compilers": {
+      "C": "/usr/bin/clang",
+      "CXX": "/usr/bin/clang++"
+    },
+    "linker": "/usr/bin/ll",
+    "toochainFile": "xxx"
+  } 
+]
