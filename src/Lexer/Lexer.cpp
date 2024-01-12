@@ -2,14 +2,15 @@
 // Created by mythi on 21/07/22.
 //
 
+#include <cctype>
 #include <fstream>
-
-
-#include "fmt/format.h"
 
 #include "Analyzer.h"
 #include "Constants.h"
 #include "Lexer.h"
+#include "fmt/core.h"
+#include "range/v3/range/conversion.hpp"
+#include "range/v3/view/trim.hpp"
 
 #define MATCH_LEXEME(STRING_REP, LEXEME) \
   if (match(STRING_REP)) return LEXEME.with_span(create_span())
@@ -28,8 +29,8 @@ namespace hasha {
       fmt::print("Failed to open {}", this->file_name);
       exit(1);
     }
-
     data = std::vector(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
+    data = data | ranges::views::trim([](char c) { return std::isspace(c); }) | ranges::to<std::vector>();
   }
 
   ErrorOr<void> Lexer::lex() {
@@ -221,7 +222,8 @@ namespace hasha {
           fmt::format("{}.{}", token, decimal_part),
           LexemeType::LITERAL,
           LiteralType::Float,
-          create_span()};
+          create_span()
+        };
       }
       return Lexeme{token, LexemeType::LITERAL, LiteralType::Integer, create_span()};
     }
