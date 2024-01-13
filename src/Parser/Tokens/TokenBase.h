@@ -25,7 +25,7 @@ using namespace std::string_view_literals;
  private:
 
 #define CONSTRUCT_DETAILS(TOKEN_NAME) \
-  m_details("TOKEN_NAME"sv, span, std::move(scope_id))
+  m_details(#TOKEN_NAME ##sv, span, std::move(scope_id))
 
 namespace hasha {
 
